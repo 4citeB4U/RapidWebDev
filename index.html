@@ -2,21 +2,263 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rapid Web Development - Combined App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Rapid Web Development - Professional web development services with AI-powered solutions for businesses of all sizes.">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="color-scheme" content="dark">
+    <title>Rapid Web Development - Professional Web Solutions</title>
+    <!-- Preconnect to CDNs for performance -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://js.stripe.com">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- React & ReactDOM CDN -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <!-- React & ReactDOM CDN - Production versions -->
+    <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
     <!-- Babel Standalone CDN -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Stripe.js CDN with performance optimizations -->
+    <script src="https://js.stripe.com/v3/" id="stripe-js" defer></script>
+    <!-- Stripe Buy Button CDN -->
+    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+    <!-- Stripe Performance Optimization -->
+    <script>
+      // Lazy load Stripe.js only when needed
+      document.addEventListener('DOMContentLoaded', function() {
+        // Check if we're on the pricing page or if there's a buy button visible
+        const isPricingPage = window.location.hash === '#pricing';
+        const hasBuyButtons = document.querySelectorAll('[href*="buy.stripe.com"]').length > 0;
+
+        if (!isPricingPage && !hasBuyButtons) {
+          // Delay loading Stripe until user interaction suggests they might need it
+          const stripeScript = document.getElementById('stripe-js');
+          if (stripeScript) {
+            stripeScript.setAttribute('data-load-on-demand', 'true');
+            stripeScript.removeAttribute('src');
+
+            // Load Stripe when user interacts with pricing-related elements
+            document.addEventListener('click', function(e) {
+              const target = e.target;
+              const isPricingRelated =
+                target.textContent?.includes('Pricing') ||
+                target.textContent?.includes('Buy') ||
+                target.closest('[href*="buy.stripe.com"]');
+
+              if (isPricingRelated && stripeScript.getAttribute('data-load-on-demand')) {
+                stripeScript.setAttribute('src', 'https://js.stripe.com/v3/');
+                stripeScript.removeAttribute('data-load-on-demand');
+              }
+            }, {once: true});
+          }
+        }
+
+        // Register service worker for offline support and better performance
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            // Create inline service worker from blob
+            const swCode = `
+              // Service Worker for Rapid Web Development
+              const CACHE_NAME = 'rapid-web-dev-cache-v1';
+              const urlsToCache = [
+                './',
+                './index.html',
+                './RWDLOGO.png',
+                './assets/mainpage/frontpage1.png',
+                './assets/mainpage/frontpage2.png',
+                './assets/mainpage/frontpage3.png',
+                './assets/mainpage/frontpage4.png',
+                './assets/mainpage/frontpage5.png',
+                './assets/mainpage/HumanandAI.png',
+                './assets/learningpage/learningpage1.png',
+                './assets/learningpage/learningpage2.png',
+                './assets/learningpage/learningpage3.png',
+                './assets/learningpage/learningpage4.png',
+                './assets/learningpage/learningpage5.png',
+                './assets/qrcodes/QR1.png',
+                './assets/qrcodes/QR2.png',
+                './assets/qrcodes/QR3.png',
+                './assets/qrcodes/QR4.png',
+                './docs/HTML-JSX-Fundamentals.pdf',
+                './docs/CSS-Tailwind-Guide.pdf',
+                './docs/Advanced-SEO-Techniques.pdf',
+                './docs/single-file-architecture.pdf',
+                './docs/development-process.pdf',
+                './docs/website-ownership.pdf',
+                './docs/website-maintenance.pdf',
+                './docs/performance-security.pdf'
+              ];
+
+              // Install event - cache core assets
+              self.addEventListener('install', event => {
+                // Perform install steps
+                event.waitUntil(
+                  caches.open(CACHE_NAME)
+                    .then(cache => {
+                      console.log('Opened cache');
+                      return cache.addAll(urlsToCache);
+                    })
+                );
+              });
+
+              // Fetch event - serve from cache, fall back to network
+              self.addEventListener('fetch', event => {
+                event.respondWith(
+                  caches.match(event.request)
+                    .then(response => {
+                      // Cache hit - return response
+                      if (response) {
+                        return response;
+                      }
+
+                      // Clone the request because it's a one-time use stream
+                      const fetchRequest = event.request.clone();
+
+                      return fetch(fetchRequest).then(
+                        response => {
+                          // Check if we received a valid response
+                          if(!response || response.status !== 200 || response.type !== 'basic') {
+                            return response;
+                          }
+
+                          // Clone the response because it's a one-time use stream
+                          const responseToCache = response.clone();
+
+                          // Don't cache API calls or external resources
+                          if (event.request.url.includes('stripe.com') ||
+                              event.request.url.includes('unpkg.com') ||
+                              event.request.url.includes('tailwindcss.com')) {
+                            return response;
+                          }
+
+                          caches.open(CACHE_NAME)
+                            .then(cache => {
+                              cache.put(event.request, responseToCache);
+                            });
+
+                          return response;
+                        }
+                      );
+                    })
+                );
+              });
+
+              // Activate event - clean up old caches
+              self.addEventListener('activate', event => {
+                const cacheWhitelist = [CACHE_NAME];
+
+                event.waitUntil(
+                  caches.keys().then(cacheNames => {
+                    return Promise.all(
+                      cacheNames.map(cacheName => {
+                        if (cacheWhitelist.indexOf(cacheName) === -1) {
+                          return caches.delete(cacheName);
+                        }
+                      })
+                    );
+                  })
+                );
+              });
+
+              // Handle offline fallback
+              self.addEventListener('fetch', event => {
+                // Skip cross-origin requests
+                if (event.request.mode === 'navigate') {
+                  event.respondWith(
+                    fetch(event.request)
+                      .catch(() => {
+                        return caches.match('/index.html');
+                      })
+                  );
+                }
+              });
+            `;
+
+            // Create a blob from the service worker code
+            const blob = new Blob([swCode], {type: 'application/javascript'});
+            const swUrl = URL.createObjectURL(blob);
+
+            // Register the service worker from the blob URL
+            navigator.serviceWorker.register(swUrl).then(function(registration) {
+              // Registration was successful
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+              // Clean up the blob URL
+              URL.revokeObjectURL(swUrl);
+            }, function(err) {
+              // registration failed :(
+              console.log('ServiceWorker registration failed: ', err);
+              // Clean up the blob URL
+              URL.revokeObjectURL(swUrl);
+            });
+          });
+        }
+      });
+    </script>
 
     <style>
         /* Custom CSS for animations and specific styles */
         body {
             font-family: sans-serif; /* Basic font stack */
             background-color: #000000; /* Absolute black background */
+            overflow-x: hidden; /* Prevent horizontal scrolling */
+            width: 100%;
+        }
+
+        /* Responsive design fixes */
+        /* Improve tap target sizes on mobile */
+        button, a {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Fix iOS input styling */
+        input, textarea {
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0;
+        }
+
+        /* Prevent zoom on form fields in iOS */
+        @media screen and (max-width: 768px) {
+            input, select, textarea {
+                font-size: 16px;
+            }
+        }
+
+        /* Improve responsive layout */
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        /* Fix image scaling */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Scroll to top button animations */
+        @keyframes glow-pulse {
+            0% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+
+        /* Apply animations to scroll buttons */
+        .btn-glow {
+            animation: glow-pulse 2s infinite, float 3s ease-in-out infinite;
         }
 
         @keyframes pulse {
@@ -334,6 +576,39 @@
     <div id="root"></div>
 
     <script type="text/babel">
+        // Production environment detection
+        const isProduction = window.location.hostname !== 'localhost' &&
+                           window.location.hostname !== '127.0.0.1' &&
+                           !window.location.hostname.includes('.local');
+
+        // Production console warning
+        if (isProduction) {
+          console.log('%cRapid Web Development', 'font-size:20px;font-weight:bold;color:#3b82f6;');
+          console.log('%cThis is a production environment. Console logs are minimized for performance.', 'color:#64748b;');
+
+          // Disable console logs in production except for errors
+          const originalConsoleLog = console.log;
+          const originalConsoleInfo = console.info;
+          const originalConsoleWarn = console.warn;
+
+          console.log = function() {
+            // Allow only critical logs in production
+            if (arguments[0] && typeof arguments[0] === 'string' &&
+                (arguments[0].includes('error') || arguments[0].includes('critical'))) {
+              originalConsoleLog.apply(console, arguments);
+            }
+          };
+
+          console.info = function() {
+            // Suppress info logs in production
+          };
+
+          console.warn = function() {
+            // Allow warnings through in production
+            originalConsoleWarn.apply(console, arguments);
+          };
+        }
+
         const { useState, useEffect, useRef, Fragment } = React;
 
         // --- Documentation Data ---
@@ -399,9 +674,17 @@
         // --- Icon SVGs ---
         // (Embedding all SVGs directly here for lucide-react replacement)
 
+
+
         const IconArrowRight = ({ size = 24, className = '' }) => (
           <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-arrow-right ${className}`}>
             <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        );
+
+        const IconMenu = ({ size = 24, className = '' }) => (
+          <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-menu ${className}`}>
+            <line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/>
           </svg>
         );
 
@@ -686,22 +969,96 @@
            </svg>
         );
 
+        // --- Common Header Component ---
+        const CommonHeader = ({ navigateTo, currentPage }) => {
+          return (
+            <div className="fixed top-0 left-0 w-full bg-indigo-950/80 backdrop-blur-md border-b border-indigo-800/50 shadow-lg z-50">
+              <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                  <img src="./RWDLOGO.png" className="w-16 h-16" alt="Rapid Web Development Logo" />
+                  <h1 className="text-2xl md:text-3xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
+                </div>
+                <nav className="hidden md:flex gap-6 items-center">
+                  <button
+                    onClick={() => navigateTo('landing')}
+                    className={`hover:text-blue-300 transition-colors ${currentPage === 'landing' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                  >
+                    Home
+                  </button>
+                  <button
+                    onClick={() => navigateTo('landing', '#about')}
+                    className="hover:text-blue-300 transition-colors text-white"
+                  >
+                    About
+                  </button>
+                  <button
+                    onClick={() => navigateTo('landing', '#solutions')}
+                    className="hover:text-blue-300 transition-colors text-white"
+                  >
+                    Solutions
+                  </button>
+                  <button
+                    onClick={() => navigateTo('landing', '#portfolio')}
+                    className="hover:text-blue-300 transition-colors text-white"
+                  >
+                    Portfolio
+                  </button>
+                  <button
+                    onClick={() => navigateTo('landing', '#process')}
+                    className="hover:text-blue-300 transition-colors text-white"
+                  >
+                    Process
+                  </button>
+                  <button
+                    onClick={() => navigateTo('landing', '#testimonials')}
+                    className="hover:text-blue-300 transition-colors text-white"
+                  >
+                    Testimonials
+                  </button>
+                  <button
+                    onClick={() => navigateTo('pricing')}
+                    className={`hover:text-blue-300 transition-colors ${currentPage === 'pricing' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                  >
+                    Pricing
+                  </button>
+                  <button
+                    onClick={() => navigateTo('learning')}
+                    className={`hover:text-blue-300 transition-colors ${currentPage === 'learning' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                  >
+                    Learning
+                  </button>
+                  <button
+                    onClick={() => navigateTo('showcase')}
+                    className={`hover:text-blue-300 transition-colors ${currentPage === 'showcase' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                  >
+                    Animations
+                  </button>
+                  <div className="relative ml-2">
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      aria-label="Search website"
+                      className="bg-indigo-800/50 text-white px-3 py-1 rounded-lg text-sm border border-indigo-700/50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-32"
+                    />
+                  </div>
+                </nav>
+                <button className="md:hidden bg-blue-600 p-2 rounded-lg">
+                  <IconMenu size={24} className="text-white" />
+                </button>
+              </div>
+            </div>
+          );
+        };
+
         // --- Narrator Component ---
-        const NarratorComponent = ({ narrationText, title = "Listen to Site Narration", description = "Hear an overview of our services", voiceSettings }) => {
+        const NarratorComponent = ({ narrationText, title = "Listen to Site Narration", description = "Hear an overview of our services" }) => {
           const [isOpen, setIsOpen] = useState(false);
           const [isPlaying, setIsPlaying] = useState(false);
           const [showSettings, setShowSettings] = useState(false);
+          const [currentLanguage, setCurrentLanguage] = useState('en');
+          const [currentVoice, setCurrentVoice] = useState('default');
           const synth = window.speechSynthesis;
           const [availableVoices, setAvailableVoices] = useState([]);
-
-          // Use shared voice settings if provided, otherwise use local state
-          const useSharedSettings = !!voiceSettings;
-          const [localLanguage, setLocalLanguage] = useState('en');
-          const [localVoice, setLocalVoice] = useState('default');
-
-          // Get the current language and voice (either from shared settings or local state)
-          const currentLanguage = useSharedSettings ? voiceSettings.currentLanguage : localLanguage;
-          const currentVoice = useSharedSettings ? voiceSettings.currentVoice : localVoice;
 
           const languages = [
             { code: 'en', name: 'English', flag: '🇺🇸' },
@@ -774,16 +1131,8 @@
           };
 
           const changeLanguage = (langCode) => {
-            if (useSharedSettings) {
-              // Update shared settings
-              voiceSettings.updateLanguage(langCode);
-              voiceSettings.updateVoice("default"); // Reset voice when language changes
-            } else {
-              // Update local state
-              setLocalLanguage(langCode);
-              setLocalVoice("default");
-            }
-
+            setCurrentLanguage(langCode);
+            setCurrentVoice("default");
             if (isPlaying) {
               stopSpeaking();
               setTimeout(() => speakText(), 100);
@@ -791,14 +1140,7 @@
           };
 
           const changeVoice = (voiceURI) => {
-            if (useSharedSettings) {
-              // Update shared settings
-              voiceSettings.updateVoice(voiceURI);
-            } else {
-              // Update local state
-              setLocalVoice(voiceURI);
-            }
-
+            setCurrentVoice(voiceURI);
             if (isPlaying) {
               stopSpeaking();
               setTimeout(() => speakText(), 100);
@@ -994,7 +1336,7 @@
         };
 
         // --- First Page/Main Page Component (RapidWebDev) ---
-        const RapidWebDev = ({ navigateTo, voiceSettings }) => {
+        const RapidWebDev = ({ navigateTo }) => {
           const [flipped, setFlipped] = useState({});
           const [scrollY, setScrollY] = useState(0);
           const [phoneHue, setPhoneHue] = useState(0);
@@ -1020,10 +1362,10 @@
           };
 
           const portfolioItems = [
-            { id: 1, title: "Two Brothers Automotive", description: "Auto repair and tire shop website.", image: "https://placehold.co/800x450?text=Auto+Shop", qrCode: "./assets/qrcodes/QR1.png", technologies: ["HTML5", "CSS3", "JS"], deliveryTime: "3 days", url: "https://4citeb4u.github.io/Auto-Tireshop/", features: ["Responsive", "Scheduler", "CTA"] },
-            { id: 2, title: "Leo's Insight", description: "Roblox gaming community website.", image: "https://placehold.co/800x450?text=Gaming", qrCode: "./assets/qrcodes/QR2.png", technologies: ["React", "CSS3", "JS"], deliveryTime: "4 days", url: "https://4citeb4u.github.io/leosinsight/", features: ["Showcase", "Blog", "Messaging"] },
-            { id: 3, title: "Water Hole: Connect", description: "Community resource sharing platform.", image: "https://placehold.co/800x450?text=Connect", qrCode: "./assets/qrcodes/QR3.png", technologies: ["HTML5", "CSS3", "JS"], deliveryTime: "3 days", url: "https://4citeb4u.github.io/Thewaterholeprojectt/", features: ["Network", "Sharing", "Tools"] },
-            { id: 4, title: "Leola's Digital Library", description: "Digital library for crochet books.", image: "https://placehold.co/800x450?text=Library", qrCode: "./assets/qrcodes/QR4.png", technologies: ["HTML5", "CSS3", "JS"], deliveryTime: "3 days", url: "https://4citeb4u.github.io/leolasliabrary/", features: ["Book Display", "Filtering"] }
+            { id: 1, title: "Two Brothers Automotive", description: "Auto repair and tire shop website.", image: "./assets/mainpage/frontpage1.png", qrCode: "./assets/qrcodes/QR1.png", technologies: ["HTML5", "CSS3", "JS"], deliveryTime: "3 days", url: "https://4citeb4u.github.io/Auto-Tireshop/", features: ["Responsive", "Scheduler", "CTA"] },
+            { id: 2, title: "Leo's Insight", description: "Roblox gaming community website.", image: "./assets/mainpage/frontpage2.png", qrCode: "./assets/qrcodes/QR2.png", technologies: ["React", "CSS3", "JS"], deliveryTime: "4 days", url: "https://4citeb4u.github.io/leosinsight/", features: ["Showcase", "Blog", "Messaging"] },
+            { id: 3, title: "Water Hole: Connect", description: "Community resource sharing platform.", image: "./assets/mainpage/frontpage3.png", qrCode: "./assets/qrcodes/QR3.png", technologies: ["HTML5", "CSS3", "JS"], deliveryTime: "3 days", url: "https://4citeb4u.github.io/Thewaterholeprojectt/", features: ["Network", "Sharing", "Tools"] },
+            { id: 4, title: "Leola's Digital Library", description: "Digital library for crochet books.", image: "./assets/mainpage/frontpage4.png", qrCode: "./assets/qrcodes/QR4.png", technologies: ["HTML5", "CSS3", "JS"], deliveryTime: "3 days", url: "https://4citeb4u.github.io/leolasliabrary/", features: ["Book Display", "Filtering"] }
           ];
 
            const mainPageNarration = `Hello, and welcome to Rapid Web Development—your partner in launching stunning, professional websites in just 3 to 5 days!
@@ -1037,13 +1379,11 @@
             Rapid Web Development: Fast. Affordable. Completely Yours.`;
 
           return (
-            <div className="min-h-screen bg-black text-white relative">
-              <NarratorComponent
-                narrationText={mainPageNarration}
-                voiceSettings={voiceSettings}
-              />
+            <div className="min-h-screen bg-black text-white relative pt-24"> {/* Added pt-24 to account for fixed header */}
+              <CommonHeader navigateTo={navigateTo} currentPage="landing" />
+              <NarratorComponent narrationText={mainPageNarration} />
 
-              <div className="fixed right-4 top-4 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom">
+              <div className="fixed right-4 top-24 z-40 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom"> {/* Adjusted top position */}
                 <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}>
                   <IconPhone size={24} className="text-white animate-bounce-custom" />
                 </div>
@@ -1052,34 +1392,7 @@
                 </span>
               </div>
 
-              <header className="py-16 px-6 md:px-12 max-w-7xl mx-auto relative">
-
-
-                <div className="relative z-10 flex justify-between items-center mb-12">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      {/* RWD Logo */}
-                       <img src="./RWDLOGO.png" className="w-12 h-12 animate-bounce-custom" alt="Rapid Web Development Logo" />
-                    </div>
-                    <h1 className="text-2xl md:text-4xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
-                  </div>
-                  <nav className="hidden md:flex gap-6 items-center">
-                     <a href="#about" className="hover:text-blue-300 transition-colors">About</a>
-                     <a href="#solutions" className="hover:text-blue-300 transition-colors">Solutions</a>
-                     <a href="#portfolio" className="hover:text-blue-300 transition-colors">Portfolio</a>
-                     <a href="#process" className="hover:text-blue-300 transition-colors">Process</a>
-                     <a href="#testimonials" className="hover:text-blue-300 transition-colors">Testimonials</a>
-                     <button onClick={() => navigateTo('pricing')} className="hover:text-blue-300 transition-colors">Pricing</button>
-                     <button onClick={() => navigateTo('learning')} className="hover:text-blue-300 transition-colors">Learning</button>
-                     <button onClick={() => navigateTo('showcase')} className="hover:text-blue-300 transition-colors">Animations</button>
-                    <div className="relative ml-2">
-                      <input type="text" placeholder="Search..." aria-label="Search website" className="bg-indigo-800/50 text-white px-3 py-1 rounded-lg text-sm border border-indigo-700/50 focus:outline-none focus:ring-2 focus:ring-blue-400 w-32" />
-                    </div>
-                  </nav>
-                   <button onClick={() => navigateTo('pricing')} className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-colors btn-glow btn-shimmer">
-                    Get Started
-                  </button>
-                </div>
+              <div className="py-8 px-6 md:px-12 max-w-7xl mx-auto relative">
 
                 <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
                   <div>
@@ -1152,7 +1465,7 @@
                     </a>
                   </div>
                 </div>
-              </header>
+              </div>
 
               {/* About Us Section */}
               <section id="about" className="py-16 px-6 bg-black">
@@ -1281,7 +1594,7 @@
                           </div>
                         </li>
                          <li className="flex items-start gap-3">
-                          <div className="bg-red-500/80 p-2 rounded-lg mt-1"><img src="/api/placeholder/20/20" alt="Lock Icon" className="w-5 h-5" /></div>
+                          <div className="bg-red-500/80 p-2 rounded-lg mt-1"><IconLock size={20} className="text-white" /></div>
                           <div>
                             <h4 className="font-bold text-lg">Lack of Control</h4>
                             <p className="text-blue-100">Many platforms hold your website hostage, forcing dependency through monthly subscriptions and limited access.</p>
@@ -1620,7 +1933,7 @@
                     <p className="mt-4 text-blue-200">No obligation. Let's discuss your project.</p>
                     <div className="flex justify-center mt-8 gap-8">
                         <div className="text-center"><IconPhone size={24} className="mx-auto mb-2 text-blue-400" /><p className="font-bold text-lg">414-367-6211</p></div>
-                        <div className="text-center"><IconMessageSquare size={24} className="mx-auto mb-2 text-blue-400" /><p className="font-bold text-lg">agentlee@rapidwebdevelop.com</p></div>
+                        <div className="text-center"><IconMessageSquare size={24} className="mx-auto mb-2 text-blue-400" /><p className="font-bold text-lg">contact@rapidwebdev.com</p></div>
                         <div className="text-center"><IconClock3 size={24} className="mx-auto mb-2 text-blue-400" /><p className="font-bold text-lg">M-F, 8AM-5PM CST</p></div>
                     </div>
                 </div>
@@ -1948,7 +2261,7 @@
                         <h4 className="font-bold text-lg mb-4">Contact Us</h4>
                         <ul className="space-y-4 text-blue-200">
                             <li className="flex items-center gap-3"><IconClock3 size={20} className="text-blue-400"/><span >M-F, 8AM-5PM CST</span></li>
-                            <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>agentlee@rapidwebdevelop.com</span></li>
+                            <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>contact@rapidwebdev.com</span></li>
                             <li className="flex items-center gap-3"><IconPhone size={20} className="text-blue-400"/><span>Phone: <span className="font-bold text-white">414-367-6211</span></span></li>
                         </ul>
                          <div className="mt-6 flex gap-4">
@@ -1960,9 +2273,7 @@
                     </div>
                 </div>
                  <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-blue-800/50 text-center text-blue-300 text-sm">
-                    &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.<br/>
-                    Email: <a href="mailto:agentlee@rapidwebdevelop.com" className="hover:text-blue-200">agentlee@rapidwebdevelop.com</a><br/>
-                    Website managed by <a href="https://rapidwebdevelop.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-200">rapidwebdevelop.com</a>
+                    &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.
                 </div>
               </footer>
             </div>
@@ -1971,7 +2282,7 @@
 
         // --- Second Page/Showcase Component (AnimationShowcasePage) ---
         // (Renamed from original App to avoid conflict)
-        const AnimationShowcasePage = ({ navigateTo, voiceSettings }) => {
+        const AnimationShowcasePage = ({ navigateTo }) => {
           const [activeCategory, setActiveCategory] = useState('showcase');
           const [phoneHue, setPhoneHue] = useState(0);
           const [isAnimating, setIsAnimating] = useState(true);
@@ -2044,33 +2355,25 @@
             };
 
           return (
-            <div className="min-h-screen bg-black text-white relative">
-               <NarratorComponent
-                    narrationText={showcaseNarration}
-                    title="Animation Showcase Narration"
-                    description="Hear about our animation capabilities"
-                    voiceSettings={voiceSettings}
-                />
+            <div className="min-h-screen bg-black text-white relative pt-24"> {/* Added pt-24 to account for fixed header */}
+              <CommonHeader navigateTo={navigateTo} currentPage="showcase" />
+              <NarratorComponent
+                narrationText={showcaseNarration}
+                title="Animation Showcase Narration"
+                description="Hear about our animation capabilities"
+              />
 
-              <div className="fixed right-4 top-4 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom">
-                 <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}>
-                    <IconPhone size={24} className="text-white animate-bounce-custom" />
-                 </div>
+              <div className="fixed right-4 top-24 z-40 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom"> {/* Adjusted top position */}
+                <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}>
+                  <IconPhone size={24} className="text-white animate-bounce-custom" />
+                </div>
                 <span className="font-bold text-xl pr-2" style={{ color: `hsl(${phoneHue}, 100%, 80%)` }}>414-367-6211</span>
               </div>
 
-              <header className="py-8 px-6 md:px-12 max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-6">
-                    <div className="flex items-center gap-3">
-                        <img src="./RWDLOGO.png" className="w-10 h-10" alt="Rapid Web Development Logo" />
-                        <h1 className="text-2xl md:text-4xl font-bold text-white">ANIMATION<br/>SHOWCASE</h1>
-                    </div>
-                     <div className="flex gap-3">
-                         <button className="bg-indigo-700 hover:bg-indigo-600 px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onClick={() => navigateTo('landing')}>
-                             <IconArrowRight size={16} className="transform rotate-180" /> Back to Home
-                         </button>
-                        <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-colors" onClick={() => navigateTo('learning')}>Learning Center</button>
-                    </div>
+              <div className="py-8 px-6 md:px-12 max-w-7xl mx-auto">
+                <div className="mb-6">
+                  <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Animation Showcase</h1>
+                  <p className="text-xl text-blue-200">Explore our collection of premium animations and interactive effects</p>
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-8 items-center mb-8">
@@ -2119,7 +2422,7 @@
                         {isAnimating ? 'Pause Previews' : 'Play Previews'}
                     </button>
                 </nav>
-            </header>
+            </div>
 
               {/* Mobile category navbar */}
               <div className="md:hidden overflow-x-auto py-2 px-4 bg-indigo-900/80 sticky top-0 z-30 backdrop-blur-md border-y border-indigo-800/50">
@@ -2188,7 +2491,7 @@
                          <h4 className="font-bold text-lg mb-4">Contact Us</h4>
                         <ul className="space-y-4 text-blue-200">
                              <li className="flex items-center gap-3"><IconClock3 size={20} className="text-blue-400"/><span >M-F, 8AM-5PM CST</span></li>
-                            <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>agentlee@rapidwebdevelop.com</span></li>
+                            <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>contact@rapidwebdev.com</span></li>
                             <li className="flex items-center gap-3"><IconPhone size={20} className="text-blue-400"/><span>Phone: <span className="font-bold text-white">414-367-6211</span></span></li>
                         </ul>
                          <div className="mt-6 flex gap-4">
@@ -2200,9 +2503,7 @@
                     </div>
                 </div>
                  <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-blue-800/50 text-center text-blue-300 text-sm">
-                    &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.<br/>
-                    Email: <a href="mailto:agentlee@rapidwebdevelop.com" className="hover:text-blue-200">agentlee@rapidwebdevelop.com</a><br/>
-                    Website managed by <a href="https://rapidwebdevelop.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-200">rapidwebdevelop.com</a>
+                    &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.
                 </div>
               </footer>
             </div>
@@ -2224,7 +2525,7 @@
         );
 
         // --- Learning Center Component ---
-        const LearningCenter = ({ navigateTo, voiceSettings }) => {
+        const LearningCenter = ({ navigateTo }) => {
           const [activeCategory, setActiveCategory] = useState('all');
           const [searchTerm, setSearchTerm] = useState('');
           const [expandedFaq, setExpandedFaq] = useState(null);
@@ -2304,83 +2605,33 @@
           const videoTutorials = [
             {
               id: 1,
-              title: 'HTML Tutorial for Beginners: HTML Crash Course',
-              description: 'Learn the fundamentals of HTML in this comprehensive crash course for beginners.',
-              categories: ['HTML', 'Beginner', 'Web Basics'],
-              duration: '1:09:33',
-              thumbnail: 'https://i.ytimg.com/vi/qz0aGYrrlhU/maxresdefault.jpg',
+              title: 'Getting Started with Your New Website',
+              description: 'A comprehensive walkthrough of the basics for your new website.',
+              categories: ['Beginner', 'Overview', 'Getting Started'],
+              duration: '15:24',
+              thumbnail: './assets/learningpage/learningpage1.png',
               isNew: true,
-              url: 'https://www.youtube.com/watch?v=qz0aGYrrlhU'
+              url: '#video-website-basics'
             },
             {
               id: 2,
-              title: 'CSS Tutorial - Zero to Hero (Complete Course)',
-              description: 'Complete CSS tutorial covering everything from basic selectors to advanced layouts and animations.',
-              categories: ['CSS', 'Beginner', 'Web Basics'],
-              duration: '6:18:37',
-              thumbnail: 'https://i.ytimg.com/vi/1Rs2ND1ryYc/maxresdefault.jpg',
+              title: 'Website Security Best Practices',
+              description: 'Essential security measures to protect your website from threats.',
+              categories: ['Security', 'Advanced', 'Maintenance'],
+              duration: '20:54',
+              thumbnail: './assets/learningpage/learningpage2.png',
               isNew: true,
-              url: 'https://www.youtube.com/watch?v=1Rs2ND1ryYc'
+              url: '#video-website-security'
             },
             {
               id: 3,
-              title: 'HTML & CSS Full Course - Beginner to Pro',
-              description: 'The complete HTML and CSS bootcamp - learn HTML and CSS from scratch with this comprehensive tutorial.',
-              categories: ['HTML', 'CSS', 'Beginner', 'Web Basics'],
-              duration: '6:33:13',
-              thumbnail: 'https://i.ytimg.com/vi/G3e-cpL7ofc/maxresdefault.jpg',
-              isNew: true,
-              url: 'https://www.youtube.com/watch?v=G3e-cpL7ofc'
-            },
-            {
-              id: 4,
-              title: 'JavaScript Tutorial for Beginners',
-              description: 'Learn JavaScript fundamentals with this beginner-friendly tutorial covering core concepts and practical examples.',
-              categories: ['JavaScript', 'Beginner', 'Web Basics'],
-              duration: '1:40:29',
-              thumbnail: 'https://i.ytimg.com/vi/W6NZfCO5SIk/maxresdefault.jpg',
-              isNew: true,
-              url: 'https://www.youtube.com/watch?v=W6NZfCO5SIk'
-            },
-            {
-              id: 5,
-              title: 'React JS Tutorial for Beginners',
-              description: 'Learn React JS from scratch with this comprehensive tutorial for beginners.',
-              categories: ['React', 'JavaScript', 'Intermediate'],
-              duration: '1:33:56',
-              thumbnail: 'https://i.ytimg.com/vi/OXGznpKZ_sA/maxresdefault.jpg',
-              isNew: true,
-              url: 'https://www.youtube.com/watch?v=OXGznpKZ_sA'
-            },
-            {
-              id: 6,
-              title: 'Tailwind CSS Tutorial for Beginners',
-              description: 'Learn Tailwind CSS from scratch with this beginner-friendly tutorial covering utility-first CSS concepts.',
-              categories: ['CSS', 'Tailwind', 'Intermediate'],
-              duration: '1:15:41',
-              thumbnail: 'https://i.ytimg.com/vi/UBOj6rqRUME/maxresdefault.jpg',
-              isNew: true,
-              url: 'https://www.youtube.com/watch?v=UBOj6rqRUME'
-            },
-            {
-              id: 7,
-              title: 'Git and GitHub Tutorial for Beginners',
-              description: 'Learn the basics of Git and GitHub for version control and collaboration in web development projects.',
-              categories: ['Git', 'GitHub', 'Version Control'],
-              duration: '32:38',
-              thumbnail: 'https://i.ytimg.com/vi/tRZGeaHPoaw/maxresdefault.jpg',
-              isNew: true,
-              url: 'https://www.youtube.com/watch?v=tRZGeaHPoaw'
-            },
-            {
-              id: 8,
-              title: 'Responsive Web Design Tutorial',
-              description: 'Learn how to create responsive websites that work well on all devices using HTML and CSS.',
-              categories: ['Responsive Design', 'CSS', 'Intermediate'],
-              duration: '1:31:29',
-              thumbnail: 'https://i.ytimg.com/vi/btVBCqCljxo/maxresdefault.jpg',
-              isNew: true,
-              url: 'https://www.youtube.com/watch?v=btVBCqCljxo'
+              title: 'SEO Fundamentals for Small Businesses',
+              description: 'Learn the basics of search engine optimization to improve your website visibility.',
+              categories: ['SEO', 'Marketing', 'Intermediate'],
+              duration: '23:45',
+              thumbnail: './assets/learningpage/learningpage3.png',
+              isNew: false,
+              url: '#video-seo-fundamentals'
             }
           ];
 
@@ -3509,61 +3760,31 @@ const TypewriterEffect = ({ isAnimating }) => {
                 return false;
             };
 
-          // Learning Center narration script
-          const learningCenterNarration = `Welcome to Rapid Web Development's Learning Center! We're thrilled you're here to explore.
-
-This space is designed just for you, our valued client. Our goal is to empower you with the knowledge and resources needed to confidently understand, maintain, and even enhance the website we built together. It's all part of our commitment to true website ownership – putting you in control.
-
-Here, you'll find a collection of helpful resources tailored specifically to our unique single-file architecture and development process. We cover everything from foundational concepts to practical how-tos.
-
-Navigating the Learning Center is easy.
-
-Looking for something specific? Use the search bar located near the top of the page. Just type in keywords related to your query, like... 'update text'... 'SEO'... or 'particle animation'... and the relevant resources will be filtered for you instantly.
-
-Alternatively, you can browse by category. Just below the search area, you'll find filter buttons like... 'All'... 'Documents'... 'FAQ'... 'Code Snippets'... and 'Videos'. Clicking one of these buttons will show you only the resources matching that type.
-
-Let's talk about what you can find:
-
-In the 'Documents' section, you can download detailed PDF guides. These cover topics like understanding the HTML and JSX used in your site... our approach to CSS with Tailwind... SEO best practices... the details of our single-file architecture... our AI-Human development process... website ownership... and practical maintenance steps. Just click the 'Download PDF' button on any document card.
-
-Prefer learning visually? Check out the 'Videos' section. We've included helpful YouTube tutorials from trusted sources covering fundamental concepts like HTML, CSS, and SEO to give you a broader understanding.
-
-Feeling adventurous? The 'Code Snippets' section is where you can explore the actual code behind many of the beautiful animations featured on our Showcase page. Click on any snippet card... it will flip over to reveal the code structure. You can even copy the code directly if you'd like to experiment or understand how it works.
-
-Have a quick question? Our 'Frequently Asked Questions', or FAQ section, covers common queries about maintaining your site, our development process, website ownership, and security. Simply click on a question... and the answer will expand below it.
-
-We encourage you to explore these resources at your own pace. Understanding your website gives you greater control and flexibility.
-
-And remember, if you get stuck, can't find what you're looking for, or just prefer direct assistance, our support team is always here to help during your included 8-month support period. You can find our contact information at the bottom of the page or in the 'Need Help?' section right here in the Learning Center.
-
-We hope you find this Learning Center valuable. Happy learning, and happy exploring!`;
+          const learningCenterNarration = `Welcome to our Learning Center, your comprehensive resource for web development knowledge and tutorials.
+            Here, you'll find everything you need to understand, maintain, and optimize your website.
+            Browse through our documentation, video tutorials, code snippets, and frequently asked questions.
+            Our Learning Center is designed to empower you with the knowledge to get the most out of your website.
+            Feel free to explore different categories using the navigation menu, or search for specific topics using the search bar.
+            If you have any questions that aren't covered here, don't hesitate to contact us directly.`;
 
           return (
-            <div className="min-h-screen bg-black text-white">
+            <div className="min-h-screen bg-black text-white pt-24"> {/* Added pt-24 to account for fixed header */}
+              <CommonHeader navigateTo={navigateTo} currentPage="learning" />
               <NarratorComponent
                 narrationText={learningCenterNarration}
-                title="Learning Center Guide"
-                description="Listen to an overview of this page and its resources."
-                voiceSettings={voiceSettings}
+                title="Learning Center Narration"
+                description="Hear about our learning resources"
               />
 
-              <div className="fixed right-4 top-4 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom">
-                 <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}><IconPhone size={24} className="text-white animate-bounce-custom" /></div>
+              <div className="fixed right-4 top-24 z-40 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom"> {/* Adjusted top position */}
+                <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}><IconPhone size={24} className="text-white animate-bounce-custom" /></div>
                 <span className="font-bold text-xl pr-2" style={{ color: `hsl(${phoneHue}, 100%, 80%)` }}>414-367-6211</span>
               </div>
 
-              <header className="py-8 px-6 md:px-12 max-w-7xl mx-auto">
-                 <div className="flex justify-between items-center mb-8">
-                    <div className="flex items-center gap-3">
-                        <img src="./RWDLOGO.png" className="w-10 h-10" alt="Rapid Web Development Logo" />
-                        <h1 className="text-2xl md:text-4xl font-bold">Learning Center</h1>
-                    </div>
-                    <div className="flex gap-3">
-                         <button className="bg-indigo-700 hover:bg-indigo-600 px-4 py-2 rounded-lg transition-colors flex items-center gap-2" onClick={() => navigateTo('landing')}>
-                            <IconArrowRight size={16} className="transform rotate-180" /> Back to Home
-                        </button>
-                        <button className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-colors" onClick={() => navigateTo('showcase')}>View Animations</button>
-                    </div>
+              <div className="py-8 px-6 md:px-12 max-w-7xl mx-auto">
+                <div className="mb-6">
+                  <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Learning Center</h1>
+                  <p className="text-xl text-blue-200">Explore our comprehensive resources to help you get the most out of your website</p>
                 </div>
 
                 <div className="bg-indigo-900/80 mb-8 rounded-lg backdrop-blur-md border border-indigo-800">
@@ -3583,14 +3804,14 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                       <p className="text-lg text-blue-100 mb-8">Browse our collection to learn how to maintain and optimize your website, plus explore animation code snippets.</p>
                     </div>
                     <div className="bg-indigo-800/30 p-4 rounded-xl overflow-hidden">
-                      <img src="./assets/learningpage/learningcenterpage2.png" alt="Learning resources illustration" className="w-full h-auto object-contain rounded-lg" />
+                      <img src="./assets/learningpage/learningpage1.png" alt="Learning resources illustration" className="w-full h-auto object-cover rounded-lg" />
                     </div>
                 </div>
                  <div className="max-w-2xl relative mt-8">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><IconSearch size={20} className="text-blue-300" /></div>
                     <input type="text" placeholder="Search resources, FAQs, or code snippets..." aria-label="Search resources, FAQs, or code snippets" className="w-full pl-10 pr-4 py-3 bg-indigo-800/50 border border-indigo-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-blue-300" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                 </div>
-              </header>
+              </div>
 
               {/* Navigation bar moved to header */}
 
@@ -3625,12 +3846,10 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                   {/* YouTube Tutorials Section */}
                   {(activeCategory === 'all' || activeCategory === 'videos') && (
                       <section className="mb-16">
-                        <div className="mb-6">
-                          <h2 className="text-2xl font-bold flex items-center gap-2 mb-2"><IconPlay size={24} className="text-blue-400" /> YouTube Video Tutorials</h2>
-                          <p className="text-blue-200 text-sm mb-4">Watch these curated tutorials to learn essential web development skills from industry experts.</p>
-
-                          <div className="w-full bg-indigo-800/50 p-3 rounded-xl overflow-hidden shadow-lg border border-indigo-700/30 mb-6">
-                            <img src="./assets/learningpage/learningcenterpage3.png" alt="" className="w-full rounded-lg transform hover:scale-[1.02] transition-transform duration-300" />
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-2xl font-bold flex items-center gap-2"><IconPlay size={24} className="text-blue-400" /> YouTube Video Tutorials</h2>
+                          <div className="bg-indigo-800/30 p-3 rounded-xl overflow-hidden hidden md:block w-48">
+                            <img src="./assets/learningpage/learningpage4.png" alt="YouTube tutorials illustration" className="w-full h-auto object-cover rounded-lg" />
                           </div>
                         </div>
 
@@ -3639,14 +3858,14 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                           <div className="bg-indigo-800/30 p-5 rounded-xl">
                             <h3 className="text-xl font-bold mb-3">HTML Fundamentals</h3>
                             <p className="text-blue-200 mb-4">Quickly learn the basics of HTML to structure your web content effectively.</p>
-                            <YouTubeEmbed videoId="qz0aGYrrlhU" title="HTML Tutorial for Beginners" />
+                            <YouTubeEmbed videoId="btVBCqCljxo" title="HTML Tutorial for Beginners" />
                           </div>
 
-                          {/* React JS Tutorial */}
+                          {/* CSS Fundamentals Video */}
                           <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">React JS Tutorial</h3>
-                            <p className="text-blue-200 mb-4">Learn React JS from scratch with this comprehensive tutorial for beginners.</p>
-                            <YouTubeEmbed videoId="OXGznpKZ_sA" title="React JS Tutorial for Beginners" />
+                            <h3 className="text-xl font-bold mb-3">CSS Styling Guide</h3>
+                            <p className="text-blue-200 mb-4">Master CSS to create beautiful and responsive web designs.</p>
+                            <YouTubeEmbed videoId="OXGznpKZ_sA" title="CSS Tutorial for Beginners" />
                           </div>
                         </div>
 
@@ -3655,14 +3874,14 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                           <div className="bg-indigo-800/30 p-5 rounded-xl">
                             <h3 className="text-xl font-bold mb-3">Advanced SEO Techniques</h3>
                             <p className="text-blue-200 mb-4">Learn advanced strategies to boost your site's visibility.</p>
-                            <YouTubeEmbed videoId="ssJ5EAnpGFQ" title="Advanced SEO Techniques" />
+                            <YouTubeEmbed videoId="c606SRrgdkQ" title="Advanced SEO Techniques" />
                           </div>
 
-                          {/* Responsive Web Design Tutorial */}
+                          {/* HTML & CSS Full Course */}
                           <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">Responsive Web Design Tutorial</h3>
-                            <p className="text-blue-200 mb-4">Learn how to create responsive websites that work well on all devices.</p>
-                            <YouTubeEmbed videoId="btVBCqCljxo" title="Responsive Web Design Tutorial" />
+                            <h3 className="text-xl font-bold mb-3">HTML & CSS Full Course</h3>
+                            <p className="text-blue-200 mb-4">Complete guide to HTML & CSS from beginner to professional.</p>
+                            <YouTubeEmbed videoId="G3e-cpL7ofc" title="HTML & CSS Full Course" />
                           </div>
                         </div>
                       </section>
@@ -3675,31 +3894,15 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                           {videoTutorials.filter(vid => shouldShow(vid, 'videos')).map(video => (
                              <div key={video.id} className="bg-indigo-800/30 rounded-xl overflow-hidden hover:bg-indigo-700/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-                                <a href={video.url} target="_blank" rel="noopener noreferrer" className="block">
-                                  <div className="relative">
-                                      <div className="aspect-video bg-indigo-950 flex items-center justify-center">
-                                        <img src={video.thumbnail} alt={`Video thumbnail: ${video.title}`} className="w-full h-full object-cover" />
-                                      </div>
-                                      <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                                        <div className="bg-blue-500/80 p-3 rounded-full">
-                                          <IconPlay size={40} className="text-white" />
-                                        </div>
-                                      </div>
-                                      <span className="absolute top-2 right-2 px-2 py-1 bg-indigo-800/80 text-white text-xs rounded-full flex items-center gap-1">
-                                        <IconClock3 size={12} />{video.duration}
-                                      </span>
-                                  </div>
-                                </a>
+                                <div className="relative">
+                                    <div className="aspect-video bg-indigo-950 flex items-center justify-center"><img src={video.thumbnail} alt="" aria-hidden="true" className="w-full h-full object-cover" /></div>
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/30"><div className="bg-blue-500/80 p-3 rounded-full"><IconPlay size={40} className="text-white" /></div></div>
+                                    <span className="absolute top-2 right-2 px-2 py-1 bg-indigo-800/80 text-white text-xs rounded-full flex items-center gap-1"><IconClock3 size={12} />{video.duration}</span>
+                                </div>
                                 <div className="p-4">
                                     <h3 className="text-lg font-bold mb-2">{video.title}</h3>
-                                    <div className="flex flex-wrap gap-2 mb-3">
-                                      {video.categories.map(cat => (
-                                        <span key={cat} className="bg-indigo-600/50 px-2 py-1 rounded-full text-xs">{cat}</span>
-                                      ))}
-                                    </div>
-                                    <a href={video.url} target="_blank" rel="noopener noreferrer" className="text-blue-300 hover:text-blue-200 flex items-center gap-1 text-sm">
-                                      Watch Tutorial <IconPlay size={16} />
-                                    </a>
+                                    <div className="flex flex-wrap gap-2 mb-3">{video.categories.map(cat => <span key={cat} className="bg-indigo-600/50 px-2 py-1 rounded-full text-xs">{cat}</span>)}</div>
+                                    <a href={video.url} className="text-blue-300 hover:text-blue-200 flex items-center gap-1 text-sm">Watch Tutorial <IconPlay size={16} /></a>
                                 </div>
                              </div>
                           ))}
@@ -3710,12 +3913,13 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                  {/* Code Snippets Section */}
                  {(activeCategory === 'all' || activeCategory === 'code') && filteredSnippets.length > 0 && (
                     <section className="mb-16">
-                        <div className="mb-6">
-                          <h2 className="text-2xl font-bold mb-3 flex items-center gap-2"><IconCode size={24} className="text-blue-400" /> Animation Code Snippets</h2>
-                          <p className="text-blue-200 mb-4">Explore the code behind some of our advanced animation effects. Click a card to view and copy the code.</p>
-
-                          <div className="w-full bg-indigo-800/50 p-3 rounded-xl overflow-hidden shadow-lg border border-indigo-700/30 mb-6">
-                            <img src="./assets/learningpage/learningpage5.png" alt="" className="w-full rounded-lg transform hover:scale-[1.02] transition-transform duration-300" />
+                        <div className="flex justify-between items-start mb-6">
+                          <div>
+                            <h2 className="text-2xl font-bold mb-3 flex items-center gap-2"><IconCode size={24} className="text-blue-400" /> Animation Code Snippets</h2>
+                            <p className="text-blue-200">Explore the code behind some of our advanced animation effects. Click a card to view and copy the code.</p>
+                          </div>
+                          <div className="bg-indigo-800/30 p-3 rounded-xl overflow-hidden hidden md:block w-48">
+                            <img src="./assets/learningpage/learningpage5.png" alt="Code snippets illustration" className="w-full h-auto object-contain rounded-lg" />
                           </div>
                         </div>
                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -3760,7 +3964,7 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                       <p className="text-blue-200 mb-6">Can't find what you're looking for? Our support team is here to help.</p>
                       <div className="flex flex-wrap justify-center gap-4">
                         <a href="tel:4143676211" className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"><IconPhone size={20} /> Call Support</a>
-                        <a href="mailto:agentlee@rapidwebdevelop.com" className="bg-indigo-700 hover:bg-indigo-600 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"><IconMessageSquare size={20} /> Email Us</a>
+                        <a href="mailto:support@rapidwebdev.com" className="bg-indigo-700 hover:bg-indigo-600 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"><IconMessageSquare size={20} /> Email Us</a>
                         <a href="#schedule-training" className="bg-purple-700 hover:bg-purple-600 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2"><IconUsers size={20} /> Schedule Training</a>
                       </div>
                     </div>
@@ -3804,7 +4008,7 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                          <h4 className="font-bold text-lg mb-4">Contact Us</h4>
                         <ul className="space-y-4 text-blue-200">
                              <li className="flex items-center gap-3"><IconClock3 size={20} className="text-blue-400"/><span >M-F, 8AM-5PM CST</span></li>
-                             <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>agentlee@rapidwebdevelop.com</span></li>
+                             <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>support@rapidwebdev.com</span></li>
                             <li className="flex items-center gap-3"><IconPhone size={20} className="text-blue-400"/><span>Phone: <span className="font-bold text-white">414-367-6211</span></span></li>
                         </ul>
                          <div className="mt-6 flex gap-4">
@@ -3813,9 +4017,7 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
                      </div>
                  </div>
                  <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-blue-800/50 text-center text-blue-300 text-sm">
-                    &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.<br/>
-                    Email: <a href="mailto:agentlee@rapidwebdevelop.com" className="hover:text-blue-200">agentlee@rapidwebdevelop.com</a><br/>
-                    Website managed by <a href="https://rapidwebdevelop.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-200">rapidwebdevelop.com</a>
+                    &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.
                  </div>
               </footer>
             </div>
@@ -5094,7 +5296,7 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
         };
 
         // --- Pricing Page Component ---
-        const PricingPage = ({ navigateTo, voiceSettings }) => {
+        const PricingPage = ({ navigateTo }) => {
           const [phoneHue, setPhoneHue] = useState(0);
           const [showAppointmentForm, setShowAppointmentForm] = useState(false);
           const [hoveredTier, setHoveredTier] = useState(null);
@@ -5358,41 +5560,21 @@ We hope you find this Learning Center valuable. Happy learning, and happy explor
             </svg>
           );
 
-          const pricingPageNarration = `Welcome to Rapid Web Development's transparent pricing page. You're here because you're ready to invest in a website that truly works for you – a powerful, custom site delivered fast, that you completely own, without the burden of endless monthly bills.
-
-You might be wondering how we deliver premium, custom quality, often in just 3 to 5 days, at prices typically 35% less than traditional agencies. It's simple: we combine the efficiency of cutting-edge AI with the irreplaceable expertise of our human designers and developers. This synergy allows us to build faster and smarter, passing those savings directly onto you.
-
-But the value goes far beyond the initial price. Remember, this is a one-time investment. Unlike platform builders that lock you into subscriptions, or agencies requiring retainers, your payment to Vibe Coding secures your website forever. Full code access, complete asset ownership, and the freedom to host anywhere – that's the radical ownership we promise.
-
-We offer three clear packages designed to fit common needs, ensuring you get exactly what you require without paying for features you don't.
-
-Our Essential Launch Package, starting around sixteen hundred dollars, is perfect for getting a professional, core presence online quickly – ideal for freelancers, startups, or event pages.
-Stepping up, the Professional Presence Package, our most popular choice, typically between two thousand and twenty-seven hundred dollars, offers more sections and customization, perfect for detailed small business sites or enhanced portfolios.
-And for those seeking maximum impact with unique features and advanced animations, our Enhanced Experience Package, starting around twenty-seven hundred dollars, delivers a truly bespoke digital experience.
-
-No matter which tier you choose, every Vibe Coding website includes our signature single-file architecture for speed and simplicity, responsive design, multi-language narration capabilities, custom QR codes, comprehensive documentation, personalized training, and our generous 8-month support guarantee.
-
-To ensure complete clarity, your one-time fee covers the full website development as outlined. The only additional costs are standard external ones you control, like your domain name registration and web hosting – which, thanks to our efficient architecture, is often free or very low cost. We guide you through setting those up.
-
-Seeing the value? Ready to take control? The next step is simple and risk-free: Schedule your free consultation.
-
-During this brief chat, we'll dive into your specific vision, answer every question you have, determine the perfect package for your needs, and provide you with a precise, fixed one-time quote tailored specifically for your project.
-
-There's absolutely no obligation. This call is simply the best way to get a clear, personalized plan for launching the powerful, custom website your business deserves – faster than you thought possible.
-
-Stop renting your online presence. Invest wisely. Own your vibe online. Click the 'Let's Talk' or 'Schedule Consultation' button now. We look forward to speaking with you!`;
+          const pricingPageNarration = `Welcome to our transparent pricing model at Vibe Coding.
+            We believe your website should be as unique as your business, with no hidden fees or endless monthly subscriptions.
+            Our pricing represents a one-time investment for your custom website development, giving you full ownership of your digital property forever.
+            We offer three distinct packages to match your specific needs and budget, all delivered within our rapid 3-5 day timeframe.
+            Our Essential Launch Package starts at $1,600, our Professional Presence Package starts at $2,000, and our Enhanced Experience Package starts at $2,700.
+            Each tier includes our core features like responsive design, our unique single-file architecture, comprehensive documentation, and our 8-month support guarantee.
+            A brief consultation is essential to understand your specific needs and provide you with a precise quote.
+            Schedule your free consultation today and take the first step toward owning your online presence completely.`;
 
           return (
-            <div className="min-h-screen bg-black text-white relative">
-              <NarratorComponent
-                narrationText={pricingPageNarration}
-                title="Vibe Coding Pricing Explained"
-                description="Hear about our transparent, one-time pricing and value."
-                voiceSettings={voiceSettings}
-              />
+            <div className="min-h-screen bg-black text-white relative pt-24"> {/* Added pt-24 to account for fixed header */}
+              <CommonHeader navigateTo={navigateTo} currentPage="pricing" />
 
               {/* Call Button */}
-              <div className="fixed right-4 top-4 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom">
+              <div className="fixed right-4 top-24 z-40 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom"> {/* Adjusted top position */}
                 <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}>
                   <IconPhone size={24} className="text-white animate-bounce-custom" />
                 </div>
@@ -5404,27 +5586,17 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
               {/* Appointment Form Modal */}
               {showAppointmentForm && <AppointmentForm onClose={() => setShowAppointmentForm(false)} />}
 
+              <NarratorComponent
+                narrationText={pricingPageNarration}
+                title="Pricing Information"
+                description="Hear about our pricing options"
+              />
+
               {/* Header */}
-              <header className="py-16 px-6 md:px-12 max-w-7xl mx-auto relative">
-                <div className="relative z-10 flex justify-between items-center mb-12">
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
-                      <img src="./RWDLOGO.png" className="w-12 h-12 animate-bounce-custom" alt="Rapid Web Development Logo" />
-                    </div>
-                    <h1 className="text-2xl md:text-4xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
-                  </div>
-                  <nav className="hidden md:flex gap-6 items-center">
-                    <button onClick={() => navigateTo('landing')} className="hover:text-blue-300 transition-colors">Home</button>
-                    <button onClick={() => navigateTo('landing', '#about')} className="hover:text-blue-300 transition-colors">About</button>
-                    <button onClick={() => navigateTo('landing', '#solutions')} className="hover:text-blue-300 transition-colors">Solutions</button>
-                    <button onClick={() => navigateTo('landing', '#portfolio')} className="hover:text-blue-300 transition-colors">Portfolio</button>
-                    <button onClick={() => navigateTo('landing', '#process')} className="hover:text-blue-300 transition-colors">Process</button>
-                    <button onClick={() => navigateTo('learning')} className="hover:text-blue-300 transition-colors">Learning</button>
-                    <button onClick={() => navigateTo('showcase')} className="hover:text-blue-300 transition-colors">Animations</button>
-                  </nav>
-                  <button onClick={() => setShowAppointmentForm(true)} className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-lg transition-colors">
-                    Get Started
-                  </button>
+              <div className="py-8 px-6 md:px-12 max-w-7xl mx-auto relative">
+                <div className="mb-6">
+                  <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">Pricing & Packages</h1>
+                  <p className="text-xl text-blue-200">Transparent pricing with complete ownership of your website</p>
                 </div>
 
                 <div className="text-center max-w-4xl mx-auto mb-12">
@@ -5448,7 +5620,7 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
                     />
                   </div>
                 </div>
-              </header>
+              </div>
 
               {/* Main Content */}
               <main className="pb-20">
@@ -5494,7 +5666,7 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
                           </div>
                         </div>
                         <div className="bg-indigo-800/30 p-4 rounded-xl overflow-hidden">
-                          <img src="./assets/mainpage/frontpage4.png" alt="Price transparency illustration" className="w-full h-auto object-contain rounded-lg" />
+                          <img src="./assets/mainpage/frontpage5.png" alt="Price transparency illustration" className="w-full h-auto object-cover rounded-lg" />
                         </div>
                       </div>
                     </div>
@@ -5554,12 +5726,24 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
                               <IconCalendarClock size={16} />
                               <span>Timeline: {tier.timeline}</span>
                             </div>
-                            <button
-                              onClick={() => setShowAppointmentForm(true)}
-                              className={`w-full bg-${tier.color}-600 hover:bg-${tier.color}-500 px-4 py-3 rounded-lg font-medium transition-colors btn-glow btn-shimmer`}
-                            >
-                              Let's Talk
-                            </button>
+                            <div className="flex flex-col sm:flex-row gap-2 w-full">
+                              <button
+                                onClick={() => setShowAppointmentForm(true)}
+                                className={`flex-1 bg-${tier.color}-600 hover:bg-${tier.color}-500 px-4 py-3 rounded-lg font-medium transition-colors btn-glow btn-shimmer`}
+                              >
+                                Let's Talk
+                              </button>
+                              <a
+                                href={tier.id === 1 ? "https://buy.stripe.com/28o9CIdiva4b8GkeUV" :
+                                      tier.id === 2 ? "https://buy.stripe.com/9AQ16cbanb8ff4I3ce" :
+                                      "https://buy.stripe.com/bIY2ag2DR9078Gk147"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 bg-green-600 hover:bg-green-500 px-4 py-3 rounded-lg font-medium transition-colors text-center btn-glow btn-shimmer"
+                              >
+                                Buy Now
+                              </a>
+                            </div>
                           </div>
                         </div>
                       ))}
@@ -5775,7 +5959,7 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
                       </div>
                       <div className="text-center">
                         <IconMessageSquare size={24} className="mx-auto mb-2 text-blue-400" />
-                        <p className="font-bold text-lg">agentlee@rapidwebdevelop.com</p>
+                        <p className="font-bold text-lg">contact@rapidwebdev.com</p>
                       </div>
                       <div className="text-center">
                         <IconClock3 size={24} className="mx-auto mb-2 text-blue-400" />
@@ -5822,7 +6006,7 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
                     <h4 className="font-bold text-lg mb-4">Contact Us</h4>
                     <ul className="space-y-4 text-blue-200">
                       <li className="flex items-center gap-3"><IconClock3 size={20} className="text-blue-400"/><span>M-F, 8AM-5PM CST</span></li>
-                      <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>agentlee@rapidwebdevelop.com</span></li>
+                      <li className="flex items-center gap-3"><IconMessageSquare size={20} className="text-blue-400"/><span>contact@rapidwebdev.com</span></li>
                       <li className="flex items-center gap-3"><IconPhone size={20} className="text-blue-400"/><span>Phone: <span className="font-bold text-white">414-367-6211</span></span></li>
                     </ul>
                     <div className="mt-6 flex gap-4">
@@ -5834,48 +6018,18 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
                   </div>
                 </div>
                 <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-blue-800/50 text-center text-blue-300 text-sm">
-                  &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.<br/>
-                  Email: <a href="mailto:agentlee@rapidwebdevelop.com" className="hover:text-blue-200">agentlee@rapidwebdevelop.com</a><br/>
-                  Website managed by <a href="https://rapidwebdevelop.com" target="_blank" rel="noopener noreferrer" className="hover:text-blue-200">rapidwebdevelop.com</a>
+                  &copy; {new Date().getFullYear()} Rapid Web Development. All rights reserved.
                 </div>
               </footer>
             </div>
           );
         };
 
+
+
         // --- App Wrapper (Handles Navigation) ---
         const AppWrapper = () => {
           const [currentPage, setCurrentPage] = useState('landing'); // 'landing', 'showcase', 'learning', 'pricing'
-
-          // Voice settings state (shared across all pages)
-          const [currentLanguage, setCurrentLanguage] = useState(() => {
-            // Initialize from localStorage if available
-            return localStorage.getItem('narrator-language') || 'en';
-          });
-
-          const [currentVoice, setCurrentVoice] = useState(() => {
-            // Initialize from localStorage if available
-            return localStorage.getItem('narrator-voice') || 'default';
-          });
-
-          // Update functions for voice settings
-          const updateLanguage = (langCode) => {
-            setCurrentLanguage(langCode);
-            localStorage.setItem('narrator-language', langCode);
-          };
-
-          const updateVoice = (voiceURI) => {
-            setCurrentVoice(voiceURI);
-            localStorage.setItem('narrator-voice', voiceURI);
-          };
-
-          // Create voice settings object to pass to components
-          const voiceSettings = {
-            currentLanguage,
-            currentVoice,
-            updateLanguage,
-            updateVoice
-          };
 
           const navigateTo = (page, hash = null) => {
             setCurrentPage(page);
@@ -5894,14 +6048,14 @@ Stop renting your online presence. Invest wisely. Own your vibe online. Click th
           const renderPage = () => {
             switch (currentPage) {
               case 'showcase':
-                return <AnimationShowcasePage navigateTo={navigateTo} voiceSettings={voiceSettings} />;
+                return <AnimationShowcasePage navigateTo={navigateTo} />;
               case 'learning':
-                return <LearningCenter navigateTo={navigateTo} voiceSettings={voiceSettings} />;
+                return <LearningCenter navigateTo={navigateTo} />;
               case 'pricing':
-                return <PricingPage navigateTo={navigateTo} voiceSettings={voiceSettings} />;
+                return <PricingPage navigateTo={navigateTo} />;
               case 'landing':
               default:
-                return <RapidWebDev navigateTo={navigateTo} voiceSettings={voiceSettings} />;
+                return <RapidWebDev navigateTo={navigateTo} />;
             }
           };
 
