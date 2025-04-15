@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="description" content="Rapid Web Development - Professional web development services with AI-powered solutions for businesses of all sizes.">
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -277,6 +277,28 @@
         @media (min-width: 1280px) {
             .container {
                 max-width: 1280px;
+            }
+        }
+
+        /* Fix for tablet navigation */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .tablet-scroll-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                padding-bottom: 5px;
+            }
+            .tablet-scroll-container::-webkit-scrollbar {
+                height: 4px;
+            }
+            .tablet-scroll-container::-webkit-scrollbar-thumb {
+                background-color: rgba(255, 255, 255, 0.3);
+                border-radius: 4px;
+            }
+            .tablet-nav-item {
+                white-space: nowrap;
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
             }
         }
 
@@ -1098,77 +1120,79 @@
                   <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
                 </div>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden md:flex gap-4 lg:gap-6 items-center">
-                  <button
-                    onClick={() => handleNavigate('landing')}
-                    className={`hover:text-blue-300 transition-colors ${currentPage === 'landing' ? 'text-blue-300 font-bold' : 'text-white'}`}
-                  >
-                    Home
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('landing', '#about')}
-                    className="hover:text-blue-300 transition-colors text-white"
-                  >
-                    About
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('landing', '#solutions')}
-                    className="hover:text-blue-300 transition-colors text-white"
-                  >
-                    Solutions
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('landing', '#portfolio')}
-                    className="hover:text-blue-300 transition-colors text-white"
-                  >
-                    Portfolio
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('landing', '#process')}
-                    className="hover:text-blue-300 transition-colors text-white"
-                  >
-                    Process
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('landing', '#testimonials')}
-                    className="hover:text-blue-300 transition-colors text-white"
-                  >
-                    Testimonials
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('pricing')}
-                    className={`hover:text-blue-300 transition-colors ${currentPage === 'pricing' ? 'text-blue-300 font-bold' : 'text-white'}`}
-                  >
-                    Pricing
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('learning')}
-                    className={`hover:text-blue-300 transition-colors ${currentPage === 'learning' ? 'text-blue-300 font-bold' : 'text-white'}`}
-                  >
-                    Learning
-                  </button>
-                  <button
-                    onClick={() => handleNavigate('showcase')}
-                    className={`hover:text-blue-300 transition-colors ${currentPage === 'showcase' ? 'text-blue-300 font-bold' : 'text-white'}`}
-                  >
-                    Animations
-                  </button>
+                {/* Desktop and Tablet Navigation */}
+                <nav className="hidden md:flex items-center">
+                  <div className="tablet-scroll-container flex gap-4 lg:gap-6 items-center">
+                    <button
+                      onClick={() => handleNavigate('landing')}
+                      className={`tablet-nav-item hover:text-blue-300 transition-colors ${currentPage === 'landing' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                    >
+                      Home
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('landing', '#about')}
+                      className="tablet-nav-item hover:text-blue-300 transition-colors text-white"
+                    >
+                      About
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('landing', '#solutions')}
+                      className="tablet-nav-item hover:text-blue-300 transition-colors text-white"
+                    >
+                      Solutions
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('landing', '#portfolio')}
+                      className="tablet-nav-item hover:text-blue-300 transition-colors text-white"
+                    >
+                      Portfolio
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('landing', '#process')}
+                      className="tablet-nav-item hover:text-blue-300 transition-colors text-white"
+                    >
+                      Process
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('landing', '#testimonials')}
+                      className="tablet-nav-item hover:text-blue-300 transition-colors text-white"
+                    >
+                      Testimonials
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('pricing')}
+                      className={`tablet-nav-item hover:text-blue-300 transition-colors ${currentPage === 'pricing' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                    >
+                      Pricing
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('learning')}
+                      className={`tablet-nav-item hover:text-blue-300 transition-colors ${currentPage === 'learning' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                    >
+                      Learning
+                    </button>
+                    <button
+                      onClick={() => handleNavigate('showcase')}
+                      className={`tablet-nav-item hover:text-blue-300 transition-colors ${currentPage === 'showcase' ? 'text-blue-300 font-bold' : 'text-white'}`}
+                    >
+                      Animations
+                    </button>
+                  </div>
                 </nav>
 
-                {/* Mobile Menu Button */}
+                {/* Mobile Menu Button - Visible on mobile and small tablets */}
                 <button
                   onClick={toggleMobileMenu}
-                  className="md:hidden bg-blue-600 hover:bg-blue-500 p-2 rounded-lg transition-colors"
+                  className="md:block lg:hidden bg-blue-600 hover:bg-blue-500 p-2 rounded-lg transition-colors"
                   aria-label="Toggle mobile menu"
                 >
                   <IconMenu size={24} className="text-white" />
                 </button>
               </div>
 
-              {/* Mobile Menu Dropdown */}
+              {/* Mobile Menu Dropdown - Visible on mobile and small tablets */}
               {mobileMenuOpen && (
-                <div className="md:hidden bg-indigo-900/95 backdrop-blur-md border-b border-indigo-700 shadow-lg">
+                <div className="lg:hidden bg-indigo-900/95 backdrop-blur-md border-b border-indigo-700 shadow-lg">
                   <nav className="container mx-auto px-4 py-4 flex flex-col gap-3">
                     <button
                       onClick={() => handleNavigate('landing')}
@@ -4108,10 +4132,10 @@ const TypewriterEffect = ({ isAnimating }) => {
 
               {/* Category Navigation - Fixed at top */}
               <div className="bg-indigo-900/90 border-y border-indigo-800 sticky top-0 z-40 backdrop-blur-md">
-                <div className="max-w-7xl mx-auto px-6 py-3 overflow-x-auto">
+                <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 overflow-x-auto tablet-scroll-container">
                   <div className="flex gap-2 min-w-max">
                     {categories.map(category => (
-                      <button key={category.id} onClick={() => selectCategory(category.id)} className={`px-4 py-2 rounded-lg text-sm flex items-center gap-2 whitespace-nowrap ${activeCategory === category.id ? 'bg-blue-600 text-white' : 'bg-indigo-800/50 text-blue-200 hover:bg-indigo-700'}`}>
+                      <button key={category.id} onClick={() => selectCategory(category.id)} className={`px-3 md:px-4 py-2 rounded-lg text-sm flex items-center gap-1 md:gap-2 whitespace-nowrap tablet-nav-item ${activeCategory === category.id ? 'bg-blue-600 text-white' : 'bg-indigo-800/50 text-blue-200 hover:bg-indigo-700'}`}>
                         {category.icon} <span>{category.name}</span> <span className="bg-indigo-500 px-2 py-0.5 rounded-full text-xs">{category.count}</span>
                       </button>
                     ))}
@@ -4122,13 +4146,13 @@ const TypewriterEffect = ({ isAnimating }) => {
               <div className="py-8 px-6 md:px-12 max-w-7xl mx-auto">
 
                 {/* Main Content with Side-by-Side Layout */}
-                <div className="relative mb-8 flex flex-col md:flex-row gap-8 items-center">
-                  <div className="w-full md:w-1/2 h-96 overflow-hidden rounded-xl relative">
+                <div className="relative mb-8 flex flex-col lg:flex-row gap-8 items-center">
+                  <div className="w-full lg:w-1/2 h-96 overflow-hidden rounded-xl relative">
                     <img src="assets/learningpage/learningcenterpage2.png" alt="Web development resources banner" className="w-full h-full object-cover" />
                     <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-60"></div>
                   </div>
-                  <div className="w-full md:w-1/2">
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight">Web Development <span className="text-blue-400">Resources & Tutorials</span></h2>
+                  <div className="w-full lg:w-1/2">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">Web Development <span className="text-blue-400">Resources & Tutorials</span></h2>
                     <p className="text-lg text-blue-100">Browse our comprehensive collection to learn how to maintain and optimize your website. From beginner guides to advanced techniques, we have everything you need to get the most out of your web presence.</p>
                   </div>
                 </div>
@@ -4142,20 +4166,20 @@ const TypewriterEffect = ({ isAnimating }) => {
                   {(activeCategory === 'all' || activeCategory === 'documents') && (
                       <section className="mb-16">
                         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><IconFileText size={24} className="text-blue-400" /> Documentation</h2>
-                        <div className="grid md:grid-cols-2 gap-8">
+                        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
                           {docsData.filter(doc => shouldShow(doc, 'documents')).map((doc, index) => (
-                             <div key={index} className="bg-indigo-800/30 rounded-xl overflow-hidden hover:bg-indigo-700/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 p-6">
-                                <div className="flex items-center gap-3 mb-4">
-                                  <IconFileText size={32} className="text-blue-400" />
-                                  <h3 className="text-xl font-bold">{doc.title}</h3>
+                             <div key={index} className="bg-indigo-800/30 rounded-xl overflow-hidden hover:bg-indigo-700/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 p-4 md:p-6">
+                                <div className="flex items-center gap-3 mb-3 md:mb-4">
+                                  <IconFileText size={28} className="text-blue-400 flex-shrink-0" />
+                                  <h3 className="text-lg md:text-xl font-bold">{doc.title}</h3>
                                 </div>
-                                <p className="text-blue-200 mb-6">{doc.description}</p>
+                                <p className="text-blue-200 mb-4 md:mb-6">{doc.description}</p>
                                 <a
                                   href={doc.path}
                                   download={doc.filename}
-                                  className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg transition-colors flex items-center gap-2 w-fit"
+                                  className="bg-blue-600 hover:bg-blue-500 px-3 py-2 rounded-lg transition-colors flex items-center gap-2 w-fit text-sm md:text-base"
                                 >
-                                  <IconDownload size={18} /> Download PDF
+                                  <IconDownload size={16} /> Download PDF
                                 </a>
                              </div>
                           ))}
@@ -4176,95 +4200,119 @@ const TypewriterEffect = ({ isAnimating }) => {
                         </div>
 
                         <h3 className="text-xl font-bold mt-8 mb-4">🎓 Full-Length Courses</h3>
-                        <div className="grid md:grid-cols-2 gap-10">
+                        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                           {/* Full-Length Courses - Row 1 */}
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">HTML, CSS, and JavaScript for Web Developers</h3>
-                            <p className="text-blue-200 mb-4">A comprehensive tutorial covering the fundamentals of web development.</p>
-                            <YouTubeEmbed videoId="mU6anWqZJcc" title="HTML, CSS, and JavaScript for Web Developers" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">HTML, CSS, and JavaScript for Web Developers</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">A comprehensive tutorial covering the fundamentals of web development.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="mU6anWqZJcc" title="HTML, CSS, and JavaScript for Web Developers" />
+                            </div>
                           </div>
 
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">Full Stack Web Development for Beginners</h3>
-                            <p className="text-blue-200 mb-4">Complete course on HTML, CSS, JavaScript, Node.js, and MongoDB.</p>
-                            <YouTubeEmbed videoId="ZxKM3DCV2kE" title="Full Stack Web Development for Beginners" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Full Stack Web Development for Beginners</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Complete course on HTML, CSS, JavaScript, Node.js, and MongoDB.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="ZxKM3DCV2kE" title="Full Stack Web Development for Beginners" />
+                            </div>
                           </div>
                         </div>
 
-                        <div className="mt-8 grid md:grid-cols-2 gap-10">
+                        <div className="mt-8 grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                           {/* Full-Length Courses - Row 2 */}
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">Web Development in 2023 – A Practical Guide</h3>
-                            <p className="text-blue-200 mb-4">Learn about the latest trends and technologies in web development.</p>
-                            <YouTubeEmbed videoId="4sosXZsdy-s" title="Web Development in 2023 – A Practical Guide" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Web Development in 2023 – A Practical Guide</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Learn about the latest trends and technologies in web development.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="4sosXZsdy-s" title="Web Development in 2023 – A Practical Guide" />
+                            </div>
                           </div>
 
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">HTML & CSS Full Course – Beginner to Pro</h3>
-                            <p className="text-blue-200 mb-4">Master HTML and CSS from the ground up with this comprehensive tutorial.</p>
-                            <YouTubeEmbed videoId="HGTJBPNC-Gw" title="HTML & CSS Full Course – Beginner to Pro" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">HTML & CSS Full Course – Beginner to Pro</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Master HTML and CSS from the ground up with this comprehensive tutorial.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="HGTJBPNC-Gw" title="HTML & CSS Full Course – Beginner to Pro" />
+                            </div>
                           </div>
                         </div>
 
-                        <div className="mt-8 grid md:grid-cols-2 gap-10">
+                        <div className="mt-8 grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                           {/* Full-Length Courses - Row 3 */}
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">JavaScript Programming Full Course</h3>
-                            <p className="text-blue-200 mb-4">Learn JavaScript programming with this in-depth tutorial for beginners.</p>
-                            <YouTubeEmbed videoId="jS4aFq5-91M" title="JavaScript Programming Full Course" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">JavaScript Programming Full Course</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Learn JavaScript programming with this in-depth tutorial for beginners.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="jS4aFq5-91M" title="JavaScript Programming Full Course" />
+                            </div>
                           </div>
 
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">JavaScript Crash Course for Beginners</h3>
-                            <p className="text-blue-200 mb-4">Quick introduction to JavaScript fundamentals for beginners.</p>
-                            <YouTubeEmbed videoId="hdI2bqOjy3c" title="JavaScript Crash Course for Beginners" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">JavaScript Crash Course for Beginners</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Quick introduction to JavaScript fundamentals for beginners.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="hdI2bqOjy3c" title="JavaScript Crash Course for Beginners" />
+                            </div>
                           </div>
                         </div>
 
                         <h3 className="text-xl font-bold mt-12 mb-4">📚 Playlists and Channels</h3>
-                        <div className="grid md:grid-cols-2 gap-10">
+                        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                           {/* Playlists */}
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">HTML, CSS & JavaScript Tutorials Playlist</h3>
-                            <p className="text-blue-200 mb-4">A collection of tutorials covering all aspects of web development.</p>
-                            <YouTubeEmbed videoId="PkZNo7MFNFg" title="HTML, CSS & JavaScript Tutorials Playlist" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">HTML, CSS & JavaScript Tutorials Playlist</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">A collection of tutorials covering all aspects of web development.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="PkZNo7MFNFg" title="HTML, CSS & JavaScript Tutorials Playlist" />
+                            </div>
                           </div>
 
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">Web Development Crash Courses</h3>
-                            <p className="text-blue-200 mb-4">Quick crash courses to get you up to speed with web development technologies.</p>
-                            <YouTubeEmbed videoId="UB1O30fR-EE" title="Web Development Crash Courses" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Web Development Crash Courses</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Quick crash courses to get you up to speed with web development technologies.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="UB1O30fR-EE" title="Web Development Crash Courses" />
+                            </div>
                           </div>
                         </div>
 
-                        <div className="mt-8 grid md:grid-cols-2 gap-10">
+                        <div className="mt-8 grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                           {/* More Playlists */}
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">Advanced JavaScript Concepts</h3>
-                            <p className="text-blue-200 mb-4">Deep dive into advanced JavaScript concepts and techniques.</p>
-                            <YouTubeEmbed videoId="8dWL3wF_OMw" title="Advanced JavaScript Concepts" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">Advanced JavaScript Concepts</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Deep dive into advanced JavaScript concepts and techniques.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="8dWL3wF_OMw" title="Advanced JavaScript Concepts" />
+                            </div>
                           </div>
 
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">freeCodeCamp Web Development Tutorials</h3>
-                            <p className="text-blue-200 mb-4">Learn web development with freeCodeCamp's comprehensive tutorials.</p>
-                            <YouTubeEmbed videoId="nu_pCVPKzTk" title="freeCodeCamp Web Development Tutorials" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">freeCodeCamp Web Development Tutorials</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Learn web development with freeCodeCamp's comprehensive tutorials.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="nu_pCVPKzTk" title="freeCodeCamp Web Development Tutorials" />
+                            </div>
                           </div>
                         </div>
 
                         <h3 className="text-xl font-bold mt-12 mb-4">⚡ Focused Tutorials</h3>
-                        <div className="grid md:grid-cols-2 gap-10">
+                        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
                           {/* Focused Tutorials */}
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">CSS Flexbox Tutorial</h3>
-                            <p className="text-blue-200 mb-4">Learn how to create flexible layouts with CSS Flexbox.</p>
-                            <YouTubeEmbed videoId="phWxA89Dy94" title="CSS Flexbox Tutorial" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">CSS Flexbox Tutorial</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Learn how to create flexible layouts with CSS Flexbox.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="phWxA89Dy94" title="CSS Flexbox Tutorial" />
+                            </div>
                           </div>
 
-                          <div className="bg-indigo-800/30 p-5 rounded-xl">
-                            <h3 className="text-xl font-bold mb-3">CSS Grid Tutorial</h3>
-                            <p className="text-blue-200 mb-4">Master CSS Grid for complex web layouts.</p>
-                            <YouTubeEmbed videoId="0xMQfnTU6oo" title="CSS Grid Tutorial" />
+                          <div className="bg-indigo-800/30 p-4 md:p-5 rounded-xl">
+                            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3">CSS Grid Tutorial</h3>
+                            <p className="text-blue-200 mb-3 md:mb-4 text-sm md:text-base">Master CSS Grid for complex web layouts.</p>
+                            <div className="aspect-video">
+                              <YouTubeEmbed videoId="0xMQfnTU6oo" title="CSS Grid Tutorial" />
+                            </div>
                           </div>
                         </div>
                       </section>
@@ -4281,7 +4329,7 @@ const TypewriterEffect = ({ isAnimating }) => {
                           </div>
                           <p className="text-lg text-blue-100 mb-6">Explore the code behind some of our advanced animation effects. Click a card to view and copy the code for use in your own projects.</p>
                         </div>
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                             {filteredSnippets.map(snippet => (
                                 <CodeSnippetCard
                                     key={snippet.id}
@@ -4300,15 +4348,15 @@ const TypewriterEffect = ({ isAnimating }) => {
                   {(activeCategory === 'all' || activeCategory === 'faq') && filteredFaq.length > 0 && (
                       <section className="mb-16">
                         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2"><IconMessageSquare size={24} className="text-blue-400" /> Frequently Asked Questions</h2>
-                        <div className="space-y-4">
+                        <div className="space-y-3 md:space-y-4">
                           {filteredFaq.map(item => (
                             <div key={item.id} className="bg-indigo-800/30 rounded-xl overflow-hidden">
-                              <button className="w-full p-5 text-left flex justify-between items-center hover:bg-indigo-700/40" onClick={() => toggleFaq(item.id)}>
-                                <h4 className="text-lg font-medium">{item.question}</h4>
-                                <IconChevronDown size={20} className={`transform transition-transform ${expandedFaq === item.id ? 'rotate-180' : ''}`} />
+                              <button className="w-full p-4 md:p-5 text-left flex justify-between items-center hover:bg-indigo-700/40" onClick={() => toggleFaq(item.id)}>
+                                <h4 className="text-base md:text-lg font-medium pr-4">{item.question}</h4>
+                                <IconChevronDown size={20} className={`transform transition-transform flex-shrink-0 ${expandedFaq === item.id ? 'rotate-180' : ''}`} />
                               </button>
-                              <div className={`px-5 pb-5 transition-all duration-300 ease-in-out ${expandedFaq === item.id ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                                <p className="text-blue-200 pt-2 border-t border-indigo-700/50">{item.answer}</p>
+                              <div className={`px-4 md:px-5 pb-4 md:pb-5 transition-all duration-300 ease-in-out ${expandedFaq === item.id ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                                <p className="text-blue-200 text-sm md:text-base pt-2 border-t border-indigo-700/50">{item.answer}</p>
                               </div>
                             </div>
                           ))}
@@ -4317,10 +4365,10 @@ const TypewriterEffect = ({ isAnimating }) => {
                    )}
 
                   {/* Need Help Section */}
-                  <section className="mt-16 bg-black rounded-xl p-8">
+                  <section className="mt-16 bg-black rounded-xl p-6 md:p-8">
                     <div className="text-center max-w-3xl mx-auto">
-                      <h2 className="text-2xl font-bold mb-4">Need Additional Help?</h2>
-                      <p className="text-blue-200 mb-6">Can't find what you're looking for? Our support team is here to help.</p>
+                      <h2 className="text-xl md:text-2xl font-bold mb-3 md:mb-4">Need Additional Help?</h2>
+                      <p className="text-blue-200 mb-5 md:mb-6 text-sm md:text-base">Can't find what you're looking for? Our support team is here to help.</p>
                       <div className="flex flex-wrap justify-center gap-4">
                         <a href="tel:4143676211" onClick={(e) => {
                           if(confirm('Calling Rapid Web Development business line. Our business hours are Monday-Friday, 8AM-5PM CST. Continue with call?')) {
@@ -4329,13 +4377,13 @@ const TypewriterEffect = ({ isAnimating }) => {
                             e.preventDefault();
                             return false;
                           }
-                        }} className="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2 btn-glow"><IconPhone size={20} /> Contact Support</a>
-                        <a href="mailto:contact@rapidwebdevelop.com" className="bg-indigo-700 hover:bg-indigo-600 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2 btn-glow"><IconMessageSquare size={20} /> Email Us</a>
+                        }} className="bg-blue-600 hover:bg-blue-500 px-4 md:px-6 py-2 md:py-3 rounded-lg transition-colors inline-flex items-center gap-2 btn-glow text-sm md:text-base"><IconPhone size={18} /> Contact Support</a>
+                        <a href="mailto:contact@rapidwebdevelop.com" className="bg-indigo-700 hover:bg-indigo-600 px-4 md:px-6 py-2 md:py-3 rounded-lg transition-colors inline-flex items-center gap-2 btn-glow text-sm md:text-base"><IconMessageSquare size={18} /> Email Us</a>
                         <button
                           onClick={() => setShowAppointmentForm(true)}
-                          className="bg-purple-700 hover:bg-purple-600 px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2 btn-glow"
+                          className="bg-purple-700 hover:bg-purple-600 px-4 md:px-6 py-2 md:py-3 rounded-lg transition-colors inline-flex items-center gap-2 btn-glow text-sm md:text-base"
                         >
-                          <IconUsers size={20} /> Schedule Consultation
+                          <IconUsers size={18} /> Schedule Consultation
                         </button>
                       </div>
                     </div>
