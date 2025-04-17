@@ -21,6 +21,20 @@
     <link rel="preconnect" href="https://i.ytimg.com">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          screens: {
+            'xs': '360px',
+            'sm': '640px',
+            'md': '768px',
+            'lg': '1024px',
+            'xl': '1280px',
+            '2xl': '1536px',
+          }
+        }
+      }
+    </script>
     <!-- React & ReactDOM CDN - Production versions -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
@@ -299,6 +313,51 @@
                 white-space: nowrap;
                 padding-left: 0.75rem;
                 padding-right: 0.75rem;
+            }
+        }
+
+        /* Fix for foldable devices and extra narrow screens */
+        @media (max-width: 360px) {
+            /* Reduce padding and margins */
+            .container {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            /* Smaller text for headings */
+            h1 {
+                font-size: 1.25rem !important;
+                line-height: 1.2 !important;
+            }
+            h2 {
+                font-size: 1.5rem !important;
+                line-height: 1.3 !important;
+            }
+            h3 {
+                font-size: 1.25rem !important;
+            }
+
+            /* Adjust button sizes */
+            button, a.btn, .btn {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+                font-size: 0.875rem !important;
+            }
+
+            /* Reduce icon sizes */
+            svg {
+                transform: scale(0.85);
+            }
+
+            /* Adjust grid layouts */
+            .grid {
+                gap: 0.75rem !important;
+            }
+
+            /* Ensure images don't overflow */
+            img {
+                max-width: 100%;
+                height: auto;
             }
         }
 
@@ -1114,10 +1173,10 @@
 
           return (
             <div className="fixed top-0 left-0 w-full bg-indigo-950/80 backdrop-blur-md border-b border-indigo-800/50 shadow-lg z-50">
-              <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4 flex justify-between items-center">
-                <div className="flex items-center gap-2 sm:gap-4">
-                  <img src="./RWDLOGO.png" className="w-12 h-12 sm:w-16 sm:h-16" alt="Rapid Web Development Logo" loading="eager" decoding="async" />
-                  <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
+              <div className="container mx-auto px-2 xs:px-4 sm:px-6 py-2 xs:py-3 sm:py-4 flex justify-between items-center">
+                <div className="flex items-center gap-1 xs:gap-2 sm:gap-4">
+                  <img src="./RWDLOGO.png" className="w-10 h-10 xs:w-12 xs:h-12 sm:w-16 sm:h-16" alt="Rapid Web Development Logo" loading="eager" decoding="async" />
+                  <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
                 </div>
 
                 {/* Desktop and Tablet Navigation */}
@@ -1183,68 +1242,68 @@
                 {/* Mobile Menu Button - Visible on mobile and small tablets */}
                 <button
                   onClick={toggleMobileMenu}
-                  className="md:block lg:hidden bg-blue-600 hover:bg-blue-500 p-2 rounded-lg transition-colors"
+                  className="md:block lg:hidden bg-blue-600 hover:bg-blue-500 p-1.5 xs:p-2 rounded-lg transition-colors"
                   aria-label="Toggle mobile menu"
                 >
-                  <IconMenu size={24} className="text-white" />
+                  <IconMenu size={20} className="text-white" />
                 </button>
               </div>
 
               {/* Mobile Menu Dropdown - Visible on mobile and small tablets */}
               {mobileMenuOpen && (
                 <div className="lg:hidden bg-indigo-900/95 backdrop-blur-md border-b border-indigo-700 shadow-lg">
-                  <nav className="container mx-auto px-4 py-4 flex flex-col gap-3">
+                  <nav className="container mx-auto px-2 xs:px-4 py-3 xs:py-4 flex flex-col gap-2 xs:gap-3">
                     <button
                       onClick={() => handleNavigate('landing')}
-                      className={`text-left py-2 px-3 rounded-lg ${currentPage === 'landing' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
+                      className={`text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base ${currentPage === 'landing' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
                     >
                       Home
                     </button>
                     <button
                       onClick={() => handleNavigate('landing', '#about')}
-                      className="text-left py-2 px-3 rounded-lg text-white hover:bg-indigo-800/70"
+                      className="text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base text-white hover:bg-indigo-800/70"
                     >
                       About
                     </button>
                     <button
                       onClick={() => handleNavigate('landing', '#solutions')}
-                      className="text-left py-2 px-3 rounded-lg text-white hover:bg-indigo-800/70"
+                      className="text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base text-white hover:bg-indigo-800/70"
                     >
                       Solutions
                     </button>
                     <button
                       onClick={() => handleNavigate('landing', '#portfolio')}
-                      className="text-left py-2 px-3 rounded-lg text-white hover:bg-indigo-800/70"
+                      className="text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base text-white hover:bg-indigo-800/70"
                     >
                       Portfolio
                     </button>
                     <button
                       onClick={() => handleNavigate('landing', '#process')}
-                      className="text-left py-2 px-3 rounded-lg text-white hover:bg-indigo-800/70"
+                      className="text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base text-white hover:bg-indigo-800/70"
                     >
                       Process
                     </button>
                     <button
                       onClick={() => handleNavigate('landing', '#testimonials')}
-                      className="text-left py-2 px-3 rounded-lg text-white hover:bg-indigo-800/70"
+                      className="text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base text-white hover:bg-indigo-800/70"
                     >
                       Testimonials
                     </button>
                     <button
                       onClick={() => handleNavigate('pricing')}
-                      className={`text-left py-2 px-3 rounded-lg ${currentPage === 'pricing' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
+                      className={`text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base ${currentPage === 'pricing' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
                     >
                       Pricing
                     </button>
                     <button
                       onClick={() => handleNavigate('learning')}
-                      className={`text-left py-2 px-3 rounded-lg ${currentPage === 'learning' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
+                      className={`text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base ${currentPage === 'learning' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
                     >
                       Learning
                     </button>
                     <button
                       onClick={() => handleNavigate('showcase')}
-                      className={`text-left py-2 px-3 rounded-lg ${currentPage === 'showcase' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
+                      className={`text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base ${currentPage === 'showcase' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
                     >
                       Animations
                     </button>
@@ -1471,17 +1530,17 @@
           const voicesForCurrentLanguage = getVoicesForLanguage(currentLanguage);
 
           return (
-            <div className="fixed left-4 top-20 z-50">
+            <div className="fixed left-2 xs:left-4 top-20 z-50">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg flex items-center justify-center"
+                className="bg-blue-600 hover:bg-blue-700 text-white p-2 xs:p-3 rounded-full shadow-lg flex items-center justify-center"
                 style={{ animation: !isOpen ? 'pulse 2s infinite' : 'none' }}
               >
-                <IconVolume2 size={24} />
+                <IconVolume2 size={20} />
               </button>
 
               {isOpen && (
-                <div className="absolute left-0 top-14 bg-indigo-900 border border-indigo-700 rounded-lg shadow-xl p-4 w-72">
+                <div className="absolute left-0 top-12 xs:top-14 bg-indigo-900 border border-indigo-700 rounded-lg shadow-xl p-3 xs:p-4 w-64 xs:w-72">
                   <div className="text-white mb-4">
                     <h3 className="text-lg font-bold">{title}</h3>
                     <p className="text-sm text-blue-200">{description}</p>
@@ -1787,29 +1846,29 @@
                     return false;
                   }
                 }}
-                className="fixed right-4 top-24 z-40 flex items-center gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-3 rounded-full shadow-lg animate-pulse-custom hover:bg-white/20 transition-all duration-300 btn-glow cursor-pointer"> {/* Adjusted top position */}
-                <div className="bg-blue-500 p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}>
-                  <IconPhone size={24} className="text-white animate-bounce-custom" />
+                className="fixed right-2 xs:right-4 top-20 xs:top-24 z-40 flex items-center gap-1 xs:gap-2 bg-white/10 backdrop-blur-md border border-white/20 p-2 xs:p-3 rounded-full shadow-lg animate-pulse-custom hover:bg-white/20 transition-all duration-300 btn-glow cursor-pointer">
+                <div className="bg-blue-500 p-1.5 xs:p-2 rounded-full" style={{ backgroundColor: `hsl(${phoneHue}, 100%, 50%)` }}>
+                  <IconPhone size={20} className="text-white animate-bounce-custom" />
                 </div>
-                <span className="font-bold text-xl pr-2" style={{ color: `hsl(${phoneHue}, 100%, 80%)` }}>
+                <span className="font-bold text-base xs:text-xl pr-1 xs:pr-2 hidden xs:inline" style={{ color: `hsl(${phoneHue}, 100%, 80%)` }}>
                   414-367-6211
                 </span>
               </a>
 
-              <div className="py-8 px-6 md:px-12 max-w-7xl mx-auto relative">
+              <div className="py-6 xs:py-8 px-3 xs:px-6 md:px-12 max-w-7xl mx-auto relative">
 
-                <div className="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+                <div className="relative z-10 grid md:grid-cols-2 gap-6 xs:gap-8 md:gap-12 items-center">
                   <div>
-                    <h2 className="text-3xl md:text-5xl font-bold mb-6 leading-tight text-white/80">
+                    <h2 className="text-2xl xs:text-3xl md:text-5xl font-bold mb-4 xs:mb-6 leading-tight text-white/80">
                       Professional Websites Delivered in <span className="text-blue-400">3-5 Days</span>—Fully Owned by You
                     </h2>
-                    <p className="text-lg text-blue-100 mb-8">
+                    <p className="text-base xs:text-lg text-blue-100 mb-6 xs:mb-8">
                       Transform your online presence overnight with our innovative, streamlined approach—saving you valuable time and money while ensuring you maintain full control.
                     </p>
-                    <div className="mt-8">
+                    <div className="mt-6 xs:mt-8">
                       <button
                         onClick={() => setShowAppointmentForm(true)}
-                        className="bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors text-lg w-full sm:w-auto btn-glow btn-shimmer btn-shake"
+                        className="bg-blue-500 hover:bg-blue-600 px-4 xs:px-6 md:px-8 py-3 xs:py-4 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors text-base xs:text-lg w-full sm:w-auto btn-glow btn-shimmer btn-shake"
                       >
                         Let's Talk
                       </button>
@@ -1829,12 +1888,12 @@
                     <p className="text-lg text-blue-100 max-w-3xl mx-auto">Our single-file architecture delivers exceptional results for these specific business types:</p>
                   </div>
 
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
-                    <div className="bg-indigo-800/40 hover:bg-indigo-700/60 p-4 rounded-xl text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
-                      <div className="bg-blue-500/30 p-3 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
-                        <IconBriefcase size={28} className="text-blue-300" />
+                  <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-5 gap-3 xs:gap-4 mb-6 xs:mb-8">
+                    <div className="bg-indigo-800/40 hover:bg-indigo-700/60 p-3 xs:p-4 rounded-xl text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
+                      <div className="bg-blue-500/30 p-2 xs:p-3 rounded-full w-12 h-12 xs:w-16 xs:h-16 flex items-center justify-center mx-auto mb-2 xs:mb-3">
+                        <IconBriefcase size={24} className="text-blue-300" />
                       </div>
-                      <h4 className="font-bold text-blue-200">Freelancer Portfolios</h4>
+                      <h4 className="font-bold text-blue-200 text-sm xs:text-base">Freelancer Portfolios</h4>
                     </div>
                     <div className="bg-indigo-800/40 hover:bg-indigo-700/60 p-4 rounded-xl text-center transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg">
                       <div className="bg-blue-500/30 p-3 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
