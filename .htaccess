@@ -1,0 +1,121 @@
+# Enable compression
+<IfModule mod_deflate.c>
+  # Enable compression for the following file types
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml
+
+  # Exclude old browsers that don't support compression
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+# Set browser caching
+<IfModule mod_expires.c>
+  ExpiresActive On
+  
+  # Default expiration: 1 month after request
+  ExpiresDefault "access plus 1 month"
+  
+  # CSS and JS: 1 year
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  
+  # Images: 1 year
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+  
+  # Fonts: 1 year
+  ExpiresByType font/ttf "access plus 1 year"
+  ExpiresByType font/otf "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  
+  # Audio: 1 month
+  ExpiresByType audio/mp3 "access plus 1 month"
+  
+  # HTML: 1 day
+  ExpiresByType text/html "access plus 1 day"
+</IfModule>
+
+# Set security headers
+<IfModule mod_headers.c>
+  # HSTS (HTTP Strict Transport Security)
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+  
+  # X-Content-Type-Options
+  Header always set X-Content-Type-Options "nosniff"
+  
+  # X-Frame-Options
+  Header always set X-Frame-Options "SAMEORIGIN"
+  
+  # X-XSS-Protection
+  Header always set X-XSS-Protection "1; mode=block"
+  
+  # Referrer-Policy
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  
+  # Content-Security-Policy
+  Header always set Content-Security-Policy "default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https: wss:; img-src 'self' https: data: blob:; media-src 'self' https: data: blob:; font-src 'self' https: data:; frame-src 'self' https:;"
+</IfModule>
+
+# Enable Brotli compression if available
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml text/css text/javascript application/javascript application/json application/xml
+</IfModule>
+
+# Serve pre-compressed files if they exist
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  
+  # Check if browser accepts gzip
+  RewriteCond %{HTTP:Accept-Encoding} gzip
+  RewriteCond %{REQUEST_FILENAME}.gz -f
+  RewriteRule ^(.*)$ $1.gz [L]
+  
+  # Check if browser accepts brotli
+  RewriteCond %{HTTP:Accept-Encoding} br
+  RewriteCond %{REQUEST_FILENAME}.br -f
+  RewriteRule ^(.*)$ $1.br [L]
+  
+  # Set proper content encoding
+  <FilesMatch "\.js\.gz$">
+    ForceType application/javascript
+    Header set Content-Encoding gzip
+  </FilesMatch>
+  <FilesMatch "\.css\.gz$">
+    ForceType text/css
+    Header set Content-Encoding gzip
+  </FilesMatch>
+  <FilesMatch "\.html\.gz$">
+    ForceType text/html
+    Header set Content-Encoding gzip
+  </FilesMatch>
+  <FilesMatch "\.js\.br$">
+    ForceType application/javascript
+    Header set Content-Encoding br
+  </FilesMatch>
+  <FilesMatch "\.css\.br$">
+    ForceType text/css
+    Header set Content-Encoding br
+  </FilesMatch>
+  <FilesMatch "\.html\.br$">
+    ForceType text/html
+    Header set Content-Encoding br
+  </FilesMatch>
+</IfModule>
+
+# Redirect to HTTPS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Error handling
+ErrorDocument 404 /index.html
+ErrorDocument 500 /index.html
