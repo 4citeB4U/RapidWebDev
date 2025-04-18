@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Rapid Web Development - Professional web development services with AI-powered solutions for businesses of all sizes.">
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -39,12 +39,13 @@
       tailwind.config = {
         theme: {
           screens: {
-            'xs': '360px',
-            'sm': '640px',
-            'md': '768px',
-            'lg': '1024px',
+            /* Disable responsive breakpoints to maintain fixed layout */
+            'xs': '1280px',
+            'sm': '1280px',
+            'md': '1280px',
+            'lg': '1280px',
             'xl': '1280px',
-            '2xl': '1536px',
+            '2xl': '1280px',
           }
         }
       }
@@ -272,107 +273,74 @@
             }
         }
 
-        /* Improve responsive layout */
+        /* Fixed-width layout for all devices */
         .container {
-            width: 100%;
-            max-width: 100%;
-            padding-left: 1rem;
-            padding-right: 1rem;
+            width: 1280px;
+            max-width: 1280px;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
             margin-left: auto;
             margin-right: auto;
         }
 
-        @media (min-width: 640px) {
-            .container {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                padding-left: 2rem;
-                padding-right: 2rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .container {
-                max-width: 1024px;
-            }
-        }
-
-        @media (min-width: 1280px) {
-            .container {
-                max-width: 1280px;
-            }
-        }
-
-        /* Fix for tablet navigation */
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .tablet-scroll-container {
+        /* Disable responsive behavior */
+        @media (max-width: 1280px) {
+            body {
+                min-width: 1280px;
                 overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: thin;
-                padding-bottom: 5px;
-            }
-            .tablet-scroll-container::-webkit-scrollbar {
-                height: 4px;
-            }
-            .tablet-scroll-container::-webkit-scrollbar-thumb {
-                background-color: rgba(255, 255, 255, 0.3);
-                border-radius: 4px;
-            }
-            .tablet-nav-item {
-                white-space: nowrap;
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
             }
         }
 
-        /* Fix for foldable devices and extra narrow screens */
-        @media (max-width: 360px) {
-            /* Reduce padding and margins */
-            .container {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
 
-            /* Smaller text for headings */
-            h1 {
-                font-size: 1.25rem !important;
-                line-height: 1.2 !important;
-            }
-            h2 {
-                font-size: 1.5rem !important;
-                line-height: 1.3 !important;
-            }
-            h3 {
-                font-size: 1.25rem !important;
-            }
-
-            /* Adjust button sizes */
-            button, a.btn, .btn {
-                padding-left: 0.75rem !important;
-                padding-right: 0.75rem !important;
-                font-size: 0.875rem !important;
-            }
-
-            /* Reduce icon sizes */
-            svg {
-                transform: scale(0.85);
-            }
-
-            /* Adjust grid layouts */
-            .grid {
-                gap: 0.75rem !important;
-            }
-
-            /* Ensure images don't overflow */
-            img {
-                max-width: 100%;
-                height: auto;
-            }
+        /* Fixed-width layout for all devices */
+        .tablet-scroll-container {
+            overflow-x: visible;
+            white-space: nowrap;
+            width: 1280px;
+        }
+        
+        .tablet-nav-item {
+            white-space: nowrap;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+        }
+        
+        /* Consistent text sizing for all devices */
+        h1 {
+            font-size: 2rem;
+            line-height: 1.2;
+        }
+        
+        h2 {
+            font-size: 1.75rem;
+            line-height: 1.3;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+        }
+        
+        /* Consistent button sizing */
+        button, a.btn, .btn {
+            padding-left: 1rem;
+            padding-right: 1rem;
+            font-size: 1rem;
+        }
+        
+        /* Consistent icon sizing */
+        svg {
+            transform: scale(1);
+        }
+        
+        /* Consistent grid layouts */
+        .grid {
+            gap: 1rem;
+        }
+        
+        /* Ensure images maintain consistent sizing */
+        img {
+            max-width: 100%;
+            height: auto;
         }
 
         /* Fix image scaling and optimize loading */
@@ -448,16 +416,14 @@
             will-change: transform, box-shadow;
         }
 
-        /* Different animation based on screen size */
-        @media (min-width: 768px) {
-            .btn-glow {
-                box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
-                animation: glow-pulse 2s infinite, float 3s ease-in-out infinite;
-            }
-            .btn-glow:hover {
-                box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
-                transform: translateY(-2px) translateZ(0);
-            }
+        /* Consistent animation for all devices */
+        .btn-glow {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+            animation: glow-pulse 2s infinite, float 3s ease-in-out infinite;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+            transform: translateY(-2px) translateZ(0);
         }
 
         /* Mobile-friendly hover states */
@@ -496,20 +462,15 @@
             will-change: transform;
         }
 
-        /* Apply shimmer effect on mobile without hover */
-        @media (max-width: 767px) {
-            .btn-shimmer::after {
-                opacity: 0.5;
-                animation: shimmer 2s infinite;
-            }
+        /* Consistent shimmer effect for all devices */
+        .btn-shimmer::after {
+            opacity: 0.5;
+            animation: shimmer 2s infinite;
         }
-
-        /* Apply shimmer on hover for desktop */
-        @media (hover: hover) {
-            .btn-shimmer:hover::after {
-                opacity: 1;
-                animation: shimmer 1.5s infinite;
-            }
+        
+        .btn-shimmer:hover::after {
+            opacity: 1;
+            animation: shimmer 1.5s infinite;
         }
 
         @keyframes shake {
@@ -765,7 +726,7 @@
           <!-- Contract body inserted here dynamically -->
         </div>
         <div class="flex items-center gap-3 mb-4">
-          <input type="checkbox" id="accept-check" class="form-checkbox h-5 w-5 text-blue-600 border-blue-400" />
+          <input type="checkbox" id="accept-check" class="form-checkbox h-6 w-6 text-blue-600 border-2 border-blue-400 rounded shadow-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" />
           <label for="accept-check" class="text-blue-200">I have read and agree to the Terms of Use.</label>
         </div>
         <button id="accept-btn" class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-lg shadow-lg transition-colors btn-glow">I Agree</button>
@@ -1186,16 +1147,16 @@
           };
 
           return (
-            <div className="fixed top-0 left-0 w-full bg-indigo-950/80 backdrop-blur-md border-b border-indigo-800/50 shadow-lg z-50">
-              <div className="container mx-auto px-2 xs:px-4 sm:px-6 py-2 xs:py-3 sm:py-4 flex justify-between items-center">
-                <div className="flex items-center gap-1 xs:gap-2 sm:gap-4">
-                  <img src="./RWDLOGO.png" className="w-10 h-10 xs:w-12 xs:h-12 sm:w-16 sm:h-16" alt="Rapid Web Development Logo" loading="eager" decoding="async" />
-                  <h1 className="text-lg xs:text-xl sm:text-2xl md:text-3xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
+            <div className="fixed top-0 left-0 w-[1280px] bg-indigo-950/80 backdrop-blur-md border-b border-indigo-800/50 shadow-lg z-50">
+              <div className="container mx-auto px-6 py-4 flex justify-between items-center" style={{width: '1280px'}}>
+                <div className="flex items-center gap-4">
+                  <img src="./RWDLOGO.png" className="w-16 h-16" alt="Rapid Web Development Logo" loading="eager" decoding="async" />
+                  <h1 className="text-2xl font-bold text-white">RAPID WEB<br/>DEVELOPMENT</h1>
                 </div>
 
-                {/* Desktop and Tablet Navigation */}
-                <nav className="hidden md:flex items-center">
-                  <div className="tablet-scroll-container flex gap-4 lg:gap-6 items-center">
+                {/* Consistent Navigation for All Devices */}
+                <nav className="flex items-center">
+                  <div className="tablet-scroll-container flex gap-6 items-center">
                     <button
                       onClick={() => handleNavigate('landing')}
                       className={`tablet-nav-item hover:text-blue-300 transition-colors ${currentPage === 'landing' ? 'text-blue-300 font-bold' : 'text-white'}`}
@@ -1253,23 +1214,23 @@
                   </div>
                 </nav>
 
-                {/* Mobile Menu Button - Visible on mobile and small tablets */}
+                {/* Mobile Menu Button - Hidden for consistent layout */}
                 <button
                   onClick={toggleMobileMenu}
-                  className="md:block lg:hidden bg-blue-600 hover:bg-blue-500 p-1.5 xs:p-2 rounded-lg transition-colors"
+                  className="hidden bg-blue-600 hover:bg-blue-500 p-2 rounded-lg transition-colors"
                   aria-label="Toggle mobile menu"
                 >
                   <IconMenu size={20} className="text-white" />
                 </button>
               </div>
 
-              {/* Mobile Menu Dropdown - Visible on mobile and small tablets */}
-              {mobileMenuOpen && (
-                <div className="lg:hidden bg-indigo-900/95 backdrop-blur-md border-b border-indigo-700 shadow-lg">
-                  <nav className="container mx-auto px-2 xs:px-4 py-3 xs:py-4 flex flex-col gap-2 xs:gap-3">
+              {/* Mobile Menu Dropdown - Completely removed for fixed-width layout */}
+              {false && (
+                <div className="hidden">
+                  <nav className="container mx-auto px-6 py-4 flex flex-col gap-3">
                     <button
                       onClick={() => handleNavigate('landing')}
-                      className={`text-left py-1.5 xs:py-2 px-2 xs:px-3 rounded-lg text-sm xs:text-base ${currentPage === 'landing' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
+                      className={`text-left py-2 px-3 rounded-lg text-base ${currentPage === 'landing' ? 'bg-blue-600 text-white' : 'text-white hover:bg-indigo-800/70'}`}
                     >
                       Home
                     </button>
@@ -1339,7 +1300,7 @@
           };
 
           return (
-            <footer className="py-8 sm:py-12 px-4 sm:px-6 bg-blue-950 relative">
+            <footer className="py-12 px-6 bg-blue-950 relative" style={{width: '1280px', margin: '0 auto'}}>
               {/* Back to Top Button */}
               <div className="flex justify-center mb-6 sm:mb-8">
                 <button
@@ -1354,7 +1315,7 @@
                 </button>
               </div>
 
-              <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="container mx-auto grid grid-cols-4 gap-8" style={{width: '1280px'}}>
                 <div>
                   <div className="flex items-center gap-3 mb-4">
                     <img src="./RWDLOGO.png" className="w-8 h-8 sm:w-10 sm:h-10" alt="Rapid Web Development Logo" loading="lazy" decoding="async" />
@@ -6864,60 +6825,79 @@ const TypewriterEffect = ({ isAnimating }) => {
             setExpandedFeature(expandedFeature === id ? null : id);
           };
 
-          // Pricing Tiers
-          const pricingTiers = [
-            {
-              id: 1,
-              name: "Essential Launch Package",
-              price: "$1,600 - $2,000",
-              description: "Perfect for simple brochure sites, landing pages, basic portfolios needing a fast, professional online start.",
-              features: [
-                "Core Single-File Architecture & index.html delivery",
-                "Up to 3-5 standard sections",
-                "Responsive design for all devices",
-                "Choice from our foundational animation set",
-                "Narrator feature integration",
-                "Custom QR Code",
-                "Documentation & Training Session",
-                "8-Month Support (incl. 2 months free updates)"
-              ],
-              timeline: "3-5 Days",
-              recommended: false,
-              color: "blue"
-            },
-            {
-              id: 2,
-              name: "Professional Presence Package",
-              price: "$2,000 - $2,700",
-              description: "More detailed small business sites, enhanced portfolios, sites needing slightly more content structure or visual flair.",
-              features: [
-                "Everything in Essential Launch Package, PLUS:",
-                "Up to 5-7 standard sections",
-                "More intricate layout options or gallery/portfolio integration",
-                "Wider selection or more customization from our animation library",
-                "More involved design refinement based on consultation"
-              ],
-              timeline: "3-5 Days",
-              recommended: true,
-              color: "indigo"
-            },
-            {
-              id: 3,
-              name: "Enhanced Experience Package",
-              price: "$2,700 - $3,300+",
-              description: "Clients seeking more unique interactions, advanced animations, or a slightly larger site structure within the static framework.",
-              features: [
-                "Everything in Professional Presence Package, PLUS:",
-                "Additional sections/content structures as needed",
-                "Implementation of more complex or custom-tailored animations",
-                "Integration of slightly more sophisticated elements",
-                "Greater depth of design customization and unique feature implementation"
-              ],
-              timeline: "5+ Days",
-              recommended: false,
-              color: "purple"
-            }
-          ];
+          // Find this section in your HTML file and replace it with:
+const pricingTiers = [
+{
+id: 1,
+name: "Trade on Skill",
+price: "Skill Exchange",
+description: "We believe every skill has value. Whether you're a plumber, teacher, chef, mechanic, artist, or any other professional - your expertise could be the key to your new website.",
+features: [
+"1-page custom website",
+"Exchange your valuable skills",
+"Open to all professions:",
+"- Trade & Technical Skills",
+"- Professional Services",
+"- Teaching & Training",
+"- Creative & Artistic Work",
+"- Any Valuable Expertise"
+],
+timeline: "3-5 Days",
+recommended: false,
+color: "purple"
+},
+// ... rest of the pricing tiers remain the same
+
+{
+id: 2,
+name: "Simple Start",
+price: "$250",
+description: "Perfect for small businesses and personal brands getting started online.",
+features: [
+"Single-page professional website",
+"Mobile responsive design",
+"Basic SEO setup",
+"Contact form integration",
+"Social media links"
+],
+timeline: "3-5 Days",
+recommended: false,
+color: "blue"
+},
+{
+id: 3,
+name: "Creative Expansion",
+price: "$350",
+description: "Ideal for growing businesses needing more features and pages.",
+features: [
+"Up to 3-page dynamic website",
+"Advanced design customization",
+"Blog or portfolio features",
+"Enhanced SEO optimization",
+"Google Analytics integration"
+],
+timeline: "3-5 Days",
+recommended: true,
+color: "indigo"
+},
+{
+id: 4,
+name: "Advanced Vision",
+price: "$500",
+description: "Comprehensive solution for established businesses needing advanced functionality.",
+features: [
+"Up to 6-page website",
+"Advanced animations",
+"Custom functionality",
+"Advanced forms and integrations",
+"Premium SEO package",
+"Business automation features"
+],
+timeline: "5+ Days",
+recommended: false,
+color: "green"
+}
+];
 
           // Frequently Asked Questions
           const faqItems = [

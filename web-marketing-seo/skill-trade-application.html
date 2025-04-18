@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Trade Program Application</title>
+    <link rel="stylesheet" href="../assets/css/skill-trade.css">
+</head>
+<body>
+    <main class="skill-trade-container">
+        <section class="skill-trade-intro">
+            <h1>Skill Trade Program</h1>
+            <p>Exchange your expertise for a custom website. We believe in building community through collaboration.</p>
+            
+            <div class="accepted-skills">
+                <h2>Skills We're Looking For:</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <i class="fas fa-pen"></i>
+                        <h3>Content Writing</h3>
+                        <p>Blog posts, website copy, articles</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-camera"></i>
+                        <h3>Photography</h3>
+                        <p>Professional photo sessions, stock photos</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-bullhorn"></i>
+                        <h3>Digital Marketing</h3>
+                        <p>Social media management, SEO, advertising</p>
+                    </div>
+                    <div class="skill-card">
+                        <i class="fas fa-paint-brush"></i>
+                        <h3>Graphic Design</h3>
+                        <p>Logos, banners, marketing materials</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="application-form">
+            <h2>Apply for Skill Trade</h2>
+            <form id="skillTradeForm" action="/submit-skill-trade" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="skillCategory">Primary Skill Category</label>
+                    <select id="skillCategory" name="skillCategory" required>
+                        <option value="">Select a category</option>
+                        <option value="content">Content Writing</option>
+                        <option value="photography">Photography</option>
+                        <option value="marketing">Digital Marketing</option>
+                        <option value="design">Graphic Design</option>
+                        <option value="other">Other (please specify)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="experience">Years of Experience</label>
+                    <input type="number" id="experience" name="experience" min="1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="portfolio">Portfolio/Work Samples (URLs)</label>
+                    <textarea id="portfolio" name="portfolio" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="proposal">Your Proposal</label>
+                    <textarea id="proposal" name="proposal" rows="5" required 
+                        placeholder="Describe the services you can offer and how they would benefit our community..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Submit Application</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
