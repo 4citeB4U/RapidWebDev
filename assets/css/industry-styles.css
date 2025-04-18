@@ -1,0 +1,68 @@
+/* Common Industry Styles */
+.industry-benefits {
+    padding: 4rem 2rem;
+    background: #f8f9fa;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.benefit {
+    padding: 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.benefit:hover {
+    transform: translateY(-5px);
+}
+
+/* Industry-Specific Colors */
+.photographers .hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../images/photography-bg.jpg');
+    color: white;
+}
+
+.real-estate .hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../images/real-estate-bg.jpg');
+    color: white;
+}
+
+.nonprofits .hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../images/nonprofit-bg.jpg');
+    color: white;
+}
+
+.therapists .hero {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('../images/therapy-bg.jpg');
+    color: white;
+}
+
+/* Industry-Specific Feature Icons */
+.industry-specific-notes ul li::before {
+    font-family: "Font Awesome 5 Free";
+    margin-right: 10px;
+}
+
+.photographers .industry-specific-notes ul li::before {
+    content: "\f030"; /* camera icon */
+}
+
+.real-estate .industry-specific-notes ul li::before {
+    content: "\f1ad"; /* building icon */
+}
+
+.nonprofits .industry-specific-notes ul li::before {
+    content: "\f004"; /* heart icon */
+}
+
+.therapists .industry-specific-notes ul li::before {
+    content: "\f469"; /* hands helping icon */
+}
