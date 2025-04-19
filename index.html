@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=1280, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <meta name="description" content="Rapid Web Development - Professional web development services with AI-powered solutions for businesses of all sizes.">
     <meta name="theme-color" content="#1e293b">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -245,11 +245,20 @@
 
     <style>
         /* Custom CSS for animations and specific styles */
-        body {
+        html {
+            width: 100%;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+        }
+        
+        html, body {
             font-family: sans-serif; /* Basic font stack */
             background-color: #000000; /* Absolute black background */
-            overflow-x: hidden; /* Prevent horizontal scrolling */
-            width: 100%;
+            width: 1280px !important;
+            min-width: 1280px !important;
+            margin: 0 auto !important;
+            position: relative !important;
         }
 
         /* Responsive design fixes */
@@ -266,28 +275,83 @@
             border-radius: 0;
         }
 
-        /* Prevent zoom on form fields in iOS */
+        /* Prevent zoom on form fields in iOS while maintaining fixed layout */
         @media screen and (max-width: 768px) {
             input, select, textarea {
                 font-size: 16px;
             }
+            
+            /* Force fixed layout even on small screens */
+            html, body, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
+                transform: none !important;
+                zoom: 1 !important;
+            }
         }
 
         /* Fixed-width layout for all devices */
-        .container {
-            width: 1280px;
-            max-width: 1280px;
+        .container, div[class*="container"], #root, main {
+            width: 1280px !important;
+            min-width: 1280px !important;
+            max-width: 1280px !important;
             padding-left: 1.5rem;
             padding-right: 1.5rem;
-            margin-left: auto;
-            margin-right: auto;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            box-sizing: border-box !important;
         }
 
-        /* Disable responsive behavior */
-        @media (max-width: 1280px) {
+        /* Force fixed width layout on ALL devices */
+        @media screen and (max-width: 1280px), screen and (min-width: 1281px) {
+            html, body {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
+                margin: 0 auto !important;
+                overflow-x: visible !important;
+            }
+            
+            #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
+            }
+
+            /* Ensure all content stays within the fixed width */
+            div, section, article, aside, nav, header, footer {
+                max-width: 1280px !important;
+                box-sizing: border-box !important;
+            }
+        }
+
+        /* Additional fixes for mobile devices */
+        @media only screen and (max-device-width: 1280px) {
             body {
-                min-width: 1280px;
-                overflow-x: auto;
+                -webkit-text-size-adjust: none !important;
+                text-size-adjust: none !important;
+            }
+        }
+
+        /* Fix for iOS devices */
+        @supports (-webkit-overflow-scrolling: touch) {
+            html, body {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                overflow-x: auto !important;
+            }
+        }
+
+        /* Ensure horizontal scrolling works properly when needed */
+        @media screen and (max-width: 1279px) {
+            html {
+                overflow-x: auto !important;
+            }
+            body {
+                position: absolute !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
             }
         }
 
