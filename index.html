@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <!-- AI-START:StylingAgent -->
-<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover, shrink-to-fit=no" name="viewport"/>
+<meta name="viewport" content="width=1280, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 <!-- Support for foldable devices -->
 <meta content="flat, folded, flipped" name="supported-fold-states"/>
 <!-- AI-END:StylingAgent -->
@@ -246,18 +246,13 @@
     </script>
 <style>
         /* AI-START:StylingAgent */
-        /* Custom CSS for animations and specific styles */
-        html {
-            width: 100%;
-            overflow-x: hidden;
-        }
-
+        /* Custom CSS for fixed-width layout */
         html, body {
             font-family: sans-serif; /* Basic font stack */
             background-color: #000000; /* Absolute black background */
-            width: 100% !important;
-            min-width: unset !important;
-            margin: 0 auto !important;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto; /* horizontal scroll if viewport < 1280 */
             position: relative !important;
         }
 
@@ -291,38 +286,35 @@
             }
         }
 
-        /* Responsive container */
-        .container, div[class*="container"], #root, main {
-            width: 100% !important;
-            min-width: unset !important;
-            max-width: 100% !important;
+        /* Fixed-width container */
+        #app, .wrapper, #root, main, .container, div[class*="container"] {
+            width: 1280px;
+            min-width: 1280px;
+            max-width: 1280px;
+            margin: 0 auto; /* center it */
+            box-sizing: border-box;
             padding-left: 1rem;
             padding-right: 1rem;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            box-sizing: border-box !important;
         }
 
-        /* Responsive layout for all devices */
-        @media screen and (max-width: 1280px), screen and (min-width: 1281px) {
+        /* Prevent any element from overriding the fixed width */
+        * {
+            min-width: 0 !important;
+            max-width: none !important;
+        }
+
+        /* Fixed-width layout for all devices */
+        @media screen and (max-width: 1280px) {
+            /* No responsive adjustments - maintain fixed width */
             html, body {
-                width: 100% !important;
-                min-width: unset !important;
-                max-width: 100% !important;
-                margin: 0 auto !important;
-                overflow-x: hidden !important;
+                overflow-x: auto !important; /* Allow horizontal scrolling */
             }
 
-            #root, main, .container, div[class*="container"] {
-                width: 100% !important;
-                min-width: unset !important;
-                max-width: 100% !important;
-            }
-
-            /* Ensure all content stays within the viewport */
-            div, section, article, aside, nav, header, footer {
-                max-width: 100% !important;
-                box-sizing: border-box !important;
+            /* Keep all containers at fixed width */
+            #root, main, .container, div[class*="container"], #app, .wrapper {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
@@ -337,19 +329,24 @@
         /* Fix for iOS devices */
         @supports (-webkit-overflow-scrolling: touch) {
             html, body {
-                width: 100% !important;
-                min-width: unset !important;
-                overflow-x: hidden !important;
+                overflow-x: auto !important; /* Allow horizontal scrolling */
+            }
+
+            /* Keep fixed width on iOS */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
-        /* Remove absolute positioning that breaks mobile layout */
+        /* Maintain fixed width on smaller screens */
         @media screen and (max-width: 1279px) {
             html {
-                overflow-x: hidden !important;
+                overflow-x: auto !important; /* Allow horizontal scrolling */
             }
             body {
-                position: static !important;
+                position: relative !important;
                 left: auto !important;
                 transform: none !important;
             }
@@ -370,91 +367,78 @@
 
         /* ===== ANDROID SPECIFIC FIXES ===== */
 
-        /* Samsung Galaxy Fold specific fixes */
+        /* Samsung Galaxy Fold specific fixes - maintain fixed width */
         @media (max-width: 280px) { /* Galaxy Fold front screen when folded */
+            /* Keep fixed width but adjust font size for readability */
             html, body {
                 font-size: 14px; /* Slightly smaller base font */
+                overflow-x: auto !important;
             }
 
-            .container, div[class*="container"] {
-                padding-left: 0.5rem;
-                padding-right: 0.5rem;
-            }
-
-            /* Adjust navigation for ultra-narrow screens */
-            nav {
-                font-size: 0.875rem;
-            }
-
-            /* Stack elements that would normally be side-by-side */
-            .flex-row {
-                flex-direction: column !important;
-            }
-
-            /* Reduce padding/margins */
-            .p-4, .px-4, .py-4 {
-                padding: 0.5rem !important;
-            }
-
-            .m-4, .mx-4, .my-4 {
-                margin: 0.5rem !important;
-            }
-
-            /* Make buttons more compact */
-            button, .btn {
-                padding: 0.5rem 0.75rem !important;
-                font-size: 0.875rem !important;
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
-        /* Samsung Galaxy Z Flip specific fixes */
+        /* Samsung Galaxy Z Flip specific fixes - maintain fixed width */
         @media (min-width: 281px) and (max-width: 320px) and (min-height: 500px) and (max-height: 900px) {
-            /* Optimize for the tall, narrow aspect ratio */
-            .grid {
-                grid-template-columns: 1fr !important; /* Force single column */
+            /* Keep fixed width but adjust for readability */
+            html, body {
+                overflow-x: auto !important;
             }
 
-            /* Adjust spacing for the narrow width */
-            .container, div[class*="container"] {
-                padding-left: 0.75rem;
-                padding-right: 0.75rem;
-            }
-
-            /* Optimize images for narrow screens */
-            img {
-                max-height: 30vh; /* Limit image height */
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
-        /* Foldable devices in different states */
+        /* Foldable devices in different states - maintain fixed width */
         @media (screen-spanning: single-fold-vertical) {
-            /* Adjust layout when device is folded with vertical fold */
-            .container, div[class*="container"] {
-                padding-left: env(fold-left);
-                padding-right: env(fold-right);
+            /* Keep fixed width but adjust for foldable devices */
+            html, body {
+                overflow-x: auto !important;
             }
 
-            /* Avoid content being hidden by the fold */
-            .avoid-fold {
-                margin-left: max(0px, env(fold-left));
-                margin-right: max(0px, env(fold-right));
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
         @media (screen-spanning: single-fold-horizontal) {
-            /* Adjust layout when device is folded with horizontal fold */
-            .container, div[class*="container"] {
-                padding-top: env(fold-top);
-                padding-bottom: env(fold-bottom);
+            /* Keep fixed width but adjust for foldable devices */
+            html, body {
+                overflow-x: auto !important;
+            }
+
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
-        /* General Android fixes */
+        /* General Android fixes - maintain fixed width */
         @supports (-webkit-touch-callout: none) and (not (-webkit-overflow-scrolling: touch)) {
             /* Android-specific CSS (excludes iOS) */
-            body {
-                /* Fix for some Android browsers that don't properly handle vh units */
-                min-height: -webkit-fill-available;
+            html, body {
+                overflow-x: auto !important;
+            }
+
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
 
             /* Fix for Android Chrome form zooming issues */
@@ -468,8 +452,19 @@
             }
         }
 
-        /* Fix for Android WebView issues */
+        /* Fix for Android WebView issues - maintain fixed width */
         @media screen and (-webkit-min-device-pixel-ratio:0) {
+            html, body {
+                overflow-x: auto !important;
+            }
+
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
+            }
+
             select, textarea, input[type="text"], input[type="password"],
             input[type="datetime"], input[type="datetime-local"],
             input[type="date"], input[type="month"], input[type="time"],
@@ -477,34 +472,49 @@
             input[type="url"], input[type="search"], input[type="tel"],
             input[type="color"] {
                 font-size: 16px; /* Prevent zoom */
-                max-width: 100%; /* Ensure inputs don't overflow */
                 border-radius: 0; /* Fix border radius issues */
             }
         }
 
-        /* Fix for orientation changes on Android */
+        /* Fix for orientation changes on Android - maintain fixed width */
         @media screen and (orientation: portrait) {
-            .orientation-aware {
-                flex-direction: column !important;
+            html, body {
+                overflow-x: auto !important;
+            }
+
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
         @media screen and (orientation: landscape) {
-            .orientation-aware {
-                flex-direction: row !important;
+            html, body {
+                overflow-x: auto !important;
             }
 
-            /* Adjust for the shorter height in landscape */
-            .landscape-adjust {
-                max-height: 80vh;
-                overflow-y: auto;
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
         }
 
-        /* Fix for Android Chrome 80+ with address bar */
+        /* Fix for Android Chrome 80+ with address bar - maintain fixed width */
         @supports (-webkit-appearance:none) {
             html, body {
                 height: -webkit-fill-available;
+                overflow-x: auto !important;
+            }
+
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
             }
 
             .full-height {
@@ -512,9 +522,20 @@
             }
         }
 
-        /* Fix for Android Samsung Internet browser */
+        /* Fix for Android Samsung Internet browser - maintain fixed width */
         @supports (-webkit-overflow-scrolling: touch) and (not (-moz-appearance:none)) {
             /* Samsung Internet specific fixes */
+            html, body {
+                overflow-x: auto !important;
+            }
+
+            /* Maintain fixed width */
+            #app, .wrapper, #root, main, .container, div[class*="container"] {
+                width: 1280px !important;
+                min-width: 1280px !important;
+                max-width: 1280px !important;
+            }
+
             .overflow-scroll {
                 -webkit-overflow-scrolling: touch;
             }
@@ -796,6 +817,8 @@
 <body class="bg-black">
 <!-- Skip to content link for accessibility -->
 <a href="#main-content" class="skip-to-content">Skip to main content</a>
+<!-- Wrapper for fixed-width layout -->
+<div class="wrapper">
 <!-- Disclaimer Modal -->
 <div class="fixed inset-0 z-50 bg-indigo-950 overflow-auto flex flex-col" id="disclaimer-modal">
 <div class="max-w-3xl mx-auto my-10 p-6 bg-indigo-900 border border-indigo-700 shadow-lg rounded-lg"><div class="flex justify-center items-center gap-4 my-4"><div class="text-center"><img alt="Agent Lee" class="w-16 h-16 rounded-full shadow-lg" src="assets/mainpage/agentsavatars/agentlee.png"/><p class="text-sm text-white mt-1">Agent Lee</p></div><div class="text-center"><img alt="Sales Agent" class="w-16 h-16 rounded-full shadow-lg" src="assets/mainpage/agentsavatars/salesagent2.png"/><p class="text-sm text-white mt-1">Sales Agent</p></div><div class="text-center"><img alt="Resource Agent" class="w-16 h-16 rounded-full shadow-lg" src="assets/mainpage/agentsavatars/resourseagent.png"/><p class="text-sm text-white mt-1">Resource Agent</p></div><div class="text-center"><img alt="Showcase Agent" class="w-16 h-16 rounded-full shadow-lg" src="assets/mainpage/agentsavatars/showcaseagent1.png"/><p class="text-sm text-white mt-1">Showcase Agent</p></div></div>
@@ -9867,6 +9890,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // Start with introduction that includes narrator content
+    // Set isSpeaking to true before speaking to ensure Stop Talking button works
+    window.isSpeaking = true;
     AgentLee.speak("Hello, I'm Agent Lee. Welcome to Rapid Web Development, your partner in launching stunning, professional websites in just 3-5 days. What is your name?");
 
     // Initialize enhanced speech recognition
@@ -9896,11 +9921,15 @@ window.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("returnVisitor", "true");
 
       // Continue with the full introduction after getting the name
+      // Set isSpeaking to true before speaking to ensure Stop Talking button works
+      window.isSpeaking = true;
       AgentLee.speak(`Great to meet you, ${name}. ${mainPageNarration} Would you like me to guide you through our services?`);
       NavigationAgent.moveTo("#about");
     };
 
     recognition.onerror = () => {
+      // Set isSpeaking to true before speaking to ensure Stop Talking button works
+      window.isSpeaking = true;
       AgentLee.speak("No worries — you can type or click anytime to continue. " + mainPageNarration);
     };
 
@@ -9961,6 +9990,22 @@ window.addEventListener("DOMContentLoaded", () => {
 </div>
 </div>
 </div>
+<!-- AI Control Buttons -->
+<div class="px-3 py-2 border-t border-indigo-800 flex flex-wrap gap-2 justify-center">
+<button id="stop-talking-button" class="bg-red-600 hover:bg-red-700 text-white text-xs py-1 px-3 rounded-full transition-all flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="4" height="16" x="6" y="4" rx="1"/><rect width="4" height="16" x="14" y="4" rx="1"/></svg>
+        Stop Talking
+      </button>
+<button id="listen-button" class="bg-green-600 hover:bg-green-700 text-white text-xs py-1 px-3 rounded-full transition-all flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+        Listen
+      </button>
+<button id="respond-button" class="bg-blue-600 hover:bg-blue-700 text-white text-xs py-1 px-3 rounded-full transition-all flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 6 21 21 12 6 3"/></svg>
+        Respond
+      </button>
+</div>
+
 <!-- Quick Action Buttons -->
 <div class="px-3 py-2 border-t border-indigo-800 flex flex-wrap gap-2 justify-center">
 <button class="quick-action bg-indigo-700 hover:bg-indigo-600 text-white text-xs py-1 px-3 rounded-full transition-all">
@@ -10032,7 +10077,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // Enhanced Speech Recognition with improved voice clarity and continuous listening
     function initSpeechRecognition() {
       if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
-        addMessage('Voice recognition is not supported in your browser.', 'agent');
+        console.error('Voice recognition is not supported in this browser');
         return false;
       }
 
@@ -10083,11 +10128,11 @@ window.addEventListener("DOMContentLoaded", () => {
         if (currentSpeech === '') {
           currentSpeech = transcript;
 
-          // If the AI is speaking, stop it to listen to the user
+          // If the AI is speaking, stop it to listen to the user (silently)
           if (isSpeaking) {
             window.speechSynthesis.cancel();
             isSpeaking = false;
-            addMessage("I'll pause while you speak", 'agent', false);
+            // No message - just stop talking silently
           }
         } else {
           // Update with the latest transcript
@@ -10118,7 +10163,7 @@ window.addEventListener("DOMContentLoaded", () => {
       recognition.onerror = (event) => {
         console.error('Speech recognition error:', event.error);
         if (event.error !== 'aborted') {
-          addMessage('Sorry, I had trouble hearing you. Please try again or check your microphone settings.', 'agent');
+          // Don't add a message - just log the error and reset
           stopListening(); // Stop listening on error and reset the UI
         }
         removeUserTyping();
@@ -10352,23 +10397,34 @@ window.addEventListener("DOMContentLoaded", () => {
       const userName = userProfile.name ? `, ${userProfile.name}` : '';
 
       // Navigation commands with narration content
+      // Always set isSpeaking to true when using narration content
       if (lowerText.includes('home') || lowerText.includes('start')) {
+        // Set isSpeaking to true to ensure Stop Talking button works with narration
+        isSpeaking = true;
         addMessage(`Taking you to the home section${userName}. ${mainPageNarration}`, 'agent');
         setAvatar('home');
         scrollToSection('home');
       } else if (lowerText.includes('about')) {
+        // Set isSpeaking to true to ensure Stop Talking button works with narration
+        isSpeaking = true;
         addMessage(`Let me show you what we're about${userName}. ${mainPageNarration}`, 'agent');
         setAvatar('home');
         scrollToSection('about');
       } else if (lowerText.includes('pricing') || lowerText.includes('plans') || lowerText.includes('cost')) {
+        // Set isSpeaking to true to ensure Stop Talking button works with narration
+        isSpeaking = true;
         addMessage(`Here are our pricing options${userName}. ${pricingPageNarration}`, 'agent');
         setAvatar('pricing');
         scrollToSection('pricing');
       } else if (lowerText.includes('learning') || lowerText.includes('learn') || lowerText.includes('tutorial')) {
+        // Set isSpeaking to true to ensure Stop Talking button works with narration
+        isSpeaking = true;
         addMessage(`Welcome to our learning center${userName}. ${learningCenterNarration}`, 'agent');
         setAvatar('learning');
         scrollToSection('learning');
       } else if (lowerText.includes('showcase') || lowerText.includes('animation') || lowerText.includes('demo')) {
+        // Set isSpeaking to true to ensure Stop Talking button works with narration
+        isSpeaking = true;
         addMessage(`Let me show you our animation showcase${userName}. ${showcaseNarration}`, 'agent');
         setAvatar('showcase');
         scrollToSection('showcase');
@@ -10636,11 +10692,21 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Improved speech synthesis with interruption handling
+    // Enhanced speech synthesis with interruption handling and visual feedback
     function speakWithInterruption(text) {
-      // Cancel any current speech
-      if (speechSynthesis.speaking) {
-        speechSynthesis.cancel();
+      // Always cancel any current speech, regardless of isSpeaking state
+      // This ensures we stop any narrator speech that might be playing
+      speechSynthesis.cancel();
+
+      // Reset UI state if needed
+      if (isSpeaking) {
+        const avatar = document.getElementById('agent-avatar');
+        avatar.classList.remove('speaking');
+
+        const speakingAnimation = document.getElementById('speaking-animation');
+        if (speakingAnimation) {
+          speakingAnimation.style.opacity = '0';
+        }
       }
 
       // Clear any queued speech
@@ -10659,6 +10725,9 @@ window.addEventListener("DOMContentLoaded", () => {
       utterance.pitch = 1.0;
       utterance.volume = 1.0;
 
+      // Update Stop Talking button to show active state when speaking
+      const stopTalkingButton = document.getElementById('stop-talking-button');
+
       // Track speaking state with visual feedback
       utterance.onstart = () => {
         isSpeaking = true;
@@ -10669,6 +10738,13 @@ window.addEventListener("DOMContentLoaded", () => {
         const speakingAnimation = document.getElementById('speaking-animation');
         if (speakingAnimation) {
           speakingAnimation.style.opacity = '1';
+        }
+
+        // Highlight Stop Talking button when speaking
+        if (stopTalkingButton) {
+          stopTalkingButton.classList.add('animate-pulse');
+          stopTalkingButton.classList.remove('bg-red-600', 'hover:bg-red-700');
+          stopTalkingButton.classList.add('bg-red-500', 'hover:bg-red-600');
         }
       };
 
@@ -10681,6 +10757,13 @@ window.addEventListener("DOMContentLoaded", () => {
         const speakingAnimation = document.getElementById('speaking-animation');
         if (speakingAnimation) {
           speakingAnimation.style.opacity = '0';
+        }
+
+        // Reset Stop Talking button
+        if (stopTalkingButton) {
+          stopTalkingButton.classList.remove('animate-pulse');
+          stopTalkingButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+          stopTalkingButton.classList.add('bg-red-600', 'hover:bg-red-700');
         }
 
         // If there's more in the queue, speak the next item
@@ -10700,6 +10783,13 @@ window.addEventListener("DOMContentLoaded", () => {
         const speakingAnimation = document.getElementById('speaking-animation');
         if (speakingAnimation) {
           speakingAnimation.style.opacity = '0';
+        }
+
+        // Reset Stop Talking button
+        if (stopTalkingButton) {
+          stopTalkingButton.classList.remove('animate-pulse');
+          stopTalkingButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+          stopTalkingButton.classList.add('bg-red-600', 'hover:bg-red-700');
         }
       };
 
@@ -10784,10 +10874,10 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    // Start listening with improved behavior and visual feedback
+    // Start listening with improved behavior and visual feedback for both buttons
     function startListening() {
       if (!recognition && !initSpeechRecognition()) {
-        addMessage('Voice recognition is not available in your browser.', 'agent');
+        console.error('Voice recognition is not available in this browser');
         return;
       }
 
@@ -10801,7 +10891,15 @@ window.addEventListener("DOMContentLoaded", () => {
           voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>';
         }
 
-        addMessage('I\'m listening... Click the mic button again to stop.', 'agent', false); // Don't speak this
+        // Update Listen button to show active state
+        const listenButton = document.getElementById('listen-button');
+        if (listenButton) {
+          listenButton.classList.add('animate-pulse');
+          listenButton.classList.remove('bg-green-600', 'hover:bg-green-700');
+          listenButton.classList.add('bg-green-500', 'hover:bg-green-600');
+        }
+
+        // No message about listening or mic button
 
         try {
           // Set recognition properties for better performance
@@ -10821,7 +10919,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Stop listening with visual feedback
+    // Stop listening with visual feedback for both buttons
     function stopListening() {
       if (isListening) {
         isListening = false;
@@ -10831,6 +10929,14 @@ window.addEventListener("DOMContentLoaded", () => {
         if (voiceButton) {
           voiceButton.className = 'bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-3 mx-1 transition-all duration-300';
           voiceButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>';
+        }
+
+        // Reset Listen button to inactive state
+        const listenButton = document.getElementById('listen-button');
+        if (listenButton) {
+          listenButton.classList.remove('animate-pulse');
+          listenButton.classList.remove('bg-green-500', 'hover:bg-green-600');
+          listenButton.classList.add('bg-green-600', 'hover:bg-green-700');
         }
 
         try {
@@ -10869,6 +10975,71 @@ window.addEventListener("DOMContentLoaded", () => {
           inputField.value = '';
         }
       }
+    });
+
+    // AI Control Buttons Event Listeners
+    const stopTalkingButton = document.getElementById('stop-talking-button');
+    const listenButton = document.getElementById('listen-button');
+    const respondButton = document.getElementById('respond-button');
+
+    // Stop Talking Button - Immediately stop ALL ongoing speech (silently)
+    stopTalkingButton.addEventListener('click', () => {
+      // Always cancel speech synthesis regardless of isSpeaking state
+      // This ensures narrator speech is also stopped
+      window.speechSynthesis.cancel();
+
+      // Always set speaking state to false
+      isSpeaking = false;
+
+      // Always update UI to show speech has stopped
+      const avatar = document.getElementById('agent-avatar');
+      avatar.classList.remove('speaking');
+
+      // Always hide speaking animation
+      const speakingAnimation = document.getElementById('speaking-animation');
+      if (speakingAnimation) {
+        speakingAnimation.style.opacity = '0';
+      }
+
+      // Always reset Stop Talking button
+      stopTalkingButton.classList.remove('animate-pulse');
+      stopTalkingButton.classList.remove('bg-red-500', 'hover:bg-red-600');
+      stopTalkingButton.classList.add('bg-red-600', 'hover:bg-red-700');
+
+      // No message - just stop talking silently
+    });
+
+    // Listen Button - Start listening for user input (silently)
+    listenButton.addEventListener('click', () => {
+      if (isListening) {
+        stopListening();
+        startListening(); // Restart listening
+        // No message - just restart listening silently
+      } else {
+        startListening();
+        // No message - just start listening silently
+      }
+    });
+
+    // Respond Button - Process the current input and generate a response with visual feedback
+    respondButton.addEventListener('click', () => {
+      // Add visual feedback when clicked
+      respondButton.classList.add('bg-blue-500');
+      respondButton.classList.remove('bg-blue-600');
+
+      setTimeout(() => {
+        // Reset button after short delay
+        respondButton.classList.remove('bg-blue-500');
+        respondButton.classList.add('bg-blue-600');
+      }, 300);
+
+      const text = inputField.value.trim();
+      if (text) {
+        addMessage(text, 'user');
+        handleCommand(text);
+        inputField.value = '';
+      }
+      // No else case - don't say anything if there's no input
     });
 
     // Add voice input button with improved visual feedback
@@ -10982,24 +11153,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (firstOpen && isChatVisible) {
         firstOpen = false;
-        setTimeout(() => {
-          // Personalized greeting if we know the user
-          if (userProfile.name) {
-            addMessage(`Welcome back, ${userProfile.name}! How can I help you today?`, 'agent');
-          } else {
-            addMessage("I'm Agent Lee, your personal AI assistant. What's your name so I can assist you better?", 'agent');
-          }
-        }, 500);
+        // No automatic greeting - wait for user to initiate conversation
       }
     };
 
-    // Auto-open chat after a delay on first visit
-    if (!localStorage.getItem('chatPreviouslyOpened')) {
-      setTimeout(() => {
-        toggleChat();
-        localStorage.setItem('chatPreviouslyOpened', 'true');
-      }, 3000);
-    }
+    // Disabled auto-open chat functionality
+    // Chat will only open when user clicks on the chat button
 
     // Add training mode for admins
     function initTrainingMode() {
@@ -11347,5 +11506,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 <!-- Analytics -->
 <script src="analytics-tracking.js"></script>
+</div><!-- End wrapper -->
 </body>
 </html>

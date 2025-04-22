@@ -125,12 +125,7 @@ class AgentLee {
     // Initial section detection
     setTimeout(this.detectCurrentSection, 1000);
 
-    // Greet the user with personalized message if logged in
-    if (this.user.isLoggedIn && this.user.name) {
-      setTimeout(() => {
-        this.speak("Hello " + this.user.name + ", welcome back! How can I help you today?");
-      }, 1500);
-    }
+    // No automatic greeting - wait for user to initiate conversation
 
     // Log initialization
     console.log('Agent Lee initialized');
@@ -246,12 +241,7 @@ class AgentLee {
     // Add container to document
     document.body.appendChild(this.container);
 
-    // Add initial message with personalization if logged in
-    if (this.user.isLoggedIn && this.user.name) {
-      this.addMessage(this.agents[this.currentAgent].name, 'Hello ' + this.user.name + '! I\'m your AI assistant. How can I help you today?');
-    } else {
-      this.addMessage(this.agents[this.currentAgent].name, 'Hello! I\'m your AI assistant. How can I help you today?');
-    }
+    // No initial greeting message - wait for user to initiate conversation
   }
 
   /**
@@ -283,7 +273,7 @@ class AgentLee {
           </svg>
         `;
       }
-      this.addMessage('System', 'Listening...');
+      // No message about listening
     };
 
     this.recognition.onend = () => {

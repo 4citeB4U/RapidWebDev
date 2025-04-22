@@ -169,7 +169,7 @@ async function startListening() {
     listenTimeout = setTimeout(() => {
       try {
         recognition.stop();
-        showStatusMessage("Listening timed out. Click mic to try again.");
+        // No status message about the microphone
       } catch (e) {
         if (window.AgentLeeErrorHandling) {
           window.AgentLeeErrorHandling.handleAgentLeeError(
@@ -748,22 +748,8 @@ function addMessage(sender, text) {
   }
 }
 
-// Initialize with connectivity check
-setTimeout(() => {
-  // Only initialize if not already handled by existing Agent Lee
-  if (!window.AgentLee || !window.AgentLee.initialized) {
-    // Check if user name is stored in localStorage
-    const userName = localStorage.getItem('user_name');
-
-    if (userName && isOnline) {
-      agentSpeak(`Hello ${userName}, I'm Agent Lee. How can I help you today?`);
-    } else {
-      agentSpeak(isOnline
-        ? "Hello, I'm Agent Lee. How can I help?"
-        : "Offline mode. Limited functionality available.");
-    }
-  }
-}, 1000);
+// Initialize without initial greeting
+// We'll let the user initiate the conversation instead of automatically greeting
 
 // Site structure information for navigation and UI understanding
 const siteStructure = {
