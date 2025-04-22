@@ -6,6 +6,7 @@
  * - Client-side memory storage
  * - Learning from user interactions
  * - Automatic agent switching based on page section
+ * - Gemini 2.5 Pro integration for AI processing
  */
 
 class AgentLee {
@@ -16,6 +17,7 @@ class AgentLee {
     this.isListening = false;
     this.memories = [];
     this.currentAgent = 'lee'; // Default agent
+    this.currentSection = 'default';
 
     // User information
     this.user = {
@@ -23,6 +25,14 @@ class AgentLee {
       name: '',
       email: '',
       permissions: ['cookies']
+    };
+
+    // Add dependencies property to track loaded modules
+    this.dependencies = {
+      gemini: false,
+      memory: false,
+      training: false,
+      enhanced: false
     };
 
     // Agent definitions
@@ -94,6 +104,9 @@ class AgentLee {
 
     // Create UI
     this.createUI();
+    
+    // Create control panel
+    this.createControlPanel();
 
     // Load memories from localStorage
     this.loadMemories();
@@ -103,6 +116,9 @@ class AgentLee {
 
     // Add event listeners
     this.addEventListeners();
+
+    // Load dependencies
+    this.loadDependencies();
 
     // Mark as initialized
     this.initialized = true;
@@ -125,7 +141,24 @@ class AgentLee {
     // Initial section detection
     setTimeout(this.detectCurrentSection, 1000);
 
-    // No automatic greeting - wait for user to initiate conversation
+    // Show Agent Lee immediately on the landing page
+    setTimeout(() => {
+      // Make Agent Lee visible
+      this.visible = true;
+      const body = document.getElementById('lee-body');
+      if (body) {
+        body.classList.remove('hidden');
+      }
+
+      // Provide a welcome message with username if available
+      setTimeout(() => {
+        if (this.user.isLoggedIn && this.user.name) {
+          this.speak(`Welcome back to Rapid Web Development, ${this.user.name}! I am Agent Lee, your AI assistant. How can I help you today?`);
+        } else {
+          this.speak('Welcome to Rapid Web Development! I am Agent Lee, your AI assistant. How can I help you today?');
+        }
+      }, 1500);
+    }, 2000);
 
     // Log initialization
     console.log('Agent Lee initialized');
@@ -141,7 +174,25 @@ class AgentLee {
       this.user.email = localStorage.getItem('user_email') || '';
       this.user.permissions = JSON.parse(localStorage.getItem('user_permissions') || '["cookies"]');
 
+      // Update the user name display if it exists
+      this.updateUserNameDisplay();
+
       console.log('Agent Lee loaded user info:', this.user);
+    }
+  }
+
+  /**
+   * Update the user name display in the UI
+   */
+  updateUserNameDisplay() {
+    if (this.userNameDisplay) {
+      if (this.user.isLoggedIn && this.user.name) {
+        this.userNameDisplay.textContent = `Hello, ${this.user.name}`;
+        this.userNameDisplay.classList.remove('hidden');
+      } else {
+        this.userNameDisplay.textContent = '';
+        this.userNameDisplay.classList.add('hidden');
+      }
     }
   }
 
@@ -149,23 +200,59 @@ class AgentLee {
    * Create the UI for Agent Lee
    */
   createUI() {
-    // Create main container
+    // Create main container - positioned on the top left
     this.container = document.createElement('div');
     this.container.id = 'agent-lee-chat';
-    this.container.className = 'fixed z-[9999] bottom-4 right-4 w-80 rounded-2xl bg-indigo-900/90 shadow-2xl border border-indigo-600 backdrop-blur-md overflow-hidden transition-all';
-
+    this.container.className = 'fixed z-[9999] left-4 top-4 w-[640px] rounded-2xl bg-indigo-900/90 shadow-2xl border border-indigo-600 backdrop-blur-md overflow-hidden transition-all';
+    
+    // Increase font sizes and padding for bigger UI
+    this.container.style.fontSize = '1.5rem';
+    this.container.style.lineHeight = '1.75';
+    
+    // Add draggable attribute and cursor style
+    this.container.style.cursor = 'move';
+    this.container.setAttribute('draggable', 'false'); // Prevent default drag behavior
+    
+    // Add drag functionality
+    let isDragging = false;
+    let offsetX, offsetY;
+    
+    this.container.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      offsetX = e.clientX - this.container.getBoundingClientRect().left;
+      offsetY = e.clientY - this.container.getBoundingClientRect().top;
+      this.container.style.transition = 'none';
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const x = e.clientX - offsetX;
+      const y = e.clientY - offsetY;
+      
+      this.container.style.left = `${x}px`;
+      this.container.style.top = `${y}px`;
+      this.container.style.transform = 'none'; // Remove the transform when dragging
+    });
+    
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      this.container.style.transition = 'all 0.3s ease';
+    });
+    
     // Create header
     const header = document.createElement('div');
-    header.className = 'flex items-center gap-3 p-4 border-b border-indigo-700';
+    header.className = 'flex items-center gap-3 p-6 border-b border-indigo-700';
+    header.id = 'agent-lee-header'; // Add ID for drag handle
 
-    // Create agent avatar and name
+    // Create agent avatar and name - larger for the new size
     const avatarContainer = document.createElement('div');
-    avatarContainer.className = 'flex items-center gap-3';
+    avatarContainer.className = 'flex items-center gap-5';
 
     this.agentAvatar = document.createElement('img');
     this.agentAvatar.src = this.agents[this.currentAgent].avatar;
     this.agentAvatar.alt = this.agents[this.currentAgent].name;
-    this.agentAvatar.className = 'w-12 h-12 rounded-full border-2 border-blue-400 shadow-lg';
+    this.agentAvatar.className = 'w-24 h-24 rounded-full border-4 border-blue-400 shadow-lg';
 
     const nameContainer = document.createElement('div');
 
@@ -177,8 +264,18 @@ class AgentLee {
     agentRole.className = 'text-blue-400 text-xs';
     agentRole.textContent = 'Your AI Web Guide';
 
+    // Add user name display if logged in
+    this.userNameDisplay = document.createElement('p');
+    this.userNameDisplay.className = 'text-green-300 text-xs mt-1';
+    if (this.user.isLoggedIn && this.user.name) {
+      this.userNameDisplay.textContent = `Hello, ${this.user.name}`;
+    } else {
+      this.userNameDisplay.textContent = '';
+    }
+
     nameContainer.appendChild(this.agentName);
     nameContainer.appendChild(agentRole);
+    nameContainer.appendChild(this.userNameDisplay);
 
     avatarContainer.appendChild(this.agentAvatar);
     avatarContainer.appendChild(nameContainer);
@@ -197,38 +294,60 @@ class AgentLee {
     header.appendChild(avatarContainer);
     header.appendChild(this.toggleButton);
 
-    // Create body
+    // Create body with larger height
     const body = document.createElement('div');
     body.id = 'lee-body';
-    body.className = 'p-4 max-h-80 overflow-y-auto';
+    body.className = 'p-6 max-h-[600px] overflow-y-auto';
 
     // Create chat log
     this.chatLog = document.createElement('div');
     this.chatLog.id = 'lee-log';
-    this.chatLog.className = 'space-y-2 mb-4';
+    this.chatLog.className = 'space-y-4 mb-6';
 
-    // Create input area
+    // Create input area with larger elements
     const inputArea = document.createElement('div');
-    inputArea.className = 'flex items-center gap-2';
+    inputArea.className = 'flex items-center gap-4 p-6 border-t border-indigo-700';
 
     const textInput = document.createElement('input');
     textInput.type = 'text';
     textInput.id = 'lee-input';
-    textInput.className = 'flex-1 bg-indigo-800/50 text-white rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500';
+    textInput.className = 'flex-1 bg-indigo-800/50 text-white rounded px-5 py-4 text-xl focus:outline-none focus:ring-2 focus:ring-blue-500';
     textInput.placeholder = 'Ask Agent Lee...';
 
-    this.micButton = document.createElement('button');
-    this.micButton.id = 'lee-mic';
-    this.micButton.className = 'bg-blue-600 hover:bg-blue-500 text-white rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-blue-500';
-    this.micButton.innerHTML = `
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    // Create larger control buttons
+    this.stopTalkingButton = document.createElement('button');
+    this.stopTalkingButton.id = 'lee-stop-talking';
+    this.stopTalkingButton.className = 'bg-red-600 hover:bg-red-500 text-white rounded-full p-4 focus:outline-none focus:ring-2 focus:ring-red-500';
+    this.stopTalkingButton.innerHTML = `
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path>
+      </svg>
+    `;
+
+    this.listenButton = document.createElement('button');
+    this.listenButton.id = 'lee-listen';
+    this.listenButton.className = 'bg-blue-600 hover:bg-blue-500 text-white rounded-full p-4 focus:outline-none focus:ring-2 focus:ring-blue-500';
+    this.listenButton.innerHTML = `
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+      </svg>
+    `;
+
+    this.respondButton = document.createElement('button');
+    this.respondButton.id = 'lee-respond';
+    this.respondButton.className = 'bg-green-600 hover:bg-green-500 text-white rounded-full p-4 focus:outline-none focus:ring-2 focus:ring-green-500';
+    this.respondButton.innerHTML = `
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
       </svg>
     `;
 
     // Add elements to input area
     inputArea.appendChild(textInput);
-    inputArea.appendChild(this.micButton);
+    inputArea.appendChild(this.stopTalkingButton);
+    inputArea.appendChild(this.listenButton);
+    inputArea.appendChild(this.respondButton);
 
     // Add elements to body
     body.appendChild(this.chatLog);
@@ -237,11 +356,113 @@ class AgentLee {
     // Add elements to container
     this.container.appendChild(header);
     this.container.appendChild(body);
+    this.container.appendChild(inputArea);
 
     // Add container to document
     document.body.appendChild(this.container);
 
+    // Create control panel in top right
+    this.createControlPanel();
+
     // No initial greeting message - wait for user to initiate conversation
+  }
+
+  /**
+   * Create a control panel in the top right with Telegram, call, and mouse animation buttons
+   */
+  createControlPanel() {
+    // Create control panel container
+    const controlPanel = document.createElement('div');
+    controlPanel.id = 'agent-lee-control-panel';
+    controlPanel.className = 'fixed z-[9999] top-20 right-4 bg-indigo-900/90 backdrop-blur-md border border-indigo-600 rounded-xl p-3 flex gap-3';
+    
+    // Create call button
+    const callButton = document.createElement('button');
+    callButton.id = 'call-button';
+    callButton.className = 'bg-green-600 hover:bg-green-500 text-white rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-green-500';
+    callButton.title = 'Voice Call';
+    callButton.innerHTML = `
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM12 3v10l3-3h6V3h-9z"/>
+      </svg>
+    `;
+    
+    // Create mouse animation button
+    const mouseAnimButton = document.createElement('button');
+    mouseAnimButton.id = 'mouse-anim-button';
+    mouseAnimButton.className = 'bg-purple-600 hover:bg-purple-500 text-white rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-purple-500';
+    mouseAnimButton.title = 'Toggle Mouse Animation';
+    mouseAnimButton.innerHTML = `
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M13 1.07V9h7c0-4.08-3.05-7.44-7-7.93zM4 15c0 4.42 3.58 8 8 8s8-3.58 8-8v-4H4v4zm7-13.93C7.05 1.56 4 4.92 4 9h7V1.07z"/>
+      </svg>
+    `;
+    
+    // Create Telegram button
+    const telegramButton = document.createElement('button');
+    telegramButton.id = 'telegram-button';
+    telegramButton.className = 'bg-blue-600 hover:bg-blue-500 text-white rounded-full p-3 focus:outline-none focus:ring-2 focus:ring-blue-500';
+    telegramButton.title = 'Chat on Telegram';
+    telegramButton.innerHTML = `
+      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-1.97 9.269c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.548.223l.196-2.783 5.056-4.564c.223-.198-.054-.308-.335-.112l-6.24 3.93-2.69-.918c-.585-.187-.594-.585.122-.866l10.5-4.043c.485-.18.911.112.75.658z"/>
+      </svg>
+    `;
+
+    // Add buttons to control panel
+    controlPanel.appendChild(telegramButton);
+    controlPanel.appendChild(callButton);
+    controlPanel.appendChild(mouseAnimButton);
+
+    // Make control panel draggable
+    let isDragging = false;
+    let offsetX, offsetY;
+    
+    controlPanel.addEventListener('mousedown', (e) => {
+      if (e.target === controlPanel) {
+        isDragging = true;
+        offsetX = e.clientX - controlPanel.getBoundingClientRect().left;
+        offsetY = e.clientY - controlPanel.getBoundingClientRect().top;
+        controlPanel.style.cursor = 'grabbing';
+      }
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      const x = e.clientX - offsetX;
+      const y = e.clientY - offsetY;
+      
+      controlPanel.style.left = `${x}px`;
+      controlPanel.style.top = `${y}px`;
+      controlPanel.style.right = 'auto'; // Remove right positioning when dragging
+    });
+    
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        controlPanel.style.cursor = 'grab';
+      }
+    });
+
+    // Add event listeners for the buttons
+    telegramButton.addEventListener('click', () => {
+      const telegramLink = typeof window.generateTelegramLink === 'function'
+        ? window.generateTelegramLink('Lee2912bot')
+        : 'https://t.me/Lee2912bot';
+      window.open(telegramLink, '_blank');
+    });
+
+    callButton.addEventListener('click', () => {
+      this.speak("Initiating voice call feature. This feature is coming soon.");
+    });
+
+    mouseAnimButton.addEventListener('click', () => {
+      this.speak("Toggling mouse animation feature. This feature is coming soon.");
+    });
+
+    // Add control panel to document
+    document.body.appendChild(controlPanel);
   }
 
   /**
@@ -333,6 +554,9 @@ class AgentLee {
         }
       });
     }
+
+    // Add drag functionality
+    this.addDragFunctionality();
   }
 
   /**
@@ -402,10 +626,58 @@ class AgentLee {
   }
 
   /**
+   * Load dependencies
+   */
+  loadDependencies() {
+    // Load Gemini integration
+    this.loadScript('agent-lee-gemini.js', () => {
+      this.dependencies.gemini = true;
+      console.log('Gemini integration loaded');
+    });
+
+    // Load other dependencies if not already loaded
+    if (!window.AgentLeeMemory) {
+      this.loadScript('agent-lee-memory.js', () => {
+        this.dependencies.memory = true;
+        console.log('Memory management loaded');
+      });
+    }
+
+    if (!window.AgentLeeTraining) {
+      this.loadScript('agent-lee-training.js', () => {
+        this.dependencies.training = true;
+        console.log('Training system loaded');
+      });
+    }
+
+    // Load settings UI
+    this.loadScript('agent-lee-settings.js', () => {
+      console.log('Settings UI loaded');
+    });
+  }
+
+  /**
+   * Load a script dynamically
+   * @param {string} src - Script source
+   * @param {Function} callback - Callback function
+   */
+  loadScript(src, callback) {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = callback;
+    script.onerror = (error) => {
+      console.error(`Failed to load ${src}:`, error);
+    };
+    document.head.appendChild(script);
+  }
+
+  /**
    * Handle user command
    * @param {string} command - The user command
    */
-  handleCommand(command) {
+  async handleCommand(command) {
+    // This will be enhanced by the Gemini integration
     // Convert to lowercase for easier matching
     const lowerCommand = command.toLowerCase();
 
@@ -665,6 +937,66 @@ class AgentLee {
       }
     });
   }
+
+  /**
+   * Make the Agent Lee UI draggable
+   */
+  addDragFunctionality() {
+    const container = this.container;
+    const header = document.getElementById('agent-lee-header');
+    
+    if (!container || !header) return;
+    
+    let isDragging = false;
+    let offsetX, offsetY;
+    
+    // Mouse down event on the header starts the drag
+    header.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      
+      // Calculate the offset from the mouse position to the container's top-left corner
+      const rect = container.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      
+      // Change cursor during drag
+      container.style.cursor = 'grabbing';
+      
+      // Prevent text selection during drag
+      e.preventDefault();
+    });
+    
+    // Mouse move event updates the position
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      
+      // Calculate new position
+      const x = e.clientX - offsetX;
+      const y = e.clientY - offsetY;
+      
+      // Apply new position
+      container.style.right = 'auto';
+      container.style.bottom = 'auto';
+      container.style.left = `${x}px`;
+      container.style.top = `${y}px`;
+    });
+    
+    // Mouse up event ends the drag
+    document.addEventListener('mouseup', () => {
+      if (isDragging) {
+        isDragging = false;
+        container.style.cursor = 'move';
+      }
+    });
+    
+    // Mouse leave event also ends the drag
+    document.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        container.style.cursor = 'move';
+      }
+    });
+  }
 }
 
 // Create and initialize Agent Lee
@@ -686,3 +1018,14 @@ HTMLAudioElement.prototype.play = function() {
 
 // Export for global access
 window.AgentLee = agentLee;
+
+
+
+
+
+
+
+
+
+
+
