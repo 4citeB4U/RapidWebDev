@@ -1,0 +1,163 @@
+/* Accessibility Improvements */
+
+/* Focus styles for keyboard navigation */
+:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* High contrast focus for dark backgrounds */
+.bg-dark :focus {
+  outline: 2px solid #93c5fd;
+  outline-offset: 2px;
+}
+
+/* Skip to content link - hidden until focused */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #3b82f6;
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  transition: top 0.3s;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Improved contrast for text */
+.text-contrast-improved {
+  color: #f8fafc; /* Tailwind slate-50 */
+}
+
+/* Ensure buttons have proper focus states */
+button:focus, 
+a:focus, 
+input:focus, 
+select:focus, 
+textarea:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Ensure form elements have proper focus states */
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Ensure links have proper focus states */
+a:focus {
+  text-decoration: underline;
+}
+
+/* Ensure buttons have proper hover states */
+button:hover,
+a.btn:hover {
+  text-decoration: none;
+}
+
+/* Ensure form elements have proper labels */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Ensure form elements have proper error states */
+.input-error {
+  border-color: #ef4444; /* Tailwind red-500 */
+}
+
+.error-message {
+  color: #ef4444; /* Tailwind red-500 */
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Ensure form elements have proper success states */
+.input-success {
+  border-color: #10b981; /* Tailwind emerald-500 */
+}
+
+.success-message {
+  color: #10b981; /* Tailwind emerald-500 */
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* Ensure form elements have proper disabled states */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Ensure links have proper underline on hover */
+a:not(.btn):hover {
+  text-decoration: underline;
+}
+
+/* Ensure buttons have proper cursor */
+button,
+a.btn {
+  cursor: pointer;
+}
+
+/* Ensure buttons have proper disabled cursor */
+button:disabled,
+a.btn.disabled {
+  cursor: not-allowed;
+}
+
+/* Ensure inputs have proper padding for touch targets */
+input,
+select,
+textarea {
+  padding: 0.5rem;
+}
+
+/* Ensure buttons have proper padding for touch targets */
+button,
+a.btn {
+  padding: 0.5rem 1rem;
+}
+
+/* Ensure links have proper color contrast */
+a {
+  color: #3b82f6; /* Tailwind blue-500 */
+}
+
+/* Ensure links have proper color contrast on hover */
+a:hover {
+  color: #2563eb; /* Tailwind blue-600 */
+}
+
+/* Ensure links have proper color contrast on dark backgrounds */
+.bg-dark a {
+  color: #93c5fd; /* Tailwind blue-300 */
+}
+
+/* Ensure links have proper color contrast on dark backgrounds on hover */
+.bg-dark a:hover {
+  color: #bfdbfe; /* Tailwind blue-200 */
+}
