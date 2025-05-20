@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQs | Rapid Web Development Artist Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0b0b0f;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .faq-card {
+      transition: all 0.3s ease;
+    }
+    .faq-card:hover {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    details summary::marker {
+      color: #818cf8; 
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6">
+          <span class="gradient-text">Frequently Asked Questions</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+          Find answers to common questions about the Artist Empowerment Platform
+        </p>
+        <div class="mt-8">
+          <a href="index.html" class="inline-flex items-center text-blue-400 hover:text-blue-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back to Documentation
+          </a>
+        </div>
+      </header>
+
+      <!-- FAQ Categories Navigation -->
+      <div class="mb-12 flex flex-wrap justify-center gap-4">
+        <a href="#general" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">General</a>
+        <a href="#platform-tiers" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Platform Tiers</a>
+        <a href="#agent-lee" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Agent Lee</a>
+        <a href="#technical" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Technical</a>
+        <a href="#privacy" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Privacy & Security</a>
+        <a href="#support" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Support</a>
+      </div>
+
+      <!-- General FAQs -->
+      <div id="general" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 gradient-text">General Questions</h2>
+        
+        <div class="space-y-6">
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What is the Artist Empowerment Platform?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>The Artist Empowerment Platform is a groundbreaking web development system designed specifically for musicians and artists. It allows you to create professional websites, manage your digital presence, and connect with fans—all within a single integrated platform. The platform leverages AI technology through Agent Lee to provide industry insights and automate many aspects of your web presence.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">How does the platform differ from other website builders?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Unlike general website builders, the Artist Empowerment Platform is specifically designed for the music industry with:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2">
+                  <li>Music-specific templates and components</li>
+                  <li>Integration with streaming platforms and music distribution services</li>
+                  <li>AI-powered insights about industry contracts and revenue models</li>
+                  <li>Single-file architecture that gives you complete control and ownership</li>
+                  <li>No recurring fees or commissions on your earnings</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Do I need technical knowledge to use the platform?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>No technical knowledge is required. The platform is designed with a user-friendly interface that allows you to create and manage your site through intuitive controls. For those who do have technical skills, we offer advanced customization options that let you directly edit HTML, CSS, and JavaScript.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">How quickly can I get my site up and running?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Most artists are able to launch their platform within hours. Our quick-start templates allow you to have a functional website in as little as 15 minutes, which you can then customize and expand over time. Agent Lee can help accelerate the process by generating content and suggesting optimizations based on your specific needs.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Platform Tiers -->
+      <div id="platform-tiers" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 gradient-text">Platform Tiers</h2>
+        
+        <div class="space-y-6">
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What are the different tiers available?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>The platform offers three tiers:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2">
+                  <li><strong class="text-blue-400">Essential</strong>: Basic website functionality with industry insights and core Agent Lee features</li>
+                  <li><strong class="text-purple-400">Professional</strong>: Advanced features including e-commerce, advanced analytics, and full Agent Lee capabilities</li>
+                  <li><strong class="text-yellow-400">Enterprise</strong>: Custom solutions for labels, management companies, and established artists with multiple sites and team collaboration features</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Can I upgrade or downgrade my tier?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Yes, you can change your tier at any time. When upgrading, you'll immediately gain access to all features in the higher tier. When downgrading, you'll maintain access to your higher tier until the end of your current billing cycle, after which the platform will transition to the features of your new tier.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Is there a trial period?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Yes, we offer a 14-day free trial of the Professional tier for all new users. This allows you to experience the full capabilities of the platform before making a commitment. No credit card is required to start your trial.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What happens to my site if I cancel my subscription?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>If you cancel your subscription, your site remains fully functional. This is one of the key benefits of our single-file architecture. You will lose access to ongoing updates, Agent Lee features, and our hosting services, but the website itself will continue to work and remain in your possession. You can host it anywhere that supports standard web hosting.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Agent Lee -->
+      <div id="agent-lee" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 gradient-text">Agent Lee</h2>
+        
+        <div class="space-y-6">
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Who or what is Agent Lee?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Agent Lee is an AI-powered digital assistant specifically designed for the music industry. Unlike general AI assistants, Agent Lee has been trained on music industry contracts, revenue models, marketing strategies, and web development best practices. Agent Lee serves as your digital advocate, helping you navigate the complexities of the music business while building and optimizing your web presence.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What can Agent Lee help me with?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Agent Lee can assist with:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2">
+                  <li>Website content generation and optimization</li>
+                  <li>Analyzing music contracts and highlighting potentially unfavorable terms</li>
+                  <li>Providing insights on industry standards for royalty rates and advances</li>
+                  <li>Creating marketing materials and social media content</li>
+                  <li>Automating your email newsletter</li>
+                  <li>Integrating your music across various platforms</li>
+                  <li>Analyzing your audience data for actionable insights</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Does Agent Lee have voice capabilities?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Yes, Agent Lee has advanced voice recognition and response capabilities. You can interact with Agent Lee using voice commands, allowing for hands-free operation when you're in the studio or performing other tasks. The voice interface understands music terminology and can execute complex commands specific to the industry.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">How accurate is Agent Lee's industry knowledge?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Agent Lee is continuously updated with the latest industry data and practices. While no AI system is perfect, Agent Lee has been trained on thousands of music contracts, industry reports, and case studies to provide insights that are as accurate as possible. For critical decisions, we always recommend consulting with a qualified music attorney or industry professional.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical -->
+      <div id="technical" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 gradient-text">Technical Questions</h2>
+        
+        <div class="space-y-6">
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What is the single-file architecture?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Single-file architecture is our innovative approach that packages your entire website into a self-contained HTML file. This architecture:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2">
+                  <li>Ensures you maintain complete ownership of your platform</li>
+                  <li>Allows your website to function without dependency on external services</li>
+                  <li>Makes it easy to transfer your site between hosting providers</li>
+                  <li>Improves loading speeds by reducing server requests</li>
+                  <li>Provides built-in offline capabilities</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Can I use my own domain name?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Yes, you can use your own domain name with all platform tiers. We provide simple instructions for connecting your domain, regardless of where it's registered. The Professional and Enterprise tiers include domain registration and management at no additional cost.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Is the platform mobile-friendly?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Absolutely. All sites created with the Artist Empowerment Platform are fully responsive and optimized for mobile devices. Our templates and components are designed with a mobile-first approach, ensuring your fans have an excellent experience regardless of the device they're using.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What about SEO and social media integration?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>The platform includes comprehensive SEO tools to help your site rank well in search engines. This includes meta tag optimization, structured data, and performance optimization. Social media integration is seamless, with built-in sharing capabilities, feed displays, and automated posting features in the Professional and Enterprise tiers.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy & Security -->
+      <div id="privacy" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 gradient-text">Privacy & Security</h2>
+        
+        <div class="space-y-6">
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">How is my data protected?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>We implement industry-leading security measures including:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2">
+                  <li>End-to-end encryption for all data transmission</li>
+                  <li>Regular security audits and penetration testing</li>
+                  <li>Two-factor authentication for account access</li>
+                  <li>Data isolation to ensure your information remains private</li>
+                  <li>Compliance with GDPR, CCPA, and other privacy regulations</li>
+                </ul>
+                <p class="mt-3">For more detailed information, please see our <a href="privacy-security.html" class="text-blue-400 hover:underline">Privacy & Security</a> documentation.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Who owns the content I create on the platform?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>You retain 100% ownership of all content created on the platform. This includes your website, music, images, videos, and any content generated with assistance from Agent Lee. Our terms of service explicitly state that we make no claim to your intellectual property.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Can Agent Lee access my personal files and data?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Agent Lee only accesses the data you explicitly share within the platform. You control what information Agent Lee can use, and you can revoke access at any time through the privacy settings. We maintain strict data isolation practices to ensure your information is used only for the specific tasks you request.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Is my financial information secure?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Yes, all financial transactions are processed through PCI-DSS compliant payment processors. We never store your complete credit card information on our servers. For the e-commerce features in Professional and Enterprise tiers, we implement additional security measures to protect both your financial information and that of your customers.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support -->
+      <div id="support" class="mb-16">
+        <h2 class="text-3xl font-bold mb-8 gradient-text">Support Questions</h2>
+        
+        <div class="space-y-6">
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">How can I get help if I'm stuck?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>We offer multiple support channels:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2">
+                  <li>24/7 chat support through Agent Lee</li>
+                  <li>Email support with guaranteed response times (4 hours for Professional, 1 hour for Enterprise)</li>
+                  <li>Community forums where you can ask questions and share ideas</li>
+                  <li>Comprehensive documentation and video tutorials</li>
+                  <li>Scheduled one-on-one support calls (Enterprise tier)</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">Do you offer training sessions?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>Yes, we offer free group training webinars twice weekly that cover platform basics and specific features. Professional tier users receive one free private training session, while Enterprise users receive unlimited training sessions for their team. Additional private training sessions can be purchased separately.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">What if I need custom development?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>We have a network of certified developers who specialize in customizing the Artist Empowerment Platform. For Enterprise clients, we offer custom development services directly. Contact our support team to discuss your specific needs and get a quote for custom work.</p>
+              </div>
+            </details>
+          </div>
+
+          <div class="faq-card bg-gray-900 rounded-xl p-6 border border-gray-800">
+            <details>
+              <summary class="font-semibold text-xl cursor-pointer">How often is the platform updated?</summary>
+              <div class="mt-4 text-gray-300">
+                <p>We release feature updates monthly and security updates as needed. All updates are automatically applied to your platform without any action required on your part. Major feature releases are announced in advance through our newsletter and platform notifications. Enterprise clients can choose to delay non-security updates if needed for their workflow.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <!-- Still Have Questions -->
+      <div class="bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-bold mb-4">Still Have Questions?</h2>
+          <p class="text-lg mb-6 max-w-2xl mx-auto">
+            Our support team and Agent Lee are ready to help you with any questions not covered in this FAQ
+          </p>
+          <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              Contact Support
+            </a>
+            <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white hover:bg-opacity-10">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Visit Community Forums
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-8 md:mb-0">
+          <h3 class="text-xl font-bold mb-4 gradient-text">Support Center</h3>
+          <p class="text-gray-400 max-w-md">
+            Comprehensive documentation for the Artist Empowerment Platform and Agent Lee.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4 text-gray-200">Support Channels</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="mailto:agentlee@rapidwebdevelop.com" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                agentlee@rapidwebdevelop.com
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                </svg>
+                Community Forums
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Video Tutorials
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+        <p>© 2025 Artist Empowerment Platform. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

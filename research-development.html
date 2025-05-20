@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Research & Development | RapidWebDevelop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Research & Development specific styles */
+    .rd-section {
+      padding: 8rem 0 6rem;
+      position: relative;
+    }
+
+    .documentation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 5rem;
+    }
+
+    .doc-card {
+      background: rgba(18, 18, 18, 0.85);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .doc-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      border-color: rgba(255, 51, 102, 0.3);
+    }
+
+    .doc-header {
+      padding: 2.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .doc-title {
+      font-size: 2.4rem;
+      color: var(--light);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .doc-icon {
+      margin-right: 1.5rem;
+      font-size: 2.5rem;
+      color: var(--primary);
+    }
+
+    .doc-description {
+      font-size: 1.6rem;
+      color: var(--light-gray);
+      margin-top: 2rem;
+    }
+
+    .doc-content {
+      padding: 2.5rem;
+      flex: 1;
+    }
+
+    .doc-preview {
+      font-size: 1.5rem;
+      color: var(--light-gray);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .doc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .doc-list li {
+      margin-bottom: 1.2rem;
+      padding-left: 2.5rem;
+      position: relative;
+      font-size: 1.5rem;
+      color: var(--light-gray);
+    }
+
+    .doc-list li::before {
+      content: "•";
+      color: var(--primary);
+      position: absolute;
+      left: 0;
+      font-size: 2rem;
+    }
+
+    .doc-footer {
+      padding: 2rem 2.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .doc-meta {
+      font-size: 1.4rem;
+      color: var(--light-gray);
+    }
+
+    .doc-meta span {
+      color: var(--primary);
+    }
+
+    .doc-action {
+      display: inline-block;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid var(--primary);
+      padding: 0.8rem 1.6rem;
+      border-radius: 5rem;
+      background: rgba(255, 51, 102, 0.1);
+    }
+
+    .doc-action:hover {
+      background: var(--primary);
+      color: var(--light);
+    }
+
+    .doc-content-section {
+      margin-top: 8rem;
+      background: rgba(18, 18, 18, 0.85);
+      border-radius: 1.2rem;
+      padding: 4rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .doc-content-title {
+      font-size: 3.2rem;
+      color: var(--light);
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .doc-content-body {
+      font-size: 1.8rem;
+      color: var(--light-gray);
+      line-height: 1.8;
+    }
+
+    .doc-content-body p {
+      margin-bottom: 2.5rem;
+    }
+
+    .doc-content-body h3 {
+      font-size: 2.4rem;
+      color: var(--primary);
+      margin: 4rem 0 2rem;
+    }
+
+    .doc-content-body h4 {
+      font-size: 2rem;
+      color: var(--accent);
+      margin: 3rem 0 1.5rem;
+    }
+
+    .doc-content-body ul,
+    .doc-content-body ol {
+      margin-bottom: 2.5rem;
+      padding-left: 2.5rem;
+    }
+
+    .doc-content-body li {
+      margin-bottom: 1rem;
+    }
+
+    .doc-content-body code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.3rem 0.6rem;
+      border-radius: 0.4rem;
+      font-family: monospace;
+      font-size: 1.6rem;
+      color: var(--accent);
+    }
+
+    .doc-content-body pre {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2rem;
+      border-radius: 0.8rem;
+      overflow-x: auto;
+      margin-bottom: 2.5rem;
+    }
+
+    .doc-content-body pre code {
+      padding: 0;
+      background: transparent;
+      color: var(--light-gray);
+    }
+
+    .agent-lee-info {
+      background: rgba(58, 12, 163, 0.1);
+      border: 1px solid rgba(58, 12, 163, 0.2);
+      border-radius: 0.8rem;
+      padding: 2rem;
+      margin: 3rem 0;
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .agent-lee-info i {
+      font-size: 2.4rem;
+      color: var(--secondary-light);
+      margin-right: 1.5rem;
+      margin-top: 0.3rem;
+    }
+
+    .agent-lee-info p {
+      margin: 0;
+      font-size: 1.6rem;
+      color: var(--light);
+    }
+
+    .highlight-box {
+      background: rgba(255, 51, 102, 0.1);
+      border-left: 4px solid var(--primary);
+      padding: 2.5rem;
+      border-radius: 0.8rem;
+      margin: 3rem 0;
+    }
+
+    .highlight-box p:last-child {
+      margin-bottom: 0;
+    }
+    
+    /* Narration indicator */
+    .narration-indicator {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.8rem 1.5rem;
+      background: rgba(76, 201, 240, 0.1);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+      border-radius: 5rem;
+      margin-bottom: 2rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .narration-indicator:hover {
+      background: rgba(76, 201, 240, 0.2);
+    }
+
+    .narration-indicator i {
+      color: var(--accent);
+      margin-right: 1rem;
+      font-size: 1.8rem;
+    }
+
+    .narration-indicator span {
+      font-size: 1.4rem;
+      color: var(--light);
+    }
+
+    /* Documentation navigation */
+    .doc-navigation {
+      position: sticky;
+      top: 10rem;
+      margin-top: 5rem;
+      background: rgba(18, 18, 18, 0.85);
+      border-radius: 1.2rem;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-title {
+      font-size: 2rem;
+      color: var(--light);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .doc-nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .doc-nav-item {
+      margin-bottom: 1.5rem;
+    }
+
+    .doc-nav-link {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--light-gray);
+      padding: 0.8rem 1.5rem;
+      border-radius: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .doc-nav-link:hover,
+    .doc-nav-link.active {
+      background: rgba(255, 51, 102, 0.1);
+      color: var(--primary);
+    }
+
+    .doc-nav-link i {
+      margin-right: 1rem;
+    }
+
+    .doc-subnav {
+      padding-left: 2rem;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .doc-nav-item.expanded .doc-subnav {
+      display: block;
+    }
+
+    .doc-subnav-item {
+      margin-bottom: 0.8rem;
+    }
+
+    .doc-subnav-link {
+      display: block;
+      font-size: 1.4rem;
+      color: var(--light-gray);
+      padding: 0.6rem 1.5rem;
+      border-radius: 0.8rem;
+      transition: all 0.2s ease;
+    }
+
+    .doc-subnav-link:hover,
+    .doc-subnav-link.active {
+      background: rgba(255, 51, 102, 0.1);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- Fixed Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-container">
+          <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+          <span>RapidWebDevelop</span>
+          <span class="parent-company">by LEEWAY™</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html#beginning" class="nav-link">Beginning</a></li>
+          <li class="nav-item"><a href="index.html#truth" class="nav-link">The Truth</a></li>
+          <li class="nav-item"><a href="index.html#win" class="nav-link">All I Do Is Win</a></li>
+          <li class="nav-item"><a href="index.html#community" class="nav-link">Community</a></li>
+          <li class="nav-item"><a href="research-development.html" class="nav-link active">R&D</a></li>
+          <li class="nav-item"><a href="platforms.html" class="nav-link">Platforms</a></li>
+          <li class="nav-item"><a href="#" data-page="launch" class="nav-link btn">Launch</a></li>
+        </ul>
+        <div class="mobile-menu">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Fixed Background Images -->
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('1njio6wh29.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;"></div>
+
+    <!-- Research & Development Section -->
+    <section class="rd-section" id="research-development">
+      <div class="container">
+        <div class="text-center fade-up">
+          <h1 class="section-title">Research & Development</h1>
+          <div class="narration-indicator" id="narration-trigger">
+            <i class="fas fa-headphones"></i>
+            <span>Let Agent Lee narrate this page</span>
+          </div>
+          <p class="section-subtitle">
+            Comprehensive documentation for artists, developers, and creators on our platform.
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3">
+            <!-- Documentation Navigation -->
+            <div class="doc-navigation fade-up">
+              <h3 class="nav-title">Documentation</h3>
+              <ul class="doc-nav-list">
+                <li class="doc-nav-item">
+                  <a href="#overview" class="doc-nav-link active">
+                    <i class="fas fa-home"></i> Overview
+                  </a>
+                </li>
+                <li class="doc-nav-item">
+                  <a href="#platform-guide" class="doc-nav-link">
+                    <i class="fas fa-rocket"></i> Platform Guide
+                  </a>
+                </li>
+                <li class="doc-nav-item">
+                  <a href="#agent-lee" class="doc-nav-link">
+                    <i class="fas fa-robot"></i> Agent Lee
+                  </a>
+                </li>
+                <li class="doc-nav-item">
+                  <a href="#artist-resources" class="doc-nav-link">
+                    <i class="fas fa-music"></i> Artist Resources
+                  </a>
+                </li>
+                <li class="doc-nav-item">
+                  <a href="#technical-docs" class="doc-nav-link">
+                    <i class="fas fa-code"></i> Technical Docs
+                  </a>
+                </li>
+                <li class="doc-nav-item">
+                  <a href="#privacy-terms" class="doc-nav-link">
+                    <i class="fas fa-shield-alt"></i> Privacy & Terms
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-lg-9">
+            <!-- Documentation Grid -->
+            <div class="documentation-grid fade-up delay-1">
+              <!-- Getting Started -->
+              <div class="doc-card">
+                <div class="doc-header">
+                  <h3 class="doc-title">
+                    <i class="fas fa-play-circle doc-icon"></i>
+                    Getting Started
+                  </h3>
+                  <p class="doc-description">Your first steps with the Artist Empowerment Platform</p>
+                </div>
+                <div class="doc-content">
+                  <div class="doc-preview">
+                    Begin your journey with a complete overview of our platform's features, capabilities, and how to make the most of your creative potential.
+                  </div>
+                  <ul class="doc-list">
+                    <li>Platform overview and key features</li>
+                    <li>Account setup and customization</li>
+                    <li>Uploading your first content</li>
+                    <li>Setting up monetization</li>
+                  </ul>
+                </div>
+                <div class="doc-footer">
+                  <div class="doc-meta">Updated <span>3 days ago</span></div>
+                  <a href="documentation/getting-started.html" class="doc-action">Read More</a>
+                </div>
+              </div>
+
+              <!-- Agent Lee Guide -->
+              <div class="doc-card">
+                <div class="doc-header">
+                  <h3 class="doc-title">
+                    <i class="fas fa-robot doc-icon"></i>
+                    Agent Lee Guide
+                  </h3>
+                  <p class="doc-description">Harness the power of your AI assistant</p>
+                </div>
+                <div class="doc-content">
+                  <div class="doc-preview">
+                    Learn how to work with Agent Lee, your AI guide that helps manage content, engage fans, and optimize your platform through voice commands.
+                  </div>
+                  <ul class="doc-list">
+                    <li>Voice command reference</li>
+                    <li>Health Q&A capabilities</li>
+                    <li>Document narration features</li>
+                    <li>Advanced customization options</li>
+                  </ul>
+                </div>
+                <div class="doc-footer">
+                  <div class="doc-meta">Updated <span>1 day ago</span></div>
+                  <a href="documentation/agent-lee.html" class="doc-action">Read More</a>
+                </div>
+              </div>
+
+              <!-- Platform Features -->
+              <div class="doc-card">
+                <div class="doc-header">
+                  <h3 class="doc-title">
+                    <i class="fas fa-rocket doc-icon"></i>
+                    Platform Features
+                  </h3>
+                  <p class="doc-description">Detailed exploration of all capabilities</p>
+                </div>
+                <div class="doc-content">
+                  <div class="doc-preview">
+                    Dive deep into all the features available across different platform tiers, from basic functionality to advanced capabilities.
+                  </div>
+                  <ul class="doc-list">
+                    <li>Tier-specific feature breakdown</li>
+                    <li>Music and merch store setup</li>
+                    <li>Fan engagement tools</li>
+                    <li>Analytics and reporting</li>
+                  </ul>
+                </div>
+                <div class="doc-footer">
+                  <div class="doc-meta">Updated <span>5 days ago</span></div>
+                  <a href="documentation/platform.html" class="doc-action">Read More</a>
+                </div>
+              </div>
+
+              <!-- Technical Documentation -->
+              <div class="doc-card">
+                <div class="doc-header">
+                  <h3 class="doc-title">
+                    <i class="fas fa-code doc-icon"></i>
+                    Technical Docs
+                  </h3>
+                  <p class="doc-description">Developer resources and API references</p>
+                </div>
+                <div class="doc-content">
+                  <div class="doc-preview">
+                    Technical documentation for developers looking to extend platform functionality or integrate with third-party services.
+                  </div>
+                  <ul class="doc-list">
+                    <li>API documentation and examples</li>
+                    <li>Webhook integration guides</li>
+                    <li>Custom plugin development</li>
+                    <li>Performance optimization tips</li>
+                  </ul>
+                </div>
+                <div class="doc-footer">
+                  <div class="doc-meta">Updated <span>1 week ago</span></div>
+                  <a href="documentation/technical.html" class="doc-action">Read More</a>
+                </div>
+              </div>
+
+              <!-- Industry Insights -->
+              <div class="doc-card">
+                <div class="doc-header">
+                  <h3 class="doc-title">
+                    <i class="fas fa-chart-line doc-icon"></i>
+                    Industry Insights
+                  </h3>
+                  <p class="doc-description">Market trends and strategic guidance</p>
+                </div>
+                <div class="doc-content">
+                  <div class="doc-preview">
+                    Stay ahead of the curve with our analysis of music industry trends, monetization strategies, and fan engagement best practices.
+                  </div>
+                  <ul class="doc-list">
+                    <li>Revenue model comparisons</li>
+                    <li>Streaming platform analysis</li>
+                    <li>Marketing strategy guides</li>
+                    <li>Case studies of successful artists</li>
+                  </ul>
+                </div>
+                <div class="doc-footer">
+                  <div class="doc-meta">Updated <span>2 weeks ago</span></div>
+                  <a href="documentation/industry-insights.html" class="doc-action">Read More</a>
+                </div>
+              </div>
+
+              <!-- FAQs -->
+              <div class="doc-card">
+                <div class="doc-header">
+                  <h3 class="doc-title">
+                    <i class="fas fa-question-circle doc-icon"></i>
+                    FAQs
+                  </h3>
+                  <p class="doc-description">Answers to common questions</p>
+                </div>
+                <div class="doc-content">
+                  <div class="doc-preview">
+                    Find quick answers to the most frequently asked questions about our platform, features, pricing, and support options.
+                  </div>
+                  <ul class="doc-list">
+                    <li>Account and billing questions</li>
+                    <li>Technical troubleshooting</li>
+                    <li>Content management</li>
+                    <li>Platform limitations and workarounds</li>
+                  </ul>
+                </div>
+                <div class="doc-footer">
+                  <div class="doc-meta">Updated <span>3 days ago</span></div>
+                  <a href="documentation/faqs.html" class="doc-action">Read More</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Privacy & Terms Section -->
+            <div class="doc-content-section fade-up delay-2" id="privacy-terms">
+              <h2 class="doc-content-title">Privacy & Terms</h2>
+              <div class="doc-content-body">
+                <p>Our commitments to your privacy and the terms of service governing your use of the Artist Empowerment Platform.</p>
+                
+                <div class="row mt-5">
+                  <div class="col-md-6">
+                    <div class="highlight-box">
+                      <h3><i class="fas fa-shield-alt"></i> Privacy Policy</h3>
+                      <p>Our comprehensive privacy policy outlines how we collect, use, and protect your personal information when you use our platform.</p>
+                      <a href="privacy-policy.html" class="btn btn-sm mt-3">Read Privacy Policy</a>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="highlight-box">
+                      <h3><i class="fas fa-file-contract"></i> Terms of Service</h3>
+                      <p>The terms and conditions that govern your use of our platform, including your rights and responsibilities as a user.</p>
+                      <a href="terms-of-service.html" class="btn btn-sm mt-3">Read Terms of Service</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="agent-lee-info mt-5">
+                  <i class="fas fa-robot"></i>
+                  <p>Agent Lee can help you understand our privacy policy and terms of service. Simply ask "Can you explain the privacy policy?" or "Tell me about the terms of service" for a simplified explanation.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Platform Overview -->
+            <div class="doc-content-section fade-up delay-3" id="overview">
+              <h2 class="doc-content-title">Platform Overview</h2>
+              <div class="doc-content-body">
+                <p>
+                  The Artist Empowerment Platform is a comprehensive ecosystem designed specifically for independent artists who want to maintain control of their creative work while maximizing their income potential. Unlike traditional label deals that strip artists of their rights and revenue, our platform puts you in complete control.
+                </p>
+
+                <h3>Core Philosophy</h3>
+                <p>
+                  Our platform was born from the story of MacMillion, a talented artist who recognized the exploitative nature of traditional music industry contracts. Before he passed, he left behind a promise: to create a platform owned by artists, not labels—where musicians could tell their stories, connect directly with fans, and sell their art without being silenced or stripped of their value.
+                </p>
+
+                <div class="highlight-box">
+                  <p>
+                    <strong>Our mission:</strong> To provide artists with a path to grow on their own terms, from a single-page Jump-Off all the way to a complete Brand ecosystem, with full ownership of their creative work and direct connections to their audience.
+                  </p>
+                </div>
+
+                <h3>Platform Tiers</h3>
+                <p>
+                  We offer four flexible tiers designed to meet you where you are in your career journey:
+                </p>
+
+                <h4>The Jump-Off</h4>
+                <p>
+                  Our entry-level option perfect for artists just starting their journey. Get a professional one-page website with music embeds, merch options, email collection capabilities, and basic Agent Lee functionality.
+                </p>
+
+                <h4>The Influencer</h4>
+                <p>
+                  Designed for artists building their audience. Adds reels, giveaways, sponsor & collab tools, and enhanced Agent Lee functionality with promotional capabilities.
+                </p>
+
+                <h4>The Momentum</h4>
+                <p>
+                  For artists accelerating their growth. Includes fan engagement features like fanwalls and galleries, ad monetization tools, advanced layout customization, and full Agent Lee functionality.
+                </p>
+
+                <h4>The Brand</h4>
+                <p>
+                  Our comprehensive solution for established artists. Multi-page design with NFT and merchandising studio, booking and CRM capabilities, and Agent Lee AI Concierge service for complete digital asset management.
+                </p>
+
+                <div class="agent-lee-info">
+                  <i class="fas fa-robot"></i>
+                  <p>Agent Lee can provide personalized recommendations on which tier best suits your current career stage and goals. Just ask "Which platform tier is right for me?" and answer a few simple questions about your career status, goals, and budget.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <a href="#" class="logo">
+              <div class="logo-container">
+                <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+                <span>RapidWebDevelop</span>
+              </div>
+            </a>
+          </div>
+          <p class="footer-text">
+            Empowering artists with the tools they need to build sustainable careers on their own terms, with 100% ownership of their creative work and direct connections to their audience.
+          </p>
+          <div class="footer-social">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links">
+            <li class="footer-item"><a href="index.html#beginning" class="footer-link">Beginning</a></li>
+            <li class="footer-item"><a href="index.html#truth" class="footer-link">The Truth</a></li>
+            <li class="footer-item"><a href="index.html#win" class="footer-link">All I Do Is Win</a></li>
+            <li class="footer-item"><a href="index.html#community" class="footer-link">Community</a></li>
+            <li class="footer-item"><a href="platforms.html" class="footer-link">Platforms</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Documentation</h4>
+          <ul class="footer-links">
+            <li class="footer-item"><a href="documentation/getting-started.html" class="footer-link">Getting Started</a></li>
+            <li class="footer-item"><a href="documentation/agent-lee.html" class="footer-link">Agent Lee Guide</a></li>
+            <li class="footer-item"><a href="documentation/platform.html" class="footer-link">Platform Features</a></li>
+            <li class="footer-item"><a href="documentation/technical.html" class="footer-link">Technical Docs</a></li>
+            <li class="footer-item"><a href="documentation/faqs.html" class="footer-link">FAQs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <ul class="footer-links">
+            <li class="footer-item"><a href="privacy-policy.html" class="footer-link">Privacy Policy</a></li>
+            <li class="footer-item"><a href="terms-of-service.html" class="footer-link">Terms of Service</a></li>
+            <li class="footer-item"><a href="documentation/privacy-security.html" class="footer-link">Security</a></li>
+            <li class="footer-item"><a href="#" class="footer-link">Licenses</a></li>
+            <li class="footer-item"><a href="#" class="footer-link">Accessibility</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="copyright">© 2023 RapidWebDevelop by LEEWAY™. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Agent Lee Card Integration -->
+  <div id="agent-lee-card">
+    <!-- Card Layout with Sidebar -->
+    <div class="card-layout">
+      <!-- Social Media and Development Links Sidebar -->
+      <div class="social-sidebar">
+        <!-- Social Media Section -->
+        <div class="social-section">
+          <h4 class="section-title">Social</h4>
+          <div class="social-links">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/" target="_blank" class="social-link" aria-label="Facebook">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <circle cx="16" cy="16" r="16" fill="#1877F2"/>
+                <path d="M22 16h-4v8h-4v-8h-3v-4h3v-2.5C14 7.57 15.57 6 18.5 6H22v4h-2.5C18.22 10 18 10.22 18 10.5V12h4l-1 4z" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <defs>
+                  <radialGradient id="instagram-gradient" cx="0.5" cy="0.5" r="0.8">
+                    <stop offset="0%" stop-color="#feda75"/>
+                    <stop offset="50%" stop-color="#d62976"/>
+                    <stop offset="100%" stop-color="#4f5bd5"/>
+                  </radialGradient>
+                </defs>
+                <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#instagram-gradient)"/>
+                <circle cx="16" cy="16" r="7" fill="none" stroke="#fff" stroke-width="2"/>
+                <circle cx="23" cy="9" r="1.5" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- X (Twitter) -->
+            <a href="https://x.com/" target="_blank" class="social-link" aria-label="X">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" fill="#000"/>
+                <path d="M24.6 8H20.9L16 14.2L11.1 8H7.4L14.1 16.7L7 24H10.7L16 17.2L21.3 24H25L17.9 16.7L24.6 8Z" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/" target="_blank" class="social-link" aria-label="YouTube">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="6" fill="#FF0000"/>
+                <polygon points="13,10 23,16 13,22" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/" target="_blank" class="social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="8" fill="#0077B5"/>
+                <rect x="8" y="13" width="3" height="11" fill="#fff"/>
+                <circle cx="9.5" cy="10.5" r="1.5" fill="#fff"/>
+                <rect x="14" y="16" width="3" height="8" fill="#fff"/>
+                <rect x="19" y="16" width="3" height="8" fill="#fff"/>
+                <rect x="14" y="13" width="8" height="2" fill="#fff"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Development Section -->
+        <div class="social-section">
+          <h4 class="section-title">Dev</h4>
+          <div class="social-links">
+            <!-- GitHub -->
+            <a href="https://github.com/" target="_blank" class="social-link" aria-label="GitHub">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <circle cx="16" cy="16" r="16" fill="#181717"/>
+                <path fill="#fff" d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5 0 3.8 2.5 7 6 8.1.4.1.6-.2.6-.5v-1.7c-2.4.5-2.9-1-2.9-1-.4-1-1-1.3-1-1.3-.8-.6.1-.6.1-.6.9.1 1.3.9 1.3.9.8 1.3 2.1.9 2.6.7.1-.6.3-.9.6-1.1-1.9-.2-3.9-.9-3.9-4 0-.9.3-1.6.8-2.2-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.7-.2 1.4-.3 2.1-.3s1.4.1 2.1.3c1.5-1 2.2-.8 2.2-.8.5 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.2 0 3.1-2 3.8-3.9 4 .3.2.6.7.6 1.4v2c0 .3.2.6.6.5 3.5-1.1 6-4.3 6-8.1 0-4.7-3.8-8.5-8.5-8.5z"/>
+              </svg>
+            </a>
+            
+            <!-- VS Code -->
+            <a href="https://code.visualstudio.com/" target="_blank" class="social-link" aria-label="Visual Studio Code">
+              <svg viewBox="0 0 512 512" width="32" height="32">
+                <g>
+                  <path d="M497.9 74.2L406.6 29.2c-18.2-9.3-40.5-3.1-51.6 14.2L170.6 256 355 468.6c11.1 17.3 33.4 23.5 51.6 14.2l91.3-45c21.8-10.7 21.8-41.1 0-51.8L305.2 256l192.7-130c21.8-10.7 21.8-41.1 0-51.8z" fill="#0065A9"/>
+                  <path d="M355 43.4c-11.1-17.3-33.4-23.5-51.6-14.2l-91.3 45c-21.8 10.7-21.8 41.1 0 51.8L305.2 256 212.1 340.4c-21.8 10.7-21.8 41.1 0 51.8l91.3 45c18.2 9.3 40.5 3.1 51.6-14.2L497.9 256z" fill="#007ACC"/>
+                  <path d="M212.1 340.4L355 468.6c11.1 17.3 33.4 23.5 51.6 14.2l91.3-45c21.8-10.7 21.8-41.1 0-51.8L305.2 256z" fill="#1F9CF0"/>
+                  <path d="M119.8 238.7l-91.3-45c-18.2-9.3-40.5-3.1-51.6 14.2-11.1 17.3-3.1 40.5 14.2 51.8l91.3 45c18.2 9.3 40.5 3.1 51.6-14.2 11.1-17.3 3.1-40.5-14.2-51.8z" fill="#007ACC"/>
+                  <path d="M119.8 273.3c-18.2 9.3-40.5 3.1-51.6-14.2l-91.3-45c-21.8-10.7-21.8-41.1 0-51.8l91.3-45c18.2-9.3 40.5-3.1 51.6 14.2l91.3 45c21.8 10.7 21.8 41.1 0 51.8z" fill="#0065A9"/>
+                </g>
+              </svg>
+            </a>
+            
+            <!-- Docker -->
+            <a href="https://www.docker.com/" target="_blank" class="social-link" aria-label="Docker">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="8" fill="#2496ED"/>
+                <rect x="5" y="20" width="22" height="4" rx="2" fill="#fff"/>
+                <rect x="7" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="11" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="15" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="19" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="23" y="16" width="2" height="3" rx="1" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- Discord -->
+            <a href="https://discord.com/" target="_blank" class="social-link" aria-label="Discord">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="8" fill="#5865F2"/>
+                <path d="M23.5,10c-1.5-0.7-3.1-1.2-4.8-1.5c-0.2,0.4-0.5,0.9-0.6,1.2c-1.8-0.3-3.5-0.3-5.3,0c-0.2-0.4-0.4-0.8-0.6-1.2c-1.7,0.3-3.3,0.8-4.8,1.5c-3,4.6-3.9,9-3.4,13.4c2,1.5,3.9,2.4,5.8,2.9c0.5-0.6,0.9-1.3,1.2-2.1c-0.6-0.2-1.2-0.5-1.8-0.9c0.2-0.1,0.3-0.2,0.5-0.3c3.5,1.7,7.3,1.7,10.8,0c0.2,0.1,0.3,0.2,0.5,0.3c-0.6,0.4-1.2,0.7-1.8,0.9c0.3,0.7,0.7,1.4,1.2,2.1c1.9-0.5,3.8-1.4,5.8-2.9C27.5,17.7,26.1,13.3,23.5,10z M12.3,19.6c-1.1,0-2-1-2-2.3C10.3,16,11.2,15,12.3,15c1.1,0,2,1,2,2.3C14.3,18.6,13.4,19.6,12.3,19.6z M19.7,19.6c-1.1,0-2-1-2-2.3c0-1.3,0.9-2.3,2-2.3c1.1,0,2,1,2,2.3C21.7,18.6,20.8,19.6,19.7,19.6z" fill="#fff"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Card Content -->
+      <div class="main-content">
+        <!-- Card Header with Avatar -->
+        <div class="card-header" id="card-header">
+          <div class="agent-avatar">
+            <img src="98civa4fmf.png" alt="Agent Lee" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+          </div>
+          <h3 class="agent-name">Agent Lee</h3>
+          <p class="agent-status" id="agent-status">Ready to assist</p>
+          
+          <div class="card-controls">
+            <button class="card-control-btn" id="minimize-btn" title="Minimize">_</button>
+            <button class="card-control-btn" id="close-btn" title="Close">×</button>
+          </div>
+        </div>
+    
+        <!-- Card Body with Commands -->
+        <div class="card-body" id="card-body">
+          <div class="voice-commands">
+            <div class="command-row">
+              <button class="command-btn listen-btn" id="listen-btn">
+                <span class="icon">🎤</span> Listen
+              </button>
+              <button class="command-btn stop-btn" id="stop-btn">
+                <span class="icon">✋</span> Stop Talking
+              </button>
+            </div>
+            <div class="command-row">
+              <button class="command-btn finished-btn" id="finished-btn">
+                <span class="icon">✅</span> Finished Speaking
+              </button>
+            </div>
+          </div>
+          
+          <div class="message-input-container">
+            <input type="text" class="message-input" id="message-input" placeholder="Type a message...">
+          </div>
+          
+          <div class="tool-buttons">
+            <button class="tool-btn" id="commands-btn">
+              <span class="icon">📜</span> Commands
+            </button>
+            <button class="tool-btn" id="guide-btn">
+              <span class="icon">🧭</span> Guide
+            </button>
+            <button class="tool-btn" id="memory-btn">
+              <span class="icon">🧠</span> Memory
+            </button>
+            <button class="tool-btn" id="settings-btn">
+              <span class="icon">⚙️</span> Settings
+            </button>
+          </div>
+        </div>
+    
+        <!-- Database View (Memory) - Initially Hidden -->
+        <div id="database-view" style="display: none;">
+          <div class="database-header">
+            <div class="database-title">Memory Database</div>
+            <div class="database-status">
+              <div class="status-dot"></div>
+              <span id="db-status-text">Connected</span>
+            </div>
+          </div>
+          
+          <div class="database-content">
+            <!-- Memory content will be displayed here -->
+          </div>
+        </div>
+    
+        <!-- Settings View - Initially Hidden -->
+        <div id="settings-view" style="display: none;">
+          <div class="database-header">
+            <div class="database-title">Settings</div>
+          </div>
+          
+          <div class="database-content">
+            <!-- Settings content will be displayed here -->
+          </div>
+        </div>
+    
+        <!-- Guide View - Initially Hidden -->
+        <div id="guide-view" style="display: none;">
+          <div class="database-header">
+            <div class="database-title">Guide</div>
+          </div>
+          
+          <div id="guide-steps">
+            <!-- Guide steps will be displayed here -->
+          </div>
+        </div>
+    
+        <!-- Card Footer -->
+        <div class="card-footer">
+          Agent Lee Professional v1.0 • LEEWAY™ System
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Chat Button -->
+  <div class="agent-chat-toggle" id="agent-lee-toggle">
+    <i class="fas fa-robot"></i>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Initialize Agent Lee Card functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const agentLeeCard = document.getElementById('agent-lee-card');
+      const agentLeeToggle = document.getElementById('agent-lee-toggle');
+      const minimizeBtn = document.getElementById('minimize-btn');
+      const closeBtn = document.getElementById('close-btn');
+      const cardHeader = document.getElementById('card-header');
+      const narrationTrigger = document.getElementById('narration-trigger');
+      const agentStatus = document.getElementById('agent-status');
+      const listenBtn = document.getElementById('listen-btn');
+      const stopBtn = document.getElementById('stop-btn');
+      const finishedBtn = document.getElementById('finished-btn');
+      
+      // Show Agent Lee card when toggle is clicked
+      agentLeeToggle.addEventListener('click', function() {
+        agentLeeCard.style.display = 'block';
+      });
+      
+      // Hide Agent Lee card when close button is clicked
+      closeBtn.addEventListener('click', function() {
+        agentLeeCard.style.display = 'none';
+      });
+      
+      // Minimize/maximize Agent Lee card when minimize button is clicked
+      let isMinimized = false;
+      minimizeBtn.addEventListener('click', function() {
+        if (isMinimized) {
+          agentLeeCard.style.height = 'auto';
+          document.getElementById('card-body').style.display = 'block';
+          document.getElementById('database-view').style.display = 'none';
+          document.getElementById('settings-view').style.display = 'none';
+          document.getElementById('guide-view').style.display = 'none';
+          document.querySelector('.card-footer').style.display = 'block';
+          minimizeBtn.textContent = '_';
+          isMinimized = false;
+        } else {
+          agentLeeCard.style.height = 'auto';
+          document.getElementById('card-body').style.display = 'none';
+          document.getElementById('database-view').style.display = 'none';
+          document.getElementById('settings-view').style.display = 'none';
+          document.getElementById('guide-view').style.display = 'none';
+          document.querySelector('.card-footer').style.display = 'none';
+          minimizeBtn.textContent = '□';
+          isMinimized = true;
+        }
+      });
+      
+      // Draggable functionality for Agent Lee card
+      let isDragging = false;
+      let offsetX, offsetY;
+      
+      cardHeader.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        offsetX = e.clientX - agentLeeCard.getBoundingClientRect().left;
+        offsetY = e.clientY - agentLeeCard.getBoundingClientRect().top;
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (isDragging) {
+          agentLeeCard.style.left = (e.clientX - offsetX) + 'px';
+          agentLeeCard.style.top = (e.clientY - offsetY) + 'px';
+        }
+      });
+      
+      document.addEventListener('mouseup', function() {
+        isDragging = false;
+      });
+
+      // Narration functionality
+      narrationTrigger.addEventListener('click', function() {
+        agentLeeCard.style.display = 'block';
+        agentStatus.textContent = 'Narrating Research & Development...';
+        
+        // Simulating speech functionality (in a real implementation, this would use actual speech synthesis)
+        setTimeout(() => {
+          agentStatus.textContent = 'Ready to assist';
+        }, 3000);
+      });
+      
+      // Navigation highlighting
+      const docNavLinks = document.querySelectorAll('.doc-nav-link');
+      
+      docNavLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Remove active class from all links
+          docNavLinks.forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          
+          // Add active class to clicked link
+          this.classList.add('active');
+          
+          // Scroll to the relevant section (in a real implementation)
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+          if (targetElement) {
+            window.scrollTo({
+              top: targetElement.offsetTop - 120,
+              behavior: 'smooth'
+            });
+          }
+        });
+      });
+
+      // Initialize Agent Lee buttons
+      listenBtn.addEventListener('click', function() {
+        agentStatus.textContent = 'Listening...';
+        // In a real implementation, this would start speech recognition
+      });
+      
+      stopBtn.addEventListener('click', function() {
+        agentStatus.textContent = 'Ready to assist';
+        // In a real implementation, this would stop speech synthesis
+      });
+      
+      finishedBtn.addEventListener('click', function() {
+        agentStatus.textContent = 'Processing...';
+        setTimeout(() => {
+          agentStatus.textContent = 'Ready to assist';
+        }, 1500);
+        // In a real implementation, this would stop speech recognition and process the command
+      });
+
+      // Tool buttons
+      const memoryBtn = document.getElementById('memory-btn');
+      const settingsBtn = document.getElementById('settings-btn');
+      const guideBtn = document.getElementById('guide-btn');
+      const commandsBtn = document.getElementById('commands-btn');
+      
+      memoryBtn.addEventListener('click', function() {
+        document.getElementById('card-body').style.display = 'none';
+        document.getElementById('database-view').style.display = 'block';
+        document.getElementById('settings-view').style.display = 'none';
+        document.getElementById('guide-view').style.display = 'none';
+      });
+      
+      settingsBtn.addEventListener('click', function() {
+        document.getElementById('card-body').style.display = 'none';
+        document.getElementById('database-view').style.display = 'none';
+        document.getElementById('settings-view').style.display = 'block';
+        document.getElementById('guide-view').style.display = 'none';
+      });
+      
+      guideBtn.addEventListener('click', function() {
+        document.getElementById('card-body').style.display = 'none';
+        document.getElementById('database-view').style.display = 'none';
+        document.getElementById('settings-view').style.display = 'none';
+        document.getElementById('guide-view').style.display = 'block';
+      });
+      
+      commandsBtn.addEventListener('click', function() {
+        document.getElementById('card-body').style.display = 'block';
+        document.getElementById('database-view').style.display = 'none';
+        document.getElementById('settings-view').style.display = 'none';
+        document.getElementById('guide-view').style.display = 'none';
+        
+        // Show available commands (in a real implementation, this would display a list of commands)
+        agentStatus.textContent = 'Here are some available commands...';
+        setTimeout(() => {
+          agentStatus.textContent = 'Ready to assist';
+        }, 2000);
+      });
+
+      // Position Agent Lee card
+      agentLeeCard.style.display = 'none';
+      agentLeeCard.style.top = '100px';
+      agentLeeCard.style.right = '20px';
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

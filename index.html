@@ -1,0 +1,3078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artist Empowerment Platform | RapidWebDevelop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+  <link href="https://vjs.zencdn.net/7.20.3/video-js.css" rel="stylesheet">
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js"></script>
+  <style>
+    /* Global transparency settings for all overlays */
+    [style*="background: rgba(18, 18, 18, 0.3)"],
+    [style*="background: rgba(18, 18, 18,0.3)"],
+    [style*="background:rgba(18, 18, 18, 0.3)"],
+    [style*="background:rgba(18, 18, 18,0.3)"] {
+      background: rgba(18, 18, 18, 0.75) !important;
+      backdrop-filter: blur(5px) !important;
+    }
+    
+    /* Animation for the MacMillion microphone */
+    @keyframes pulse {
+      0% { opacity: 0.4; transform: scale(0.9); }
+      100% { opacity: 0.8; transform: scale(1.1); }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    
+    /* Platform page specific styles */
+    
+    /* Full page background configuration */
+    .bg-image-1, .bg-image-2 {
+      display: block;
+    }
+    body {
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Fixed header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: var(--darker);
+    }
+    
+    /* Main content padding to account for fixed header */
+    .main-content {
+      padding-top: 8rem; /* Reduced to prevent excessive space */
+      padding-bottom: 8rem; /* Reduced padding at bottom */
+      will-change: transform; /* Performance optimization */
+      min-height: calc(100vh - 60px); /* Ensure content takes up full viewport */
+      position: relative; 
+      overflow-y: auto; /* Enable vertical scrolling */
+    }
+    
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 4rem;
+      margin-top: 5rem;
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 2rem;
+    }
+    
+    /* Section background styles */
+    body {
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .main-content {
+      position: relative;
+      background: none;
+      z-index: 2;
+    }
+    
+    /* Background images configuration */
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      opacity: 0;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: opacity 1s ease;
+    }
+    
+    /* Make the first 3 images visible but at different scroll positions */
+    .bg-image:nth-child(1) {
+      opacity: 1;
+    }
+    
+    /* JavaScript will handle showing different images on scroll */
+    
+    /* Background image configuration for responsive sections */
+    .bg-section {
+      position: relative;
+    }
+    
+    .bg-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 0.9;
+    }
+    
+    .bg-image-1 {
+      background-image: url('snnitztfxr.png');
+      opacity: 1;
+    }
+    
+    .bg-image-2 {
+      background-image: url('20gqrtflua.png');
+      opacity: 1;
+    }
+    
+    /* Additional background images */
+    .bg-image-3 {
+      background-image: url('6kg76695fx.png');
+    }
+    
+    .bg-image-4 {
+      background-image: url('gsw5pxqr4t.png');
+    }
+    
+    .bg-image-5 {
+      background-image: url('pvh8l6w69g.png');
+    }
+    
+    .bg-image-6 {
+      background-image: url('gvcsbty5pt.png');
+    }
+    
+    .bg-image-7 {
+      background-image: url('tf7r0kdo5a.png');
+    }
+    
+    .bg-image-8 {
+      background-image: url('q34r5857q8.png');
+    }
+    
+    .bg-image-9 {
+      background-image: url('doox00rxhg.png');
+    }
+    
+    .section-1::before {
+      background-image: url('snnitztfxr.png');
+    }
+    
+    .section-2::before {
+      background-image: url('20gqrtflua.png');
+    }
+    
+    .section-3::before {
+      background-image: url('6kg76695fx.png');
+    }
+    
+    .intro-section {
+      padding: 8rem 0 4rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .intro-section .container {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(18, 18, 18, 0.85);
+      padding: 2rem;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+    }
+    
+    .section-title {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+      color: var(--light);
+    }
+    
+    .section-subtitle {
+      font-size: 2rem;
+      color: var(--light-gray);
+      max-width: 800px;
+      margin: 0 auto 5rem;
+      line-height: 1.6;
+    }
+    
+    .platform-tab-section {
+      padding: 4rem 0 8rem;
+      position: relative;
+      background: transparent;
+      margin-bottom: 4rem;
+    }
+    
+    .platform-tab-section .container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .floating-element {
+      display: none;
+    }
+
+    /* Profile Card Styles - Exact Match to Provided Example */
+    .profile-card {
+      width: 100%;
+      height: 480px;
+      perspective: 800px;
+      margin-bottom: 4rem;
+    }
+    
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: 0.8s;
+      position: relative;
+    }
+    
+    .profile-card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-front {
+      background: rgba(18, 18, 18, 0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .card-front img {
+      width: 100%;
+      height: 85%;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: transparent;
+    }
+    
+    .card-front h3 {
+      color: var(--light);
+      font-size: 2.4rem;
+      margin: 0;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 6px;
+      display: inline-block;
+    }
+    
+    .card-back {
+      transform: rotateY(180deg);
+      background: rgba(18, 18, 18, 0.75);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      position: relative;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .card-back h4, .card-back p, .card-back ul, .card-back li {
+      background-color: rgba(18, 18, 18, 0.6);
+      padding: 5px;
+      border-radius: 4px;
+    }
+    
+    .card-back h4 {
+      color: var(--primary);
+      font-size: 2.8rem;
+      margin: 0 0 20px 0;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card-back p {
+      color: var(--light-gray);
+      font-size: 1.6rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    
+    .card-back ul {
+      color: var(--light-gray);
+      font-size: 1.5rem;
+      line-height: 1.6;
+      text-align: left;
+      list-style: none;
+      padding-left: 5px;
+      margin-bottom: 25px;
+    }
+    
+    .card-back ul li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .card-back ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+    }
+    
+    .card-back .template-btn {
+      display: inline-block;
+      background: var(--gradient-1);
+      color: var(--light);
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: auto;
+      transition: all 0.3s ease;
+    }
+    
+    .card-back .template-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 51, 102, 0.3);
+    }
+
+    .card-hover-tip {
+      text-align: center;
+      margin-bottom: 4rem;
+      color: white;
+      font-size: 1.6rem;
+      font-weight: bold;
+      background: rgba(18, 18, 18, 0.75);
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .card-hover-tip i {
+      color: var(--primary);
+      margin: 0 5px;
+      animation: flip 2s infinite;
+    }
+    
+    @keyframes flip {
+      0% { transform: rotateY(0); }
+      50% { transform: rotateY(180deg); }
+      100% { transform: rotateY(360deg); }
+    }
+    
+    /* Tier specific colors */
+    .tier1 h3 {
+      color: #FFC107;
+    }
+    
+    .tier2 h3 {
+      color: #FF9800;
+    }
+    
+    .tier3 h3 {
+      color: #F44336;
+    }
+    
+    .tier4 h3 {
+      color: #9C27B0;
+    }
+    
+    /* SPA page transition styles */
+    .page-view {
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+    }
+    
+    .page-view.active {
+      opacity: 1;
+      pointer-events: auto;
+      position: relative;
+    }
+    
+    /* Make all cards darker and less transparent */
+    .card, .revenue-calculator, .fan-post, .fan-board-form, .nft-card, 
+    .payment-option, .contact-form, .story-card, .tier-card-front, .tier-card-back,
+    .chart-container, .album-breakdown, .track-list, .why-container .highlight-box,
+    div[style*="background: rgba"], div[style*="background:rgba"],
+    .platform-grid > div, .card-front, .card-back, .card-hover-tip,
+    .intro-section .container, .tier-card, .revenue-comparison, .rights-ownership,
+    .chart-card, .pie-chart-card, div[style*="background: rgba(18, 18, 18,"],
+    div[style*="background:rgba(18, 18, 18,"] {
+      background-color: rgba(18, 18, 18, 0.85) !important;
+      backdrop-filter: blur(5px) !important;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    /* Agent Lee Card */
+    #agent-lee-card {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      width: 380px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      z-index: 9999;
+      display: none;
+    }
+
+    /* Card Layout for Sidebar and Main Content */
+    .card-layout {
+      display: flex;
+      width: 100%;
+    }
+
+    /* Social Links Sidebar */
+    .social-sidebar {
+      width: 60px;
+      background: var(--color-secondary);
+      border-right: 1px solid var(--color-border);
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+
+    .social-section {
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      color: var(--light-gray);
+      margin-bottom: 8px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--dark);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .social-link:hover {
+      transform: scale(1.15);
+      box-shadow: 0 5px 15px rgba(255, 51, 102, 0.4);
+      border-color: var(--primary);
+    }
+
+    /* Card Header */
+    .card-header {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: var(--light-gray);
+      border-bottom: 1px solid var(--light-gray);
+      cursor: move;
+    }
+
+    .agent-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+      border: 2px solid var(--primary);
+      overflow: hidden;
+    }
+
+    .agent-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--dark);
+      margin-bottom: 4px;
+    }
+
+    .agent-status {
+      font-size: 14px;
+      color: var(--gray);
+    }
+
+    /* Card Controls */
+    .card-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .card-control-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #666;
+      transition: all 0.2s;
+    }
+
+    .card-control-btn:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: scale(1.1);
+    }
+
+    /* Card Body */
+    .card-body {
+      padding: 16px;
+      background: var(--light);
+      color: var(--dark);
+    }
+
+    /* Voice Command Buttons */
+    .voice-commands {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .command-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .command-row:first-child {
+      margin-bottom: 4px;
+    }
+
+    .command-btn {
+      flex: 1;
+      padding: 12px 0;
+      border-radius: 20px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      background-color: #f1f3f5;
+      color: var(--dark);
+    }
+
+    .listen-btn {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .stop-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .finished-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+
+    .command-btn:hover {
+      filter: brightness(0.95);
+      transform: translateY(-2px);
+    }
+
+    /* Message Input */
+    .message-input-container {
+      margin: 16px 0;
+      position: relative;
+    }
+
+    .message-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: 1px solid var(--light-gray);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .message-input:focus {
+      border-color: var(--primary);
+    }
+
+    /* Tool Buttons */
+    .tool-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background-color: #f8f9fa;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--dark);
+    }
+
+    .tool-btn:hover {
+      background-color: #e9ecef;
+      transform: translateY(-2px);
+    }
+
+    /* Database View */
+    #database-view, #settings-view, #guide-view {
+      padding: 16px;
+      border-top: 1px solid var(--light-gray);
+    }
+
+    .database-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .database-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--dark);
+    }
+
+    .database-content {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--light-gray);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+    }
+
+    /* Card Footer */
+    .card-footer {
+      padding: 12px;
+      background-color: var(--light-gray);
+      border-top: 1px solid var(--light-gray);
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      #agent-lee-card {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+        height: auto;
+      }
+      
+      .command-row {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .platform-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+
+      .profile-card {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Optimized Preloader -->
+  <div class="loader">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+      </div>
+      <div class="loader-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="loader-text">Loading Experience...</div>
+    </div>
+  </div>
+  
+  <!-- Preload critical images -->
+  <link rel="preload" href="ljiyalhml9.png" as="image">
+  <link rel="preload" href="q1na43uu3d.png" as="image">
+  <link rel="preload" href="fgg1cbjti0.png" as="image">
+  <link rel="preload" href="5qsjcmep51.png" as="image">
+
+  <!-- Agent Lee Floating Card -->
+  <!-- Agent Lee Card -->
+  <div id="agent-lee-card">
+    <!-- Card Layout with Sidebar -->
+    <div class="card-layout">
+      <!-- Social Media and Development Links Sidebar -->
+      <div class="social-sidebar">
+        <!-- Social Media Section -->
+        <div class="social-section">
+          <h4 class="section-title">Social</h4>
+          <div class="social-links">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/" target="_blank" class="social-link" aria-label="Facebook" style="border-color: #1877F2;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <circle cx="16" cy="16" r="16" fill="#1877F2"/>
+                <path d="M22 16h-4v8h-4v-8h-3v-4h3v-2.5C14 7.57 15.57 6 18.5 6H22v4h-2.5C18.22 10 18 10.22 18 10.5V12h4l-1 4z" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" aria-label="Instagram" style="border-color: #E4405F;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <defs>
+                  <radialGradient id="instagram-gradient" cx="0.5" cy="0.5" r="0.8">
+                    <stop offset="0%" stop-color="#feda75"/>
+                    <stop offset="50%" stop-color="#d62976"/>
+                    <stop offset="100%" stop-color="#4f5bd5"/>
+                  </radialGradient>
+                </defs>
+                <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#instagram-gradient)"/>
+                <circle cx="16" cy="16" r="7" fill="none" stroke="#fff" stroke-width="2"/>
+                <circle cx="23" cy="9" r="1.5" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- X (Twitter) -->
+            <a href="https://x.com/" target="_blank" class="social-link" aria-label="X" style="border-color: #555555;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <rect width="32" height="32" fill="#000"/>
+                <path d="M24.6 8H20.9L16 14.2L11.1 8H7.4L14.1 16.7L7 24H10.7L16 17.2L21.3 24H25L17.9 16.7L24.6 8Z" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/" target="_blank" class="social-link" aria-label="YouTube" style="border-color: #FF0000;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <rect width="32" height="32" rx="6" fill="#FF0000"/>
+                <polygon points="13,10 23,16 13,22" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/" target="_blank" class="social-link" aria-label="LinkedIn" style="border-color: #0077B5;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <rect width="32" height="32" rx="8" fill="#0077B5"/>
+                <rect x="8" y="13" width="3" height="11" fill="#fff"/>
+                <circle cx="9.5" cy="10.5" r="1.5" fill="#fff"/>
+                <rect x="14" y="16" width="3" height="8" fill="#fff"/>
+                <rect x="19" y="16" width="3" height="8" fill="#fff"/>
+                <rect x="14" y="13" width="8" height="2" fill="#fff"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Development Section -->
+        <div class="social-section">
+          <h4 class="section-title">Dev</h4>
+          <div class="social-links">
+            <!-- GitHub -->
+            <a href="https://github.com/" target="_blank" class="social-link" aria-label="GitHub" style="border-color: #181717;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <circle cx="16" cy="16" r="16" fill="#181717"/>
+                <path fill="#fff" d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5 0 3.8 2.5 7 6 8.1.4.1.6-.2.6-.5v-1.7c-2.4.5-2.9-1-2.9-1-.4-1-1-1.3-1-1.3-.8-.6.1-.6.1-.6.9.1 1.3.9 1.3.9.8 1.3 2.1.9 2.6.7.1-.6.3-.9.6-1.1-1.9-.2-3.9-.9-3.9-4 0-.9.3-1.6.8-2.2-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.7-.2 1.4-.3 2.1-.3s1.4.1 2.1.3c1.5-1 2.2-.8 2.2-.8.5 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.2 0 3.1-2 3.8-3.9 4 .3.2.6.7.6 1.4v2c0 .3.2.6.6.5 3.5-1.1 6-4.3 6-8.1 0-4.7-3.8-8.5-8.5-8.5z"/>
+              </svg>
+            </a>
+            
+            <!-- VS Code -->
+            <a href="https://code.visualstudio.com/" target="_blank" class="social-link" aria-label="Visual Studio Code" style="border-color: #007ACC;">
+              <svg viewBox="0 0 512 512" width="26" height="26">
+                <g>
+                  <path d="M497.9 74.2L406.6 29.2c-18.2-9.3-40.5-3.1-51.6 14.2L170.6 256 355 468.6c11.1 17.3 33.4 23.5 51.6 14.2l91.3-45c21.8-10.7 21.8-41.1 0-51.8L305.2 256l192.7-130c21.8-10.7 21.8-41.1 0-51.8z" fill="#0065A9"/>
+                  <path d="M355 43.4c-11.1-17.3-33.4-23.5-51.6-14.2l-91.3 45c-21.8 10.7-21.8 41.1 0 51.8L305.2 256 212.1 340.4c-21.8 10.7-21.8 41.1 0 51.8l91.3 45c18.2 9.3 40.5 3.1 51.6-14.2L497.9 256z" fill="#007ACC"/>
+                  <path d="M212.1 340.4L355 468.6c11.1 17.3 33.4 23.5 51.6 14.2l91.3-45c21.8-10.7 21.8-41.1 0-51.8L305.2 256z" fill="#1F9CF0"/>
+                  <path d="M119.8 238.7l-91.3-45c-18.2-9.3-40.5-3.1-51.6 14.2-11.1 17.3-3.1 40.5 14.2 51.8l91.3 45c18.2 9.3 40.5 3.1 51.6-14.2 11.1-17.3 3.1-40.5-14.2-51.8z" fill="#007ACC"/>
+                  <path d="M119.8 273.3c-18.2 9.3-40.5 3.1-51.6-14.2l-91.3-45c-21.8-10.7-21.8-41.1 0-51.8l91.3-45c18.2-9.3 40.5-3.1 51.6 14.2l91.3 45c21.8 10.7 21.8 41.1 0 51.8z" fill="#0065A9"/>
+                </g>
+              </svg>
+            </a>
+            
+            <!-- Docker -->
+            <a href="https://www.docker.com/" target="_blank" class="social-link" aria-label="Docker" style="border-color: #2496ED;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <rect width="32" height="32" rx="8" fill="#2496ED"/>
+                <rect x="5" y="20" width="22" height="4" rx="2" fill="#fff"/>
+                <rect x="7" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="11" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="15" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="19" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="23" y="16" width="2" height="3" rx="1" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- Discord -->
+            <a href="https://discord.com/" target="_blank" class="social-link" aria-label="Discord" style="border-color: #5865F2;">
+              <svg viewBox="0 0 32 32" width="26" height="26">
+                <rect width="32" height="32" rx="8" fill="#5865F2"/>
+                <path d="M23.5,10c-1.5-0.7-3.1-1.2-4.8-1.5c-0.2,0.4-0.5,0.9-0.6,1.2c-1.8-0.3-3.5-0.3-5.3,0c-0.2-0.4-0.4-0.8-0.6-1.2c-1.7,0.3-3.3,0.8-4.8,1.5c-3,4.6-3.9,9-3.4,13.4c2,1.5,3.9,2.4,5.8,2.9c0.5-0.6,0.9-1.3,1.2-2.1c-0.6-0.2-1.2-0.5-1.8-0.9c0.2-0.1,0.3-0.2,0.5-0.3c3.5,1.7,7.3,1.7,10.8,0c0.2,0.1,0.3,0.2,0.5,0.3c-0.6,0.4-1.2,0.7-1.8,0.9c0.3,0.7,0.7,1.4,1.2,2.1c1.9-0.5,3.8-1.4,5.8-2.9C27.5,17.7,26.1,13.3,23.5,10z M12.3,19.6c-1.1,0-2-1-2-2.3C10.3,16,11.2,15,12.3,15c1.1,0,2,1,2,2.3C14.3,18.6,13.4,19.6,12.3,19.6z M19.7,19.6c-1.1,0-2-1-2-2.3c0-1.3,0.9-2.3,2-2.3c1.1,0,2,1,2,2.3C21.7,18.6,20.8,19.6,19.7,19.6z" fill="#fff"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Card Content -->
+      <div class="main-content">
+        <!-- Card Header with Avatar -->
+        <div class="card-header" id="card-header">
+          <div class="agent-avatar">
+            <img src="98civa4fmf.png" alt="Agent Lee" style="width: 60px; height: 60px; border-radius: 50%; object-fit: cover;">
+          </div>
+          <h3 class="agent-name">Agent Lee</h3>
+          <p class="agent-status" id="agent-status">Ready to assist</p>
+          
+          <div class="card-controls">
+            <button class="card-control-btn" id="minimize-btn" title="Minimize">_</button>
+            <button class="card-control-btn" id="close-btn" title="Close">×</button>
+          </div>
+        </div>
+    
+        <!-- Card Body with Commands -->
+        <div class="card-body" id="card-body">
+          <div class="voice-commands">
+            <div class="command-row">
+              <button class="command-btn listen-btn" id="listen-btn">
+                <span class="icon">🎤</span> Listen
+              </button>
+              <button class="command-btn stop-btn" id="stop-btn">
+                <span class="icon">✋</span> Stop Talking
+              </button>
+            </div>
+            <div class="command-row">
+              <button class="command-btn finished-btn" id="finished-btn">
+                <span class="icon">✅</span> Finished Speaking
+              </button>
+            </div>
+          </div>
+          
+          <div class="message-input-container">
+            <input type="text" class="message-input" id="message-input" placeholder="Type a message...">
+          </div>
+          
+          <div class="tool-buttons">
+            <button class="tool-btn" id="commands-btn">
+              <span class="icon">📜</span> Commands
+            </button>
+            <button class="tool-btn" id="guide-btn">
+              <span class="icon">🧭</span> Guide
+            </button>
+            <button class="tool-btn" id="memory-btn">
+              <span class="icon">🧠</span> Memory
+            </button>
+            <button class="tool-btn" id="settings-btn">
+              <span class="icon">⚙️</span> Settings
+            </button>
+          </div>
+        </div>
+    
+        <!-- Database View (Memory) - Initially Hidden -->
+        <div id="database-view" style="display: none;">
+          <div class="database-header">
+            <div class="database-title">Memory Database</div>
+            <div class="database-status">
+              <div class="status-dot"></div>
+              <span id="db-status-text">Connected</span>
+            </div>
+          </div>
+          
+          <div class="database-content">
+            <!-- Memory content will be displayed here -->
+          </div>
+        </div>
+    
+        <!-- Settings View - Initially Hidden -->
+        <div id="settings-view" style="display: none;">
+          <div class="database-header">
+            <div class="database-title">Settings</div>
+          </div>
+          
+          <div class="database-content">
+            <!-- Settings content will be displayed here -->
+          </div>
+        </div>
+    
+        <!-- Guide View - Initially Hidden -->
+        <div id="guide-view" style="display: none;">
+          <div class="database-header">
+            <div class="database-title">Guide</div>
+          </div>
+          
+          <div id="guide-steps">
+            <!-- Guide steps will be displayed here -->
+          </div>
+        </div>
+    
+        <!-- Card Footer -->
+        <div class="card-footer">
+          Agent Lee Professional v1.0 • LEEWAY™ System
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Agent Chat Button -->
+  <div class="agent-chat-toggle" id="agent-lee-toggle">
+    <i class="fas fa-robot"></i>
+  </div>
+  
+  <!-- Agent Lee Chat Button -->
+  <div class="agent-chat-toggle" id="agent-lee-toggle">
+    <i class="fas fa-robot"></i>
+  </div>
+
+  <!-- Fixed Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <div class="logo-container">
+          <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+          <span>RapidWebDevelop</span>
+          <span class="parent-company">by LEEWAY™</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#" data-page="beginning" class="nav-link">Beginning</a></li>
+          <li class="nav-item"><a href="#" data-page="truth" class="nav-link">The Truth</a></li>
+          <li class="nav-item"><a href="#" data-page="win" class="nav-link">All I Do Is Win</a></li>
+          <li class="nav-item"><a href="#" data-page="community" class="nav-link">Community</a></li>
+          <li class="nav-item"><a href="research-development.html" class="nav-link">R&D</a></li>
+          <li class="nav-item"><a href="platforms.html" class="nav-link">Platforms</a></li>
+          <li class="nav-item"><a href="#" data-page="launch" class="nav-link btn">Launch</a></li>
+        </ul>
+        <div class="mobile-menu">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-content" style="flex: 1;">
+    <!-- Background Images -->
+    <div class="bg-image bg-image-1"></div>
+    <div class="bg-image bg-image-2"></div>
+    <div class="bg-image bg-image-3"></div>
+    <div class="bg-image bg-image-4"></div>
+    <div class="bg-image bg-image-5"></div>
+    <div class="bg-image bg-image-6"></div>
+    <div class="bg-image bg-image-7"></div>
+    <div class="bg-image bg-image-8"></div>
+    <div class="bg-image bg-image-9"></div>
+
+    <!-- BEGINNING PAGE -->
+    <div id="beginning" class="page-view" data-region="core">
+      <!-- Main Fixed Background -->
+      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('sjyruq6xxo.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;"></div>
+      <!-- Hero Section -->
+      <section class="hero" style="color: #fff; position: relative; z-index: 1; background: rgba(18, 18, 18, 0.1);">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('images/hero-bg.jpg'); background-size: cover; background-position: center; opacity: 0.9; z-index: -1;"></div>
+        <div class="floating-element float-1"></div>
+        <div class="floating-element float-2"></div>
+        <div class="floating-element float-3"></div>
+        <div class="container">
+          <div class="hero-content fade-up">
+            <h1 class="hero-title">YOUR <span class="highlight">DIGITAL</span> STAGE AWAITS</h1>
+            <p class="hero-subtitle">"We believe every artist is a brand. Every creator is a company. And every voice deserves to be heard — with nothing standing in its way."</p>
+            <div class="hero-buttons">
+              <a href="#" data-page="truth" class="btn btn-lg">Discover The Truth</a>
+              <a href="#" data-page="win" class="btn btn-secondary btn-lg">How Artists Win</a>
+            </div>
+          </div>
+        </div>
+        <div class="hero-scroll">
+          <span class="scroll-text">SCROLL DOWN</span>
+          <i class="fas fa-chevron-down scroll-icon"></i>
+        </div>
+      </section>
+
+      <!-- Story Section -->
+      <section id="story" class="story-section" style="position: relative; padding: 5rem 0;">
+        <div class="container story-container" style="position: relative; z-index: 2;">
+          <div class="row align-items-center mb-5">
+            <div class="col-md-3">
+              <div style="display: flex; justify-content: flex-end; align-items: center; height: 100%;">
+                <div class="mic-animation" style="position: relative;">
+                  <div class="glow-effect" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(255, 51, 102, 0.5) 0%, rgba(0,0,0,0) 70%); border-radius: 50%; animation: pulse 2s infinite alternate; z-index: -1;"></div>
+                  <img src="odpbbwwx05.png" alt="MacMillion Microphone" style="width: auto; height: 150px; display: block; filter: drop-shadow(0 0 20px rgba(255, 51, 102, 0.8)); animation: float 3s ease-in-out infinite;">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <h2 class="section-title fade-up" style="font-size: 4.5rem; text-align: center; flex-direction: column;">
+                <span style="display: block;">THE STORY OF</span>
+                <span class="text-gradient" style="font-size: 4.5rem; text-transform: uppercase;">MACMILLION</span>
+              </h2>
+            </div>
+          </div>
+          <div class="story-card fade-up delay-2" style="background: rgba(18, 18, 18, 0.6);">
+            <p class="story-text" style="background: rgba(0, 0, 0, 0.6); padding: 1rem; border-radius: 10px;">
+              This platform was born from purpose, not profit. It began with an artist named <strong>MacMillion</strong>, a gifted rapper and producer from <strong>Milwaukee</strong>. He wasn't backed by a label or corporate machine. What he had was talent, passion—and a message.
+            </p>
+            
+            <p class="story-text" style="background: rgba(0, 0, 0, 0.6); padding: 1rem; border-radius: 10px;">
+              MacMillion knew the truth that most never speak aloud: that contracts designed to "elevate" artists often <em>strip them of their rights</em>, that distribution deals come with handcuffs, and that <strong>96% of an artist's revenue</strong> is lost before it ever reaches them.
+            </p>
+            
+            <div class="quote" style="background: rgba(0, 0, 0, 0.7); padding: 1.5rem; border-radius: 10px; border-left: 5px solid var(--primary); margin: 2rem 0; text-align: center;">
+              "Before he passed, he left behind a promise: That one day, there would be a platform—not owned by labels, but <em>by the artist</em>."
+            </div>
+            
+            <p class="story-text" style="background: rgba(0, 0, 0, 0.6); padding: 1rem; border-radius: 10px;">
+              A place where musicians could tell their stories, connect directly with fans, and sell their art—without being silenced or stripped of their value.
+            </p>
+            
+            <p class="story-text" style="font-weight: bold; text-align: center; margin-top: 3rem; background: rgba(0, 0, 0, 0.7); padding: 1.5rem; border-radius: 10px; font-size: 1.8rem;">
+              That promise became <span class="text-gradient">LEEWAY + RapidWebDevelop.com</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mission Section -->
+      <section class="mission-section">
+        <div style="position: relative;"></div>
+        <div class="container mission-container">
+          <div class="mission-content fade-up">
+            <h2 class="mission-title heading-accent">OUR MISSION</h2>
+            <p class="mission-text">
+              Welcome to the only platform where artists don't just survive — they <strong>win</strong>. You've stepped into a space designed to <strong>unleash your full creative potential</strong>, not contain it. You won't just have a website — you'll have an <em>empire</em> in motion.
+            </p>
+            
+            <div class="mission-highlight">
+              <h4>No subscriptions. No middlemen. Just you.</h4>
+              <p>Your music, your message, your movement — and everything built to help you rise.</p>
+            </div>
+            
+            <p class="mission-text">
+              We give every artist a path to <strong>grow on their own terms</strong> — from a single-page Jump-Off all the way to a complete Brand ecosystem. Each tier represents a stage of growth in your career, with Agent Lee guiding you every step of the way.
+            </p>
+            
+            <div style="display: flex; gap: 1.5rem; margin-top: 3rem;">
+              <a href="#" data-page="truth" class="btn">The Truth About Labels</a>
+              <a href="#" data-page="win" class="btn btn-secondary">How Artists Win</a>
+            </div>
+          </div>
+          
+          <div class="mission-image fade-up delay-3">
+            <img src="koo3cb4l4t.png" alt="Artist with guitar performing">
+          </div>
+        </div>
+      </section>
+
+      <!-- What You Get Section -->
+      <section class="overview" style="padding: 10rem 0;">
+        <div style="position: relative;"></div>
+        <div class="container">
+          <h2 class="section-title text-center fade-up">⚡ WHAT YOU GET HERE</h2>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 3rem; margin-top: 5rem;">
+            <div class="fade-up delay-2" style="background: rgba(18, 18, 18, 0.5); border-radius: 2rem; padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div style="font-size: 3.6rem; color: var(--primary); margin-bottom: 2rem;">
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <h3 style="font-size: 2.4rem; margin-bottom: 1.5rem;">Fully Custom Website</h3>
+              <p style="color: var(--light-gray); line-height: 1.7;">Mobile-first design that puts your artistry front and center. Your digital stage built to impress and convert.</p>
+            </div>
+            
+            <div class="fade-up delay-3" style="background: rgba(18, 18, 18, 0.5); border-radius: 2rem; padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div style="font-size: 3.6rem; color: var(--accent); margin-bottom: 2rem;">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h3 style="font-size: 2.4rem; margin-bottom: 1.5rem;">Agent Lee Assistant</h3>
+              <p style="color: var(--light-gray); line-height: 1.7;">Your AI guide that helps manage content, engage fans, and optimize your platform through simple voice commands.</p>
+            </div>
+            
+            <div class="fade-up delay-4" style="background: rgba(18, 18, 18, 0.5); border-radius: 2rem; padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div style="font-size: 3.6rem; color: var(--primary-light); margin-bottom: 2rem;">
+                <i class="fas fa-store"></i>
+              </div>
+              <h3 style="font-size: 2.4rem; margin-bottom: 1.5rem;">Merch & Music Store</h3>
+              <p style="color: var(--light-gray); line-height: 1.7;">Sell your music, merchandise, and digital products directly to fans without platforms taking massive cuts.</p>
+            </div>
+            
+            <div class="fade-up delay-5" style="background: rgba(18, 18, 18, 0.5); border-radius: 2rem; padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <div style="font-size: 3.6rem; color: var(--secondary-light); margin-bottom: 2rem;">
+                <i class="fas fa-cube"></i>
+              </div>
+              <h3 style="font-size: 2.4rem; margin-bottom: 1.5rem;">NFT & Digital Assets</h3>
+              <p style="color: var(--light-gray); line-height: 1.7;">Create and sell limited edition digital collectibles, exclusive content, and blockchain-verified memorabilia.</p>
+            </div>
+          </div>
+          
+          <div class="text-center" style="margin-top: 5rem;">
+            <a href="#" data-page="launch" class="btn btn-lg">Start Your Legacy</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why This Matters Section -->
+      <section class="why-matters">
+        <div style="position: relative;"></div>
+        <div class="container why-container fade-up">
+          <h2 class="why-title heading-accent text-center">WHY THIS MATTERS</h2>
+          <p class="why-text">
+            Because MacMillion's story isn't rare. It's <em>common</em>. Too common.
+          </p>
+          <p class="why-text">
+            Every week, artists are tricked out of their catalogs.<br>
+            Every day, they're locked out of their earnings.<br>
+            Every hour, they lose more of their voice to someone else's algorithm.
+          </p>
+          
+          <div class="highlight-box">
+            <p class="why-text" style="margin-bottom: 0;">
+              But <strong>not here</strong>. Here, <em>you own the rights</em>. You keep the profits. You tell the story.
+            </p>
+          </div>
+          
+          <p class="quotes">
+            "MacMillion may be gone—but his mission lives in every artist who steps on this platform."
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <!-- THE TRUTH PAGE -->
+    <div id="truth" class="page-view" data-region="ui">
+      <!-- Main Fixed Background -->
+      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('5wop4hayh9.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;"></div>
+      <!-- Hero Section -->
+      <section class="hero" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.3);"></div>
+        <div class="floating-element float-1" style="opacity: 0.1;"></div>
+        <div class="container">
+          <div class="hero-content fade-up">
+            <h1 class="hero-title">THE <span class="text-gradient">ALGEBRA</span> OF EXPLOITATION</h1>
+            <p class="hero-subtitle">"It's not just unfair. It's engineered to break you."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Label Math Section -->
+      <section class="section-padding" style="background: rgba(18, 18, 18, 0.05);">
+        <div class="container">
+          <h2 class="section-title text-center fade-up">THE ALGEBRA OF EXPLOITATION</h2>
+          <p class="overview-text text-center fade-up delay-2" style="margin-bottom: 5rem;">
+            The major labels (Universal Music Group, Sony Music, Warner Music) have engineered a system that mathematically guarantees artists receive pennies while corporations collect dollars. Here's the <strong>exact industry math</strong> that MacMillion discovered.
+          </p>
+          
+          <div class="row align-items-center mb-5">
+            <div class="col-md-6 fade-up delay-2">
+              <div class="pie-chart-card" style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; transition: all 0.3s ease-in-out; cursor: zoom-in; transform-origin: center;">
+                <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary); text-align: center;">Platform Revenue Distribution (2025)</h4>
+                <div class="magnify-wrapper" style="overflow: hidden; border-radius: 1rem; position: relative;">
+                  <img src="ujqnp5dw63.png" alt="Platform Revenue Distribution Pie Chart" class="img-fluid magnify-img" style="width: 100%; height: auto; transition: transform 0.5s ease; transform-origin: center;">
+                </div>
+                <p style="font-size: 1.4rem; margin-top: 1.5rem; color: var(--light-gray); text-align: center;">Hover to Enlarge</p>
+              </div>
+            </div>
+            <div class="col-md-6 fade-up delay-3">
+              <div style="background: rgba(255, 51, 102, 0.1); padding: 2.5rem; border-radius: 1rem; border-left: 4px solid var(--primary);">
+                <h4 style="font-size: 2.2rem; margin-bottom: 1.5rem;">Platform Exploitation</h4>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">The streaming industry has created a complex web of revenue distribution that minimizes artist payouts. As shown in the chart, even the most "artist-friendly" platforms retain significant portions of generated revenue.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; font-weight: 500;">This systematic approach ensures that regardless of platform choice, artists remain at the financial disadvantage - collecting pennies while platforms and labels collect dollars.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional Charts about Artist Exploitation -->
+          <div class="row align-items-center mb-5 mt-5">
+            <div class="col-md-6 fade-up">
+              <div class="chart-card" style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; transition: all 0.3s ease-in-out; cursor: zoom-in; transform-origin: center;">
+                <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary); text-align: center;">Streaming Royalty Breakdown</h4>
+                <div class="magnify-wrapper" style="overflow: hidden; border-radius: 1rem; position: relative;">
+                  <img src="r8oi3lm3eg.png" alt="Streaming Royalty Distribution Chart" class="img-fluid magnify-img" style="width: 100%; height: auto; transition: transform 0.5s ease; transform-origin: center;">
+                </div>
+                <p style="font-size: 1.4rem; margin-top: 1.5rem; color: var(--light-gray); text-align: center;">Artists receive only 12% of streaming revenue</p>
+              </div>
+            </div>
+            <div class="col-md-6 fade-up delay-1">
+              <div style="background: rgba(255, 51, 102, 0.1); padding: 2.5rem; border-radius: 1rem; border-left: 4px solid var(--primary);">
+                <h4 style="font-size: 2.2rem; margin-bottom: 1.5rem;">The Streaming Illusion</h4>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">While streaming platforms tout accessibility and global reach, the economic reality for artists is grim. For every dollar paid by subscribers, artists typically receive just pennies after platforms, labels, and distributors take their cut.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; font-weight: 500;">A million streams might sound impressive, but it often translates to less than minimum wage compensation for the creators who made the music possible.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row align-items-center mb-5 mt-5">
+            <div class="col-md-6 fade-up delay-2">
+              <div style="background: rgba(255, 51, 102, 0.1); padding: 2.5rem; border-radius: 1rem; border-left: 4px solid var(--primary);">
+                <h4 style="font-size: 2.2rem; margin-bottom: 1.5rem;">The Rights Trap</h4>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">Beyond revenue shares, the industry's greatest exploitation comes through rights ownership. Most label contracts require artists to surrender ownership of their master recordings permanently.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; font-weight: 500;">This means even if an artist becomes wildly successful, they'll never fully own or control their greatest works - creating generational wealth for corporations instead of creators and their families.</p>
+              </div>
+            </div>
+            <div class="col-md-6 fade-up delay-3">
+              <div class="chart-card" style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; transition: all 0.3s ease-in-out; cursor: zoom-in; transform-origin: center;">
+                <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary); text-align: center;">Label vs Independent Earnings</h4>
+                <div class="magnify-wrapper" style="overflow: hidden; border-radius: 1rem; position: relative;">
+                  <img src="p6u9ss66cp.png" alt="Label vs Independent Artist Earnings Chart" class="img-fluid magnify-img" style="width: 100%; height: auto; transition: transform 0.5s ease; transform-origin: center;">
+                </div>
+                <p style="font-size: 1.4rem; margin-top: 1.5rem; color: var(--light-gray); text-align: center;">Independent artists earn 5-7x more per stream</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Record Label Contract Breakdown -->
+          <div class="row align-items-center mb-5 mt-5">
+            <div class="col-md-6 fade-up">
+              <div style="background: rgba(18, 18, 18, 0.8); border-radius: 2rem; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h4 style="font-size: 2.2rem; margin-bottom: 2rem; color: var(--primary);">The Label Contract Trap</h4>
+                <div style="position: relative; height: 300px; margin-bottom: 2rem;">
+                  <canvas id="labelContractChart"></canvas>
+                </div>
+                <p style="font-size: 1.4rem; color: var(--light-gray); text-align: center; font-style: italic;">Based on actual contract analysis from 50+ major label deals</p>
+              </div>
+            </div>
+            
+            <div class="col-md-6 fade-up delay-2">
+              <div style="background: rgba(18, 18, 18, 0.8); border-radius: 2rem; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h4 style="font-size: 2.2rem; margin-bottom: 1.5rem; color: #FF6B6B;">Contract Red Flags</h4>
+                <ul style="list-style: none; padding: 0;">
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: #FF6B6B;"><i class="fas fa-exclamation-triangle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Rights Assignment</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Labels own your masters for 30+ years, controlling how and where your music appears</p>
+                    </div>
+                  </li>
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: #FF6B6B;"><i class="fas fa-exclamation-triangle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Recoupment Clauses</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">All expenses paid by the label must be repaid from your royalties before you make a cent</p>
+                    </div>
+                  </li>
+                  <li style="display: flex; align-items: flex-start;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: #FF6B6B;"><i class="fas fa-exclamation-triangle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">360 Deals</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Labels take a percentage of ALL your income, including touring, merchandise and endorsement deals</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Industry Comparisons -->
+          <div class="mt-5">
+            <h3 class="text-center mb-5" style="font-size: 2.8rem; color: var(--primary);">THE TRUTH IN NUMBERS</h3>
+            <div class="row">
+              <!-- Independent vs Label -->
+              <div class="col-md-4 fade-up">
+                <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2.5rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <div style="text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-dollar-sign" style="font-size: 4rem; color: var(--primary);"></i>
+                    <h4 style="margin-top: 1.5rem; font-size: 2rem;">Per Sale Revenue</h4>
+                  </div>
+                  
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                    <div style="text-align: center; flex: 1;">
+                      <div style="font-size: 3rem; font-weight: 700; color: var(--primary);">$0.32</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Independent</p>
+                    </div>
+                    <div style="text-align: center; flex: 1;">
+                      <div style="font-size: 3rem; font-weight: 700; color: #FF6B6B;">$0.04</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Label Artist</p>
+                    </div>
+                  </div>
+                  <p style="font-size: 1.5rem; text-align: center; color: var(--light-gray);">Per $0.99 digital music sale</p>
+                </div>
+              </div>
+              
+              <!-- Streaming Payout -->
+              <div class="col-md-4 fade-up delay-1">
+                <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2.5rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <div style="text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-music" style="font-size: 4rem; color: var(--primary);"></i>
+                    <h4 style="margin-top: 1.5rem; font-size: 2rem;">Streams To Earn $1,000</h4>
+                  </div>
+                  
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                    <div style="text-align: center; flex: 1;">
+                      <div style="font-size: 2.6rem; font-weight: 700; color: var(--primary);">110K</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Independent</p>
+                    </div>
+                    <div style="text-align: center; flex: 1;">
+                      <div style="font-size: 2.6rem; font-weight: 700; color: #FF6B6B;">3.2M</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Label Artist</p>
+                    </div>
+                  </div>
+                  <p style="font-size: 1.5rem; text-align: center; color: var(--light-gray);">Number of streams needed on average</p>
+                </div>
+              </div>
+              
+              <!-- Creative Control -->
+              <div class="col-md-4 fade-up delay-2">
+                <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2.5rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <div style="text-align: center; margin-bottom: 2rem;">
+                    <i class="fas fa-paint-brush" style="font-size: 4rem; color: var(--primary);"></i>
+                    <h4 style="margin-top: 1.5rem; font-size: 2rem;">Creative Control</h4>
+                  </div>
+                  
+                  <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+                    <div style="text-align: center; flex: 1;">
+                      <div style="font-size: 3rem; font-weight: 700; color: var(--primary);">100%</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Independent</p>
+                    </div>
+                    <div style="text-align: center; flex: 1;">
+                      <div style="font-size: 3rem; font-weight: 700; color: #FF6B6B);">15%</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Label Artist</p>
+                    </div>
+                  </div>
+                  <p style="font-size: 1.5rem; text-align: center; color: var(--light-gray);">Percentage of artistic decisions in your control</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Industry Reality Section -->
+      <section class="section-padding" style="background: rgba(18, 18, 18, 0.05);">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <div style="background: rgba(25, 25, 25, 0.7); border-radius: 2rem; padding: 3rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="font-size: 2.8rem; margin-bottom: 2rem; color: var(--primary);">THE REALITY OF SUCCESS</h3>
+                <p style="font-size: 1.6rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light-gray);">Of all artists signed to major labels, less than 1% will ever break even on their advances. This means 99% of signed artists never see a royalty check.</p>
+                
+                <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                  <div style="width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--primary); font-size: 3rem; font-weight: 700; color: white; margin-right: 2rem;">1%</div>
+                  <p style="font-size: 1.6rem; margin: 0; color: var(--light-gray);">Only 1% of major label artists earn enough to recoup their advances and start receiving royalty payments</p>
+                </div>
+                
+                <div style="padding: 2rem; background: rgba(255, 51, 102, 0.1); border-radius: 1rem; border-left: 3px solid var(--primary); margin-top: 3rem;">
+                  <p style="font-size: 1.7rem; font-style: italic; color: var(--light-gray); margin: 0;">
+                    "Most artists are making a living giving labels and platforms 80% of their income. We're here to reverse that equation."
+                  </p>
+                </div>
+              </div>  
+            </div>
+            
+            <div class="col-md-6">
+              <div style="background: rgba(25, 25, 25, 0.7); border-radius: 2rem; padding: 3rem; height: 100%; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h4 style="font-size: 2.4rem; margin-bottom: 2.5rem; text-align: center; color: var(--primary);">Typical Record Deal Timeline</h4>
+                
+                <div class="timeline" style="position: relative; padding-left: 3rem;">
+                  <!-- Timeline line -->
+                  <div style="position: absolute; top: 0; bottom: 0; left: 15px; width: 2px; background: var(--primary);"></div>
+                  
+                  <!-- Timeline item 1 -->
+                  <div style="position: relative; margin-bottom: 3.5rem;">
+                    <div style="position: absolute; left: -3rem; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; background: var(--primary); border-radius: 50%; color: white; font-weight: bold;">1</div>
+                    <h5 style="font-size: 1.8rem; margin-bottom: 0.8rem;">Advance Payment</h5>
+                    <p style="font-size: 1.5rem; color: var(--light-gray);">Artist receives $25K-250K (must use this to produce album, videos, etc.)</p>
+                  </div>
+                  
+                  <!-- Timeline item 2 -->
+                  <div style="position: relative; margin-bottom: 3.5rem;">
+                    <div style="position: absolute; left: -3rem; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; background: var(--primary); border-radius: 50%; color: white; font-weight: bold;">2</div>
+                    <h5 style="font-size: 1.8rem; margin-bottom: 0.8rem;">Album Release</h5>
+                    <p style="font-size: 1.5rem; color: var(--light-gray);">Label promotes album (adds to recoupable expenses)</p>
+                  </div>
+                  
+                  <!-- Timeline item 3 -->
+                  <div style="position: relative; margin-bottom: 3.5rem;">
+                    <div style="position: absolute; left: -3rem; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; background: var(--primary); border-radius: 50%; color: white; font-weight: bold;">3</div>
+                    <h5 style="font-size: 1.8rem; margin-bottom: 0.8rem;">Recoupment Period</h5>
+                    <p style="font-size: 1.5rem; color: var(--light-gray);">Average 3-5 years of earning nothing while label recoups costs</p>
+                  </div>
+                  
+                  <!-- Timeline item 4 -->
+                  <div style="position: relative;">
+                    <div style="position: absolute; left: -3rem; width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; background: #FF6B6B; border-radius: 50%; color: white; font-weight: bold;">4</div>
+                    <h5 style="font-size: 1.8rem; margin-bottom: 0.8rem;">Reality Check</h5>
+                    <p style="font-size: 1.5rem; color: var(--light-gray);">99% of artists never recoup; label keeps rights to music forever</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 360 Deal Exploitation Section -->
+      <section class="section-padding" style="background: rgba(18, 18, 18, 0.05);">
+        <div class="container">
+          <h2 class="section-title text-center fade-up">THE 360 DEAL TRAP</h2>
+          <p class="overview-text text-center fade-up delay-2" style="margin-bottom: 3rem;">
+            The 360 deal has become the music industry's most controversial contractual arrangement, designed to maximize label profits while limiting artist autonomy.
+          </p>
+          
+          <div class="row align-items-center mb-5">
+            <div class="col-md-6 fade-up">
+              <div style="background: rgba(25, 25, 25, 0.7); border-radius: 2rem; padding: 3rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="font-size: 2.4rem; margin-bottom: 2rem; color: var(--primary);">HOW 360 DEALS WORK</h3>
+                <p style="font-size: 1.6rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light-gray);">Unlike traditional record deals that focused primarily on music sales, 360 deals entitle labels to percentages of virtually all artist revenue streams:</p>
+                
+                <ul style="list-style: none; padding-left: 0;">
+                  <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem; color: var(--light-gray);">
+                    <i class="fas fa-arrow-right" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>50-85% of all music sales and streaming</span>
+                  </li>
+                  <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem; color: var(--light-gray);">
+                    <i class="fas fa-arrow-right" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>30-50% of merchandise revenue</span>
+                  </li>
+                  <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem; color: var(--light-gray);">
+                    <i class="fas fa-arrow-right" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>15-30% of touring income</span>
+                  </li>
+                  <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem; color: var(--light-gray);">
+                    <i class="fas fa-arrow-right" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>20-35% of brand deals and endorsements</span>
+                  </li>
+                </ul>
+              </div>  
+            </div>
+            
+            <div class="col-md-6 fade-up delay-1">
+              <div class="chart-card" style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; transition: all 0.3s ease-in-out; cursor: zoom-in; transform-origin: center;">
+                <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary); text-align: center;">Revenue Extraction Example</h4>
+                <div style="position: relative; padding: 2rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; margin-bottom: 1.5rem;">
+                  <p style="font-size: 1.6rem; color: var(--light-gray); margin-bottom: 1.5rem;">For an artist generating $100,000 across income streams:</p>
+                  
+                  <div style="margin-bottom: 1rem;">
+                    <p style="font-size: 1.5rem; margin: 0; font-weight: 600; display: flex; justify-content: space-between;">
+                      <span>Streaming ($40,000)</span>
+                      <span style="color: #FF6B6B;">Label takes: $20,000 (50%)</span>
+                    </p>
+                  </div>
+                  
+                  <div style="margin-bottom: 1rem;">
+                    <p style="font-size: 1.5rem; margin: 0; font-weight: 600; display: flex; justify-content: space-between;">
+                      <span>Merchandise ($30,000)</span>
+                      <span style="color: #FF6B6B;">Label takes: $9,000 (30%)</span>
+                    </p>
+                  </div>
+                  
+                  <div style="margin-bottom: 1rem;">
+                    <p style="font-size: 1.5rem; margin: 0; font-weight: 600; display: flex; justify-content: space-between;">
+                      <span>Touring ($20,000)</span>
+                      <span style="color: #FF6B6B;">Label takes: $3,000 (15%)</span>
+                    </p>
+                  </div>
+                  
+                  <div style="margin-bottom: 1rem;">
+                    <p style="font-size: 1.5rem; margin: 0; font-weight: 600; display: flex; justify-content: space-between;">
+                      <span>Brand Deals ($10,000)</span>
+                      <span style="color: #FF6B6B;">Label takes: $2,000 (20%)</span>
+                    </p>
+                  </div>
+                  
+                  <div style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                    <p style="font-size: 1.7rem; margin: 0; font-weight: 700; display: flex; justify-content: space-between;">
+                      <span>TOTALS:</span>
+                      <span>$100,000</span>
+                    </p>
+                    <p style="font-size: 1.7rem; margin-top: 0.5rem; font-weight: 700; display: flex; justify-content: space-between;">
+                      <span>LABEL SHARE:</span>
+                      <span style="color: #FF6B6B;">$34,000 (34%)</span>
+                    </p>
+                    <p style="font-size: 1.4rem; color: var(--light-gray); margin-top: 1rem; font-style: italic;">Note: This doesn't include recoupment deductions from the artist's $66,000 remainder.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Streaming Platforms Section -->
+      <section class="section-padding" style="background: rgba(18, 18, 18, 0.05);">
+        <div class="container">
+          <h2 class="section-title text-center fade-up">STREAMING ECONOMICS</h2>
+          <p class="overview-text text-center fade-up delay-2" style="margin-bottom: 3rem;">
+            The economics behind streaming services have created a system where most artists struggle to earn living wages from their music.
+          </p>
+          
+          <div class="row align-items-center mb-5">
+            <div class="col-md-6 fade-up delay-2">
+              <div style="background: rgba(255, 51, 102, 0.1); padding: 2.5rem; border-radius: 1rem; border-left: 4px solid var(--primary); height: 100%;">
+                <h4 style="font-size: 2.2rem; margin-bottom: 1.5rem;">Spotify's Payment Model</h4>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">Spotify uses a "stream share" payment system that pays rights holders (typically record labels or publishers), not artists directly.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">Artists earn approximately one-third of a cent per stream, meaning an artist needs around <strong>800,000 monthly streams just to earn minimum wage</strong>.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7;">Meanwhile, Spotify reported a record 1.14 billion Euros in net income in 2024 and claims to have paid $10 billion to the music industry that same year - primarily to labels and publishers, not artists.</p>
+              </div>
+            </div>
+            
+            <div class="col-md-6 fade-up delay-3">
+              <div class="chart-card" style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; transition: all 0.3s ease-in-out; cursor: zoom-in; transform-origin: center;">
+                <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary); text-align: center;">Streams Needed For Minimum Wage</h4>
+                <div style="position: relative; padding: 2.5rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem; text-align: center;">
+                  <div style="font-size: 7rem; font-weight: 700; color: #FF6B6B; margin-bottom: 1rem; text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);">8.9M</div>
+                  <p style="font-size: 2rem; color: var(--light-gray); margin-bottom: 0.5rem;">Annual Streams Required</p>
+                  <div style="width: 50px; height: 2px; background: var(--primary); margin: 1.5rem auto;"></div>
+                  <div style="display: flex; justify-content: space-around; margin-top: 2rem;">
+                    <div>
+                      <div style="font-size: 3.5rem; font-weight: 700; color: var(--primary);">745K</div>
+                      <p style="font-size: 1.4rem; color: var(--light-gray);">Monthly Streams</p>
+                    </div>
+                    <div>
+                      <div style="font-size: 3.5rem; font-weight: 700; color: var(--primary);">82</div>
+                      <p style="font-size: 1.4rem; color: var(--light-gray);">Streams Per Hour, 24/7</p>
+                    </div>
+                  </div>
+                  <p style="font-size: 1.4rem; color: var(--light-gray); margin-top: 1.5rem; font-style: italic;">Only the top 0.6% of Spotify artists achieve this level of streaming.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row align-items-center mt-5">
+            <div class="col-md-6 fade-up">
+              <div class="chart-card" style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 2rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); overflow: hidden; transition: all 0.3s ease-in-out; cursor: zoom-in; transform-origin: center;">
+                <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem; color: var(--primary); text-align: center;">YouTube's Payment Issues</h4>
+                <div style="position: relative; padding: 2rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem;">
+                  <div style="display: flex; align-items: center; margin-bottom: 2rem;">
+                    <i class="fab fa-youtube" style="font-size: 4rem; color: #FF0000; margin-right: 2rem;"></i>
+                    <div>
+                      <p style="font-size: 2rem; font-weight: 600; margin: 0; color: var(--light);">1 Billion+ Users</p>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">World's largest music platform</p>
+                    </div>
+                  </div>
+                  <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 2rem; color: var(--light-gray);">Despite having 30x more users than Spotify, YouTube pays artists disproportionately less, often citing that their users are "light music listeners who spend an average of one hour per month consuming music".</p>
+                  <div style="padding: 1.5rem; background: rgba(255, 0, 0, 0.1); border-radius: 0.5rem; border-left: 3px solid #FF0000;">
+                    <p style="font-size: 1.5rem; color: var(--light-gray); margin: 0; font-style: italic;">"The value gap between what platforms like YouTube pay artists and what they earn from music must be fixed." <br>- EU Digital Chief Andrus Ansip</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 fade-up delay-1">
+              <div style="background: rgba(255, 51, 102, 0.1); padding: 2.5rem; border-radius: 1rem; border-left: 4px solid var(--primary); height: 100%;">
+                <h4 style="font-size: 2.2rem; margin-bottom: 1.5rem;">The Recoupment Racket</h4>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">Recoupment is one of the most insidious aspects of traditional record deals - a high-interest loan system that keeps many artists in perpetual debt to their labels.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">When labels cover expenses like studio time, video production, and marketing, these are not gifts but loans that must be repaid before an artist sees any royalty payments.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 1.5rem;">The critical catch: These expenses are recouped only from the artist's small portion of royalties, while the label continues receiving their much larger percentage unaffected.</p>
+                <p style="font-size: 1.6rem; line-height: 1.7; font-weight: 500;">In practical terms, an artist with a 15% royalty rate may have to generate millions in revenue before seeing their first royalty check beyond their initial advance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Industry Power Imbalance Section -->
+      <section class="section-padding" style="background: rgba(18, 18, 18, 0.05);">
+        <div class="container">
+          <h2 class="section-title text-center fade-up">ESCAPING THE TRAP</h2>
+          <p class="overview-text text-center fade-up delay-2" style="margin-bottom: 3rem;">
+            The music industry systematically disadvantages artists while enriching corporations through exploitative contracts, minimal streaming payouts, and complex recoupment systems.
+          </p>
+          
+          <div class="row align-items-center mb-5">
+            <div class="col-md-6 fade-up">
+              <div style="background: rgba(25, 25, 25, 0.7); border-radius: 2rem; padding: 3rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="font-size: 2.4rem; margin-bottom: 2rem; color: var(--primary);">THE POWER IMBALANCE</h3>
+                <p style="font-size: 1.6rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light-gray);">The fundamental problem is a severe power imbalance. Major labels and streaming platforms hold nearly all the leverage in negotiations, while individual artists have virtually none.</p>
+                
+                <div style="background: rgba(0, 0, 0, 0.2); padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                  <p style="font-size: 1.6rem; color: var(--light-gray); margin-bottom: 0;">The stark reality is that today's music industry often functions as an extractive system where those who create the product that drives all revenue – the music itself – frequently receive the smallest share of the profits their work generates.</p>
+                </div>
+                
+                <p style="font-size: 1.6rem; line-height: 1.8; margin-bottom: 0; font-weight: 500; color: var(--light-gray);">This platform was created to correct this imbalance, allowing artists to own their work, control their revenue streams, and build sustainable careers on their own terms.</p>
+              </div>  
+            </div>
+            
+            <div class="col-md-6 fade-up delay-1">
+              <div style="background: rgba(25, 25, 25, 0.7); border-radius: 2rem; padding: 3rem; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="font-size: 2.4rem; margin-bottom: 2rem; color: var(--primary); text-align: center;">THE WAY FORWARD</h3>
+                
+                <ul style="list-style: none; padding: 0;">
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: var(--primary);"><i class="fas fa-check-circle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">100% Ownership</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Maintain complete ownership of your master recordings and publishing rights</p>
+                    </div>
+                  </li>
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: var(--primary);"><i class="fas fa-check-circle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Direct Fan Relationships</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Build and maintain direct relationships with fans without platforms in the middle</p>
+                    </div>
+                  </li>
+                  <li style="display: flex; align-items: flex-start; margin-bottom: 2rem;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: var(--primary);"><i class="fas fa-check-circle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Fair Compensation</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Keep 85% of all revenue generated through your platform</p>
+                    </div>
+                  </li>
+                  <li style="display: flex; align-items: flex-start;">
+                    <div style="min-width: 3rem; margin-right: 1.5rem; color: var(--primary);"><i class="fas fa-check-circle" style="font-size: 2.4rem;"></i></div>
+                    <div>
+                      <h5 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Creative Freedom</h5>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Complete creative control over your music, branding, and marketing</p>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Contract Analyzer CTA -->
+      <section class="section-padding" style="background: rgba(18, 18, 18, 0.7); border-radius: 1.5rem; margin: 2rem auto; max-width: 1200px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('odpbbwwx05.png'); background-size: 150px; opacity: 0.1; background-position: right center; background-repeat: no-repeat;"></div>
+        <div class="container text-center" style="position: relative; z-index: 2;">
+          <h2 class="section-title fade-up" style="font-size: 3rem; margin-bottom: 2rem;">ANALYZE YOUR CONTRACT</h2>
+          <p class="overview-text fade-up delay-2" style="max-width: 800px; margin: 0 auto 3rem; font-size: 1.7rem;">
+            Learn exactly how your deal may be exploiting you with our interactive contract analyzer tool. Understand your rights, recoupment terms, and potential losses.
+          </p>
+          <div class="fade-up delay-3" style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+            <a href="contract-analyzer.html" class="btn btn-lg" style="background: var(--gradient-1); font-size: 1.8rem; padding: 1.2rem 2.5rem;">
+              <i class="fas fa-file-contract" style="margin-right: 10px;"></i> Industry Contract Analyzer
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Call To Action -->
+      <section class="section-padding" style="background: rgba(255, 255, 255, 0.6);">
+        <div class="container text-center">
+          <h2 class="section-title fade-up" style="color: #333;">THERE IS A WAY OUT</h2>
+          <p class="overview-text fade-up delay-2" style="max-width: 700px; margin: 0 auto 4rem; color: #333;">
+            Now that you know the truth about how the industry is designed to exploit artists, it's time to see the opportunity that awaits you.
+          </p>
+          <a href="#" data-page="win" class="btn btn-lg fade-up delay-3">See How Artists Win</a>
+        </div>
+      </section>
+      
+      <!-- Add Chart.js Script -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Only execute this if we're on the truth page
+          if (document.getElementById('labelContractChart')) {
+            // Contract breakdown chart
+            var labelContractCtx = document.getElementById('labelContractChart').getContext('2d');
+            var labelContractChart = new Chart(labelContractCtx, {
+              type: 'bar',
+              data: {
+                labels: ['Label', 'Distributor', 'Publishing', 'Management', 'Artist'],
+                datasets: [{
+                  label: 'Percentage of Revenue',
+                  data: [58, 12, 15, 10, 5],
+                  backgroundColor: [
+                    '#FF6B6B',
+                    '#FF9E7D',
+                    '#FFD166',
+                    '#06D6A0',
+                    '#118AB2'
+                  ],
+                  borderWidth: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    display: false
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: function(context) {
+                        return context.parsed.y + '%';
+                      }
+                    }
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      },
+                      callback: function(value) {
+                        return value + '%';
+                      }
+                    },
+                    grid: {
+                      color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  },
+                  x: {
+                    ticks: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    },
+                    grid: {
+                      display: false
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      </script>
+    </div>
+
+    <!-- ALL I DO IS WIN PAGE -->
+    <div id="win" class="page-view" data-region="mcp">
+      <!-- Main Fixed Background -->
+      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('75sb732atn.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;"></div>
+      <!-- Hero Section -->
+      <section class="hero" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.3);"></div>
+        <div class="floating-element float-3" style="opacity: 0.2;"></div>
+        <div class="container">
+          <div class="hero-content fade-up">
+            <h1 class="hero-title">ALL I DO IS <span class="text-gradient" style="color: var(--light);">WIN</span></h1>
+            <p class="hero-subtitle">"Now that you know the truth — it's time to see the opportunity."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Artist Freedom Section -->
+      <section class="section-padding" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.3);"></div>
+        
+        <div class="container" style="position: relative; z-index: 5;">
+          <div class="text-center fade-up">
+            <h2 class="section-title">THE ARTIST LIBERATION SYSTEM</h2>
+            <p class="overview-text" style="max-width: 800px; margin: 0 auto 4rem; font-size: 1.8rem;">
+              How our platform transforms the industry's exploitation into artist empowerment
+            </p>
+          </div>
+          
+          <div class="row mb-5">
+            <!-- Revenue Comparison -->
+            <div class="col-md-6 fade-up">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);">
+                <h3 style="font-size: 2.4rem; margin-bottom: 2.5rem; color: var(--primary);">REVENUE COMPARISON</h3>
+                
+                <div style="position: relative; height: 300px; margin-bottom: 2rem;">
+                  <canvas id="revenueComparisonChart"></canvas>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; padding: 1.5rem; background: rgba(0, 0, 0, 0.2); border-radius: 1rem;">
+                  <div style="text-align: center;">
+                    <div style="font-size: 2.4rem; font-weight: 700; color: #FF6B6B;">15%</div>
+                    <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Traditional Label</p>
+                  </div>
+                  <div style="text-align: center;">
+                    <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">85%</div>
+                    <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Your Platform</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Rights Ownership -->
+            <div class="col-md-6 fade-up delay-1">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);">
+                <h3 style="font-size: 2.4rem; margin-bottom: 2.5rem; color: var(--primary);">RIGHTS OWNERSHIP</h3>
+                
+                <div class="comparison-table" style="margin-bottom: 2rem;">
+                  <div style="display: flex; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+                    <div style="flex: 1; font-weight: 700; font-size: 1.6rem;">Asset</div>
+                    <div style="flex: 1; text-align: center; font-weight: 700; font-size: 1.6rem;">Traditional Label</div>
+                    <div style="flex: 1; text-align: center; font-weight: 700; font-size: 1.6rem;">Your Platform</div>
+                  </div>
+                  
+                  <div style="display: flex; margin-bottom: 1.5rem; align-items: center;">
+                    <div style="flex: 1; font-size: 1.5rem;">Master Recordings</div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #FF6B6B;"><i class="fas fa-times"></i></div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #4ade80;"><i class="fas fa-check"></i></div>
+                  </div>
+                  
+                  <div style="display: flex; margin-bottom: 1.5rem; align-items: center;">
+                    <div style="flex: 1; font-size: 1.5rem;">Music Videos</div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #FF6B6B;"><i class="fas fa-times"></i></div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #4ade80;"><i class="fas fa-check"></i></div>
+                  </div>
+                  
+                  <div style="display: flex; margin-bottom: 1.5rem; align-items: center;">
+                    <div style="flex: 1; font-size: 1.5rem;">Album Artwork</div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #FF6B6B;"><i class="fas fa-times"></i></div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #4ade80;"><i class="fas fa-check"></i></div>
+                  </div>
+                  
+                  <div style="display: flex; margin-bottom: 1.5rem; align-items: center;">
+                    <div style="flex: 1; font-size: 1.5rem;">Merchandise Rights</div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #FF6B6B;"><i class="fas fa-times"></i></div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #4ade80;"><i class="fas fa-check"></i></div>
+                  </div>
+                  
+                  <div style="display: flex; align-items: center;">
+                    <div style="flex: 1; font-size: 1.5rem;">Performance Rights</div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #FF6B6B;"><i class="fas fa-times"></i></div>
+                    <div style="flex: 1; text-align: center; font-size: 1.5rem; color: #4ade80;"><i class="fas fa-check"></i></div>
+                  </div>
+                </div>
+                
+                <div style="padding: 1.5rem; background: rgba(22, 163, 74, 0.1); border-radius: 1rem; display: flex; align-items: center;">
+                  <div style="margin-right: 1.5rem; color: #4ade80;">
+                    <i class="fas fa-shield-alt" style="font-size: 3rem;"></i>
+                  </div>
+                  <p style="font-size: 1.5rem; margin: 0; color: var(--light-gray);">
+                    Unlike labels, we never take ownership of your creative work. You maintain 100% control.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Featured Product Carousel Section -->
+          <div class="mt-5 mb-5">
+            <div class="text-center fade-up">
+              <h2 class="section-title">LIVE ARTIST STOREFRONT</h2>
+              <p class="overview-text" style="max-width: 800px; margin: 0 auto 4rem; font-size: 1.8rem;">
+                Your complete ecommerce ecosystem - sell directly to fans with no middlemen
+              </p>
+            </div>
+            
+            <!-- Product Carousel -->
+            <div class="fade-up" style="position: relative; margin: 2rem 0 6rem; overflow: hidden; border-radius: 1.5rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(10, 10, 10, 0.6); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);">
+              <div class="product-carousel" style="display: flex; transition: transform 0.5s ease; position: relative;">
+                <!-- Product Slide Navigation Dots -->
+                <div style="position: absolute; bottom: 15px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; z-index: 10;">
+                  <span style="width: 12px; height: 12px; background: var(--primary); border-radius: 50%; cursor: pointer;"></span>
+                  <span style="width: 12px; height: 12px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer;"></span>
+                  <span style="width: 12px; height: 12px; background: rgba(255,255,255,0.3); border-radius: 50%; cursor: pointer;"></span>
+                </div>
+                
+                <!-- Product Slide 1 -->
+                <div class="product-slide active" style="min-width: 100%; padding: 3rem; display: flex; align-items: center;">
+                  <div style="flex: 1; position: relative; overflow: hidden; border-radius: 1.5rem; box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);">
+                    <img src="va0lcjv4b9.png" alt="Album Release" style="width: 100%; max-width: 400px; transform: scale(1.05); transition: transform 0.5s ease;">
+                    <div style="position: absolute; top: 20px; left: 20px; background: var(--primary); color: #fff; padding: 8px 16px; border-radius: 4px; font-weight: 700; font-size: 1.2rem; transform: rotate(-5deg); box-shadow: 0 4px 8px rgba(0,0,0,0.2);">FEATURED</div>
+                  </div>
+                  <div style="flex: 1.5; padding: 0 2rem;">
+                    <div style="font-size: 1.2rem; color: var(--primary); margin-bottom: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px;">New Release</div>
+                    <h3 style="font-size: 3.6rem; margin-bottom: 2rem; background: linear-gradient(45deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(255,51,102,0.2);">The Uprising Album</h3>
+                    <p style="font-size: 1.8rem; margin-bottom: 2rem; color: var(--light-gray);">Your latest release with all rights retained. No label. No distributor cuts. Just you and your fans.</p>
+                    <div style="display: flex; margin-bottom: 2rem; font-size: 2.4rem; align-items: center;">
+                      <div style="margin-right: 2rem;"><span style="color: var(--accent); font-weight: 700; font-size: 3rem;">$9.99</span></div>
+                      <div style="text-decoration: line-through; color: var(--light-gray); opacity: 0.7;">$14.99</div>
+                      <div style="margin-left: auto; background: rgba(255,51,102,0.2); padding: 5px 10px; border-radius: 20px; font-size: 1.4rem; color: var(--primary);">33% OFF</div>
+                    </div>
+                    <div style="display: flex; gap: 1.5rem;">
+                      <button class="btn" style="display: flex; align-items: center; gap: 10px; padding: 14px 28px; font-size: 1.6rem; background: var(--gradient-1); border: none; box-shadow: 0 4px 15px rgba(255,51,102,0.3); transition: transform 0.2s ease, box-shadow 0.2s ease;">
+                        <i class="fas fa-shopping-cart"></i> Buy Now
+                      </button>
+                      <button class="btn btn-secondary" style="display: flex; align-items: center; gap: 10px; padding: 14px 28px; font-size: 1.6rem; transition: transform 0.2s ease;">
+                        <i class="fas fa-play"></i> Preview Tracks
+                      </button>
+                    </div>
+                    <div style="margin-top: 2rem; padding: 1.2rem; border-radius: 8px; background: rgba(22, 163, 74, 0.15); color: #4ade80; font-size: 1.4rem; width: fit-content; display: flex; align-items: center; gap: 10px; border-left: 3px solid #4ade80;">
+                      <i class="fas fa-check-circle" style="font-size: 1.8rem;"></i> You keep 85% ($8.49) of every sale
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Growth Metrics Section -->
+          <div class="row mb-5">
+            <div class="col-12 fade-up">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);">
+                <h3 style="font-size: 2.6rem; margin-bottom: 3rem; color: var(--primary); text-align: center;">GROWTH METRICS</h3>
+                
+                <div class="row">
+                  <!-- Metric 1 -->
+                  <div class="col-md-4">
+                    <div style="text-align: center; padding: 2rem;">
+                      <div style="font-size: 4rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;">
+                        6.2x
+                      </div>
+                      <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem;">More Revenue</h4>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Average increase in per-stream and per-sale revenue compared to traditional platforms</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Metric 2 -->
+                  <div class="col-md-4">
+                    <div style="text-align: center; padding: 2rem;">
+                      <div style="font-size: 4rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;">
+                        85%
+                      </div>
+                      <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Fan Conversion</h4>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Higher conversion rate from casual listener to paying fan with direct artist connection</p>
+                    </div>
+                  </div>
+                  
+                  <!-- Metric 3 -->
+                  <div class="col-md-4">
+                    <div style="text-align: center; padding: 2rem;">
+                      <div style="font-size: 4rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem;">
+                        3.8x
+                      </div>
+                      <h4 style="font-size: 1.8rem; margin-bottom: 1.5rem;">Artist Control</h4>
+                      <p style="font-size: 1.5rem; color: var(--light-gray);">Artists report feeling over 3x more in control of their career after switching to our platform</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Chart -->
+                <div style="position: relative; height: 300px; margin: 2rem 0 3rem;">
+                  <canvas id="growthMetricsChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Agent Lee Prompt -->
+          <div class="fade-up delay-2" style="background: rgba(18, 18, 18, 0.8); border-radius: 1.5rem; padding: 2.5rem; margin-bottom: 4rem; border: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; gap: 2rem;">
+            <div style="width: 5rem; height: 5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--primary); flex-shrink: 0;">
+              <i class="fas fa-robot" style="font-size: 2.4rem;"></i>
+            </div>
+            <div>
+              <p style="font-size: 1.6rem; margin-bottom: 0; font-style: italic; color: var(--light-gray);">
+                "This is what it looks like when you're selling directly to your fans. Complete control, higher margins, and a seamless buying experience."
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Artist Success Stories -->
+      <section class="section-padding" style="position: relative; background: rgba(18, 18, 18, 0.05);">
+        <div class="container">
+          <h2 class="section-title text-center fade-up">ARTIST SUCCESS STORIES</h2>
+          <p class="overview-text text-center fade-up" style="max-width: 800px; margin: 0 auto 5rem; font-size: 1.8rem;">
+            Real artists achieving real success on their own terms
+          </p>
+          
+          <div class="row">
+            <!-- Success Story 1 -->
+            <div class="col-md-4 fade-up">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 0; overflow: hidden; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="height: 260px; overflow: hidden; position: relative;">
+                  <img src="5922538.jpg" alt="Success Story 1" style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.5s ease;">
+                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 15px 20px; text-align: left;">
+                    <h4 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">JAYLEN ROSE</h4>
+                    <span style="font-size: 1.4rem; color: var(--primary); font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Hip-Hop Artist / Producer</span>
+                  </div>
+                </div>
+                <div style="padding: 2.5rem;">
+                  <p style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--light-gray); font-style: italic; position: relative;">
+                    <span style="font-size: 2.4rem; position: absolute; left: -10px; top: -10px; color: var(--primary); opacity: 0.5;">"</span>
+                    I turned down three major label deals to build on this platform. First year on my own, I made more than my friends who signed - and I kept all my masters.
+                    <span style="font-size: 2.4rem; position: absolute; right: -5px; bottom: -20px; color: var(--primary); opacity: 0.5;">"</span>
+                  </p>
+                  <div style="display: flex; justify-content: space-between; margin-top: 2rem; background: rgba(255, 51, 102, 0.1); border-radius: 10px; padding: 15px;">
+                    <div style="text-align: center;">
+                      <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">$87K</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">First Year</p>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">100%</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Rights Retained</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Success Story 2 -->
+            <div class="col-md-4 fade-up delay-1">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 0; overflow: hidden; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="height: 260px; overflow: hidden; position: relative;">
+                  <img src="5531027.jpg" alt="Success Story 2" style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.5s ease;">
+                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 15px 20px; text-align: left;">
+                    <h4 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">MAYA DREAMZ</h4>
+                    <span style="font-size: 1.4rem; color: var(--primary); font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Singer-Songwriter / Guitarist</span>
+                  </div>
+                </div>
+                <div style="padding: 2.5rem;">
+                  <p style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--light-gray); font-style: italic; position: relative;">
+                    <span style="font-size: 2.4rem; position: absolute; left: -10px; top: -10px; color: var(--primary); opacity: 0.5;">"</span>
+                    As an indie R&B artist, I was stuck in the streaming trap. Switched to this platform and built a direct community that buys everything I create.
+                    <span style="font-size: 2.4rem; position: absolute; right: -5px; bottom: -20px; color: var(--primary); opacity: 0.5;">"</span>
+                  </p>
+                  <div style="display: flex; justify-content: space-between; margin-top: 2rem; background: rgba(255, 51, 102, 0.1); border-radius: 10px; padding: 15px;">
+                    <div style="text-align: center;">
+                      <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">8.2K</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Subscribers</p>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">$12K</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Monthly Income</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Success Story 3 -->
+            <div class="col-md-4 fade-up delay-2">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 0; overflow: hidden; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                <div style="height: 260px; overflow: hidden; position: relative;">
+                  <img src="3480274.jpg" alt="Success Story 3" style="width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 0.5s ease;">
+                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(transparent, rgba(0,0,0,0.8)); padding: 15px 20px; text-align: left;">
+                    <h4 style="font-size: 2.2rem; margin-bottom: 0.5rem; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">ECHO COLLECTIVE</h4>
+                    <span style="font-size: 1.4rem; color: var(--primary); font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">Indie Rock Band</span>
+                  </div>
+                </div>
+                <div style="padding: 2.5rem;">
+                  <p style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--light-gray); font-style: italic; position: relative;">
+                    <span style="font-size: 2.4rem; position: absolute; left: -10px; top: -10px; color: var(--primary); opacity: 0.5;">"</span>
+                    We left our label after 5 years of making nothing. Built our platform here and funded our entire tour through direct fan support without a single loan.
+                    <span style="font-size: 2.4rem; position: absolute; right: -5px; bottom: -20px; color: var(--primary); opacity: 0.5;">"</span>
+                  </p>
+                  <div style="display: flex; justify-content: space-between; margin-top: 2rem; background: rgba(255, 51, 102, 0.1); border-radius: 10px; padding: 15px;">
+                    <div style="text-align: center;">
+                      <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">$65K</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">Tour Funded</p>
+                    </div>
+                    <div style="text-align: center;">
+                      <div style="font-size: 2.4rem; font-weight: 700; color: var(--primary);">15K</div>
+                      <p style="font-size: 1.4rem; margin: 0; color: var(--light-gray);">True Fans</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Add Chart.js Script for Win page -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Only execute if we're on the win page and the elements exist
+          if (document.getElementById('revenueComparisonChart')) {
+            // Revenue Comparison Chart
+            const revenueCtx = document.getElementById('revenueComparisonChart').getContext('2d');
+            const revenueChart = new Chart(revenueCtx, {
+              type: 'doughnut',
+              data: {
+                labels: ['You Keep', 'Platform Fee'],
+                datasets: [{
+                  data: [85, 15],
+                  backgroundColor: [
+                    'rgba(255, 51, 102, 0.8)',
+                    'rgba(100, 100, 100, 0.5)'
+                  ],
+                  borderWidth: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    }
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: function(context) {
+                        return context.label + ': ' + context.raw + '%';
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          }
+          
+          if (document.getElementById('growthMetricsChart')) {
+            // Growth Metrics Chart
+            const growthCtx = document.getElementById('growthMetricsChart').getContext('2d');
+            const growthChart = new Chart(growthCtx, {
+              type: 'bar',
+              data: {
+                labels: ['Year 1', 'Year 2', 'Year 3'],
+                datasets: [
+                  {
+                    label: 'Traditional Label',
+                    data: [12000, 15000, 18000],
+                    backgroundColor: 'rgba(100, 100, 100, 0.5)',
+                    borderColor: 'rgba(100, 100, 100, 1)',
+                    borderWidth: 1
+                  },
+                  {
+                    label: 'Your Platform',
+                    data: [35000, 62000, 94000],
+                    backgroundColor: 'rgba(255, 51, 102, 0.8)',
+                    borderColor: 'rgba(255, 51, 102, 1)',
+                    borderWidth: 1
+                  }
+                ]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    labels: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    }
+                  },
+                  tooltip: {
+                    callbacks: {
+                      label: function(context) {
+                        return context.dataset.label + ': $' + context.raw;
+                      }
+                    }
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      },
+                      callback: function(value) {
+                        return '$' + value;
+                      }
+                    },
+                    grid: {
+                      color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  },
+                  x: {
+                    ticks: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    },
+                    grid: {
+                      display: false
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      </script>
+    
+    <!-- Add hover effects for charts and mic card -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Microphone card hover effect
+        const micCard = document.querySelector('.mic-card');
+        if (micCard) {
+          micCard.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(0) scale(1.05)';
+            this.querySelector('.mic-card-inner').style.boxShadow = '0 15px 40px rgba(255, 51, 102, 0.7)';
+          });
+          
+          micCard.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.querySelector('.mic-card-inner').style.boxShadow = '0 10px 30px rgba(255, 51, 102, 0.4)';
+          });
+        }
+        
+        // Chart hover effects
+        const chartCards = document.querySelectorAll('.pie-chart-card, .chart-card');
+        chartCards.forEach(card => {
+          card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px) scale(1.02)';
+            this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.5)';
+            this.style.zIndex = '5';
+            
+            // Enlarge the image inside
+            const img = this.querySelector('.magnify-img');
+            if (img) {
+              img.style.transform = 'scale(1.15)';
+              img.style.filter = 'brightness(1.1)';
+            }
+          });
+          
+          card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+            this.style.boxShadow = '0 15px 35px rgba(0, 0, 0, 0.3)';
+            this.style.zIndex = '1';
+            
+            // Reset the image
+            const img = this.querySelector('.magnify-img');
+            if (img) {
+              img.style.transform = 'scale(1)';
+              img.style.filter = 'brightness(1)';
+            }
+          });
+        });
+      });
+    </script>
+    </div>
+    
+    <!-- COMMUNITY PAGE -->
+    <div id="community" class="page-view" data-region="ai">
+      <!-- Main Fixed Background -->
+      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('7eou20xevv.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;"></div>
+
+      <!-- Hero Section -->
+      <section class="hero" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.3);"></div>
+        <div class="container">
+          <div class="hero-content fade-up">
+            <h1 class="hero-title">THE FAN <span class="text-gradient">COMMUNITY</span></h1>
+            <p class="hero-subtitle">"Your fans aren't just consumers. They're your most valuable partners."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Community Hub Section -->
+      <section class="section-padding" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.3);"></div>
+        
+        <div class="container">
+          <h2 class="section-title text-center fade-up">COMMUNITY HUB</h2>
+          <p class="overview-text text-center fade-up delay-2" style="margin-bottom: 4rem;">
+            Your direct connection to fans - build relationships that go far beyond streaming platforms
+          </p>
+
+          <!-- Community Features -->
+          <div class="row mb-5">
+            <div class="col-md-4 fade-up">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                  <i class="fas fa-comments" style="font-size: 4rem; color: var(--primary);"></i>
+                </div>
+                <h4 style="font-size: 2.2rem; text-align: center; margin-bottom: 1.5rem;">Fan Board</h4>
+                <p style="font-size: 1.6rem; color: var(--light-gray); text-align: center; margin-bottom: 2rem;">
+                  Real-time discussion board where you can interact directly with your community
+                </p>
+                <ul style="list-style: none; padding-left: 0;">
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>Fan-to-fan interaction</span>
+                  </li>
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>AI moderation for safe spaces</span>
+                  </li>
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--primary); margin-right: 1rem;"></i>
+                    <span>Media & link sharing</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="col-md-4 fade-up delay-1">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                  <i class="fas fa-video" style="font-size: 4rem; color: var(--accent);"></i>
+                </div>
+                <h4 style="font-size: 2.2rem; text-align: center; margin-bottom: 1.5rem;">Live Streams</h4>
+                <p style="font-size: 1.6rem; color: var(--light-gray); text-align: center; margin-bottom: 2rem;">
+                  Host premium or free live events directly from your platform
+                </p>
+                <ul style="list-style: none; padding-left: 0;">
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--accent); margin-right: 1rem;"></i>
+                    <span>No platform fees on tickets</span>
+                  </li>
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--accent); margin-right: 1rem;"></i>
+                    <span>Interactive fan participation</span>
+                  </li>
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--accent); margin-right: 1rem;"></i>
+                    <span>Automatic recording & monetization</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="col-md-4 fade-up delay-2">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="text-align: center; margin-bottom: 2rem;">
+                  <i class="fas fa-gift" style="font-size: 4rem; color: var(--primary-light);"></i>
+                </div>
+                <h4 style="font-size: 2.2rem; text-align: center; margin-bottom: 1.5rem;">Exclusive Access</h4>
+                <p style="font-size: 1.6rem; color: var(--light-gray); text-align: center; margin-bottom: 2rem;">
+                  Create tiered membership levels for superfans
+                </p>
+                <ul style="list-style: none; padding-left: 0;">
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--primary-light); margin-right: 1rem;"></i>
+                    <span>Behind-the-scenes content</span>
+                  </li>
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--primary-light); margin-right: 1rem;"></i>
+                    <span>Early access to new releases</span>
+                  </li>
+                  <li style="display: flex; align-items: center; font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check" style="color: var(--primary-light); margin-right: 1rem;"></i>
+                    <span>Virtual & in-person meetups</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Fan Community Analytics Dashboard -->
+          <div class="row mb-5 fade-up">
+            <div class="col-12">
+              <div style="background: rgba(18, 18, 18, 0.7); border-radius: 2rem; padding: 3rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);">
+                <h3 style="font-size: 2.4rem; margin-bottom: 2.5rem; color: var(--primary);">FAN INSIGHTS DASHBOARD</h3>
+                
+                <div class="row align-items-center">
+                  <div class="col-md-4">
+                    <div class="dashboard-metrics" style="display: flex; flex-direction: column; gap: 2rem;">
+                      <div style="background: rgba(0, 0, 0, 0.3); padding: 2rem; border-radius: 1rem; display: flex; align-items: center;">
+                        <div style="margin-right: 2rem; width: 6rem; height: 6rem; border-radius: 50%; background: rgba(255, 51, 102, 0.1); display: flex; align-items: center; justify-content: center;">
+                          <i class="fas fa-users" style="font-size: 2.8rem; color: var(--primary);"></i>
+                        </div>
+                        <div>
+                          <div style="font-size: 3.2rem; font-weight: 700; color: var(--primary);">1,243</div>
+                          <p style="font-size: 1.4rem; color: var(--light-gray); margin: 0;">Active Community Members</p>
+                        </div>
+                      </div>
+                      
+                      <div style="background: rgba(0, 0, 0, 0.3); padding: 2rem; border-radius: 1rem; display: flex; align-items: center;">
+                        <div style="margin-right: 2rem; width: 6rem; height: 6rem; border-radius: 50%; background: rgba(255, 51, 102, 0.1); display: flex; align-items: center; justify-content: center;">
+                          <i class="fas fa-heart" style="font-size: 2.8rem; color: var(--primary);"></i>
+                        </div>
+                        <div>
+                          <div style="font-size: 3.2rem; font-weight: 700; color: var(--primary);">87%</div>
+                          <p style="font-size: 1.4rem; color: var(--light-gray); margin: 0;">Engagement Rate</p>
+                        </div>
+                      </div>
+                      
+                      <div style="background: rgba(0, 0, 0, 0.3); padding: 2rem; border-radius: 1rem; display: flex; align-items: center;">
+                        <div style="margin-right: 2rem; width: 6rem; height: 6rem; border-radius: 50%; background: rgba(255, 51, 102, 0.1); display: flex; align-items: center; justify-content: center;">
+                          <i class="fas fa-dollar-sign" style="font-size: 2.8rem; color: var(--primary);"></i>
+                        </div>
+                        <div>
+                          <div style="font-size: 3.2rem; font-weight: 700; color: var(--primary);">$4.8K</div>
+                          <p style="font-size: 1.4rem; color: var(--light-gray); margin: 0;">Fan Support This Month</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-md-8">
+                    <div style="position: relative; height: 300px;">
+                      <canvas id="fanEngagementChart"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Fan Board -->
+          <h3 class="text-center" style="font-size: 2.6rem; margin-bottom: 3rem; color: var(--primary);">THE FAN BOARD</h3>
+          
+          <div class="fan-board fade-up delay-3" style="max-width: 900px; margin: 0 auto;">
+            <div class="fan-board-posts" style="margin-bottom: 3rem;">
+              <!-- Fan posts -->
+              <div class="fan-post" style="background: rgba(18, 18, 18, 0.7); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div class="fan-post-header" style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                  <div class="fan-avatar" style="width: 5rem; height: 5rem; border-radius: 50%; background: var(--gradient-1); display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; font-weight: 700; font-size: 2rem; color: var(--light);">JD</div>
+                  <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 0.5rem;">James Davis</h4>
+                    <p style="font-size: 1.4rem; color: var(--light-gray); margin: 0;">Posted 2 days ago</p>
+                  </div>
+                </div>
+                <div class="fan-post-content">
+                  <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 2rem;">
+                    Your last album changed my life! The way you talk about breaking away from the industry standards really resonated with me as an indie filmmaker. Keep blazing your own trail! 🔥
+                  </p>
+                  <div class="fan-post-actions" style="display: flex; gap: 2rem; font-size: 1.4rem;">
+                    <button class="fan-like-btn" style="background: none; border: none; color: var(--light); display: flex; align-items: center; cursor: pointer;">
+                      <i class="fas fa-heart" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                      <span>42 Likes</span>
+                    </button>
+                    <button class="fan-reply-btn" style="background: none; border: none; color: var(--light); display: flex; align-items: center; cursor: pointer;">
+                      <i class="fas fa-reply" style="margin-right: 0.5rem;"></i>
+                      <span>Reply</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="fan-post" style="background: rgba(18, 18, 18, 0.7); border-radius: 1.5rem; padding: 2rem; margin-bottom: 2rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div class="fan-post-header" style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                  <div class="fan-avatar" style="width: 5rem; height: 5rem; border-radius: 50%; background: var(--gradient-2); display: flex; align-items: center; justify-content: center; margin-right: 1.5rem; font-weight: 700; font-size: 2rem; color: var(--light);">SM</div>
+                  <div>
+                    <h4 style="font-size: 1.8rem; margin-bottom: 0.5rem;">Sarah Martinez</h4>
+                    <p style="font-size: 1.4rem; color: var(--light-gray); margin: 0;">Posted 3 days ago</p>
+                  </div>
+                </div>
+                <div class="fan-post-content">
+                  <p style="font-size: 1.6rem; line-height: 1.7; margin-bottom: 2rem;">
+                    Just got my merch package today and the quality is AMAZING! The direct-to-fan model really shows in the care you put into everything. Can't wait for the virtual meet & greet next week! 💯
+                  </p>
+                  <div class="fan-post-actions" style="display: flex; gap: 2rem; font-size: 1.4rem;">
+                    <button class="fan-like-btn" style="background: none; border: none; color: var(--light); display: flex; align-items: center; cursor: pointer;">
+                      <i class="fas fa-heart" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                      <span>28 Likes</span>
+                    </button>
+                    <button class="fan-reply-btn" style="background: none; border: none; color: var(--light); display: flex; align-items: center; cursor: pointer;">
+                      <i class="fas fa-reply" style="margin-right: 0.5rem;"></i>
+                      <span>Reply</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="fan-board-form" style="background: rgba(18, 18, 18, 0.9); border-radius: 1.5rem; padding: 2.5rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <h3 style="font-size: 2.4rem; margin-bottom: 2rem;">Join the Conversation</h3>
+              <form id="fan-post-form">
+                <div style="margin-bottom: 2rem;">
+                  <label for="fan-name" style="display: block; margin-bottom: 1rem; font-size: 1.6rem; color: var(--light);">Your Name</label>
+                  <input type="text" id="fan-name" style="width: 100%; padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); color: var(--light); font-size: 1.6rem;">
+                </div>
+                
+                <div style="margin-bottom: 2rem;">
+                  <label for="fan-message" style="display: block; margin-bottom: 1rem; font-size: 1.6rem; color: var(--light);">Your Message</label>
+                  <textarea id="fan-message" rows="4" style="width: 100%; padding: 1.5rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); color: var(--light); font-size: 1.6rem; resize: vertical;"></textarea>
+                </div>
+                
+                <button type="submit" class="btn" style="width: 100%;">Post to Fan Board</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Add Chart.js Script for Community page -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Only execute if we're on the community page and the element exists
+          if (document.getElementById('fanEngagementChart')) {
+            // Fan Engagement Chart
+            const engagementCtx = document.getElementById('fanEngagementChart').getContext('2d');
+            const engagementChart = new Chart(engagementCtx, {
+              type: 'line',
+              data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [
+                  {
+                    label: 'Fan Engagement',
+                    data: [125, 320, 580, 860, 1050, 1243],
+                    borderColor: 'rgba(255, 51, 102, 1)',
+                    backgroundColor: 'rgba(255, 51, 102, 0.1)',
+                    tension: 0.4,
+                    fill: true
+                  },
+                  {
+                    label: 'Revenue ($)',
+                    data: [500, 1200, 2100, 3200, 4000, 4800],
+                    borderColor: 'rgba(0, 204, 153, 1)',
+                    backgroundColor: 'rgba(0, 204, 153, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    yAxisID: 'y1'
+                  }
+                ]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'top',
+                    labels: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    }
+                  }
+                },
+                scales: {
+                  y: {
+                    beginAtZero: true,
+                    ticks: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    },
+                    grid: {
+                      color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  },
+                  y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    ticks: {
+                      color: 'rgba(0, 204, 153, 0.7)',
+                      font: {
+                        size: 14
+                      },
+                      callback: function(value) {
+                        return '$' + value;
+                      }
+                    },
+                    grid: {
+                      drawOnChartArea: false
+                    }
+                  },
+                  x: {
+                    ticks: {
+                      color: 'rgba(255, 255, 255, 0.7)',
+                      font: {
+                        size: 14
+                      }
+                    },
+                    grid: {
+                      color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  }
+                }
+              }
+            });
+          }
+        });
+      </script>
+    </div>
+
+    <!-- PLATFORMS PAGE -->
+    <div id="platforms" class="page-view" data-region="utility">
+      <!-- Introduction Section -->
+      <section class="intro-section">
+        <div class="container">
+          <h1 class="section-title">PLATFORM TEMPLATES</h1>
+          <p class="section-subtitle">
+            Our platform templates are designed to grow with you at every stage of your career. From emerging artists to established brands, we provide the tools you need to take control of your music, your message, and your money.
+          </p>
+        </div>
+      </section>
+
+      <!-- Platform Templates Section -->
+      <section id="platform-templates" class="platform-tab-section">
+        <div class="floating-element float-1" style="width: 30rem; height: 30rem; top: 10%; right: 5%;"></div>
+        <div class="floating-element float-2" style="width: 25rem; height: 25rem; bottom: 20%; left: 5%; background: rgba(76, 201, 240, 0.5);"></div>
+        <div class="floating-element float-3" style="width: 20rem; height: 20rem; top: 40%; left: 15%; background: rgba(114, 9, 183, 0.4);"></div>
+        <div class="floating-element float-4" style="width: 15rem; height: 15rem; bottom: 15%; right: 10%; background: rgba(247, 37, 133, 0.4);"></div>
+        
+        <div class="container">
+          <p class="card-hover-tip">
+            Hover over any card to view details <i class="fas fa-sync"></i>
+          </p>
+          
+          <div class="platform-grid">
+            <!-- TIER 1: The Jump-Off Platform -->
+            <div class="profile-card tier1">
+              <div class="card-inner">
+                <div class="card-front">
+                  <img src="ljiyalhml9.png" alt="TIER 1: The Jump-Off Platform">
+                  <h3>THE JUMP-OFF</h3>
+                </div>
+                <div class="card-back">
+                  <h4>TIER 1: $500</h4>
+                  <p>A sleek one-page introduction to your artistry. Perfect for emerging artists who need a professional online presence without the complexity.</p>
+                  <ul>
+                    <li>Single-page responsive design</li>
+                    <li>Music/video embedding</li>
+                    <li>Basic bio and photo section</li>
+                    <li>Light merch integration</li>
+                    <li>Social media links & email collection</li>
+                    <li>Custom color scheme options</li>
+                  </ul>
+                  <a href="https://4citeb4u.github.io/THE-JUMPOFF/" class="template-btn" target="_blank">View Template</a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- TIER 2: The Influencer Platform -->
+            <div class="profile-card tier2">
+              <div class="card-inner">
+                <div class="card-front">
+                  <img src="q1na43uu3d.png" alt="TIER 2: The Influencer Platform">
+                  <h3>THE INFLUENCER</h3>
+                </div>
+                <div class="card-back">
+                  <h4>TIER 2: $1,000</h4>
+                  <p>Designed for artists building their community. Enhances fan engagement with interactive elements and expanded content areas.</p>
+                  <ul>
+                    <li>Multi-section responsive design</li>
+                    <li>Reel & social feed integration</li>
+                    <li>Giveaway functionality</li>
+                    <li>Sponsor/collab showcase</li>
+                    <li>Enhanced merch with bundles</li>
+                    <li>Basic analytics dashboard</li>
+                  </ul>
+                  <a href="https://4citeb4u.github.io/TheInfluencer/" class="template-btn" target="_blank">View Template</a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- TIER 3: The Momentum Platform -->
+            <div class="profile-card tier3">
+              <div class="card-inner">
+                <div class="card-front">
+                  <img src="fgg1cbjti0.png" alt="TIER 3: The Momentum Platform">
+                  <h3>THE MOMENTUM</h3>
+                </div>
+                <div class="card-back">
+                  <h4>TIER 3: $2,000</h4>
+                  <p>A comprehensive solution for established artists looking to monetize their fan base and create immersive content experiences.</p>
+                  <ul>
+                    <li>Multi-page responsive design</li>
+                    <li>Artist timeline & story modules</li>
+                    <li>Interactive fan board with AI moderation</li>
+                    <li>Media vault for premium content</li>
+                    <li>Blog/news section</li>
+                    <li>Ad monetization tools</li>
+                  </ul>
+                  <a href="https://4citeb4u.github.io/TheMomentum/" class="template-btn" target="_blank">View Template</a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- TIER 4: The Brand Platform -->
+            <div class="profile-card tier4">
+              <div class="card-inner">
+                <div class="card-front">
+                  <img src="5qsjcmep51.png" alt="TIER 4: The Brand Platform">
+                  <h3>THE BRAND</h3>
+                </div>
+                <div class="card-back">
+                  <h4>TIER 4: $5,000+</h4>
+                  <p>The ultimate artist ecosystem. Turn your artistry into a full-fledged business with advanced features and total brand control.</p>
+                  <ul>
+                    <li>Custom multi-page website</li>
+                    <li>NFT marketplace integration</li>
+                    <li>Limited edition drops with blockchain</li>
+                    <li>Custom merch engine</li>
+                    <li>Premium livestream capabilities</li>
+                    <li>Fan segmentation & CRM tools</li>
+                  </ul>
+                  <a href="https://4citeb4u.github.io/TheBrand/" class="template-btn" target="_blank">View Template</a>
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <!-- LAUNCH PAGE -->
+    <div id="launch" class="page-view" data-region="launch">
+      <!-- Main Fixed Background -->
+      <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('6gwht6evny.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2;"></div>
+      
+      <!-- Hero Section -->
+      <section class="hero" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.3);"></div>
+        <div class="container">
+          <div class="hero-content fade-up">
+            <h1 class="hero-title">LAUNCH YOUR <span class="text-gradient">EMPIRE</span></h1>
+            <p class="hero-subtitle">"The first step to owning your future is building your foundation."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Launch Options Section -->
+      <section class="section-padding" style="position: relative;">
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(18, 18, 18, 0.5);"></div>
+        
+        <div class="container" style="position: relative; z-index: 5;">
+          <div class="text-center fade-up">
+            <h2 class="section-title">START YOUR JOURNEY</h2>
+            <p class="overview-text" style="max-width: 800px; margin: 0 auto 4rem; font-size: 1.8rem;">
+              Select the platform tier that matches your current career stage - you can always upgrade as you grow
+            </p>
+          </div>
+          
+          <div class="row" style="gap: 3rem; justify-content: center;">
+            <!-- Launch Option 1 -->
+            <div class="col-lg-5 fade-up delay-2">
+              <div style="background: rgba(18, 18, 18, 0.8); border-radius: 1.5rem; overflow: hidden; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);">
+                <div style="padding: 3rem;">
+                  <h3 style="font-size: 2.8rem; margin-bottom: 1rem; color: var(--primary);">Fast Launch</h3>
+                  <p style="font-size: 1.6rem; margin-bottom: 2rem; color: var(--light-gray);">
+                    Get up and running quickly with our streamlined setup process. We'll build your platform within 7-14 days.
+                  </p>
+                  <ul style="list-style: none; padding-left: 0; margin-bottom: 3rem;">
+                    <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--primary); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>Choose any platform tier</span>
+                    </li>
+                    <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--primary); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>Provide your content & assets</span>
+                    </li>
+                    <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--primary); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>We build everything for you</span>
+                    </li>
+                    <li style="display: flex; align-items: center; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--primary); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>Launch in 7-14 days</span>
+                    </li>
+                  </ul>
+                  <a href="#" class="btn" style="width: 100%;">Get Started Now</a>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Launch Option 2 -->
+            <div class="col-lg-5 fade-up delay-3">
+              <div style="background: rgba(18, 18, 18, 0.8); border-radius: 1.5rem; overflow: hidden; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);">
+                <div style="padding: 3rem;">
+                  <h3 style="font-size: 2.8rem; margin-bottom: 1rem; color: var(--accent);">Custom Build</h3>
+                  <p style="font-size: 1.6rem; margin-bottom: 2rem; color: var(--light-gray);">
+                    Work directly with our team to create a completely customized platform tailored to your unique vision.
+                  </p>
+                  <ul style="list-style: none; padding-left: 0; margin-bottom: 3rem;">
+                    <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--accent); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>Full customization options</span>
+                    </li>
+                    <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--accent); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>1-on-1 design consultations</span>
+                    </li>
+                    <li style="display: flex; align-items: center; margin-bottom: 1.5rem; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--accent); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>Unique feature development</span>
+                    </li>
+                    <li style="display: flex; align-items: center; font-size: 1.6rem;">
+                      <i class="fas fa-check-circle" style="color: var(--accent); margin-right: 1rem; font-size: 2rem;"></i>
+                      <span>Premium support package</span>
+                    </li>
+                  </ul>
+                  <a href="#" class="btn btn-secondary" style="width: 100%;">Schedule Consultation</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <div class="logo-container">
+                <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+                <span>RapidWebDevelop</span>
+                <span class="parent-company">by LEEWAY™</span>
+              </div>
+            </div>
+            <p class="footer-text">
+              This is for the ones who create before they're famous.
+              For the ones who hustle without a spotlight.
+              For the ones who believe that art should <em>liberate</em>—not enslave.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="footer-heading">Platform</h4>
+            <ul class="footer-links">
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">The Jump-Off</a></li>
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">The Influencer</a></li>
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">The Momentum</a></li>
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">The Brand</a></li>
+              <li class="footer-item"><a href="#" data-page="platforms" class="footer-link">View All Platforms</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="footer-heading">Company</h4>
+            <ul class="footer-links">
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">MacMillion's Story</a></li>
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">Our Mission</a></li>
+              <li class="footer-item"><a href="#" class="footer-link">Terms of Service</a></li>
+              <li class="footer-item"><a href="#" class="footer-link">Privacy Policy</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="footer-heading">Help</h4>
+            <ul class="footer-links">
+              <li class="footer-item"><a href="#" data-page="beginning" class="footer-link">Agent Lee Support</a></li>
+              <li class="footer-item"><a href="mailto:support@rapidwebdevelop.com" class="footer-link">Contact Us</a></li>
+              <li class="footer-item">Sales: (414) 626-9992</li>
+              <li class="footer-item">Support: (414) 367-6211</li>
+              <li class="footer-item">Milwaukee, WI 53206</li>
+              <li class="footer-item"><a href="documentation/faqs.html" class="footer-link">FAQs</a></li>
+              <li class="footer-item"><a href="documentation/index.html" class="footer-link">Support Center</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p class="footer-tag">Music saves. And this platform? It saves the music.</p>
+          <p class="copyright">
+            &copy; 2023 LEEWAY™ Framework. All rights reserved. Powered by <a href="#" class="text-link">RapidWebDevelop.com</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Initialize SPA navigation functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get all page view elements
+      const pageViews = document.querySelectorAll('.page-view');
+      const navLinks = document.querySelectorAll('[data-page]');
+      
+      // Set default page to show (beginning set as active)
+      pageViews.forEach(page => {
+        page.classList.remove('active');
+      });
+      document.getElementById('beginning').classList.add('active');
+      
+      // Update nav links to match active page
+      navLinks.forEach(navLink => {
+        navLink.classList.remove('active');
+        if (navLink.getAttribute('data-page') === 'beginning') {
+          navLink.classList.add('active');
+        }
+      });
+      
+      // Add click event listeners to all navigation links
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Get target page
+          const targetPage = this.getAttribute('data-page');
+          
+          // Remove active class from all nav links
+          navLinks.forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+          
+          // Add active class to clicked link
+          this.classList.add('active');
+          
+          // Hide all pages
+          pageViews.forEach(page => {
+            page.classList.remove('active');
+          });
+          
+          // Show target page
+          const targetPageElement = document.getElementById(targetPage);
+          if (targetPageElement) {
+            targetPageElement.classList.add('active');
+            
+            // Scroll to top when changing pages
+            window.scrollTo(0, 0);
+          }
+        });
+      });
+    });
+
+    // Performance optimized loader removal
+    window.addEventListener('load', function() {
+      // Use requestAnimationFrame for smoother transitions
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          document.querySelector('.loader').classList.add('hidden');
+          document.body.classList.add('loaded');
+        }, 300);
+      });
+    });
+    
+    // Background image scroll effect
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // Get all background images
+      const backgroundImages = document.querySelectorAll('.bg-image');
+      
+      // Calculate scroll percentage (0 to 1)
+      const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+      
+      // Hide all images first
+      backgroundImages.forEach(img => {
+        img.style.opacity = 0;
+      });
+      
+      // First 25% of the page - 1st and 2nd images
+      if (scrollPercentage < 0.25) {
+        backgroundImages[0].style.opacity = 1;
+        backgroundImages[1].style.opacity = 0.5 - (scrollPercentage * 2);
+      } 
+      // 25% to 50% - 3rd and 4th images
+      else if (scrollPercentage < 0.5) {
+        backgroundImages[2].style.opacity = 1;
+        backgroundImages[3].style.opacity = 0.5;
+      }
+      // 50% to 75% - 5th and 6th images
+      else if (scrollPercentage < 0.75) {
+        backgroundImages[4].style.opacity = 1;
+        backgroundImages[5].style.opacity = 0.5;
+      }
+      // 75% to 100% - 7th and 8th images
+      else {
+        backgroundImages[6].style.opacity = 1;
+        backgroundImages[7].style.opacity = 0.5;
+      }
+    });
+    
+    // Agent Lee Chat Functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const chatToggle = document.querySelector('.agent-chat-toggle');
+      const agentChat = document.querySelector('.agent-chat-card');
+      
+      if (chatToggle && agentChat) {
+        // Toggle chat open/closed
+        chatToggle.addEventListener('click', function() {
+          agentChat.classList.toggle('open');
+          chatToggle.classList.toggle('active');
+        });
+
+        // Handle chat form submission
+        const chatForm = document.querySelector('.agent-chat-form');
+        const chatInput = document.querySelector('.agent-chat-input');
+        const chatMessages = document.querySelector('.agent-chat-messages');
+        
+        if (chatForm && chatInput && chatMessages) {
+          chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const message = chatInput.value.trim();
+            if (message) {
+              // Add user message
+              const userMsg = document.createElement('div');
+              userMsg.className = 'agent-chat-message user-message';
+              userMsg.textContent = message;
+              chatMessages.appendChild(userMsg);
+              
+              // Clear input
+              chatInput.value = '';
+              
+              // Scroll to bottom
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+              
+              // Simulate Agent Lee response after a delay
+              setTimeout(() => {
+                const agentMsg = document.createElement('div');
+                agentMsg.className = 'agent-chat-message agent-message';
+                
+                // Simple response logic based on keywords
+                if (message.toLowerCase().includes('platform') || message.toLowerCase().includes('template')) {
+                  agentMsg.textContent = "Our platform templates are designed to grow with your career. You can start with The Jump-Off and upgrade as you build your audience and revenue.";
+                } else if (message.toLowerCase().includes('price') || message.toLowerCase().includes('cost')) {
+                  agentMsg.textContent = "Our platforms start at $500 for The Jump-Off, with more advanced options available as your needs grow. Unlike traditional services, this is a one-time fee with no ongoing subscriptions.";
+                } else if (message.toLowerCase().includes('help') || message.toLowerCase().includes('support')) {
+                  agentMsg.textContent = "I'm here to help! You can ask me anything about the platform, music industry contracts, or how to maximize your revenue as an independent artist.";
+                } else {
+                  agentMsg.textContent = "Thanks for your message! I'm Agent Lee, your AI guide to the music industry. What specific aspect of artist empowerment can I help you with today?";
+                }
+                
+                chatMessages.appendChild(agentMsg);
+                
+                // Scroll to bottom again
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+              }, 800);
+            }
+          });
+        }
+      }
+    });
+  </script>
+</body>
+</html>

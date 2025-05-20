@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Templates | RapidWebDevelop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Platform page specific styles */
+    
+    /* Full page background configuration */
+    .bg-image-1, .bg-image-2 {
+      display: block;
+    }
+    body {
+      overflow-x: hidden;
+    }
+    
+    /* Fixed header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: var(--darker);
+    }
+    
+    /* Main content padding to account for fixed header */
+    .main-content {
+      padding-top: 12rem; /* Increased from 8rem to create more space */
+      padding-bottom: 6rem; /* Added padding at bottom to separate from footer */
+      will-change: transform; /* Performance optimization */
+      min-height: calc(100vh - 120px); /* Ensure content takes up full viewport */
+    }
+    
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 4rem;
+      margin-top: 5rem;
+      max-width: 1600px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 2rem;
+    }
+    
+    /* Section background styles */
+    body {
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+  
+    .main-content {
+      position: relative;
+      background: none;
+      z-index: 2;
+    }
+    
+    /* Platform templates section background */
+    #platform-templates {
+      background-image: url('1mas7afpe9.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    
+    #platform-templates::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 0;
+    }
+    
+    /* Background images configuration */
+    .bg-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      opacity: 0;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: opacity 1s ease;
+    }
+    
+    /* Make the first 3 images visible but at different scroll positions */
+    .bg-image:nth-child(1) {
+      opacity: 1;
+    }
+    
+    /* JavaScript will handle showing different images on scroll */
+    
+    /* Background image configuration for responsive sections */
+    .bg-section {
+      position: relative;
+    }
+    
+    .bg-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 0.7;
+    }
+    
+    .bg-image-1 {
+      background-image: url('snnitztfxr.png');
+      opacity: 1;
+    }
+    
+    .bg-image-2 {
+      background-image: url('20gqrtflua.png');
+      opacity: 1;
+    }
+    
+    /* Additional background images */
+    .bg-image-3 {
+      background-image: url('6kg76695fx.png');
+    }
+    
+    .bg-image-4 {
+      background-image: url('gsw5pxqr4t.png');
+    }
+    
+    .bg-image-5 {
+      background-image: url('pvh8l6w69g.png');
+    }
+    
+    .bg-image-6 {
+      background-image: url('gvcsbty5pt.png');
+    }
+    
+    .bg-image-7 {
+      background-image: url('tf7r0kdo5a.png');
+    }
+    
+    .bg-image-8 {
+      background-image: url('q34r5857q8.png');
+    }
+    
+    .section-1::before {
+      background-image: url('snnitztfxr.png');
+    }
+    
+    .section-2::before {
+      background-image: url('20gqrtflua.png');
+    }
+    
+    .section-3::before {
+      background-image: url('6kg76695fx.png');
+    }
+    
+    .intro-section {
+      padding: 8rem 0 4rem;
+      text-align: center;
+      position: relative;
+    }
+    
+    .intro-section .container {
+      position: relative;
+      z-index: 2;
+      background-color: rgba(18, 18, 18, 0.85);
+      padding: 2rem;
+      border-radius: 8px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+      font-size: 4rem;
+      margin-bottom: 2rem;
+      color: var(--light);
+    }
+    
+    .section-subtitle {
+      font-size: 2rem;
+      color: var(--light-gray);
+      max-width: 800px;
+      margin: 0 auto 5rem;
+      line-height: 1.6;
+    }
+    
+    .platform-tab-section {
+      padding: 4rem 0 8rem;
+      position: relative;
+      background: transparent;
+      margin-bottom: 4rem;
+    }
+    
+    .platform-tab-section .container {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .floating-element {
+      display: none;
+    }
+
+    /* Profile Card Styles - Exact Match to Provided Example */
+    .profile-card {
+      width: 100%;
+      height: 480px;
+      perspective: 800px;
+      margin-bottom: 4rem;
+    }
+    
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: 0.8s;
+      position: relative;
+    }
+    
+    .profile-card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+    
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+    
+    .card-front {
+      background: rgba(18, 18, 18, 0.85);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card-front img {
+      width: 100%;
+      height: 85%;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      background: transparent;
+    }
+    
+    .card-front h3 {
+      color: var(--light);
+      font-size: 2.4rem;
+      margin: 0;
+      padding: 5px;
+      background-color: rgba(0, 0, 0, 0.85);
+      border-radius: 6px;
+      display: inline-block;
+    }
+    
+    .card-back {
+      transform: rotateY(180deg);
+      background: rgba(18, 18, 18, 0.85) url('nccffgzkws.png');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: overlay;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      position: relative;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card-back h4, .card-back p, .card-back ul, .card-back li {
+      background-color: rgba(18, 18, 18, 0.75);
+      padding: 5px;
+      border-radius: 4px;
+    }
+    
+    .card-back h4 {
+      color: var(--primary);
+      font-size: 2.8rem;
+      margin: 0 0 20px 0;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .card-back p {
+      color: var(--light-gray);
+      font-size: 1.6rem;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    
+    .card-back ul {
+      color: var(--light-gray);
+      font-size: 1.5rem;
+      line-height: 1.6;
+      text-align: left;
+      list-style: none;
+      padding-left: 5px;
+      margin-bottom: 25px;
+    }
+    
+    .card-back ul li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .card-back ul li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+    }
+    
+    .card-back .template-btn {
+      display: inline-block;
+      background: var(--gradient-1);
+      color: var(--light);
+      text-decoration: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-top: auto;
+      transition: all 0.3s ease;
+    }
+    
+    .card-back .template-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(255, 51, 102, 0.3);
+    }
+
+    .card-hover-tip {
+      text-align: center;
+      margin-bottom: 4rem;
+      color: white;
+      font-size: 1.6rem;
+      font-weight: bold;
+      background: rgba(18, 18, 18, 0.85);
+      border-radius: 8px;
+      padding: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .card-hover-tip i {
+      color: var(--primary);
+      margin: 0 5px;
+      animation: flip 2s infinite;
+      text-shadow: 0 0 10px rgba(255, 51, 102, 0.3);
+    }
+    
+    @keyframes flip {
+      0% { transform: rotateY(0); }
+      50% { transform: rotateY(180deg); }
+      100% { transform: rotateY(360deg); }
+    }
+    
+    .footer {
+      padding-top: 6rem;
+      padding-bottom: 2rem;
+      margin-top: 6rem;
+      position: relative;
+      width: 100%;
+      clear: both;
+      background: rgba(7, 7, 7, 0.95) url('images/footer-bg.svg') no-repeat center bottom;
+      background-size: cover;
+    }
+
+    /* Tier specific colors */
+    .tier1 h3 {
+      color: #FFC107;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .tier2 h3 {
+      color: #FF9800;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .tier3 h3 {
+      color: #F44336;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    .tier4 h3 {
+      color: #9C27B0;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+    }
+    
+    @media (max-width: 768px) {
+      .platform-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+
+      .profile-card {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Optimized Preloader -->
+  <div class="loader">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+      </div>
+      <div class="loader-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="loader-text">Loading Templates...</div>
+    </div>
+  </div>
+  
+  <!-- Preload critical images -->
+  <link rel="preload" href="ljiyalhml9.png" as="image">
+  <link rel="preload" href="q1na43uu3d.png" as="image">
+  <link rel="preload" href="fgg1cbjti0.png" as="image">
+  <link rel="preload" href="5qsjcmep51.png" as="image">
+
+  <!-- Fixed Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-container">
+          <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+          <span>RapidWebDevelop</span>
+          <span class="parent-company">by LEEWAY™</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html" data-page="overview" class="nav-link">Overview</a></li>
+          <li class="nav-item"><a href="index.html" data-page="truth" class="nav-link">The Truth</a></li>
+          <li class="nav-item"><a href="index.html" data-page="win" class="nav-link">All I Do Is Win</a></li>
+          <li class="nav-item"><a href="index.html" data-page="community" class="nav-link">Community</a></li>
+          <li class="nav-item"><a href="research-development.html" class="nav-link">R&D</a></li>
+          <li class="nav-item"><a href="platforms.html" class="nav-link active">Platforms</a></li>
+          <li class="nav-item"><a href="index.html" data-page="launch" class="nav-link btn">Launch</a></li>
+        </ul>
+        <div class="mobile-menu">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <!-- Background Images -->
+    <div class="bg-image bg-image-1"></div>
+    <div class="bg-image bg-image-2"></div>
+    <div class="bg-image bg-image-3"></div>
+    <div class="bg-image bg-image-4"></div>
+    <div class="bg-image bg-image-5"></div>
+    <div class="bg-image bg-image-6"></div>
+    <div class="bg-image bg-image-7"></div>
+    <div class="bg-image bg-image-8"></div>
+
+    <!-- Introduction Section -->
+    <section class="intro-section" style="background: rgba(7, 7, 7, 0.9);">
+      <div class="container">
+        <h1 class="section-title">PLATFORM TEMPLATES</h1>
+        <p class="section-subtitle">
+          Our platform templates are designed to grow with you at every stage of your career. From emerging artists to established brands, we provide the tools you need to take control of your music, your message, and your money.
+        </p>
+      </div>
+    </section>
+
+    <!-- Platform Templates Section -->
+    <section id="platform-templates" class="platform-tab-section">
+      <div class="floating-element float-1" style="width: 30rem; height: 30rem; top: 10%; right: 5%;"></div>
+      <div class="floating-element float-2" style="width: 25rem; height: 25rem; bottom: 20%; left: 5%; background: rgba(76, 201, 240, 0.5);"></div>
+      <div class="floating-element float-3" style="width: 20rem; height: 20rem; top: 40%; left: 15%; background: rgba(114, 9, 183, 0.4);"></div>
+      <div class="floating-element float-4" style="width: 15rem; height: 15rem; bottom: 15%; right: 10%; background: rgba(247, 37, 133, 0.4);"></div>
+      
+      <div class="container">
+        <p class="card-hover-tip">
+          Hover over any card to view details <i class="fas fa-sync"></i>
+        </p>
+        
+        <div class="platform-grid">
+          <!-- TIER 1: The Jump-Off Platform -->
+          <div class="profile-card tier1">
+            <div class="card-inner">
+              <div class="card-front">
+                <img src="ljiyalhml9.png" alt="TIER 1: The Jump-Off Platform">
+                <h3>THE JUMP-OFF</h3>
+              </div>
+              <div class="card-back">
+                <h4>TIER 1: $500</h4>
+                <p>A sleek one-page introduction to your artistry. Perfect for emerging artists who need a professional online presence without the complexity.</p>
+                <ul>
+                  <li>Single-page responsive design</li>
+                  <li>Music/video embedding</li>
+                  <li>Basic bio and photo section</li>
+                  <li>Light merch integration</li>
+                  <li>Social media links & email collection</li>
+                  <li>Custom color scheme options</li>
+                </ul>
+                <a href="https://4citeb4u.github.io/THE-JUMPOFF/" class="template-btn" target="_blank">View Template</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- TIER 2: The Influencer Platform -->
+          <div class="profile-card tier2">
+            <div class="card-inner">
+              <div class="card-front">
+                <img src="q1na43uu3d.png" alt="TIER 2: The Influencer Platform">
+                <h3>THE INFLUENCER</h3>
+              </div>
+              <div class="card-back">
+                <h4>TIER 2: $1,000</h4>
+                <p>Designed for artists building their community. Enhances fan engagement with interactive elements and expanded content areas.</p>
+                <ul>
+                  <li>Multi-section responsive design</li>
+                  <li>Reel & social feed integration</li>
+                  <li>Giveaway functionality</li>
+                  <li>Sponsor/collab showcase</li>
+                  <li>Enhanced merch with bundles</li>
+                  <li>Basic analytics dashboard</li>
+                </ul>
+                <a href="https://4citeb4u.github.io/TheInfluencer/" class="template-btn" target="_blank">View Template</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- TIER 3: The Momentum Platform -->
+          <div class="profile-card tier3">
+            <div class="card-inner">
+              <div class="card-front">
+                <img src="fgg1cbjti0.png" alt="TIER 3: The Momentum Platform">
+                <h3>THE MOMENTUM</h3>
+              </div>
+              <div class="card-back">
+                <h4>TIER 3: $2,000</h4>
+                <p>A comprehensive solution for established artists looking to monetize their fan base and create immersive content experiences.</p>
+                <ul>
+                  <li>Multi-page responsive design</li>
+                  <li>Artist timeline & story modules</li>
+                  <li>Interactive fan board with AI moderation</li>
+                  <li>Media vault for premium content</li>
+                  <li>Blog/news section</li>
+                  <li>Ad monetization tools</li>
+                </ul>
+                <a href="https://4citeb4u.github.io/TheMomentum/" class="template-btn" target="_blank">View Template</a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- TIER 4: The Brand Platform -->
+          <div class="profile-card tier4">
+            <div class="card-inner">
+              <div class="card-front">
+                <img src="5qsjcmep51.png" alt="TIER 4: The Brand Platform">
+                <h3>THE BRAND</h3>
+              </div>
+              <div class="card-back">
+                <h4>TIER 4: $5,000+</h4>
+                <p>The ultimate artist ecosystem. Turn your artistry into a full-fledged business with advanced features and total brand control.</p>
+                <ul>
+                  <li>Custom multi-page website</li>
+                  <li>NFT marketplace integration</li>
+                  <li>Limited edition drops with blockchain</li>
+                  <li>Custom merch engine</li>
+                  <li>Premium livestream capabilities</li>
+                  <li>Fan segmentation & CRM tools</li>
+                </ul>
+                
+                <div style="background: rgba(156, 39, 176, 0.2); border-left: 3px solid #9C27B0; padding: 10px; margin: 10px 0; font-size: 1.4rem; text-align: left;">
+                  <h5 style="color: #9C27B0; margin: 0 0 5px;">🗝️ Final Word to the Artist</h5>
+                  <p style="font-style: italic; font-weight: bold; margin: 0 0 5px;">"The Movement Is Yours Now."</p>
+                  <p style="margin: 0;">The torch is in your hands. Build your legacy. Lead the movement.</p>
+                </div>
+                
+                <a href="https://4citeb4u.github.io/TheBrand/" class="template-btn" target="_blank">View Template</a>
+                <a href="documentation/platform.html" class="template-btn" style="margin-top: 8px; background: linear-gradient(90deg, #9C27B0, #6A1B9A);">View Full Details</a>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+    </section>
+
+    <!-- Final Message to Artists -->
+    <section class="section-padding" style="background: rgba(10, 10, 10, 0.9); position: relative; overflow: hidden;">
+      <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('odpbbwwx05.png'); background-size: 200px; background-position: center right; background-repeat: no-repeat; opacity: 0.15; z-index: 0;"></div>
+      <div class="container" style="position: relative; z-index: 1;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+          <h2 style="font-size: 3.6rem; margin-bottom: 2rem; color: var(--primary);">🗝️ Final Word to the Artist</h2>
+          <h3 style="font-size: 2.8rem; margin-bottom: 3rem; background: linear-gradient(90deg, var(--primary), #9C27B0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 700;">"The Movement Is Yours Now."</h3>
+          
+          <p style="font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light);">
+            Mac Million's story brought us here — but this isn't his story anymore. It's yours.
+            This platform wasn't built for one artist. It was built for every creator who's ever felt silenced, sidelined, or sold out. Every voice that was told to wait. Every hand that signed a deal without knowing the cost.
+          </p>
+          
+          <p style="font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light);">
+            We are not just giving you a website. We are giving you the keys.
+            <span style="display: block; margin: 1rem 0; font-weight: 600;">
+              Keys to your music.<br>
+              Keys to your merch.<br>
+              Keys to your message.<br>
+              And most of all — keys to your legacy.
+            </span>
+          </p>
+          
+          <p style="font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light);">
+            No more asking for permission.<br>
+            No more crumbs from billion-dollar tables.<br>
+            No more ownership in someone else's name.
+          </p>
+          
+          <p style="font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light);">
+            This is your moment to lead.<br>
+            To own your story.<br>
+            To build your empire.<br>
+            To show the world who you are without filters, contracts, or cuts.
+          </p>
+          
+          <p style="font-size: 1.8rem; line-height: 1.8; margin-bottom: 2rem; color: var(--light);">
+            The movement has begun.<br>
+            The system is cracked wide open.<br>
+            Now it's on you to step in. To build your platform. To stand your ground.<br>
+            And to say with your chest:
+          </p>
+          
+          <div style="font-size: 2.4rem; font-weight: 700; margin: 3rem 0; padding: 2rem; background: rgba(255, 51, 102, 0.1); border-radius: 1rem; color: var(--light);">
+            "I'm not just an artist. I am the architect of my future."
+          </div>
+          
+          <p style="font-size: 1.8rem; line-height: 1.8; margin-bottom: 3rem; color: var(--light);">
+            <span style="color: var(--primary); font-weight: 700;">🎯 This isn't the end. This is the ignition.</span><br>
+            Join the platform. Build your legacy. Lead the movement.
+          </p>
+          
+          <p style="font-size: 2rem; font-weight: 700; margin-bottom: 3rem; color: var(--primary);">
+            The torch is in your hands now.<br>
+            And it's time the world sees how brightly you burn.
+          </p>
+          
+          <a href="index.html" data-page="launch" class="btn btn-lg" style="font-size: 1.8rem; padding: 1.5rem 3rem; margin-top: 2rem; background: var(--gradient-1);">Start Your Legacy</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="footer-grid">
+          <div>
+            <div class="footer-logo">
+              <div class="logo-container">
+                <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+                <span>RapidWebDevelop</span>
+                <span class="parent-company">by LEEWAY™</span>
+              </div>
+            </div>
+            <p class="footer-text">
+              This is for the ones who create before they're famous.
+              For the ones who hustle without a spotlight.
+              For the ones who believe that art should <em>liberate</em>—not enslave.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+              <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+            </div>
+          </div>
+          
+          <div>
+            <h4 class="footer-heading">Platform</h4>
+            <ul class="footer-links">
+              <li class="footer-item"><a href="index.html#tiers" class="footer-link">The Jump-Off</a></li>
+              <li class="footer-item"><a href="index.html#tiers" class="footer-link">The Influencer</a></li>
+              <li class="footer-item"><a href="index.html#tiers" class="footer-link">The Momentum</a></li>
+              <li class="footer-item"><a href="index.html#tiers" class="footer-link">The Brand</a></li>
+              <li class="footer-item"><a href="platforms.html" class="footer-link">View All Platforms</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="footer-heading">Company</h4>
+            <ul class="footer-links">
+              <li class="footer-item"><a href="index.html#story" class="footer-link">MacMillion's Story</a></li>
+              <li class="footer-item"><a href="index.html#overview" class="footer-link">Our Mission</a></li>
+              <li class="footer-item"><a href="#" class="footer-link">Terms of Service</a></li>
+              <li class="footer-item"><a href="#" class="footer-link">Privacy Policy</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 class="footer-heading">Help</h4>
+            <ul class="footer-links">
+              <li class="footer-item"><a href="index.html#agent" class="footer-link">Agent Lee Support</a></li>
+              <li class="footer-item"><a href="mailto:support@rapidwebdevelop.com" class="footer-link">Contact Us</a></li>
+              <li class="footer-item">Sales: (414) 626-9992</li>
+              <li class="footer-item">Support: (414) 367-6211</li>
+              <li class="footer-item">Milwaukee, WI 53206</li>
+              <li class="footer-item"><a href="documentation/faqs.html" class="footer-link">FAQs</a></li>
+              <li class="footer-item"><a href="documentation/index.html" class="footer-link">Support Center</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <p class="footer-tag">Music saves. And this platform? It saves the music.</p>
+          <p class="copyright">
+            &copy; 2023 LEEWAY™ Framework. All rights reserved. Powered by <a href="#" class="text-link">RapidWebDevelop.com</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Performance optimized loader removal
+    window.addEventListener('load', function() {
+      // Use requestAnimationFrame for smoother transitions
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          document.querySelector('.loader').classList.add('hidden');
+          document.body.classList.add('loaded');
+        }, 300);
+      });
+    });
+    
+    // Background image scroll effect
+    window.addEventListener('scroll', function() {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // Get all background images
+      const backgroundImages = document.querySelectorAll('.bg-image');
+      
+      // Calculate scroll percentage (0 to 1)
+      const scrollPercentage = scrollPosition / (documentHeight - windowHeight);
+      
+      // Hide all images first
+      backgroundImages.forEach(img => {
+        img.style.opacity = 0;
+      });
+      
+      // First 25% of the page - 1st and 2nd images
+      if (scrollPercentage < 0.25) {
+        backgroundImages[0].style.opacity = 1;
+        backgroundImages[1].style.opacity = 0.5 - (scrollPercentage * 2);
+      } 
+      // 25% to 50% - 3rd and 4th images
+      else if (scrollPercentage < 0.5) {
+        backgroundImages[2].style.opacity = 1;
+        backgroundImages[3].style.opacity = 0.5;
+      }
+      // 50% to 75% - 5th and 6th images
+      else if (scrollPercentage < 0.75) {
+        backgroundImages[4].style.opacity = 1;
+        backgroundImages[5].style.opacity = 0.5;
+      }
+      // 75% to 100% - 7th and 8th images
+      else {
+        backgroundImages[6].style.opacity = 1;
+        backgroundImages[7].style.opacity = 0.5;
+      }
+    });
+  </script>
+</body>
+</html>

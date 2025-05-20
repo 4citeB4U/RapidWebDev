@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Getting Started | Rapid Web Development Artist Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0b0b0f;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .step-card {
+      transition: all 0.3s ease;
+    }
+    .step-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6">
+          <span class="gradient-text">Getting Started</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+          Your step-by-step guide to launching with the Artist Empowerment Platform
+        </p>
+        <div class="mt-8">
+          <a href="index.html" class="inline-flex items-center text-blue-400 hover:text-blue-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back to Documentation
+          </a>
+        </div>
+      </header>
+
+      <!-- Progress Steps Bar -->
+      <div class="mb-16">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex justify-between mb-2">
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <span class="font-bold text-white">1</span>
+              </div>
+              <p class="text-sm mt-1">Choose Tier</p>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <span class="font-bold text-white">2</span>
+              </div>
+              <p class="text-sm mt-1">Setup</p>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <span class="font-bold text-white">3</span>
+              </div>
+              <p class="text-sm mt-1">Content</p>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <span class="font-bold text-white">4</span>
+              </div>
+              <p class="text-sm mt-1">Agent Lee</p>
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mx-auto">
+                <span class="font-bold text-white">5</span>
+              </div>
+              <p class="text-sm mt-1">Launch</p>
+            </div>
+          </div>
+          <div class="relative">
+            <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-700"></div>
+            <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-blue-600"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Getting Started Steps -->
+      <div class="space-y-12 max-w-4xl mx-auto">
+        <!-- Step 1: Choose Your Tier -->
+        <section class="step-card bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/4 mb-6 md:mb-0">
+              <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold gradient-text">Step 1</h2>
+              <h3 class="text-xl font-bold text-white">Choose Your Tier</h3>
+            </div>
+            <div class="md:w-3/4 md:pl-8">
+              <p class="text-gray-300 mb-6">
+                Select the subscription tier that best fits your current needs. You can always upgrade later as your career grows:
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-gray-800 rounded-lg p-4">
+                  <h4 class="text-lg font-semibold text-blue-400 mb-2">Essential</h4>
+                  <ul class="text-gray-300 text-sm space-y-1">
+                    <li>• Basic website functionality</li>
+                    <li>• Industry insights</li>
+                    <li>• Core Agent Lee features</li>
+                    <li>• Single-file architecture</li>
+                    <li>• Custom domain support</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4 border-2 border-purple-600">
+                  <div class="flex justify-between items-center mb-2">
+                    <h4 class="text-lg font-semibold text-purple-400">Professional</h4>
+                    <span class="text-xs font-medium bg-purple-600 px-2 py-0.5 rounded-full text-white">Popular</span>
+                  </div>
+                  <ul class="text-gray-300 text-sm space-y-1">
+                    <li>• Everything in Essential</li>
+                    <li>• E-commerce functionality</li>
+                    <li>• Advanced analytics</li>
+                    <li>• Full Agent Lee capabilities</li>
+                    <li>• Priority support</li>
+                    <li>• Premium integrations</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 rounded-lg p-4">
+                  <h4 class="text-lg font-semibold text-yellow-400 mb-2">Enterprise</h4>
+                  <ul class="text-gray-300 text-sm space-y-1">
+                    <li>• Everything in Professional</li>
+                    <li>• Multiple site support</li>
+                    <li>• Team collaboration features</li>
+                    <li>• Custom development</li>
+                    <li>• Dedicated support</li>
+                    <li>• Label/management solutions</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="text-blue-300 font-medium mb-2">Quick Tip:</h4>
+                <p class="text-gray-300 text-sm">
+                  Start with our 14-day free trial of the Professional tier to experience all the main features before deciding. No credit card required to begin your trial.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 2: Initial Setup -->
+        <section class="step-card bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/4 mb-6 md:mb-0">
+              <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold gradient-text">Step 2</h2>
+              <h3 class="text-xl font-bold text-white">Initial Setup</h3>
+            </div>
+            <div class="md:w-3/4 md:pl-8">
+              <p class="text-gray-300 mb-6">
+                After selecting your tier, complete these initial setup steps to configure your platform:
+              </p>
+
+              <div class="space-y-4 mb-6">
+                <div class="border-l-4 border-blue-600 pl-4">
+                  <h4 class="text-lg font-semibold mb-2">Create Your Account</h4>
+                  <p class="text-gray-300 text-sm">
+                    Sign up with your email address and create a secure password. You can also use social signin options for quicker setup.
+                  </p>
+                </div>
+                <div class="border-l-4 border-blue-600 pl-4">
+                  <h4 class="text-lg font-semibold mb-2">Choose Your Domain</h4>
+                  <p class="text-gray-300 text-sm">
+                    Select a custom domain name for your artist platform. You can use an existing domain you own or register a new one through our service.
+                  </p>
+                </div>
+                <div class="border-l-4 border-blue-600 pl-4">
+                  <h4 class="text-lg font-semibold mb-2">Select a Template</h4>
+                  <p class="text-gray-300 text-sm">
+                    Choose from our music-focused templates as your starting point. Each template is fully customizable to match your artistic vision.
+                  </p>
+                </div>
+                <div class="border-l-4 border-blue-600 pl-4">
+                  <h4 class="text-lg font-semibold mb-2">Basic Profile Information</h4>
+                  <p class="text-gray-300 text-sm">
+                    Enter your artist name, bio, and contact information. This will be used to personalize your platform and help Agent Lee provide relevant assistance.
+                  </p>
+                </div>
+              </div>
+
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="text-blue-300 font-medium mb-2">Template Selection Tips:</h4>
+                <p class="text-gray-300 text-sm">
+                  Consider your primary genre and career stage when selecting a template. Each template is optimized for different goals - from getting gigs to selling merch to growing your fanbase.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 3: Content Upload -->
+        <section class="step-card bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/4 mb-6 md:mb-0">
+              <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold gradient-text">Step 3</h2>
+              <h3 class="text-xl font-bold text-white">Content Upload</h3>
+            </div>
+            <div class="md:w-3/4 md:pl-8">
+              <p class="text-gray-300 mb-6">
+                Now it's time to add your content to the platform. This is where you'll showcase your music, images, videos, and other media:
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Music Management</h4>
+                  <ul class="text-gray-300 text-sm space-y-2">
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Upload audio files or connect streaming services like Spotify, Apple Music, or SoundCloud</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Organize tracks into albums, EPs, or singles with release dates</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Add lyrics, production credits, and liner notes</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Visual Content</h4>
+                  <ul class="text-gray-300 text-sm space-y-2">
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Upload high-quality profile photos, album artwork, and promotional images</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Add music videos, performance clips, or behind-the-scenes content</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Create gallery collections for press photos, tour memories, or fan submissions</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Performance Info</h4>
+                  <ul class="text-gray-300 text-sm space-y-2">
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Add upcoming shows, tours, and festival appearances</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Connect with Bandsintown or Songkick for automated tour updates</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Configure ticket purchasing or RSVP functionality</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Written Content</h4>
+                  <ul class="text-gray-300 text-sm space-y-2">
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Create your artist bio, press kit, and about page</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Set up a blog or news section for updates and announcements</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+                      </svg>
+                      <span>Add testimonials, press quotes, or fan reviews</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-blue-900 bg-opacity-30 p-4 rounded-lg border border-blue-800">
+                <h4 class="text-blue-300 font-medium mb-2">Agent Lee Can Help:</h4>
+                <p class="text-gray-300 text-sm">
+                  If you're struggling with content creation, ask Agent Lee to help generate artist bios, blog posts, or press kit materials based on your musical style and career information.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 4: Configure Agent Lee -->
+        <section class="step-card bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/4 mb-6 md:mb-0">
+              <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold gradient-text">Step 4</h2>
+              <h3 class="text-xl font-bold text-white">Configure Agent Lee</h3>
+            </div>
+            <div class="md:w-3/4 md:pl-8">
+              <p class="text-gray-300 mb-6">
+                Agent Lee is your AI-powered digital assistant specialized in the music industry. Customize Agent Lee to provide the best support for your specific needs:
+              </p>
+
+              <div class="space-y-6 mb-6">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-3 text-blue-300">Activation & Permissions</h4>
+                  <p class="text-gray-300 text-sm mb-3">
+                    Activate Agent Lee and set appropriate permissions for what data it can access and what actions it can perform on your behalf.
+                  </p>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="flex items-center bg-gray-700 p-2 rounded">
+                      <input type="checkbox" id="music-access" class="mr-2">
+                      <label for="music-access" class="text-sm">Access Music Catalog</label>
+                    </div>
+                    <div class="flex items-center bg-gray-700 p-2 rounded">
+                      <input type="checkbox" id="contract-analysis" class="mr-2">
+                      <label for="contract-analysis" class="text-sm">Contract Analysis</label>
+                    </div>
+                    <div class="flex items-center bg-gray-700 p-2 rounded">
+                      <input type="checkbox" id="content-creation" class="mr-2">
+                      <label for="content-creation" class="text-sm">Content Creation</label>
+                    </div>
+                    <div class="flex items-center bg-gray-700 p-2 rounded">
+                      <input type="checkbox" id="analytics-access" class="mr-2">
+                      <label for="analytics-access" class="text-sm">Analytics Access</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-3 text-blue-300">Personalization</h4>
+                  <p class="text-gray-300 text-sm mb-3">
+                    Customize Agent Lee's knowledge base with your specific music industry information:
+                  </p>
+                  <ul class="text-gray-300 text-sm space-y-2">
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span>Upload any existing contracts for analysis and insights</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span>Connect your streaming accounts for revenue analysis</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span>Provide genre-specific market data for targeted insights</span>
+                    </li>
+                    <li class="flex items-start">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                      </svg>
+                      <span>Set your career goals to receive relevant recommendations</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-3 text-blue-300">Voice Setup</h4>
+                  <p class="text-gray-300 text-sm mb-3">
+                    Configure voice interaction with Agent Lee for hands-free operation:
+                  </p>
+                  <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
+                      </svg>
+                      Record Wake Word
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded text-sm flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M14.414 7l3.293-3.293a1 1 0 00-1.414-1.414L13 5.586V4a1 1 0 10-2 0v4.003a.996.996 0 00.617.921A.997.997 0 0012 9h4a1 1 0 100-2h-1.586z" />
+                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                      </svg>
+                      Test Voice Interaction
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="text-blue-300 font-medium mb-2">Privacy Note:</h4>
+                <p class="text-gray-300 text-sm">
+                  Agent Lee only accesses the data you explicitly authorize. Your permissions can be updated or revoked at any time through the privacy settings. For more information, see our <a href="privacy-security.html" class="text-blue-400 hover:underline">Privacy & Security documentation</a>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Step 5: Launch Your Platform -->
+        <section class="step-card bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <div class="flex flex-col md:flex-row">
+            <div class="md:w-1/4 mb-6 md:mb-0">
+              <div class="bg-blue-600 w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                </svg>
+              </div>
+              <h2 class="text-2xl font-bold gradient-text">Step 5</h2>
+              <h3 class="text-xl font-bold text-white">Launch Your Platform</h3>
+            </div>
+            <div class="md:w-3/4 md:pl-8">
+              <p class="text-gray-300 mb-6">
+                You're ready to launch your Artist Empowerment Platform! Follow these final steps to go live:
+              </p>
+
+              <div class="space-y-6 mb-6">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Pre-Launch Checklist</h4>
+                  <div class="space-y-2">
+                    <div class="flex items-center">
+                      <input type="checkbox" id="content-check" class="mr-3">
+                      <label for="content-check" class="text-gray-300 text-sm">Verify all content is complete and accurate</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="links-check" class="mr-3">
+                      <label for="links-check" class="text-gray-300 text-sm">Test all links, players, and interactive elements</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="mobile-check" class="mr-3">
+                      <label for="mobile-check" class="text-gray-300 text-sm">Check appearance on mobile devices</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="payments-check" class="mr-3">
+                      <label for="payments-check" class="text-gray-300 text-sm">Confirm payment integrations work (if applicable)</label>
+                    </div>
+                    <div class="flex items-center">
+                      <input type="checkbox" id="seo-check" class="mr-3">
+                      <label for="seo-check" class="text-gray-300 text-sm">Review SEO settings and metadata</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Domain Connection</h4>
+                  <p class="text-gray-300 text-sm mb-3">
+                    Finalize your domain setup to connect your custom domain to your platform:
+                  </p>
+                  <div class="bg-gray-700 p-3 rounded text-sm mb-3">
+                    <p class="text-gray-300 mb-2">Domain: <span class="text-white font-mono">yourartistname.com</span></p>
+                    <p class="text-gray-300">Status: <span class="text-green-400">Ready to connect</span></p>
+                  </div>
+                  <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm">
+                    Connect Domain
+                  </button>
+                </div>
+
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-semibold mb-2 text-blue-300">Analytics Setup</h4>
+                  <p class="text-gray-300 text-sm mb-3">
+                    Configure analytics to track visitor engagement and platform performance:
+                  </p>
+                  <div class="flex flex-col sm:flex-row gap-4">
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded text-sm flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11 4a1 1 0 10-2 0v4a1 1 0 102 0V7zm-3 1a1 1 0 10-2 0v3a1 1 0 102 0V8zM8 9a1 1 0 00-2 0v2a1 1 0 102 0V9z" clip-rule="evenodd" />
+                      </svg>
+                      Enable Platform Analytics
+                    </button>
+                    <button class="bg-gray-700 hover:bg-gray-600 text-white py-2 px-4 rounded text-sm flex items-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                      </svg>
+                      Connect Google Analytics
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-r from-blue-900 to-purple-900 p-6 rounded-lg">
+                <h4 class="text-xl font-semibold mb-3">Launch Your Platform</h4>
+                <p class="text-white mb-4">
+                  You're all set! Your Artist Empowerment Platform is ready to go live and connect with your audience.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                  <button class="bg-white text-purple-900 hover:bg-gray-100 font-medium py-2.5 px-5 rounded-lg text-sm flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    Launch Now
+                  </button>
+                  <button class="border border-white text-white hover:bg-white hover:bg-opacity-10 py-2.5 px-5 rounded-lg text-sm flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                    </svg>
+                    Preview Site
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Next Steps Section -->
+      <div class="bg-gray-900 rounded-xl p-8 border border-gray-800 mt-16">
+        <h2 class="text-3xl font-bold mb-6 gradient-text">What's Next?</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-gray-800 p-5 rounded-lg">
+            <div class="bg-blue-600 bg-opacity-20 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Growth Strategies</h3>
+            <p class="text-gray-300 text-sm mb-3">
+              Leverage your platform to grow your audience using our proven marketing strategies.
+            </p>
+            <a href="#" class="text-blue-400 hover:text-blue-300 text-sm inline-flex items-center">
+              View Growth Guide
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+          <div class="bg-gray-800 p-5 rounded-lg">
+            <div class="bg-purple-600 bg-opacity-20 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Advanced Features</h3>
+            <p class="text-gray-300 text-sm mb-3">
+              Explore additional features and capabilities to enhance your platform's effectiveness.
+            </p>
+            <a href="#" class="text-blue-400 hover:text-blue-300 text-sm inline-flex items-center">
+              Discover Features
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+          <div class="bg-gray-800 p-5 rounded-lg">
+            <div class="bg-green-600 bg-opacity-20 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Monetization</h3>
+            <p class="text-gray-300 text-sm mb-3">
+              Implement effective monetization strategies to generate revenue from your platform.
+            </p>
+            <a href="#" class="text-blue-400 hover:text-blue-300 text-sm inline-flex items-center">
+              Revenue Strategies
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support Section -->
+      <div class="bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-8 mt-16">
+        <div class="flex flex-col md:flex-row md:items-center">
+          <div class="md:w-2/3 mb-6 md:mb-0 md:pr-8">
+            <h2 class="text-3xl font-bold mb-4">Need Assistance?</h2>
+            <p class="text-lg mb-6">
+              Our support team and Agent Lee are ready to help you with any questions or challenges you might encounter during setup.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-2 0c0 .993-.241 1.929-.668 2.754l-1.524-1.525a3.997 3.997 0 00.078-2.183l1.562-1.562C15.802 8.249 16 9.1 16 10zm-5.165 3.913l1.58 1.58A5.98 5.98 0 0110 16a5.976 5.976 0 01-2.516-.552l1.562-1.562a4.006 4.006 0 001.789.027zm-4.677-2.796a4.002 4.002 0 01-.041-2.08l-.08.08-1.53-1.533A5.98 5.98 0 004 10c0 .954.223 1.856.619 2.657l1.54-1.54zm1.088-6.45A5.974 5.974 0 0110 4c.954 0 1.856.223 2.657.619l-1.54 1.54a4.002 4.002 0 00-2.346.033L7.246 4.668zM12 10a2 2 0 11-4 0 2 2 0 014 0z" clip-rule="evenodd" />
+                </svg>
+                Contact Support
+              </a>
+              <a href="faqs.html" class="inline-flex items-center px-6 py-3 border border-white text-base font-medium rounded-md text-white hover:bg-white hover:bg-opacity-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                </svg>
+                View FAQs
+              </a>
+            </div>
+          </div>
+          <div class="md:w-1/3">
+            <div class="bg-gray-900 rounded-lg p-4 border border-gray-700">
+              <h3 class="text-xl font-semibold mb-3">Support Channels</h3>
+              <ul class="space-y-3 text-gray-300">
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                  <a href="mailto:agentlee@rapidwebdevelop.com">agentlee@rapidwebdevelop.com</a>
+                </li>
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+                  </svg>
+                  <span>Live Chat</span>
+                </li>
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                  </svg>
+                  <span>Video Tutorials</span>
+                </li>
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                  </svg>
+                  <span>Community Forums</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-8 md:mb-0">
+          <h3 class="text-xl font-bold mb-4 gradient-text">Support Center</h3>
+          <p class="text-gray-400 max-w-md">
+            Comprehensive documentation for the Artist Empowerment Platform and Agent Lee.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4 text-gray-200">Documentation</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="agent-lee.html" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                Agent Lee
+              </a>
+            </li>
+            <li>
+              <a href="platform.html" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                Platform
+              </a>
+            </li>
+            <li>
+              <a href="technical.html" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+                Technical
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+        <p>© 2025 Artist Empowerment Platform. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

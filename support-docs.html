@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support & Documentation | RapidWebDevelop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+  <style>
+    .docs-container {
+      padding-top: 10rem;
+      padding-bottom: 6rem;
+    }
+    .docs-sidebar {
+      position: sticky;
+      top: 12rem;
+    }
+    .docs-sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .docs-sidebar-menu li {
+      margin-bottom: 0.5rem;
+    }
+    .docs-sidebar-menu .sidebar-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin: 2.5rem 0 1.5rem;
+      color: var(--primary);
+    }
+    .docs-sidebar-menu a {
+      display: block;
+      padding: 1rem 1.5rem;
+      color: var(--light);
+      font-size: 1.6rem;
+      transition: all 0.3s ease;
+      border-radius: 0.5rem;
+    }
+    .docs-sidebar-menu a:hover, 
+    .docs-sidebar-menu a.active {
+      background: rgba(255, 51, 102, 0.15);
+      color: var(--primary);
+    }
+    .docs-content-section {
+      margin-bottom: 5rem;
+      padding: 3rem;
+      background: rgba(18, 18, 18, 0.7);
+      border-radius: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+    .docs-content-section h2 {
+      margin-bottom: 2.5rem;
+      font-size: 3.2rem;
+      color: var(--primary);
+    }
+    .docs-content-section h3 {
+      margin-bottom: 2rem;
+      font-size: 2.4rem;
+      color: var(--secondary-light);
+    }
+    .docs-content-section p {
+      font-size: 1.6rem;
+      line-height: 1.8;
+    }
+    .docs-content-section ul,
+    .docs-content-section ol {
+      padding-left: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    .docs-content-section li {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+    .docs-content-section code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0.3rem 0.5rem;
+      border-radius: 0.3rem;
+      font-family: monospace;
+      font-size: 1.4rem;
+      color: var(--primary-light);
+    }
+    .tab-content {
+      padding-top: 3rem;
+    }
+    .nav-tabs {
+      border-color: rgba(255, 255, 255, 0.1);
+      margin-bottom: 2rem;
+    }
+    .nav-tabs .nav-link {
+      color: var(--light-gray);
+      font-size: 1.6rem;
+      padding: 1rem 2rem;
+      border: none;
+      border-bottom: 2px solid transparent;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+    .nav-tabs .nav-link.active {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: rgba(255, 51, 102, 0.1);
+    }
+    .nav-tabs .nav-link:hover {
+      color: var(--primary-light);
+      border-color: var(--primary-light);
+    }
+    .contact-box {
+      background: rgba(67, 97, 238, 0.15);
+      border-radius: 1rem;
+      padding: 2.5rem;
+      margin: 4rem 0;
+      border: 1px solid rgba(67, 97, 238, 0.3);
+    }
+    .contact-box h4 {
+      margin-bottom: 2rem;
+      color: var(--accent);
+    }
+    .contact-box .contact-info {
+      margin: 1.5rem 0;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    .contact-icon {
+      min-width: 3rem;
+      margin-right: 1.5rem;
+      font-size: 2rem;
+      color: var(--secondary-light);
+    }
+    .contact-text {
+      font-size: 1.6rem;
+      line-height: 1.5;
+    }
+    .contact-link {
+      color: var(--light);
+      transition: all 0.3s ease;
+    }
+    .contact-link:hover {
+      color: var(--accent);
+    }
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .docs-sidebar {
+        margin-bottom: 4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Preloader -->
+  <div class="loader">
+    <div class="loader-content">
+      <div class="loader-logo">
+        <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+      </div>
+      <div class="loader-spinner">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="loader-text">Loading Documentation...</div>
+    </div>
+  </div>
+
+  <!-- Agent Lee Chat Floating Interface -->
+  <div class="agent-chat-toggle">
+    <i class="fas fa-robot"></i>
+  </div>
+  
+  <div class="agent-chat-card">
+    <div class="agent-chat-header">
+      <div class="agent-chat-avatar">
+        <img src="98civa4fmf.png" alt="Agent Lee">
+      </div>
+      <div class="agent-chat-title">
+        <h3>Agent Lee</h3>
+        <p>AI Assistant</p>
+      </div>
+    </div>
+    <div class="agent-chat-messages">
+      <div class="agent-chat-message agent-message">
+        Hi there! I'm Agent Lee, your AI guide through the documentation. How can I help you today?
+      </div>
+    </div>
+    <form class="agent-chat-form">
+      <input type="text" class="agent-chat-input" placeholder="Type your message...">
+      <button type="submit" class="agent-chat-send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Fixed Header -->
+  <header class="header">
+    <div class="container header-container">
+      <a href="index.html" class="logo">
+        <div class="logo-container">
+          <img src="xzilox717k.png" alt="RapidWebDevelop Logo">
+          <span>RapidWebDevelop</span>
+          <span class="parent-company">by LEEWAY™</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="index.html" class="nav-link">Beginning</a></li>
+          <li class="nav-item"><a href="index.html#truth" class="nav-link">The Truth</a></li>
+          <li class="nav-item"><a href="index.html#win" class="nav-link">All I Do Is Win</a></li>
+          <li class="nav-item"><a href="index.html#community" class="nav-link">Community</a></li>
+          <li class="nav-item"><a href="platforms.html" class="nav-link">Platforms</a></li>
+          <li class="nav-item"><a href="research-development.html" class="nav-link">R&D</a></li>
+        </ul>
+        <div class="mobile-menu">
+          <i class="fas fa-bars"></i>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="background-color: var(--darker);">
+    <!-- Background Images -->
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: url('l0epa5mftk.png'); background-size: cover; background-position: center; background-repeat: no-repeat; z-index: -2; opacity: 0.2;"></div>
+
+    <div class="container docs-container">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+          <div class="docs-sidebar">
+            <ul class="docs-sidebar-menu">
+              <li class="sidebar-title">Support</li>
+              <li><a href="#contact" class="active">Contact Information</a></li>
+              <li><a href="#support">Support Center</a></li>
+              <li><a href="#faq">Frequently Asked Questions</a></li>
+              
+              <li class="sidebar-title">Legal</li>
+              <li><a href="#terms">Terms of Service</a></li>
+              <li><a href="#privacy">Privacy Policy</a></li>
+              
+              <li class="sidebar-title">Documentation</li>
+              <li><a href="#getting-started">Getting Started</a></li>
+              <li><a href="#platform-usage">Platform Usage</a></li>
+              <li><a href="#agent-lee">Agent Lee Guide</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-lg-9">
+          <!-- Contact Information -->
+          <div id="contact" class="docs-content-section">
+            <h2>Contact Information</h2>
+            <p>We're here to help you succeed on your artist journey. Reach out to us through any of the following channels:</p>
+            
+            <div class="contact-box">
+              <h4>How to Reach Us</h4>
+              <div class="contact-info">
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="contact-text">
+                    <strong>Email:</strong><br>
+                    <a href="mailto:agentlee@rapidwebdevelop.com" class="contact-link">agentlee@rapidwebdevelop.com</a>
+                  </div>
+                </div>
+                
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class="fas fa-phone-alt"></i>
+                  </div>
+                  <div class="contact-text">
+                    <strong>Phone:</strong><br>
+                    Sales: <a href="tel:4146269992" class="contact-link">414-626-9992</a><br>
+                    Support: <a href="tel:4143676211" class="contact-link">414-367-6211</a>
+                  </div>
+                </div>
+                
+                <div class="contact-item">
+                  <div class="contact-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div class="contact-text">
+                    <strong>Address:</strong><br>
+                    Milwaukee, WI 53206<br>
+                    United States
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <h3>Operating Hours</h3>
+            <p>Our support team is available during the following hours:</p>
+            <ul>
+              <li><strong>Monday - Friday:</strong> 9:00 AM - 7:00 PM (CST)</li>
+              <li><strong>Saturday:</strong> 10:00 AM - 3:00 PM (CST)</li>
+              <li><strong>Sunday:</strong> Closed</li>
+            </ul>
+            
+            <p>For urgent matters outside of business hours, please email us with "URGENT" in the subject line, and our on-call team will respond as soon as possible.</p>
+          </div>
+          
+          <!-- Support Center -->
+          <div id="support" class="docs-content-section">
+            <h2>Support Center</h2>
+            
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <div style="background: rgba(18, 18, 18, 0.8); border-radius: 1rem; padding: 2rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <div style="font-size: 3.6rem; color: var(--primary); margin-bottom: 1.5rem;">
+                    <i class="fas fa-headset"></i>
+                  </div>
+                  <h3 style="font-size: 2rem;">Live Support</h3>
+                  <p>Connect with our support team in real-time via chat, phone, or video call to resolve issues quickly.</p>
+                  <a href="#" class="btn btn-sm">Schedule a Call</a>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div style="background: rgba(18, 18, 18, 0.8); border-radius: 1rem; padding: 2rem; height: 100%; border: 1px solid rgba(255, 255, 255, 0.1);">
+                  <div style="font-size: 3.6rem; color: var(--accent); margin-bottom: 1.5rem;">
+                    <i class="fas fa-ticket-alt"></i>
+                  </div>
+                  <h3 style="font-size: 2rem;">Ticket System</h3>
+                  <p>Submit a detailed support ticket for complex issues that require investigation by our team.</p>
+                  <a href="#" class="btn btn-secondary btn-sm">Open Ticket</a>
+                </div>
+              </div>
+            </div>
+            
+            <h3>Support Tiers</h3>
+            <p>We offer multiple levels of support to meet your needs:</p>
+            
+            <div style="background: rgba(25, 25, 25, 0.7); border-radius: 1rem; padding: 2.5rem; margin-bottom: 3rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <h4 style="color: var(--primary);">Standard Support</h4>
+              <p>Included with all artist platforms:</p>
+              <ul>
+                <li>Email support within 48 hours</li>
+                <li>Access to knowledge base and forums</li>
+                <li>Monthly check-in calls</li>
+                <li>Agent Lee AI assistance</li>
+              </ul>
+            </div>
+            
+            <div style="background: rgba(25, 25, 25, 0.7); border-radius: 1rem; padding: 2.5rem; margin-bottom: 3rem; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <h4 style="color: var(--secondary-light);">Priority Support</h4>
+              <p>Upgrade available for serious artists:</p>
+              <ul>
+                <li>24-hour response guarantee</li>
+                <li>Direct phone support</li>
+                <li>Weekly strategy calls</li>
+                <li>Advanced platform customization</li>
+                <li>Personalized Agent Lee training</li>
+              </ul>
+            </div>
+            
+            <h3>Getting Help from Agent Lee</h3>
+            <p>Agent Lee is available 24/7 to assist with common questions and troubleshooting. Simply click the robot icon in the bottom right corner of any page to start a conversation.</p>
+            
+            <div style="background: rgba(255, 51, 102, 0.1); border-radius: 1rem; padding: 2rem; margin: 3rem 0; border-left: 4px solid var(--primary);">
+              <p style="font-size: 1.6rem; margin-bottom: 0;"><i class="fas fa-lightbulb" style="color: var(--primary); margin-right: 1rem;"></i> <strong>Pro Tip:</strong> You can ask Agent Lee to "send documentation" on any topic, and it will provide you with specific guidance tailored to your question.</p>
+            </div>
+          </div>
+          
+          <!-- FAQ Section -->
+          <div id="faq" class="docs-content-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="accordion" id="faqAccordion">
+              <!-- Platform Basics -->
+              <div class="accordion-item bg-dark text-light border-dark mb-3">
+                <h2 class="accordion-header" id="headingOne">
+                  <button class="accordion-button bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    What makes this platform different from other artist websites?
+                  </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>Unlike traditional artist platforms or label deals, the Artist Empowerment Platform is built on three core principles:</p>
+                    <ol>
+                      <li><strong>100% Ownership:</strong> You maintain complete ownership of your masters, publishing rights, and all creative assets.</li>
+                      <li><strong>Direct Fan Connection:</strong> No intermediaries between you and your audience. You own your fan data and relationships.</li>
+                      <li><strong>Fair Economics:</strong> You keep 85% of all revenue generated, compared to the industry standard of 12-18%.</li>
+                    </ol>
+                    <p>Additionally, our platform integrates AI assistance through Agent Lee, providing guidance, automation, and insights that would normally require an entire management team.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Revenue & Payments -->
+              <div class="accordion-item bg-dark text-light border-dark mb-3">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button bg-dark text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    How do payments and revenue work?
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>Our payment system is designed to be transparent and artist-friendly:</p>
+                    <ul>
+                      <li>You keep 85% of all revenue generated through your platform</li>
+                      <li>Payments are processed through secure payment providers (Stripe, PayPal, etc.)</li>
+                      <li>You can set your own pricing for music, merch, and digital goods</li>
+                      <li>Payouts occur weekly with no minimum thresholds</li>
+                      <li>Real-time sales dashboard shows earnings as they happen</li>
+                      <li>No hidden fees, recoupment clauses, or deductions</li>
+                    </ul>
+                    <p>The platform fee (15%) covers hosting, transaction processing, security, and ongoing platform improvements.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Agent Lee -->
+              <div class="accordion-item bg-dark text-light border-dark mb-3">
+                <h2 class="accordion-header" id="headingThree">
+                  <button class="accordion-button bg-dark text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    What can Agent Lee do for me?
+                  </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>Agent Lee is your AI assistant throughout your artist journey. Some of its key capabilities include:</p>
+                    <ul>
+                      <li>Guiding new users through platform features and setup</li>
+                      <li>Analyzing fan engagement and suggesting optimization strategies</li>
+                      <li>Assisting with content creation and scheduling</li>
+                      <li>Providing insights on your audience demographics and behaviors</li>
+                      <li>Managing direct fan communication across channels</li>
+                      <li>Answering fan questions on your behalf (with your approval)</li>
+                      <li>Creating customized promotional campaigns</li>
+                      <li>Generating reports on revenue, growth, and engagement</li>
+                    </ul>
+                    <p>Agent Lee learns from your interactions and adapts to your specific needs and style over time, becoming more valuable as your career grows.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Technical Requirements -->
+              <div class="accordion-item bg-dark text-light border-dark mb-3">
+                <h2 class="accordion-header" id="headingFour">
+                  <button class="accordion-button bg-dark text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    What are the technical requirements?
+                  </button>
+                </h2>
+                <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>The Artist Empowerment Platform is designed to be accessible across devices and platforms:</p>
+                    <ul>
+                      <li><strong>Web Access:</strong> Any modern browser (Chrome, Safari, Firefox, Edge)</li>
+                      <li><strong>Mobile:</strong> Responsive design works on all smartphones and tablets</li>
+                      <li><strong>File Formats:</strong> 
+                        <ul>
+                          <li>Audio: WAV, MP3, FLAC, AAC (up to 320kbps)</li>
+                          <li>Video: MP4, MOV, WebM (up to 4K)</li>
+                          <li>Images: JPG, PNG, WebP (up to 20MB)</li>
+                        </ul>
+                      </li>
+                      <li><strong>Internet Connection:</strong> Minimum 5Mbps for basic features, 25Mbps+ recommended for live streaming</li>
+                      <li><strong>Storage:</strong> Up to 500GB included with standard platform, expandable as needed</li>
+                    </ul>
+                    <p>Your platform is hosted on our secure servers, so there's no need for you to install software or manage technical infrastructure.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Integration & Customization -->
+              <div class="accordion-item bg-dark text-light border-dark mb-3">
+                <h2 class="accordion-header" id="headingFive">
+                  <button class="accordion-button bg-dark text-light collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                    Can I customize my platform and integrate with other services?
+                  </button>
+                </h2>
+                <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    <p>Yes! Customization and integration capabilities are core features:</p>
+                    <ul>
+                      <li><strong>Visual Customization:</strong> Complete control over colors, typography, layout, and branding</li>
+                      <li><strong>Integrations:</strong> Connect with popular services like:
+                        <ul>
+                          <li>Streaming platforms (Spotify, Apple Music, etc.)</li>
+                          <li>Social media accounts</li>
+                          <li>Email marketing tools (Mailchimp, ConvertKit, etc.)</li>
+                          <li>Analytics platforms (Google Analytics, Mixpanel)</li>
+                          <li>Payment processors (beyond our built-in options)</li>
+                        </ul>
+                      </li>
+                      <li><strong>Custom Features:</strong> For advanced needs, we offer custom development services</li>
+                      <li><strong>API Access:</strong> Available for developers to create custom integrations and extensions</li>
+                    </ul>
+                    <p>Agent Lee can assist with many customization tasks, or you can work directly with our support team for more extensive changes.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- More FAQs can be added as needed -->
+            </div>
+          </div>
+          
+          <!-- Terms of Service -->
+          <div id="terms" class="docs-content-section">
+            <h2>Terms of Service</h2>
+            
+            <p><strong>Last Updated:</strong> August 15, 2023</p>
+            
+            <p>These Terms of Service ("Terms") govern your access to and use of the Artist Empowerment Platform ("Platform") operated by LEEWAY through RapidWebDevelop.com ("we," "us," or "our"). By accessing or using the Platform, you agree to be bound by these Terms.</p>
+            
+            <h3>1. Account Registration and Security</h3>
+            <p>1.1 To use certain features of the Platform, you must register for an account. You agree to provide accurate, current, and complete information during the registration process.</p>
+            
+            <p>1.2 You are responsible for safeguarding the password that you use to access the Platform and for any activities or actions under your password.</p>
+            
+            <p>1.3 You agree to notify us immediately of any unauthorized access to your account or any other breaches of security.</p>
+            
+            <h3>2. Content and Intellectual Property</h3>
+            <p>2.1 By using the Platform, you retain all rights to your content. We do not claim ownership of any content that you create, upload, or display on or through the Platform.</p>
+            
+            <p>2.2 You grant us a non-exclusive, royalty-free, transferable, sublicensable, worldwide license to use, store, display, reproduce, and modify your content solely for the purpose of operating and improving the Platform.</p>
+            
+            <p>2.3 You represent and warrant that you own or have the necessary rights to all content you submit to the Platform, and that your content does not violate the rights of any third party.</p>
+            
+            <h3>3. Platform Fees and Revenue Sharing</h3>
+            <p>3.1 In exchange for using the Platform, we retain 15% of all revenue generated through your Platform. You receive the remaining 85% of revenue.</p>
+            
+            <p>3.2 Payment processing fees charged by third-party payment processors are included in our 15% fee. We do not impose additional fees or charges.</p>
+            
+            <p>3.3 We issue payments on a weekly basis, provided your account is in good standing and compliant with these Terms.</p>
+            
+            <h3>4. Prohibited Conduct</h3>
+            <p>4.1 You agree not to engage in any of the following:</p>
+            <ul>
+              <li>Violating any applicable law or regulation</li>
+              <li>Infringing upon the rights of others</li>
+              <li>Posting content that is defamatory, obscene, or illegal</li>
+              <li>Using the Platform to distribute malware or other harmful code</li>
+              <li>Attempting to interfere with the proper functioning of the Platform</li>
+              <li>Selling or transferring your account to another party</li>
+            </ul>
+            
+            <h3>5. Termination</h3>
+            <p>5.1 We reserve the right to suspend or terminate your account at any time for violations of these Terms or for any other reason at our sole discretion.</p>
+            
+            <p>5.2 Upon termination, your right to use the Platform will immediately cease, but all provisions of these Terms that should survive termination shall remain in effect.</p>
+            
+            <h3>6. Disclaimer of Warranties</h3>
+            <p>6.1 The Platform is provided on an "as is" and "as available" basis, without warranties of any kind, either express or implied.</p>
+            
+            <p>6.2 We do not guarantee that the Platform will be uninterrupted, secure, or error-free.</p>
+            
+            <h3>7. Limitation of Liability</h3>
+            <p>7.1 To the maximum extent permitted by law, we shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues.</p>
+            
+            <p>7.2 Our total liability for any claim arising out of or relating to these Terms or the Platform shall not exceed the greater of $100 or the amount you have paid us in the past six months.</p>
+            
+            <h3>8. Changes to Terms</h3>
+            <p>8.1 We may modify these Terms at any time by posting the revised Terms on the Platform. Your continued use of the Platform after such changes constitutes your acceptance of the new Terms.</p>
+            
+            <h3>9. Governing Law</h3>
+            <p>9.1 These Terms shall be governed by the laws of the State of Wisconsin, without regard to its conflict of law provisions.</p>
+            
+            <p>9.2 Any disputes arising under these Terms shall be resolved in the state or federal courts located in Milwaukee County, Wisconsin.</p>
+            
+            <h3>10. Contact Information</h3>
+            <p>If you have any questions about these Terms, please contact us at: agentlee@rapidwebdevelop.com</p>
+          </div>
+          
+          <!-- Privacy Policy -->
+          <div id="privacy" class="docs-content-section">
+            <h2>Privacy Policy</h2>
+            
+            <p><strong>Last Updated:</strong> August 15, 2023</p>
+            
+            <p>This Privacy Policy describes how LEEWAY through RapidWebDevelop.com ("we," "us," or "our") collects, uses, and shares your personal information when you use our Artist Empowerment Platform ("Platform").</p>
+            
+            <h3>1. Information We Collect</h3>
+            <p>1.1 <strong>Information You Provide to Us:</strong></p>
+            <ul>
+              <li>Account information (name, email, phone number)</li>
+              <li>Profile information (artist name, bio, photos)</li>
+              <li>Content you upload (music, videos, images, text)</li>
+              <li>Payment and financial information</li>
+              <li>Communications with us or through the Platform</li>
+            </ul>
+            
+            <p>1.2 <strong>Information Collected Automatically:</strong></p>
+            <ul>
+              <li>Device information (IP address, browser type, operating system)</li>
+              <li>Usage information (pages visited, actions taken)</li>
+              <li>Location information (general location based on IP address)</li>
+              <li>Cookies and similar tracking technologies</li>
+            </ul>
+            
+            <p>1.3 <strong>Information from Third Parties:</strong></p>
+            <ul>
+              <li>Social media information (when you link accounts)</li>
+              <li>Payment processors and financial institutions</li>
+              <li>Analytics providers and advertising partners</li>
+            </ul>
+            
+            <h3>2. How We Use Your Information</h3>
+            <p>We use the information we collect to:</p>
+            <ul>
+              <li>Provide, maintain, and improve the Platform</li>
+              <li>Process transactions and send related information</li>
+              <li>Send you technical notices, updates, and support messages</li>
+              <li>Respond to your comments and questions</li>
+              <li>Develop new products and services</li>
+              <li>Monitor and analyze trends, usage, and activities</li>
+              <li>Detect, investigate, and prevent fraudulent transactions and abuse</li>
+              <li>Personalize and improve your experience</li>
+            </ul>
+            
+            <h3>3. How We Share Your Information</h3>
+            <p>We may share your information in the following circumstances:</p>
+            <ul>
+              <li>With vendors, consultants, and service providers who need access to such information to perform services on our behalf</li>
+              <li>In response to a legal request if we believe disclosure is required by law</li>
+              <li>To protect the rights, property, and safety of our users, the public, or ourselves</li>
+              <li>In connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition</li>
+              <li>With your consent or at your direction</li>
+            </ul>
+            <p>We do not sell your personal information to third parties.</p>
+            
+            <h3>4. Agent Lee AI Assistant</h3>
+            <p>4.1 Our Platform includes Agent Lee, an AI assistant that processes your information to provide personalized assistance and automation. Agent Lee may:</p>
+            <ul>
+              <li>Analyze your content and interactions to provide contextual help</li>
+              <li>Remember your preferences and prior interactions</li>
+              <li>Assist with communication between you and your fans</li>
+              <li>Generate reports and insights based on your platform data</li>
+            </ul>
+            
+            <p>4.2 You can control Agent Lee's access to your information through your privacy settings.</p>
+            
+            <h3>5. Your Rights and Choices</h3>
+            <p>5.1 <strong>Account Information:</strong> You can update, correct, or delete your account information at any time by logging into your account settings.</p>
+            
+            <p>5.2 <strong>Marketing Communications:</strong> You can opt out of receiving promotional emails by following the instructions in those emails.</p>
+            
+            <p>5.3 <strong>Cookies:</strong> Most browsers allow you to adjust your cookie settings. Note that refusing cookies may affect certain Platform features.</p>
+            
+            <p>5.4 <strong>Data Access and Portability:</strong> You can request a copy of your personal data by contacting us.</p>
+            
+            <h3>6. Data Retention</h3>
+            <p>We retain your information as long as your account is active or as needed to provide services, comply with legal obligations, resolve disputes, or enforce agreements.</p>
+            
+            <h3>7. Children's Privacy</h3>
+            <p>The Platform is not directed to children under 16. We do not knowingly collect personal information from children under 16. If you become aware that a child has provided us with personal information, please contact us.</p>
+            
+            <h3>8. International Data Transfers</h3>
+            <p>We may transfer, store, and process your information in countries other than your own. We take steps to ensure that your information receives an adequate level of protection in the jurisdictions in which we process it.</p>
+            
+            <h3>9. Changes to This Policy</h3>
+            <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on the Platform and updating the "Last Updated" date.</p>
+            
+            <h3>10. Contact Us</h3>
+            <p>If you have questions about this Privacy Policy, please contact us at: agentlee@rapidwebdevelop.com</p>
+          </div>
+          
+          <!-- Getting Started Guide -->
+          <div id="getting-started" class="docs-content-section">
+            <h2>Getting Started Guide</h2>
+            
+            <p>Welcome to the Artist Empowerment Platform! This guide will help you set up your account and start building your artist presence.</p>
+            
+            <h3>1. Creating Your Account</h3>
+            <p>To begin your journey on the Artist Empowerment Platform:</p>
+            <ol>
+              <li>Visit the registration page and enter your basic information</li>
+              <li>Verify your email address via the confirmation link</li>
+              <li>Complete your artist profile with your stage name, bio, and genre</li>
+              <li>Upload a profile image and cover photo</li>
+              <li>Connect your social media accounts (optional but recommended)</li>
+            </ol>
+            
+            <h3>2. Setting Up Your Artist Platform</h3>
+            <p>Once your account is created, it's time to build your platform:</p>
+            <ol>
+              <li>Select a template design that matches your artistic style</li>
+              <li>Customize colors, fonts, and layout to match your brand</li>
+              <li>Set up your storefront for music, merch, and digital products</li>
+              <li>Configure payment options and payout methods</li>
+              <li>Create your first release or product</li>
+            </ol>
+            
+            <h3>3. Connecting with Fans</h3>
+            <p>Building your fan community is essential for success:</p>
+            <ol>
+              <li>Set up your messaging preferences for email, SMS, and push notifications</li>
+              <li>Create a welcome message for new fans</li>
+              <li>Import existing fan contacts (if you have them)</li>
+              <li>Configure your fan board settings and moderation preferences</li>
+              <li>Plan your first fan-exclusive content drop</li>
+            </ol>
+            
+            <h3>4. Working with Agent Lee</h3>
+            <p>Agent Lee is your AI assistant throughout your journey:</p>
+            <ol>
+              <li>Access Agent Lee by clicking the robot icon in the bottom right corner</li>
+              <li>Complete the onboarding dialogue to help Agent Lee understand your goals</li>
+              <li>Train Agent Lee on your communication style and preferences</li>
+              <li>Ask for assistance with any platform features or strategies</li>
+              <li>Review Agent Lee's suggestions for platform optimization</li>
+            </ol>
+            
+            <div style="background: rgba(255, 51, 102, 0.1); border-radius: 1rem; padding: 2rem; margin: 3rem 0; border-left: 4px solid var(--primary);">
+              <p style="font-size: 1.6rem; margin-bottom: 0;"><i class="fas fa-lightbulb" style="color: var(--primary); margin-right: 1rem;"></i> <strong>Pro Tip:</strong> For the best results, spend at least 15 minutes training Agent Lee on your unique voice and preferences. The more Agent Lee learns about you, the more effective its assistance will be.</p>
+            </div>
+          </div>
+          
+          <!-- Platform Usage Guide -->
+          <div id="platform-usage" class="docs-content-section">
+            <h2>Platform Usage Guide</h2>
+            
+            <p>This guide covers the core features of the Artist Empowerment Platform and how to use them effectively.</p>
+            
+            <h3>Content Management</h3>
+            <p>Upload and manage your creative content:</p>
+            <ul>
+              <li><strong>Music:</strong> Upload tracks in WAV, MP3, or FLAC format. Set pricing, release dates, and availability.</li>
+              <li><strong>Videos:</strong> Host music videos, live performances, or behind-the-scenes content directly on your platform.</li>
+              <li><strong>Images:</strong> Create galleries for press photos, album art, and visual content.</li>
+              <li><strong>Blog/Updates:</strong> Keep fans informed with regular posts about your journey and upcoming releases.</li>
+            </ul>
+            
+            <h3>Store Configuration</h3>
+            <p>Sell your music, merchandise, and digital products:</p>
+            <ul>
+              <li><strong>Product Management:</strong> Add items, set pricing, manage inventory, and track sales.</li>
+              <li><strong>Bundling:</strong> Create special offers by combining multiple products.</li>
+              <li><strong>Limited Editions:</strong> Set quantity limits and countdown timers for exclusive drops.</li>
+              <li><strong>Digital Downloads:</strong> Offer high-quality audio, bonus content, or exclusive material.</li>
+            </ul>
+            
+            <h3>Fan Engagement Tools</h3>
+            <p>Build and nurture your community:</p>
+            <ul>
+              <li><strong>Fan Board:</strong> Create a space for fans to interact with you and each other.</li>
+              <li><strong>Messaging:</strong> Send targeted communications to specific audience segments.</li>
+              <li><strong>Exclusive Content:</strong> Offer special material to subscribers or paying supporters.</li>
+              <li><strong>Live Streaming:</strong> Host virtual events, Q&As, or performances.</li>
+            </ul>
+            
+            <h3>Analytics and Insights</h3>
+            <p>Track your growth and understand your audience:</p>
+            <ul>
+              <li><strong>Sales Dashboard:</strong> Monitor revenue from all sources in real-time.</li>
+              <li><strong>Audience Metrics:</strong> Analyze fan demographics, geographic distribution, and behavior patterns.</li>
+              <li><strong>Content Performance:</strong> See which songs, videos, and posts resonate most with your audience.</li>
+              <li><strong>Campaign Tracking:</strong> Measure the success of promotional efforts and marketing initiatives.</li>
+            </ul>
+            
+            <h3>Customization</h3>
+            <p>Make the platform truly yours:</p>
+            <ul>
+              <li><strong>Visual Editor:</strong> Change colors, fonts, layouts, and design elements without coding.</li>
+              <li><strong>Custom Domain:</strong> Connect your own domain name for a professional appearance.</li>
+              <li><strong>Integrations:</strong> Connect with third-party services like Spotify, Mailchimp, or Google Analytics.</li>
+              <li><strong>Mobile Optimization:</strong> Ensure your platform looks great on all devices.</li>
+            </ul>
+          </div>
+          
+          <!-- Agent Lee Guide -->
+          <div id="agent-lee" class="docs-content-section">
+            <h2>Agent Lee Guide</h2>
+            
+            <p>Agent Lee is your AI assistant designed specifically for artists. This guide will help you maximize Agent Lee's capabilities to support your career.</p>
+            
+            <h3>Core Features</h3>
+            <p>Agent Lee can assist with various aspects of your artist journey:</p>
+            <ul>
+              <li><strong>Platform Navigation:</strong> Get help finding and using any feature on the platform.</li>
+              <li><strong>Content Creation:</strong> Assistance with writing, editing, and optimizing your content.</li>
+              <li><strong>Fan Engagement:</strong> Help managing communication with fans and building your community.</li>
+              <li><strong>Analytics Interpretation:</strong> Make sense of your performance data with actionable insights.</li>
+              <li><strong>Growth Strategy:</strong> Receive personalized recommendations for expanding your reach.</li>
+              <li><strong>Industry Knowledge:</strong> Access information about music business best practices.</li>
+            </ul>
+            
+            <h3>Voice Commands</h3>
+            <p>Agent Lee responds to specific voice commands for quick actions:</p>
+            <ul>
+              <li><strong>"Send my card"</strong> - Generates sharing options for your artist card</li>
+              <li><strong>"Show analytics"</strong> - Displays your current performance metrics</li>
+              <li><strong>"New release"</strong> - Begins the process of uploading new content</li>
+              <li><strong>"Message fans"</strong> - Opens fan communication tools</li>
+              <li><strong>"Schedule post"</strong> - Sets up future content drops or announcements</li>
+              <li><strong>"Growth strategy"</strong> - Provides personalized recommendations</li>
+            </ul>
+            
+            <h3>Training Agent Lee</h3>
+            <p>The more Agent Lee learns about you, the better assistance it provides:</p>
+            <ol>
+              <li><strong>Initial Setup:</strong> Complete the onboarding dialogue with detailed information</li>
+              <li><strong>Communication Style:</strong> Train Agent Lee on your preferred tone and vocabulary</li>
+              <li><strong>Fan Interactions:</strong> Provide examples of how you like to engage with fans</li>
+              <li><strong>Content Preferences:</strong> Share your creative approach and artistic values</li>
+              <li><strong>Feedback:</strong> Rate Agent Lee's responses to help it improve over time</li>
+            </ol>
+            
+            <h3>Advanced Features</h3>
+            <p>Unlock more capabilities as you use Agent Lee:</p>
+            <ul>
+              <li><strong>Automation:</strong> Set up recurring tasks and scheduled activities</li>
+              <li><strong>Custom Workflows:</strong> Create sequences of actions for complex processes</li>
+              <li><strong>Fan Response Templates:</strong> Save time by creating preset responses to common questions</li>
+              <li><strong>Content Calendar:</strong> Let Agent Lee help you plan and schedule your content strategy</li>
+              <li><strong>Multilingual Support:</strong> Communicate with international fans in their language</li>
+              <li><strong>Cross-Platform Integration:</strong> Connect Agent Lee to your social media and streaming accounts</li>
+            </ul>
+            
+            <div style="background: rgba(67, 97, 238, 0.1); border-radius: 1rem; padding: 2rem; margin: 3rem 0; border-left: 4px solid var(--secondary-light);">
+              <p style="font-size: 1.6rem; margin-bottom: 0;"><i class="fas fa-robot" style="color: var(--secondary-light); margin-right: 1rem;"></i> <strong>Agent Lee Says:</strong> "Remember, I'm here to assist, not replace your unique creative vision. My goal is to handle the technical and administrative aspects of your career so you can focus on what matters most: your art."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-grid">
+        <div>
+          <a href="index.html" class="footer-logo">
+            <div class="logo-container">
+              <img src="xzilox717k.png" alt="RapidWebDevelop Logo" style="height: 4rem;">
+              <span style="font-size: 2.4rem; margin-left: 1rem; color: var(--light);">RapidWebDevelop</span>
+            </div>
+          </a>
+          <p class="footer-text">
+            The Artist Empowerment Platform where creators maintain 100% ownership, connect directly with fans, and keep 85% of all revenue. Built by LEEWAY™ to honor MacMillion's legacy.
+          </p>
+          <div class="footer-social">
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-spotify"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-heading">Platform</h3>
+          <ul class="footer-links">
+            <li class="footer-item"><a href="index.html" class="footer-link">Home</a></li>
+            <li class="footer-item"><a href="index.html#truth" class="footer-link">The Truth</a></li>
+            <li class="footer-item"><a href="index.html#win" class="footer-link">Artist Success</a></li>
+            <li class="footer-item"><a href="index.html#community" class="footer-link">Fan Community</a></li>
+            <li class="footer-item"><a href="platforms.html" class="footer-link">Platform Options</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="footer-heading">Support</h3>
+          <ul class="footer-links">
+            <li class="footer-item"><a href="#contact" class="footer-link">Contact Us</a></li>
+            <li class="footer-item"><a href="#faq" class="footer-link">FAQ</a></li>
+            <li class="footer-item"><a href="#getting-started" class="footer-link">Getting Started</a></li>
+            <li class="footer-item"><a href="#agent-lee" class="footer-link">Agent Lee Guide</a></li>
+            <li class="footer-item"><a href="#support" class="footer-link">Support Center</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="footer-heading">Legal</h3>
+          <ul class="footer-links">
+            <li class="footer-item"><a href="#terms" class="footer-link">Terms of Service</a></li>
+            <li class="footer-item"><a href="#privacy" class="footer-link">Privacy Policy</a></li>
+            <li class="footer-item"><a href="#" class="footer-link">Acceptable Use</a></li>
+            <li class="footer-item"><a href="#" class="footer-link">Copyright</a></li>
+            <li class="footer-item"><a href="#" class="footer-link">DMCA Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p class="copyright">
+          © 2023 LEEWAY™. All rights reserved. The Artist Empowerment Platform is a product of RapidWebDevelop.com
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // Smooth scrolling for documentation links
+    document.querySelectorAll('.docs-sidebar-menu a').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove active class from all links
+        document.querySelectorAll('.docs-sidebar-menu a').forEach(item => {
+          item.classList.remove('active');
+        });
+        
+        // Add active class to clicked link
+        this.classList.add('active');
+        
+        // Get the target section
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        
+        // Scroll to the target section
+        if (targetSection) {
+          window.scrollTo({
+            top: targetSection.offsetTop - 100,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Update active sidebar link on scroll
+    window.addEventListener('scroll', function() {
+      const sections = document.querySelectorAll('.docs-content-section');
+      let currentActive = '';
+      
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        const sectionHeight = section.offsetHeight;
+        
+        if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+          currentActive = '#' + section.getAttribute('id');
+        }
+      });
+      
+      // Update active link in sidebar
+      document.querySelectorAll('.docs-sidebar-menu a').forEach(link => {
+        if (link.getAttribute('href') === currentActive) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

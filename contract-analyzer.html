@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- 🔴 REGION: SEO -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Industry Contract Analysis - LEEWAY™ Interactive</title>
+    <meta name="description" content="Interactive analysis of music industry contracts including 360-degree deals, advances, and royalty structures">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+    <!-- End 🔴 REGION: SEO -->
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- 🟢 REGION: CORE -->
+    <div id="app" class="container mx-auto p-4"></div>
+
+    <!-- React and Babel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <!-- End 🟢 REGION: CORE -->
+
+    <!-- 🟣 REGION: MCP -->
+    <script>
+        // MCP Command System
+        function runMCPCommand(command) {
+            console.log(`Executing MCP command: ${command}`);
+            // Log to IndexedDB
+            const timestamp = new Date().toISOString();
+            const logEntry = { command, timestamp, status: 'executed' };
+            
+            const request = indexedDB.open("LEEWAYDatabase", 1);
+            
+            request.onupgradeneeded = function(event) {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains('mcpLogs')) {
+                    db.createObjectStore('mcpLogs', { keyPath: 'timestamp' });
+                }
+            };
+            
+            request.onsuccess = function(event) {
+                const db = event.target.result;
+                const transaction = db.transaction(['mcpLogs'], 'readwrite');
+                const store = transaction.objectStore('mcpLogs');
+                store.add(logEntry);
+            };
+            
+            return `Command "${command}" executed successfully`;
+        }
+    </script>
+    <!-- End 🟣 REGION: MCP -->
+
+    <!-- 💾 REGION: DATA -->
+    <script>
+        // Initialize IndexedDB for contract state
+        function initializeDatabase() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("LEEWAYDatabase", 1);
+                
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('contractState')) {
+                        const store = db.createObjectStore('contractState', { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains('userPreferences')) {
+                        const store = db.createObjectStore('userPreferences', { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains('mcpLogs')) {
+                        const store = db.createObjectStore('mcpLogs', { keyPath: 'timestamp' });
+                    }
+                };
+                
+                request.onsuccess = function(event) {
+                    resolve(event.target.result);
+                };
+                
+                request.onerror = function(event) {
+                    reject('Error initializing database');
+                };
+            });
+        }
+
+        // Save contract state to IndexedDB
+        function saveContractState(state) {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("LEEWAYDatabase", 1);
+                
+                request.onsuccess = function(event) {
+                    const db = event.target.result;
+                    const transaction = db.transaction(['contractState'], 'readwrite');
+                    const store = transaction.objectStore('contractState');
+                    
+                    // Save each section of the contract
+                    Object.keys(state).forEach(key => {
+                        store.put({
+                            id: key,
+                            value: state[key],
+                            lastUpdated: new Date().toISOString()
+                        });
+                    });
+                    
+                    resolve('Contract state saved');
+                };
+                
+                request.onerror = function(event) {
+                    reject('Error saving contract state');
+                };
+            });
+        }
+
+        // Load contract state from IndexedDB
+        function loadContractState() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open("LEEWAYDatabase", 1);
+                
+                request.onsuccess = function(event) {
+                    const db = event.target.result;
+                    const transaction = db.transaction(['contractState'], 'readonly');
+                    const store = transaction.objectStore('contractState');
+                    const state = {};
+                    
+                    // Get all contract sections
+                    const getAllRequest = store.getAll();
+                    
+                    getAllRequest.onsuccess = function(event) {
+                        const results = event.target.result;
+                        results.forEach(item => {
+                            state[item.id] = item.value;
+                        });
+                        resolve(state);
+                    };
+                    
+                    getAllRequest.onerror = function(event) {
+                        reject('Error loading contract state');
+                    };
+                };
+                
+                request.onerror = function(event) {
+                    reject('Error opening database');
+                };
+            });
+        }
+    </script>
+    <!-- End 💾 REGION: DATA -->
+
+    <!-- 🧠 REGION: AI -->
+    <script>
+        // Agent configuration
+        const agents = {
+            lee: {
+                name: "Agent Lee",
+                role: "Contract Orchestrator",
+                voice: "en-US-AriaNeural",
+                expertise: ["Contract Analysis", "Legal Advice", "Industry Trends"]
+            },
+            tim: {
+                name: "Tim",
+                role: "Sales Advisor",
+                voice: "en-US-GuyNeural",
+                expertise: ["Revenue Streams", "Royalty Calculations", "Advance Structures"]
+            },
+            leonard: {
+                name: "Leonard",
+                role: "Resource Specialist",
+                voice: "en-US-TonyNeural",
+                expertise: ["Legal Jargon", "Case Studies", "Artist Recommendations"]
+            },
+            nicole: {
+                name: "Nicole",
+                role: "Showcase Expert",
+                voice: "en-US-JennyNeural",
+                expertise: ["Contract Visualization", "Comparative Analysis", "Future Trends"]
+            }
+        };
+
+        // Text-to-Speech function
+        function speakText(text, agent = "lee") {
+            return new Promise((resolve) => {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = speechSynthesis.getVoices().find(voice => 
+                    voice.name === agents[agent].voice) || 
+                    speechSynthesis.getVoices()[0];
+                
+                utterance.onend = () => {
+                    resolve();
+                };
+                
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        // Stop speaking
+        function stopSpeaking() {
+            speechSynthesis.cancel();
+        }
+
+        // Speech recognition setup
+        function startListening(callback) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                alert("Speech recognition not supported in your browser");
+                return;
+            }
+            
+            const recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+            
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                callback(transcript);
+            };
+            
+            recognition.start();
+        }
+    </script>
+    <!-- End 🧠 REGION: AI -->
+
+    <!-- 🔵 REGION: UI -->
+    <script type="text/babel">
+        // Main Application Component
+        const App = () => {
+            const [activeSection, setActiveSection] = React.useState('overview');
+            const [isAgentSpeaking, setIsAgentSpeaking] = React.useState(false);
+            const [contractState, setContractState] = React.useState({
+                advanceAmount: 200000,
+                interestRate: 5,
+                labelShare: 30,
+                contractDuration: 7,
+                recoupmentStatus: 0
+            });
+            const [mcpLogs, setMcpLogs] = React.useState([]);
+            const [activeAgent, setActiveAgent] = React.useState('lee');
+            const [isListening, setIsListening] = React.useState(false);
+            
+            // Initialize and load data
+            React.useEffect(() => {
+                initializeDatabase().then(() => {
+                    loadContractState().then(state => {
+                        if (Object.keys(state).length > 0) {
+                            setContractState(prevState => ({...prevState, ...state}));
+                        }
+                    });
+                    
+                    // Load MCP logs
+                    const request = indexedDB.open("LEEWAYDatabase", 1);
+                    request.onsuccess = function(event) {
+                        const db = event.target.result;
+                        const transaction = db.transaction(['mcpLogs'], 'readonly');
+                        const store = transaction.objectStore('mcpLogs');
+                        const getAllRequest = store.getAll();
+                        
+                        getAllRequest.onsuccess = function(event) {
+                            setMcpLogs(event.target.result);
+                        };
+                    };
+                });
+            }, []);
+            
+            // Save contract state when it changes
+            React.useEffect(() => {
+                saveContractState(contractState);
+            }, [contractState]);
+            
+            // Calculate key contract metrics
+            const calculateRecoupableAmount = () => {
+                const { advanceAmount, interestRate, contractDuration } = contractState;
+                return advanceAmount * Math.pow(1 + (interestRate / 100), contractDuration);
+            };
+            
+            const calculateArtistProfit = () => {
+                const { advanceAmount, labelShare, recoupmentStatus } = contractState;
+                const totalRevenue = 1000000; // Simulated total revenue
+                const recoupable = calculateRecoupableAmount();
+                const artistShare = (100 - labelShare) / 100;
+                
+                // If fully recouped
+                if (recoupmentStatus >= 100) {
+                    return (totalRevenue * artistShare);
+                }
+                
+                // Partially recouped
+                const recoupedAmount = recoupable * (recoupmentStatus / 100);
+                const remainingToRecoup = recoupable - recoupedAmount;
+                const availableForArtist = totalRevenue - remainingToRecoup;
+                
+                return availableForArtist > 0 ? availableForArtist * artistShare : 0;
+            };
+            
+            // Agent interaction handlers
+            const askAgent = (agentId, query) => {
+                setIsAgentSpeaking(true);
+                setActiveAgent(agentId);
+                
+                let response = "";
+                
+                // Generate agent responses based on expertise
+                switch(agentId) {
+                    case 'lee':
+                        response = "Based on my analysis of this contract structure, I'd recommend focusing on the recoupment terms. The compound interest clause significantly extends your timeline to profitability.";
+                        break;
+                    case 'tim':
+                        response = `With a ${contractState.labelShare}% label share and ${contractState.interestRate}% compound interest on your $${contractState.advanceAmount.toLocaleString()} advance, you're looking at approximately $${Math.round(calculateRecoupableAmount()).toLocaleString()} to recoup before earning royalties.`;
+                        break;
+                    case 'leonard':
+                        response = "Similar contract terms were legally challenged in the Taylor Swift vs. Big Machine case. Consider negotiating a sunset clause or capping recoupable expenses.";
+                        break;
+                    case 'nicole':
+                        response = "Let me show you how your earnings compare to industry standards. With your current terms, you're earning 15-20% less than the average mid-tier artist deal signed in 2023.";
+                        break;
+                    default:
+                        response = "I'm not sure I can help with that specific query.";
+                }
+                
+                // Speak the response
+                speakText(response, agentId).then(() => {
+                    setIsAgentSpeaking(false);
+                });
+                
+                // Log the interaction
+                runMCPCommand(`agent.${agentId}.query: ${query}`);
+            };
+            
+            // Voice recognition handler
+            const handleListen = (agentId) => {
+                setIsListening(true);
+                startListening((transcript) => {
+                    setIsListening(false);
+                    askAgent(agentId, transcript);
+                });
+            };
+            
+            // Contract modification handlers
+            const handleContractChange = (e) => {
+                const { name, value } = e.target;
+                setContractState(prevState => ({
+                    ...prevState,
+                    [name]: parseFloat(value)
+                }));
+                
+                runMCPCommand(`contract.update: ${name}=${value}`);
+            };
+            
+            // Navigation
+            const sections = [
+                { id: 'overview', label: '360-Degree Deal Overview' },
+                { id: 'advances', label: 'Advance Agreement' },
+                { id: 'distribution', label: 'Distribution Terms' },
+                { id: 'comparison', label: 'Comparative Analysis' },
+                { id: 'recommendations', label: 'Artist Recommendations' }
+            ];
+            
+            return (
+                <div className="bg-white rounded-lg shadow-lg">
+                    {/* Header */}
+                    <header className="bg-gray-800 text-white p-4 rounded-t-lg flex justify-between items-center">
+                        <h1 className="text-2xl font-semibold">Music Industry Contract Analyzer</h1>
+                        <div className="flex space-x-2">
+                            <button 
+                                onClick={() => runMCPCommand("system.reset")}
+                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                            >
+                                Reset
+                            </button>
+                            <button 
+                                onClick={() => runMCPCommand("system.save")}
+                                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </header>
+                    
+                    {/* Navigation */}
+                    <nav className="bg-gray-100 p-4 flex flex-wrap">
+                        {sections.map(section => (
+                            <button
+                                key={section.id}
+                                onClick={() => setActiveSection(section.id)}
+                                className={`px-4 py-2 mr-2 mb-2 rounded ${activeSection === section.id ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                            >
+                                {section.label}
+                            </button>
+                        ))}
+                    </nav>
+                    
+                    {/* Main content */}
+                    <main className="p-6">
+                        {/* Overview Section */}
+                        {activeSection === 'overview' && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-4">The 360-Degree Deal: Structure and Implications</h2>
+                                <div className="bg-gray-50 p-4 rounded border border-gray-300 mb-4">
+                                    <h3 className="text-lg font-medium mb-2">Contractual Framework</h3>
+                                    <p className="mb-4">A 360-degree deal entitles the label to a percentage of all revenue streams generated by the artist, including music sales, touring, merchandise, and endorsements.</p>
+                                    <div className="bg-yellow-50 p-4 rounded border border-yellow-300">
+                                        <p className="font-semibold">Sample Contract Language:</p>
+                                        <p className="italic">
+                                            "Artist hereby grants Label the exclusive right to receive <span className="font-bold text-red-500">{contractState.labelShare}%</span> of 
+                                            Gross Revenue derived from all professional activities, including but not limited to:
+                                        </p>
+                                        <ul className="list-disc ml-6 my-2">
+                                            <li>Sound recordings and musical compositions;</li>
+                                            <li>Live performances and touring;</li>
+                                            <li>Merchandising, branding, and endorsements;</li>
+                                            <li>Film, television, and ancillary media.</li>
+                                        </ul>
+                                        <p className="italic">
+                                            This agreement remains in effect for a term of <span className="font-bold text-red-500">{contractState.contractDuration}</span> years 
+                                            from the date of execution, with automatic renewal clauses contingent on sales targets."
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="mt-4">
+                                        <h4 className="font-medium">Interactive Contract Terms:</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Label Share (%)</label>
+                                                <input 
+                                                    type="range" 
+                                                    name="labelShare" 
+                                                    min="10" 
+                                                    max="50" 
+                                                    value={contractState.labelShare} 
+                                                    onChange={handleContractChange}
+                                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                                />
+                                                <div className="flex justify-between text-xs">
+                                                    <span>10%</span>
+                                                    <span className="font-bold">{contractState.labelShare}%</span>
+                                                    <span>50%</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Contract Duration (Years)</label>
+                                                <input 
+                                                    type="range" 
+                                                    name="contractDuration" 
+                                                    min="1" 
+                                                    max="15" 
+                                                    value={contractState.contractDuration} 
+                                                    onChange={handleContractChange}
+                                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                                />
+                                                <div className="flex justify-between text-xs">
+                                                    <span>1</span>
+                                                    <span className="font-bold">{contractState.contractDuration}</span>
+                                                    <span>15</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="bg-red-50 p-4 rounded border border-red-200">
+                                    <h3 className="text-lg font-medium mb-2">Key Red Flags:</h3>
+                                    <ul className="list-disc ml-6">
+                                        <li><span className="font-semibold">Gross Revenue vs. Net Profit:</span> Labels often deduct expenses (marketing, production) before calculating their {contractState.labelShare}% share, significantly reducing the artist's payout.</li>
+                                        <li><span className="font-semibold">Automatic Renewal:</span> Terms tied to opaque sales metrics can extend contracts indefinitely beyond the {contractState.contractDuration}-year term.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Advances Section */}
+                        {activeSection === 'advances' && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-4">Advance Agreements: Recoupment and Royalty Structures</h2>
+                                <div className="bg-gray-50 p-4 rounded border border-gray-300 mb-4">
+                                    <h3 className="text-lg font-medium mb-2">Sample Advance Clause</h3>
+                                    <div className="bg-yellow-50 p-4 rounded border border-yellow-300">
+                                        <p className="italic">
+                                            "Label agrees to provide Artist an advance of <span className="font-bold text-red-500">${contractState.advanceAmount.toLocaleString()}</span>, 
+                                            recoupable from all royalties and revenue streams. Royalty payments shall commence only after 
+                                            Label has fully recouped the advance, inclusive of compounded interest at 
+                                            <span className="font-bold text-red-500"> {contractState.interestRate}%</span> annually. 
+                                            Artist acknowledges that recording costs, video production, and promotional expenses are additionally recoupable."
+                                        </p>
+                                    </div>
+                                    
+                                    <div className="mt-4">
+                                        <h4 className="font-medium">Interactive Advance Terms:</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Advance Amount ($)</label>
+                                                <input 
+                                                    type="range" 
+                                                    name="advanceAmount" 
+                                                    min="50000" 
+                                                    max="500000" 
+                                                    step="10000"
+                                                    value={contractState.advanceAmount} 
+                                                    onChange={handleContractChange}
+                                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                                />
+                                                <div className="flex justify-between text-xs">
+                                                    <span>$50K</span>
+                                                    <span className="font-bold">${contractState.advanceAmount.toLocaleString()}</span>
+                                                    <span>$500K</span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700">Interest Rate (%)</label>
+                                                <input 
+                                                    type="range" 
+                                                    name="interestRate" 
+                                                    min="0" 
+                                                    max="10" 
+                                                    step="0.5"
+                                                    value={contractState.interestRate} 
+                                                    onChange={handleContractChange}
+                                                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                                />
+                                                <div className="flex justify-between text-xs">
+                                                    <span>0%</span>
+                                                    <span className="font-bold">{contractState.interestRate}%</span>
+                                                    <span>10%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="bg-blue-50 p-4 rounded border border-blue-200">
+                                    <h3 className="text-lg font-medium mb-2">Financial Implications:</h3>
+                                    <div className="mb-4">
+                                        <p className="mb-2"><span className="font-semibold">Compound Interest Impact:</span> Your ${contractState.advanceAmount.toLocaleString()} advance at {contractState.interestRate}% interest becomes <span className="font-bold text-red-500">${Math.round(calculateRecoupableAmount()).toLocaleString()}</span> after {contractState.contractDuration} years, delaying royalty eligibility.</p>
+                                        
+                                        <label className="block text-sm font-medium text-gray-700 mt-4">Recoupment Status</label>
+                                        <input 
+                                            type="range" 
+                                            name="recoupmentStatus" 
+                                            min="0" 
+                                            max="100" 
+                                            value={contractState.recoupmentStatus} 
+                                            onChange={handleContractChange}
+                                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                                        />
+                                        <div className="flex justify-between text-xs">
+                                            <span>0%</span>
+                                            <span className="font-bold">{contractState.recoupmentStatus}% Recouped</span>
+                                            <span>100%</span>
+                                        </div>
+                                        
+                                        <div className="mt-4 p-3 bg-white rounded shadow-sm">
+                                            <p className="font-semibold">Artist Earnings Projection:</p>
+                                            <p>With {contractState.recoupmentStatus}% of the advance recouped, your estimated earnings would be: <span className="font-bold text-green-600">${Math.round(calculateArtistProfit()).toLocaleString()}</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Distribution Section */}
+                        {activeSection === 'distribution' && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-4">Distribution Agreements: Fee Structures and Hidden Costs</h2>
+                                <div className="bg-gray-50 p-4 rounded border border-gray-300 mb-4">
+                                    <h3 className="text-lg font-medium mb-2">Representative Distribution Clause</h3>
+                                    <div className="bg-yellow-50 p-4 rounded border border-yellow-300">
+                                        <p className="italic">
+                                            "Distributor shall retain 25% of Net Receipts from all distribution channels, defined as revenue after deducting:
+                                        </p>
+                                        <ul className="list-disc ml-6 my-2 italic">
+                                            <li>Platform fees (e.g., Spotify, Apple Music);</li>
+                                            <li>Marketing and operational costs;</li>
+                                            <li>Chargebacks for returns or fraud.</li>
+                                        </ul>
+                                        <p className="italic">
+                                            Payments to Artist shall be made quarterly, subject to a minimum earnings threshold of $500 per payment cycle."
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div className="bg-red-50 p-4 rounded border border-red-200">
+                                    <h3 className="text-lg font-medium mb-2">Critical Analysis:</h3>
+                                    <ul className="list-disc ml-6">
+                                        <li><span className="font-semibold">Net Receipts Ambiguity:</span> The term "operational costs" is often broadly interpreted, allowing distributors to deduct expenses like office overhead.</li>
+                                        <li><span className="font-semibold">Payment Delays:</span> Quarterly payouts with minimum thresholds disadvantage emerging artists with smaller audiences.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Comparison Section */}
+                        {activeSection === 'comparison' && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-4">Comparative Analysis of Contractual Terms</h2>
+                                <div className="bg-white overflow-hidden shadow rounded-lg">
+                                    <div className="px-4 py-5 sm:p-6">
+                                        <h3 className="text-lg font-medium mb-4">Royalty Allocation Across Revenue Streams</h3>
+                                        <div className="overflow-x-auto">
+                                            <table className="min-w-full divide-y divide-gray-200">
+                                                <thead className="bg-gray-50">
+                                                    <tr>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue Stream</th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Label/Distributor Share</th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Artist Share</th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Recoupment Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="bg-white divide-y divide-gray-200">
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Streaming Royalties</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">65–75%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25–35%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Post-recoupment</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Touring Income</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15–25%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">75–85%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Pre-recoupment</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Merchandise Sales</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">20–30%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">70–80%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Post-recoupment</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Endorsements</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">25–35%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">65–75%</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Pre-recoupment</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div className="mt-6 bg-gray-50 p-4 rounded border border-gray-300">
+                                    <h3 className="text-lg font-medium mb-2">Observations:</h3>
+                                    <p>Labels prioritize recouping advances from high-revenue streams like streaming, while taking smaller cuts from touring, which carries higher financial risk for artists.</p>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {/* Recommendations Section */}
+                        {activeSection === 'recommendations' && (
+                            <div>
+                                <h2 className="text-xl font-semibold mb-4">Recommendations for Artists</h2>
+                                <div className="bg-green-50 p-4 rounded border border-green-200">
+                                    <ul className="space-y-4">
+                                        <li className="flex">
+                                            <span className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center mr-2">1</span>
+                                            <div>
+                                                <p className="font-semibold">Define "Net Profits" Precisely</p>
+                                                <p>Demand itemized expense lists and caps on deductibles.</p>
+                                            </div>
+                                        </li>
+                                        <li className="flex">
+                                            <span className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center mr-2">2</span>
+                                            <div>
+                                                <p className="font-semibold">Limit Contract Duration</p>
+                                                <p>Negotiate terms under 5 years with clear exit clauses.</p>
+                                            </div>
+                                        </li>
+                                        <li className="flex">
+                                            <span className="h-6 w-6 rounded-full bg-green-500 text-white flex items-center justify-center mr-2">3</span>
+                                            <div>
+                                                <p className="font-semibold">Audit Rights</p>
+                                                <p>Include provisions for third-party audits to verify label accounting.</p>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div className="mt-6 bg-gray-50 p-4 rounded border border-gray-300">
+                                    <h3 className="text-lg font-medium mb-2">Case Studies:</h3>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <h4 className="font-medium">Taylor Swift v. Big Machine Records (2019)</h4>
+                                            <p>Swift's contract granted Big Machine ownership of her master recordings in exchange for a $100,000 advance. The label's 360-degree clause entitled it to 20% of touring and merchandise revenue, which Swift later called "predatory" in congressional testimony.</p>
+                                        </div>
+                                        <div>
+                                            <h4 className="font-medium">Kanye West v. EMI (2020)</h4>
+                                            <p>West's publishing contract included a "sunset clause" that allowed EMI to collect royalties for 70 years after his death, a term now banned under California's Fair Music Licensing Act (2022).</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+                    
+                    {/* Agent Panel */}
+                    <aside className="bg-gray-100 p-4 border-t border-gray-300">
+                        <h3 className="text-lg font-semibold mb-3">Contract Advisors</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {Object.entries(agents).map(([id, agent]) => (
+                                <div key={id} className="bg-white p-4 rounded shadow-sm border border-gray-200 cursor-move">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <h4 className="font-medium">{agent.name}</h4>
+                                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">{agent.role}</span>
+                                    </div>
+                                    <p className="text-sm text-gray-600 mb-3">{agent.expertise.join(", ")}</p>
+                                    <div className="flex space-x-2">
+                                        <button
+                                            onClick={() => askAgent(id, "Tell me about this contract")}
+                                            disabled={isAgentSpeaking}
+                                            className={`flex-1 px-3 py-1 text-sm rounded ${isAgentSpeaking && activeAgent === id ? 'bg-purple-200 text-purple-800' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
+                                        >
+                                            {isAgentSpeaking && activeAgent === id ? 'Speaking...' : 'Send Message'}
+                                        </button>
+                                        <button
+                                            onClick={() => handleListen(id)}
+                                            disabled={isListening || isAgentSpeaking}
+                                            className={`px-3 py-1 text-sm rounded ${isListening ? 'bg-red-200 text-red-800' : 'bg-gray-200 hover:bg-gray-300 text-gray-800'}`}
+                                        >
+                                            {isListening ? 'Listening...' : 'Listen'}
+                                        </button>
+                                        {isAgentSpeaking && activeAgent === id && (
+                                            <button
+                                                onClick={stopSpeaking}
+                                                className="px-3 py-1 text-sm rounded bg-red-500 hover:bg-red-600 text-white"
+                                            >
+                                                Stop
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </aside>
+                    
+                    {/* MCP Logs Panel (Collapsible) */}
+                    <div className="border-t border-gray-300">
+                        <div className="bg-gray-800 text-white px-4 py-2 flex justify-between items-center cursor-pointer" 
+                             onClick={() => runMCPCommand("logs.toggle")}>
+                            <h3 className="font-medium">System Logs</h3>
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                        <div className="bg-gray-900 text-gray-300 p-4 text-sm font-mono h-32 overflow-y-auto">
+                            {mcpLogs.length > 0 ? (
+                                mcpLogs.map((log, index) => (
+                                    <div key={index} className="mb-1">
+                                        <span className="text-green-400">[{new Date(log.timestamp).toLocaleTimeString()}]</span>
+                                        <span className="ml-2">{log.command}</span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No logs available yet.</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        // Render the application
+        ReactDOM.render(<App />, document.getElementById('app'));
+    </script>
+    <!-- End 🔵 REGION: UI -->
+</body>
+</html>

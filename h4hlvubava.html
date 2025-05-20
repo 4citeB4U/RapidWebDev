@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agent Lee - LEEWAY™ Professional System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      /* Color scheme */
+      --color-primary: #3498db;
+      --color-primary-dark: #2980b9;
+      --color-secondary: #f8f9fa;
+      --color-accent: #2ecc71;
+      --color-error: #e74c3c;
+      --color-text: #333;
+      --color-text-light: #757575;
+      --color-border: #e0e0e0;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      --radius: 12px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Card Layout for Sidebar and Main Content */
+    .card-layout {
+      display: flex;
+      width: 100%;
+    }
+    
+    /* Social Links Sidebar */
+    .social-sidebar {
+      width: 60px;
+      background: var(--color-secondary);
+      border-right: 1px solid var(--color-border);
+      padding: 15px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-top-left-radius: var(--radius);
+      border-bottom-left-radius: var(--radius);
+    }
+    
+    .social-section {
+      margin-bottom: 10px;
+    }
+    
+    .section-title {
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-bottom: 8px;
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+    }
+    
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: var(--color-secondary);
+      transition: all 0.2s ease;
+    }
+    
+    .social-link:hover {
+      transform: scale(1.1);
+      background-color: #e9ecef;
+    }
+    
+    .social-link svg {
+      width: 20px;
+      height: 20px;
+    }
+    
+    /* Main Content */
+    .main-content {
+      flex: 1;
+    }
+    
+    /* Agent Lee Card */
+    #agent-lee-card {
+      position: fixed;
+      right: 20px;
+      top: 20px;
+      width: 380px;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      z-index: 9999;
+    }
+    
+    /* Card Header */
+    .card-header {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f8f9fa;
+      border-bottom: 1px solid var(--color-border);
+      cursor: move;
+    }
+    
+    .agent-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+      background: url('https://cdn.pixabay.com/photo/2016/11/18/23/38/child-1837375_1280.png');
+      background-size: cover;
+      background-position: center;
+      border: 2px solid var(--color-primary);
+    }
+    
+    .agent-name {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--color-text);
+      margin-bottom: 4px;
+    }
+    
+    .agent-status {
+      font-size: 14px;
+      color: var(--color-text-light);
+    }
+    
+    /* Card Controls */
+    .card-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 8px;
+    }
+    
+    .card-control-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: #666;
+      transition: all 0.2s;
+    }
+    
+    .card-control-btn:hover {
+      background-color: rgba(255, 255, 255, 1);
+      transform: scale(1.1);
+    }
+    
+    /* Card Body */
+    .card-body {
+      padding: 16px;
+    }
+    
+    /* Voice Command Buttons */
+    .voice-commands {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    
+    .command-row {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .command-row:first-child {
+      margin-bottom: 4px;
+    }
+    
+    .command-btn {
+      flex: 1;
+      padding: 12px 0;
+      border-radius: 20px;
+      border: none;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+      background-color: #f1f3f5;
+      color: var(--color-text);
+    }
+    
+    .listen-btn {
+      background-color: var(--color-primary);
+      color: white;
+    }
+    
+    .stop-btn {
+      background-color: #e74c3c;
+      color: white;
+    }
+    
+    .finished-btn {
+      background-color: #2ecc71;
+      color: white;
+    }
+    
+    .command-btn:hover {
+      filter: brightness(0.95);
+      transform: translateY(-2px);
+    }
+    
+    /* Message Input */
+    .message-input-container {
+      margin: 16px 0;
+      position: relative;
+    }
+    
+    .message-input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 24px;
+      border: 1px solid var(--color-border);
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    
+    .message-input:focus {
+      border-color: var(--color-primary);
+    }
+    
+    /* Tool Buttons */
+    .tool-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    
+    .tool-btn {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background-color: #f8f9fa;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .tool-btn:hover {
+      background-color: #e9ecef;
+      transform: translateY(-2px);
+    }
+    
+    .icon {
+      font-size: 16px;
+    }
+    
+    /* Database View (Initially Hidden) */
+    #database-view {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+    
+    .database-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    
+    .database-title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    .database-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #2ecc71;
+    }
+    
+    .database-content {
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+    }
+    
+    .database-section {
+      margin-bottom: 16px;
+    }
+    
+    .database-section-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    
+    .memory-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px;
+      margin-bottom: 4px;
+      background-color: #f8f9fa;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    
+    .memory-item:hover {
+      background-color: #e9ecef;
+    }
+    
+    .database-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .database-btn {
+      flex: 1;
+      padding: 8px 0;
+      font-size: 13px;
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .database-btn:hover {
+      background-color: var(--color-primary-dark);
+    }
+    
+    /* Settings View (Initially Hidden) */
+    #settings-view {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+    
+    /* Guide View (Initially Hidden) */
+    #guide-view {
+      display: none;
+      padding: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+    
+    .guide-step {
+      margin-bottom: 16px;
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    
+    .step-number {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--color-primary);
+      color: white;
+      border-radius: 50%;
+      font-size: 14px;
+    }
+    
+    .step-content {
+      padding-left: 32px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    
+    .guide-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+    }
+    
+    .guide-btn {
+      padding: 8px 16px;
+      background-color: var(--color-primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .guide-btn:disabled {
+      background-color: #cbd5e0;
+      cursor: not-allowed;
+    }
+    
+    /* Footer */
+    .card-footer {
+      padding: 12px;
+      background-color: #f8f9fa;
+      border-top: 1px solid var(--color-border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--color-text-light);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      #agent-lee-card {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+        height: auto;
+      }
+      
+      .command-row {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="agent-lee-card">
+    <!-- Card Layout with Sidebar -->
+    <div class="card-layout">
+      <!-- Social Media and Development Links Sidebar -->
+      <div class="social-sidebar">
+        <!-- Social Media Section -->
+        <div class="social-section">
+          <h4 class="section-title">Social</h4>
+          <div class="social-links">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/" target="_blank" class="social-link" aria-label="Facebook">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <circle cx="16" cy="16" r="16" fill="#1877F2"/>
+                <path d="M22 16h-4v8h-4v-8h-3v-4h3v-2.5C14 7.57 15.57 6 18.5 6H22v4h-2.5C18.22 10 18 10.22 18 10.5V12h4l-1 4z" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/" target="_blank" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <defs>
+                  <radialGradient id="instagram-gradient" cx="0.5" cy="0.5" r="0.8">
+                    <stop offset="0%" stop-color="#feda75"/>
+                    <stop offset="50%" stop-color="#d62976"/>
+                    <stop offset="100%" stop-color="#4f5bd5"/>
+                  </radialGradient>
+                </defs>
+                <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#instagram-gradient)"/>
+                <circle cx="16" cy="16" r="7" fill="none" stroke="#fff" stroke-width="2"/>
+                <circle cx="23" cy="9" r="1.5" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- X (Twitter) -->
+            <a href="https://x.com/" target="_blank" class="social-link" aria-label="X">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" fill="#000"/>
+                <path d="M24.6 8H20.9L16 14.2L11.1 8H7.4L14.1 16.7L7 24H10.7L16 17.2L21.3 24H25L17.9 16.7L24.6 8Z" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/" target="_blank" class="social-link" aria-label="YouTube">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="6" fill="#FF0000"/>
+                <polygon points="13,10 23,16 13,22" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- LinkedIn -->
+            <a href="https://linkedin.com/" target="_blank" class="social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="8" fill="#0077B5"/>
+                <rect x="8" y="13" width="3" height="11" fill="#fff"/>
+                <circle cx="9.5" cy="10.5" r="1.5" fill="#fff"/>
+                <rect x="14" y="16" width="3" height="8" fill="#fff"/>
+                <rect x="19" y="16" width="3" height="8" fill="#fff"/>
+                <rect x="14" y="13" width="8" height="2" fill="#fff"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Development Section -->
+        <div class="social-section">
+          <h4 class="section-title">Dev</h4>
+          <div class="social-links">
+            <!-- GitHub -->
+            <a href="https://github.com/" target="_blank" class="social-link" aria-label="GitHub">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <circle cx="16" cy="16" r="16" fill="#181717"/>
+                <path fill="#fff" d="M16 7.5c-4.7 0-8.5 3.8-8.5 8.5 0 3.8 2.5 7 6 8.1.4.1.6-.2.6-.5v-1.7c-2.4.5-2.9-1-2.9-1-.4-1-1-1.3-1-1.3-.8-.6.1-.6.1-.6.9.1 1.3.9 1.3.9.8 1.3 2.1.9 2.6.7.1-.6.3-.9.6-1.1-1.9-.2-3.9-.9-3.9-4 0-.9.3-1.6.8-2.2-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8.7-.2 1.4-.3 2.1-.3s1.4.1 2.1.3c1.5-1 2.2-.8 2.2-.8.5 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.2 0 3.1-2 3.8-3.9 4 .3.2.6.7.6 1.4v2c0 .3.2.6.6.5 3.5-1.1 6-4.3 6-8.1 0-4.7-3.8-8.5-8.5-8.5z"/>
+              </svg>
+            </a>
+            
+            <!-- VS Code -->
+            <a href="https://code.visualstudio.com/" target="_blank" class="social-link" aria-label="Visual Studio Code">
+              <svg viewBox="0 0 512 512" width="32" height="32">
+                <g>
+                  <path d="M497.9 74.2L406.6 29.2c-18.2-9.3-40.5-3.1-51.6 14.2L170.6 256 355 468.6c11.1 17.3 33.4 23.5 51.6 14.2l91.3-45c21.8-10.7 21.8-41.1 0-51.8L305.2 256l192.7-130c21.8-10.7 21.8-41.1 0-51.8z" fill="#0065A9"/>
+                  <path d="M355 43.4c-11.1-17.3-33.4-23.5-51.6-14.2l-91.3 45c-21.8 10.7-21.8 41.1 0 51.8L305.2 256 212.1 340.4c-21.8 10.7-21.8 41.1 0 51.8l91.3 45c18.2 9.3 40.5 3.1 51.6-14.2L497.9 256z" fill="#007ACC"/>
+                  <path d="M212.1 340.4L355 468.6c11.1 17.3 33.4 23.5 51.6 14.2l91.3-45c21.8-10.7 21.8-41.1 0-51.8L305.2 256z" fill="#1F9CF0"/>
+                  <path d="M119.8 238.7l-91.3-45c-18.2-9.3-40.5-3.1-51.6 14.2-11.1 17.3-3.1 40.5 14.2 51.8l91.3 45c18.2 9.3 40.5 3.1 51.6-14.2 11.1-17.3 3.1-40.5-14.2-51.8z" fill="#007ACC"/>
+                  <path d="M119.8 273.3c-18.2 9.3-40.5 3.1-51.6-14.2l-91.3-45c-21.8-10.7-21.8-41.1 0-51.8l91.3-45c18.2-9.3 40.5-3.1 51.6 14.2l91.3 45c21.8 10.7 21.8 41.1 0 51.8z" fill="#0065A9"/>
+                </g>
+              </svg>
+            </a>
+            
+            <!-- Docker -->
+            <a href="https://www.docker.com/" target="_blank" class="social-link" aria-label="Docker">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="8" fill="#2496ED"/>
+                <rect x="5" y="20" width="22" height="4" rx="2" fill="#fff"/>
+                <rect x="7" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="11" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="15" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="19" y="16" width="3" height="3" rx="1" fill="#fff"/>
+                <rect x="23" y="16" width="2" height="3" rx="1" fill="#fff"/>
+              </svg>
+            </a>
+            
+            <!-- Discord -->
+            <a href="https://discord.com/" target="_blank" class="social-link" aria-label="Discord">
+              <svg viewBox="0 0 32 32" width="32" height="32">
+                <rect width="32" height="32" rx="8" fill="#5865F2"/>
+                <path d="M23.5,10c-1.5-0.7-3.1-1.2-4.8-1.5c-0.2,0.4-0.5,0.9-0.6,1.2c-1.8-0.3-3.5-0.3-5.3,0c-0.2-0.4-0.4-0.8-0.6-1.2c-1.7,0.3-3.3,0.8-4.8,1.5c-3,4.6-3.9,9-3.4,13.4c2,1.5,3.9,2.4,5.8,2.9c0.5-0.6,0.9-1.3,1.2-2.1c-0.6-0.2-1.2-0.5-1.8-0.9c0.2-0.1,0.3-0.2,0.5-0.3c3.5,1.7,7.3,1.7,10.8,0c0.2,0.1,0.3,0.2,0.5,0.3c-0.6,0.4-1.2,0.7-1.8,0.9c0.3,0.7,0.7,1.4,1.2,2.1c1.9-0.5,3.8-1.4,5.8-2.9C27.5,17.7,26.1,13.3,23.5,10z M12.3,19.6c-1.1,0-2-1-2-2.3C10.3,16,11.2,15,12.3,15c1.1,0,2,1,2,2.3C14.3,18.6,13.4,19.6,12.3,19.6z M19.7,19.6c-1.1,0-2-1-2-2.3c0-1.3,0.9-2.3,2-2.3c1.1,0,2,1,2,2.3C21.7,18.6,20.8,19.6,19.7,19.6z" fill="#fff"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Card Content -->
+      <div class="main-content">
+        <!-- Card Header with Avatar -->
+        <div class="card-header" id="card-header">
+          <div class="agent-avatar"></div>
+          <h3 class="agent-name">Agent Lee</h3>
+          <p class="agent-status" id="agent-status">Ready to assist</p>
+          
+          <div class="card-controls">
+            <button class="card-control-btn" id="minimize-btn" title="Minimize">_</button>
+            <button class="card-control-btn" id="close-btn" title="Close">×</button>
+          </div>
+        </div>
+    
+    <!-- Card Body with Commands -->
+    <div class="card-body" id="card-body">
+      <div class="voice-commands">
+        <div class="command-row">
+          <button class="command-btn listen-btn" id="listen-btn">
+            <span class="icon">🎤</span> Listen
+          </button>
+          <button class="command-btn stop-btn" id="stop-btn">
+            <span class="icon">✋</span> Stop Talking
+          </button>
+        </div>
+        <div class="command-row">
+          <button class="command-btn finished-btn" id="finished-btn">
+            <span class="icon">✅</span> Finished Speaking
+          </button>
+        </div>
+      </div>
+      
+      <div class="message-input-container">
+        <input type="text" class="message-input" id="message-input" placeholder="Type a message...">
+      </div>
+      
+      <div class="tool-buttons">
+        <button class="tool-btn" id="commands-btn">
+          <span class="icon">📜</span> Open Commands
+        </button>
+        <button class="tool-btn" id="guide-btn">
+          <span class="icon">🧭</span> Guide Me
+        </button>
+        <button class="tool-btn" id="memory-btn">
+          <span class="icon">🧠</span> Memory
+        </button>
+        <button class="tool-btn" id="settings-btn">
+          <span class="icon">⚙️</span> Settings
+        </button>
+      </div>
+    </div>
+    
+    <!-- Database View (Memory) - Initially Hidden -->
+    <div id="database-view" class="main-content">
+      <div class="database-header">
+        <div class="database-title">Memory Database</div>
+        <div class="database-status">
+          <div class="status-dot"></div>
+          <span id="db-status-text">Connected</span>
+        </div>
+      </div>
+      
+      <div class="database-content">
+        <div class="database-section">
+          <div class="database-section-title">Recent Conversations</div>
+          <div id="conversations-list">
+            <div class="memory-item">
+              <span>Project planning discussion</span>
+              <small>Today, 10:45 AM</small>
+            </div>
+            <div class="memory-item">
+              <span>Task assignments review</span>
+              <small>Yesterday, 3:30 PM</small>
+            </div>
+            <div class="memory-item">
+              <span>Team meeting notes</span>
+              <small>Mar 24, 2024</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="database-section">
+          <div class="database-section-title">Saved Information</div>
+          <div id="information-list">
+            <div class="memory-item">
+              <span>Project deadline: April 30</span>
+              <small>Priority: High</small>
+            </div>
+            <div class="memory-item">
+              <span>Client meeting: Tomorrow, 2PM</span>
+              <small>Calendar: Added</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="database-section">
+          <div class="database-section-title">System Status</div>
+          <div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <span>Storage used:</span>
+              <span>128 MB / 500 MB</span>
+            </div>
+            <div style="height: 8px; background-color: #e9ecef; border-radius: 4px; overflow: hidden;">
+              <div style="height: 100%; width: 25%; background-color: var(--color-primary);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="database-actions">
+        <button class="database-btn" id="backup-btn">Backup Memory</button>
+        <button class="database-btn" id="restore-btn">Restore</button>
+        <button class="database-btn" id="clear-btn">Clear</button>
+      </div>
+    </div>
+    
+    <!-- Settings View - Initially Hidden -->
+    <div id="settings-view" class="main-content">
+      <div class="database-header">
+        <div class="database-title">Settings</div>
+      </div>
+      
+      <div class="database-content">
+        <div class="database-section">
+          <div class="database-section-title">Voice Settings</div>
+          <div class="memory-item">
+            <span>Text-to-Speech</span>
+            <input type="checkbox" id="tts-toggle" checked>
+          </div>
+          <div class="memory-item">
+            <span>Voice Recognition</span>
+            <input type="checkbox" id="voice-toggle" checked>
+          </div>
+          <div class="memory-item">
+            <span>Voice Type</span>
+            <select id="voice-type">
+              <option value="default">Default</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="database-section">
+          <div class="database-section-title">Appearance</div>
+          <div class="memory-item">
+            <span>Dark Mode</span>
+            <input type="checkbox" id="dark-mode-toggle">
+          </div>
+          <div class="memory-item">
+            <span>Text Size</span>
+            <select id="text-size">
+              <option value="small">Small</option>
+              <option value="medium" selected>Medium</option>
+              <option value="large">Large</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Guide View - Initially Hidden -->
+    <div id="guide-view" class="main-content">
+      <div class="database-header">
+        <div class="database-title">Guide</div>
+      </div>
+      
+      <div id="guide-steps">
+        <div class="guide-step" data-step="1">
+          <div class="step-title">
+            <div class="step-number">1</div>
+            <span>Getting Started</span>
+          </div>
+          <div class="step-content">
+            Welcome to Agent Lee! I'm your intelligent assistant designed to help you manage tasks, answer questions, and provide information. This guide will help you learn how to use my features.
+          </div>
+        </div>
+        
+        <div class="guide-step" data-step="2" style="display: none;">
+          <div class="step-title">
+            <div class="step-number">2</div>
+            <span>Voice Commands</span>
+          </div>
+          <div class="step-content">
+            You can speak to me by clicking the "Listen" button. After you've finished speaking, click "Finished Speaking" and I'll process your request. If you need me to stop talking, just click "Stop Talking".
+          </div>
+        </div>
+        
+        <div class="guide-step" data-step="3" style="display: none;">
+          <div class="step-title">
+            <div class="step-number">3</div>
+            <span>Using Memory</span>
+          </div>
+          <div class="step-content">
+            I can remember important information for you. Click the "Memory" button to view, backup, or manage what I've stored for you. This includes conversations, preferences, and important data.
+          </div>
+        </div>
+        
+        <div class="guide-step" data-step="4" style="display: none;">
+          <div class="step-title">
+            <div class="step-number">4</div>
+            <span>Customizing Settings</span>
+          </div>
+          <div class="step-content">
+            Click the "Settings" button to customize how I work. You can change voice settings, appearance preferences, and more to make me work better for you.
+          </div>
+        </div>
+      </div>
+      
+      <div class="guide-navigation">
+        <button class="guide-btn" id="prev-guide-btn" disabled>Previous</button>
+        <span id="guide-progress">1/4</span>
+        <button class="guide-btn" id="next-guide-btn">Next</button>
+      </div>
+    </div>
+    
+    <!-- Card Footer -->
+    <div class="card-footer">
+      Agent Lee Professional v1.0 • LEEWAY™ System
+    </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DOM Elements
+    const agentLeeCard = document.getElementById('agent-lee-card');
+    const cardHeader = document.getElementById('card-header');
+    const cardBody = document.getElementById('card-body');
+    const agentStatus = document.getElementById('agent-status');
+    const minimizeBtn = document.getElementById('minimize-btn');
+    const closeBtn = document.getElementById('close-btn');
+    
+    // Command buttons
+    const listenBtn = document.getElementById('listen-btn');
+    const stopBtn = document.getElementById('stop-btn');
+    const finishedBtn = document.getElementById('finished-btn');
+    const messageInput = document.getElementById('message-input');
+    
+    // Tool buttons
+    const commandsBtn = document.getElementById('commands-btn');
+    const guideBtn = document.getElementById('guide-btn');
+    const memoryBtn = document.getElementById('memory-btn');
+    const settingsBtn = document.getElementById('settings-btn');
+    
+    // View elements
+    const databaseView = document.getElementById('database-view');
+    const settingsView = document.getElementById('settings-view');
+    const guideView = document.getElementById('guide-view');
+    
+    // Database elements
+    const backupBtn = document.getElementById('backup-btn');
+    const restoreBtn = document.getElementById('restore-btn');
+    const clearBtn = document.getElementById('clear-btn');
+    
+    // Guide elements
+    const prevGuideBtn = document.getElementById('prev-guide-btn');
+    const nextGuideBtn = document.getElementById('next-guide-btn');
+    const guideProgress = document.getElementById('guide-progress');
+    const guideSteps = document.querySelectorAll('.guide-step');
+    
+    // Card state
+    let isMinimized = false;
+    let currentGuideStep = 1;
+    const totalGuideSteps = guideSteps.length;
+    
+    // Speech recognition state
+    let recognition = null;
+    let listening = false;
+    let speaking = false;
+    let speechSynthesis = window.speechSynthesis;
+    let currentSpeech = null;
+    
+    // Initialize speech recognition if available
+    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      
+      recognition.onresult = (event) => {
+        const last = event.results.length - 1;
+        const text = event.results[last][0].transcript;
+        processCommand(text);
+      };
+      
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error", event.error);
+        stopListening();
+      };
+      
+      recognition.onend = () => {
+        if (listening) {
+          // Restart if it ended unexpectedly
+          recognition.start();
+        }
+      };
+    }
+    
+    // Card dragging functionality
+    let dragState = {
+      isDragging: false,
+      startX: 0,
+      startY: 0,
+      startLeft: 0,
+      startTop: 0
+    };
+    
+    cardHeader.addEventListener('mousedown', (e) => {
+      const styles = window.getComputedStyle(agentLeeCard);
+      const left = parseInt(styles.left) || 0;
+      const top = parseInt(styles.top) || 0;
+      
+      dragState = {
+        isDragging: true,
+        startX: e.clientX,
+        startY: e.clientY,
+        startLeft: left,
+        startTop: top
+      };
+      
+      document.addEventListener('mousemove', handleDrag);
+      document.addEventListener('mouseup', stopDrag);
+    });
+    
+    function handleDrag(e) {
+      if (!dragState.isDragging) return;
+      
+      const deltaX = e.clientX - dragState.startX;
+      const deltaY = e.clientY - dragState.startY;
+      
+      agentLeeCard.style.left = `${dragState.startLeft + deltaX}px`;
+      agentLeeCard.style.top = `${dragState.startTop + deltaY}px`;
+    }
+    
+    function stopDrag() {
+      dragState.isDragging = false;
+      document.removeEventListener('mousemove', handleDrag);
+      document.removeEventListener('mouseup', stopDrag);
+    }
+    
+    // Minimize/maximize and close functionality
+    minimizeBtn.addEventListener('click', toggleMinimize);
+    closeBtn.addEventListener('click', closeCard);
+    
+    function toggleMinimize() {
+      isMinimized = !isMinimized;
+      
+      if (isMinimized) {
+        agentLeeCard.style.height = '80px';
+        cardBody.style.display = 'none';
+        databaseView.style.display = 'none';
+        settingsView.style.display = 'none';
+        guideView.style.display = 'none';
+        minimizeBtn.textContent = '□';
+      } else {
+        agentLeeCard.style.height = 'auto';
+        cardBody.style.display = 'block';
+        minimizeBtn.textContent = '_';
+      }
+    }
+    
+    function closeCard() {
+      agentLeeCard.style.display = 'none';
+    }
+    
+    // View management
+    function closeAllViews() {
+      databaseView.style.display = 'none';
+      settingsView.style.display = 'none';
+      guideView.style.display = 'none';
+    }
+    
+    function showDatabaseView() {
+      closeAllViews();
+      databaseView.style.display = 'block';
+    }
+    
+    function showSettingsView() {
+      closeAllViews();
+      settingsView.style.display = 'block';
+    }
+    
+    function showGuideView() {
+      closeAllViews();
+      guideView.style.display = 'block';
+      currentGuideStep = 1;
+      updateGuideDisplay();
+    }
+    
+    // Guide navigation
+    function updateGuideDisplay() {
+      guideSteps.forEach((step, index) => {
+        step.style.display = index + 1 === currentGuideStep ? 'block' : 'none';
+      });
+      
+      guideProgress.textContent = `${currentGuideStep}/${totalGuideSteps}`;
+      prevGuideBtn.disabled = currentGuideStep === 1;
+      nextGuideBtn.disabled = currentGuideStep === totalGuideSteps;
+    }
+    
+    nextGuideBtn.addEventListener('click', () => {
+      if (currentGuideStep < totalGuideSteps) {
+        currentGuideStep++;
+        updateGuideDisplay();
+      }
+    });
+    
+    prevGuideBtn.addEventListener('click', () => {
+      if (currentGuideStep > 1) {
+        currentGuideStep--;
+        updateGuideDisplay();
+      }
+    });
+    
+    // Speech functionality
+    function startListening() {
+      if (!recognition) {
+        updateAgentStatus("Speech recognition not supported");
+        return;
+      }
+      
+      if (listening) return;
+      
+      try {
+        recognition.start();
+        listening = true;
+        updateAgentStatus("Listening...");
+        listenBtn.style.backgroundColor = "#2980b9"; // Darker blue
+        listenBtn.innerHTML = '<span class="icon">🔴</span> Listening...';
+      } catch (error) {
+        console.error("Error starting speech recognition:", error);
+        updateAgentStatus("Failed to start listening");
+      }
+    }
+    
+    function stopListening() {
+      if (!recognition || !listening) return;
+      
+      try {
+        recognition.stop();
+        listening = false;
+        updateAgentStatus("Ready to assist");
+        listenBtn.style.backgroundColor = ""; // Reset to default
+        listenBtn.innerHTML = '<span class="icon">🎤</span> Listen';
+      } catch (error) {
+        console.error("Error stopping speech recognition:", error);
+      }
+    }
+    
+    function updateAgentStatus(status) {
+      agentStatus.textContent = status;
+    }
+    
+    function speak(text) {
+      if (!speechSynthesis || speaking) return;
+      
+      speaking = true;
+      updateAgentStatus("Speaking...");
+      
+      currentSpeech = new SpeechSynthesisUtterance(text);
+      
+      currentSpeech.onend = () => {
+        speaking = false;
+        currentSpeech = null;
+        updateAgentStatus("Ready to assist");
+      };
+      
+      speechSynthesis.speak(currentSpeech);
+    }
+    
+    function stopSpeaking() {
+      if (!speechSynthesis || !speaking) return;
+      
+      speechSynthesis.cancel();
+      speaking = false;
+      currentSpeech = null;
+      updateAgentStatus("Ready to assist");
+    }
+    
+    // Command processing
+    function processCommand(text) {
+      console.log("Processing command:", text);
+      updateAgentStatus("Processing...");
+      
+      // Simple command handling
+      text = text.toLowerCase().trim();
+      
+      if (text.includes("hello") || text.includes("hi")) {
+        speak("Hello! How can I help you today?");
+      } 
+      else if (text.includes("who are you")) {
+        speak("I am Agent Lee, your professional AI assistant. I can help you with tasks, answer questions, and provide information.");
+      }
+      else if (text.includes("thank you") || text.includes("thanks")) {
+        speak("You're welcome! Is there anything else I can help you with?");
+      }
+      else if (text.includes("open memory") || text.includes("show memory")) {
+        showDatabaseView();
+        speak("Here is your memory database.");
+      }
+      else if (text.includes("open settings") || text.includes("show settings")) {
+        showSettingsView();
+        speak("Here are your settings.");
+      }
+      else if (text.includes("open guide") || text.includes("show guide")) {
+        showGuideView();
+        speak("Here's a guide to help you get started.");
+      }
+      else if (text.includes("stop talking") || text.includes("be quiet")) {
+        stopSpeaking();
+      }
+      else if (text.includes("goodbye") || text.includes("bye")) {
+        speak("Goodbye! Feel free to talk to me anytime you need assistance.");
+      }
+      else {
+        speak("I'm not sure how to respond to that yet. I'm still learning new skills.");
+      }
+    }
+    
+    // Button event listeners
+    listenBtn.addEventListener('click', startListening);
+    stopBtn.addEventListener('click', stopSpeaking);
+    finishedBtn.addEventListener('click', stopListening);
+    
+    messageInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const text = messageInput.value.trim();
+        if (text) {
+          processCommand(text);
+          messageInput.value = '';
+        }
+      }
+    });
+    
+    // Tool button event listeners
+    memoryBtn.addEventListener('click', showDatabaseView);
+    settingsBtn.addEventListener('click', showSettingsView);
+    guideBtn.addEventListener('click', showGuideView);
+    
+    commandsBtn.addEventListener('click', () => {
+      speak("Here are some commands you can try: 'Who are you', 'Open memory', 'Open settings', or 'Open guide'.");
+    });
+    
+    // Database button event listeners
+    backupBtn.addEventListener('click', () => {
+      updateAgentStatus("Backing up memory...");
+      
+      // Simulate backup process
+      setTimeout(() => {
+        speak("Memory backup completed successfully.");
+        updateAgentStatus("Ready to assist");
+      }, 1500);
+    });
+    
+    restoreBtn.addEventListener('click', () => {
+      updateAgentStatus("Restoring memory...");
+      
+      // Simulate restore process
+      setTimeout(() => {
+        speak("Memory restore completed successfully.");
+        updateAgentStatus("Ready to assist");
+      }, 1500);
+    });
+    
+    clearBtn.addEventListener('click', () => {
+      if (confirm("Are you sure you want to clear all memory? This cannot be undone.")) {
+        updateAgentStatus("Clearing memory...");
+        
+        // Simulate clearing process
+        setTimeout(() => {
+          speak("Memory has been cleared.");
+          updateAgentStatus("Ready to assist");
+        }, 1500);
+      }
+    });
+    
+    // Initialize
+    window.addEventListener('load', () => {
+      // Speak welcome message
+      setTimeout(() => {
+        speak("Hello! I'm Agent Lee, your professional assistant. How can I help you today?");
+      }, 500);
+      
+      // Position card if not already positioned
+      if (!agentLeeCard.style.top) {
+        agentLeeCard.style.top = '20px';
+      }
+      if (!agentLeeCard.style.right) {
+        agentLeeCard.style.right = '20px';
+      }
+    });
+  </script>
+</body>
+</html>

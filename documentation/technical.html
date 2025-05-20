@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Documentation | Rapid Web Development Artist Platform</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0b0b0f;
+      color: #f0f0f0;
+      font-family: 'Inter', sans-serif;
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 1rem;
+      border-radius: 0.375rem;
+    }
+    code {
+      font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <div class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <!-- Header -->
+      <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6">
+          <span class="gradient-text">Technical Documentation</span>
+        </h1>
+        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto">
+          Detailed technical specifications and development guidelines for the Artist Empowerment Platform
+        </p>
+        <div class="mt-8">
+          <a href="index.html" class="inline-flex items-center text-blue-400 hover:text-blue-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+            </svg>
+            Back to Documentation
+          </a>
+        </div>
+      </header>
+
+      <!-- Documentation Navigation -->
+      <div class="mb-12 flex flex-wrap justify-center gap-4">
+        <a href="#architecture" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Single-File Architecture</a>
+        <a href="#html-css" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">HTML & CSS</a>
+        <a href="#javascript" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">JavaScript</a>
+        <a href="#seo" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">SEO & Performance</a>
+        <a href="#integration" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Integrations</a>
+        <a href="#maintenance" class="px-5 py-2 bg-gray-800 hover:bg-gray-700 rounded-full text-sm font-medium">Maintenance</a>
+      </div>
+
+      <!-- Technical Documentation Content -->
+      <div class="space-y-16">
+        <!-- Single-File Architecture Section -->
+        <section id="architecture" class="bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <h2 class="text-3xl font-bold mb-6 gradient-text">Single-File Architecture</h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Overview</h3>
+              <p class="text-gray-300">
+                The Artist Empowerment Platform utilizes a revolutionary single-file architecture that packages your entire website into a self-contained HTML file. This approach provides numerous benefits for artists including complete ownership, portability, and independence from ongoing service dependencies.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">How It Works</h3>
+              <p class="text-gray-300 mb-4">
+                All necessary components—HTML structure, CSS styling, JavaScript functionality, embedded fonts, and base64-encoded images—are contained within a single HTML file. This is accomplished through:
+              </p>
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Inlining CSS in the <code class="bg-gray-800 px-1 rounded">&lt;style&gt;</code> tags</li>
+                <li>Embedding JavaScript in <code class="bg-gray-800 px-1 rounded">&lt;script&gt;</code> tags</li>
+                <li>Base64 encoding images and including them as data URLs</li>
+                <li>Using modern browser APIs to handle local storage and caching</li>
+                <li>Implementing a virtual file system for internal data management</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Technical Advantages</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Reduced Server Requests</h4>
+                  <p class="text-gray-300">
+                    With all assets contained in a single file, the browser makes only one HTTP request, significantly improving load times and performance.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Offline Functionality</h4>
+                  <p class="text-gray-300">
+                    Once loaded, the website can function partially or completely without an internet connection, creating a progressive web app experience.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Simplified Deployment</h4>
+                  <p class="text-gray-300">
+                    Deployment becomes as simple as uploading a single file to any web server, eliminating complex server configurations.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Versioning & Backup</h4>
+                  <p class="text-gray-300">
+                    The entire website can be easily versioned and backed up as a single file, simplifying change management.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Technical Considerations</h3>
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>File size is optimized through compression techniques, but very image-heavy sites may benefit from external image hosting</li>
+                <li>Dynamic content requiring server processing uses external API calls</li>
+                <li>For the Professional and Enterprise tiers, additional functionality can be enabled through secure API integrations</li>
+              </ul>
+            </div>
+            
+            <div class="bg-blue-900 bg-opacity-30 border border-blue-800 p-4 rounded-lg">
+              <h4 class="text-lg font-medium text-blue-300 mb-2">Example Structure</h4>
+              <pre class="bg-gray-800 text-gray-300 text-sm"><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;style&gt;
+    /* All CSS styles inlined here */
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;!-- HTML Content --&gt;
+  
+  &lt;script&gt;
+    // All JavaScript functionality here
+    
+    // Virtual filesystem for data
+    const vfs = {
+      data: {/* Structured data */},
+      media: {/* Base64 encoded media */}
+    };
+    
+    // Application code
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <!-- HTML & CSS Section -->
+        <section id="html-css" class="bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <h2 class="text-3xl font-bold mb-6 gradient-text">HTML & CSS Framework</h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Responsive Design System</h3>
+              <p class="text-gray-300">
+                The platform uses a custom-built responsive design system based on modern CSS principles. This ensures your artist website looks fantastic on any device, from smartphones to large desktop displays.
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Mobile First</h4>
+                  <p class="text-gray-300 text-sm">
+                    All components are designed for mobile first, then expanded for larger screens.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Fluid Typography</h4>
+                  <p class="text-gray-300 text-sm">
+                    Text sizes adjust smoothly between breakpoints for optimal reading experience.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Flexible Layouts</h4>
+                  <p class="text-gray-300 text-sm">
+                    CSS Grid and Flexbox create versatile layouts that adapt to content.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">CSS Architecture</h3>
+              <p class="text-gray-300 mb-4">
+                We employ a modified BEM (Block, Element, Modifier) methodology with utility classes for consistent styling:
+              </p>
+              
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <pre class="text-gray-300 text-sm"><code>/* Component-based approach with BEM */
+.music-player { /* Block */ }
+.music-player__control { /* Element */ }
+.music-player__control--active { /* Modifier */ }
+
+/* Combined with utility classes */
+.mb-4 { margin-bottom: 1rem; }
+.text-gradient { /* gradient text effect */ }
+.flex-center { display: flex; justify-content: center; align-items: center; }</code></pre>
+              </div>
+              
+              <p class="text-gray-300 mt-4">
+                This approach provides the perfect balance between structured components and flexibility for quick adjustments.
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Music-Specific Components</h3>
+              <p class="text-gray-300 mb-4">
+                The platform includes specialized components designed specifically for musicians:
+              </p>
+              
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Responsive audio players with waveform visualization</li>
+                <li>Tour date displays with location mapping</li>
+                <li>Music galleries with album artwork displays</li>
+                <li>Video showcases optimized for music performances</li>
+                <li>Lyrics display with time-synced highlighting</li>
+                <li>Merchandise showcases with purchase integration</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Customization Options</h3>
+              <p class="text-gray-300">
+                The platform provides extensive customization capabilities through:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">CSS Variables</h4>
+                  <pre class="text-gray-300 text-sm"><code>:root {
+  --primary-color: #6366f1;
+  --text-color: #f0f0f0;
+  --font-heading: 'Montserrat', sans-serif;
+  --spacing-unit: 1rem;
+}</code></pre>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Theme Selectors</h4>
+                  <pre class="text-gray-300 text-sm"><code>[data-theme="dark"] {
+  --background: #0f0f0f;
+  --text-color: #f0f0f0;
+}
+
+[data-theme="light"] {
+  --background: #ffffff;
+  --text-color: #1f1f1f;
+}</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- JavaScript Section -->
+        <section id="javascript" class="bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <h2 class="text-3xl font-bold mb-6 gradient-text">JavaScript Architecture</h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Core Principles</h3>
+              <p class="text-gray-300 mb-4">
+                The JavaScript architecture follows these core principles:
+              </p>
+              
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Modular design with clear separation of concerns</li>
+                <li>Progressive enhancement - core functionality works without JavaScript</li>
+                <li>Efficient DOM manipulation with minimal repaints</li>
+                <li>Asynchronous loading and execution for optimal performance</li>
+                <li>Self-contained modules that don't pollute the global scope</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Module System</h3>
+              <p class="text-gray-300 mb-4">
+                The platform uses a lightweight module system for organizing code:
+              </p>
+              
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <pre class="text-gray-300 text-sm"><code>// Module pattern used throughout the platform
+const AudioPlayer = (function() {
+  // Private variables
+  let currentTrack = null;
+  let audioElement = null;
+  
+  // Private methods
+  function init() {
+    audioElement = document.createElement('audio');
+    // Setup code...
+  }
+  
+  // Public API
+  return {
+    play: function(trackId) {
+      // Implementation...
+    },
+    pause: function() {
+      // Implementation...
+    },
+    seek: function(position) {
+      // Implementation...
+    }
+  };
+})();
+
+// Usage
+AudioPlayer.play('song-1');</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Event System</h3>
+              <p class="text-gray-300 mb-4">
+                A central event system allows for loose coupling between components:
+              </p>
+              
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <pre class="text-gray-300 text-sm"><code>// Simple pub/sub event system
+const EventBus = {
+  events: {},
+  
+  subscribe: function(event, callback) {
+    if (!this.events[event]) {
+      this.events[event] = [];
+    }
+    this.events[event].push(callback);
+    
+    return () => this.unsubscribe(event, callback);
+  },
+  
+  publish: function(event, data) {
+    if (!this.events[event]) return;
+    
+    this.events[event].forEach(callback => {
+      callback(data);
+    });
+  },
+  
+  unsubscribe: function(event, callback) {
+    if (!this.events[event]) return;
+    
+    this.events[event] = this.events[event]
+      .filter(cb => cb !== callback);
+  }
+};
+
+// Example usage
+EventBus.subscribe('track:played', (data) => {
+  console.log(`Playing track: ${data.title}`);
+});</code></pre>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Performance Optimization</h3>
+              <p class="text-gray-300">
+                Several techniques are employed to ensure optimal performance:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Debouncing</h4>
+                  <p class="text-gray-300 text-sm">
+                    Event handlers for frequent events like scrolling and resizing are debounced to prevent performance bottlenecks.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Lazy Loading</h4>
+                  <p class="text-gray-300 text-sm">
+                    Images, audio, and video content is lazy loaded as needed, reducing initial page load time.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">DOM Batching</h4>
+                  <p class="text-gray-300 text-sm">
+                    DOM updates are batched to minimize repaints and optimize rendering performance.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Memory Management</h4>
+                  <p class="text-gray-300 text-sm">
+                    Careful memory management prevents leaks, especially important for long-running single-page applications.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Code Splitting</h4>
+                  <p class="text-gray-300 text-sm">
+                    Dynamic imports load features only when needed, reducing the initial JavaScript payload.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Resource Prioritization</h4>
+                  <p class="text-gray-300 text-sm">
+                    Critical resources are loaded first to optimize perceived performance and time to interactive.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SEO & Performance Section -->
+        <section id="seo" class="bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <h2 class="text-3xl font-bold mb-6 gradient-text">SEO & Performance</h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Built-in SEO Optimization</h3>
+              <p class="text-gray-300 mb-4">
+                The platform includes comprehensive SEO features to help artists be discovered online:
+              </p>
+              
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Semantic HTML structure that search engines can effectively parse</li>
+                <li>Automated meta tag generation based on your content</li>
+                <li>Structured data markup for rich search results (events, music, videos)</li>
+                <li>XML sitemap generation for improved indexing</li>
+                <li>Canonical URL management to prevent duplicate content issues</li>
+                <li>Automated alt text generation for images using Agent Lee</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Performance Optimization</h3>
+              <p class="text-gray-300 mb-4">
+                Performance is a critical factor in both user experience and search engine ranking. The platform automatically implements:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Image Optimization</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Responsive image sizing</li>
+                    <li>Modern formats (WebP with fallbacks)</li>
+                    <li>Efficient compression</li>
+                    <li>Proper dimension attributes</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Core Web Vitals</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Optimized LCP (Largest Contentful Paint)</li>
+                    <li>Minimized FID (First Input Delay)</li>
+                    <li>Reduced CLS (Cumulative Layout Shift)</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Code Optimization</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Minified HTML, CSS, and JavaScript</li>
+                    <li>Dead code elimination</li>
+                    <li>Tree-shaking for unused features</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Resource Handling</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Font optimization with subsetting</li>
+                    <li>Preloading critical resources</li>
+                    <li>Browser caching strategies</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Performance Monitoring</h3>
+              <p class="text-gray-300 mb-4">
+                The platform includes built-in performance monitoring tools:
+              </p>
+              
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <h4 class="text-lg font-medium text-blue-300 mb-2">Performance Dashboard</h4>
+                <p class="text-gray-300 text-sm mb-3">
+                  Track key performance metrics over time with the built-in dashboard, available in the Professional and Enterprise tiers:
+                </p>
+                <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                  <li>Page load times across different devices and regions</li>
+                  <li>Core Web Vitals monitoring</li>
+                  <li>Resource loading waterfall</li>
+                  <li>Performance improvement recommendations</li>
+                  <li>Real user monitoring data aggregation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Integrations Section -->
+        <section id="integration" class="bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <h2 class="text-3xl font-bold mb-6 gradient-text">Third-Party Integrations</h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Music Service Integrations</h3>
+              <p class="text-gray-300 mb-4">
+                The platform seamlessly integrates with popular music services:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Streaming Platforms</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Spotify</li>
+                    <li>Apple Music</li>
+                    <li>SoundCloud</li>
+                    <li>Bandcamp</li>
+                    <li>Tidal</li>
+                    <li>YouTube Music</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Distribution Services</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>DistroKid</li>
+                    <li>CD Baby</li>
+                    <li>TuneCore</li>
+                    <li>AWAL</li>
+                    <li>United Masters</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Live Performance</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Bandsintown</li>
+                    <li>Songkick</li>
+                    <li>Eventbrite</li>
+                    <li>Ticketmaster</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Social Media Integration</h3>
+              <p class="text-gray-300 mb-4">
+                Connect and display content from your social media accounts:
+              </p>
+              
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Instagram feed display with media gallery</li>
+                <li>Twitter timeline and tweet embedding</li>
+                <li>TikTok video showcases</li>
+                <li>YouTube video galleries</li>
+                <li>Facebook events and page integration</li>
+                <li>Cross-posting capabilities for content updates</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">E-Commerce & Monetization</h3>
+              <p class="text-gray-300 mb-4">
+                Professional and Enterprise tiers include advanced monetization integrations:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Payment Processors</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Stripe</li>
+                    <li>PayPal</li>
+                    <li>Square</li>
+                    <li>Apple Pay</li>
+                    <li>Google Pay</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Merchandise Partners</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Shopify</li>
+                    <li>Printful</li>
+                    <li>Bonfire</li>
+                    <li>Merchbar</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Fan Support</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>Patreon</li>
+                    <li>Buy Me a Coffee</li>
+                    <li>Ko-fi</li>
+                    <li>Direct tipping</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">NFT & Blockchain</h4>
+                  <ul class="text-gray-300 text-sm space-y-1 list-disc list-inside">
+                    <li>NFT showcase and minting</li>
+                    <li>Crypto payment options</li>
+                    <li>Web3 wallet connections</li>
+                    <li>Token-gated content</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Integration Security</h3>
+              <p class="text-gray-300">
+                All platform integrations implement industry best practices for security:
+              </p>
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>OAuth 2.0 for secure authentication</li>
+                <li>API keys stored securely and never exposed in client-side code</li>
+                <li>Regular security audits of all integration points</li>
+                <li>Minimal permission scopes requested from third-party services</li>
+                <li>Option to revoke access to any integration at any time</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Maintenance Section -->
+        <section id="maintenance" class="bg-gray-900 rounded-xl p-8 border border-gray-800">
+          <h2 class="text-3xl font-bold mb-6 gradient-text">Maintenance & Updates</h2>
+          
+          <div class="space-y-6">
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Update Process</h3>
+              <p class="text-gray-300 mb-4">
+                The platform's update process is designed to be seamless and non-disruptive:
+              </p>
+              
+              <div class="bg-gray-800 p-4 rounded-lg">
+                <ol class="text-gray-300 space-y-4 list-decimal list-inside">
+                  <li>
+                    <span class="font-medium text-blue-300">Update Notification</span>
+                    <p class="mt-1 ml-6">You'll receive a notification when updates are available, with details about new features and improvements.</p>
+                  </li>
+                  <li>
+                    <span class="font-medium text-blue-300">One-Click Updates</span>
+                    <p class="mt-1 ml-6">A single button press initiates the update process while preserving all your content and customizations.</p>
+                  </li>
+                  <li>
+                    <span class="font-medium text-blue-300">Automatic Backup</span>
+                    <p class="mt-1 ml-6">Before applying any update, the system creates a complete backup of your current site.</p>
+                  </li>
+                  <li>
+                    <span class="font-medium text-blue-300">Differential Updates</span>
+                    <p class="mt-1 ml-6">Only the changed portions of the platform are updated, minimizing download size and installation time.</p>
+                  </li>
+                  <li>
+                    <span class="font-medium text-blue-300">Rollback Option</span>
+                    <p class="mt-1 ml-6">If an update causes any issues, you can instantly roll back to the previous version.</p>
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Version Control</h3>
+              <p class="text-gray-300 mb-4">
+                The platform includes built-in version control for your website:
+              </p>
+              
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Automatic versioning of your website with complete history</li>
+                <li>Ability to restore any previous version with a single click</li>
+                <li>Comparison view to see changes between versions</li>
+                <li>Scheduled backup automation</li>
+                <li>Version notes to track what changes were made and why</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Self-Hosting Considerations</h3>
+              <p class="text-gray-300 mb-4">
+                If you choose to self-host your platform file (available in all tiers), keep these considerations in mind:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Manual Updates</h4>
+                  <p class="text-gray-300 text-sm">
+                    Self-hosted sites require manual updates by downloading the latest version and replacing your current file. We provide tools to help migrate your content to new versions.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">API Connections</h4>
+                  <p class="text-gray-300 text-sm">
+                    Some advanced features require API connections to our services. You'll need to manage API keys and ensure your hosting environment is properly configured.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Security Responsibilities</h4>
+                  <p class="text-gray-300 text-sm">
+                    When self-hosting, you become responsible for certain security aspects like SSL certificates, server security, and keeping dependencies updated.
+                  </p>
+                </div>
+                <div class="bg-gray-800 p-4 rounded-lg">
+                  <h4 class="text-lg font-medium text-blue-300 mb-2">Performance Optimization</h4>
+                  <p class="text-gray-300 text-sm">
+                    You'll need to manage server caching, CDN integration, and other performance optimizations typically handled by our hosting service.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-xl font-semibold mb-3 text-gray-100">Support Resources</h3>
+              <p class="text-gray-300">
+                We provide comprehensive resources to help maintain your platform:
+              </p>
+              
+              <ul class="text-gray-300 space-y-2 list-disc list-inside">
+                <li>Detailed maintenance documentation and checklists</li>
+                <li>Video tutorials for common maintenance tasks</li>
+                <li>Automated testing tools to verify your site is working correctly</li>
+                <li>Monitoring alerts for potential issues</li>
+                <li>Direct support for technical questions (varies by tier)</li>
+              </ul>
+              
+              <div class="bg-blue-900 bg-opacity-30 border border-blue-800 p-4 rounded-lg mt-4">
+                <p class="text-blue-300 font-medium">Enterprise Support</p>
+                <p class="text-gray-300 mt-2">
+                  Enterprise tier includes dedicated technical support with guaranteed response times and personalized assistance for all maintenance and technical needs.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Developer Resources Section -->
+      <div class="bg-gradient-to-r from-blue-900 to-purple-900 rounded-xl p-8 mt-16">
+        <div class="flex flex-col md:flex-row md:items-center">
+          <div class="md:w-2/3 mb-6 md:mb-0 md:pr-8">
+            <h2 class="text-3xl font-bold mb-4">Developer Resources</h2>
+            <p class="text-lg mb-6">
+              Access additional technical resources, code examples, and developer documentation to extend and customize your platform.
+            </p>
+            <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-purple-900 bg-white hover:bg-gray-100">
+              Developer Portal
+              <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+          <div class="md:w-1/3">
+            <div class="bg-gray-900 rounded-lg p-4 border border-gray-700">
+              <h3 class="text-xl font-semibold mb-3">Available Resources</h3>
+              <ul class="space-y-2 text-gray-300">
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>API Documentation</span>
+                </li>
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Custom Component Guides</span>
+                </li>
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Extension Development</span>
+                </li>
+                <li class="flex">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                  </svg>
+                  <span>Code Snippets Library</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 border-t border-gray-800 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-8 md:mb-0">
+          <h3 class="text-xl font-bold mb-4 gradient-text">Support Center</h3>
+          <p class="text-gray-400 max-w-md">
+            Comprehensive documentation for the Artist Empowerment Platform and Agent Lee.
+          </p>
+        </div>
+        <div>
+          <h4 class="text-lg font-semibold mb-4 text-gray-200">Support Channels</h4>
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+                <a href="mailto:agentlee@rapidwebdevelop.com">agentlee@rapidwebdevelop.com</a>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                </svg>
+                Community Forums
+              </a>
+            </li>
+            <li>
+              <a href="#" class="text-gray-400 hover:text-blue-400 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Video Tutorials
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+        <p>© 2025 Artist Empowerment Platform. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
