@@ -1,0 +1,45 @@
+{
+  "schema": "leeway-public-brain-live-veritas-v2",
+  "tested_at": "2026-09-27T15:32:37.834Z",
+  "custom_domain": "https://rapidwebdevelop.com/",
+  "deployed_commit": "30672cda19a782e2d9c5a04b9325071235e91212",
+  "checks": {
+    "http_200": true,
+    "dynamic_projects": 87,
+    "evidence_objects": 8,
+    "desktop_width": {
+      "document": 1600,
+      "viewport": 1600,
+      "overflow": false
+    },
+    "mobile_width": {
+      "document": 390,
+      "viewport": 390,
+      "overflow": false
+    },
+    "animated_nucleus": "brainDrift",
+    "agent_lee_mic_control": true,
+    "agent_lee_gemma_control": true,
+    "brother_project": {
+      "title": "Artist Empowerment Platform | RapidWebDevelop",
+      "live_in_brain": true,
+      "route": "/projects/rapid-web-develop-original/",
+      "repository_entries": 161
+    },
+    "leeway_ai_standard": {
+      "inline_pdf": "/leeway-brain/evidence/leeway-ai-standard.pdf",
+      "slide_previews": 12,
+      "original_pptx": "/leeway-brain/evidence/leeway-ai-standard.pptx",
+      "one_click_evidence_resolved": true
+    },
+    "browser_errors": 0
+  },
+  "notes": [
+    "Project catalog is generated from public 4citeB4U GitHub repositories and refreshed by workflow.",
+    "Future public repositories can appear without hard-coded project entries.",
+    "Estate-only non-GitHub lineage is merged through project-overrides.json.",
+    "Premium Chirp 3 HD remains configured as preferred voice provider but is not active until a secure Google Cloud backend is authenticated.",
+    "Gemma 4 E2B/E4B reasoning is lazy-loaded and optional; deterministic navigation remains available without the model."
+  ],
+  "verdict": "PASS_WITH_PREMIUM_VOICE_BACKEND_PENDING"
+}
