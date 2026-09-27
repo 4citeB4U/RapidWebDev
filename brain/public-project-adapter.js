@@ -106,25 +106,46 @@ function installNarrator(){
  .leeNarrBody{padding:13px 14px;color:#abc0d2;max-height:190px;overflow:auto}
  .leeNarrActions{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 14px}
  .leeNarrActions a,.leeNarrActions button{border:1px solid rgba(80,230,255,.32);border-radius:9px;background:rgba(80,230,255,.08);color:#dff8ff;padding:7px 9px;text-decoration:none;font:700 10px system-ui;cursor:pointer}
+ #leeProjectViewer{position:fixed;inset:16px;z-index:20000;border:1px solid rgba(80,230,255,.55);border-radius:20px;background:#02060c;box-shadow:0 30px 120px rgba(0,0,0,.82);overflow:hidden;display:none}
+ #leeProjectViewer.open{display:grid;grid-template-rows:54px 1fr}
+ .leeProjectViewerBar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;background:rgba(4,13,23,.98);border-bottom:1px solid rgba(80,230,255,.2)}
+ .leeProjectViewerBar strong{font-size:12px}.leeProjectViewerBar span{font-size:9px;color:#7993aa}
+ .leeProjectViewerBar div:last-child{display:flex;gap:8px}
+ .leeProjectViewerBar a,.leeProjectViewerBar button{border:1px solid rgba(80,230,255,.3);border-radius:9px;background:#07131e;color:#eaf8ff;padding:7px 10px;text-decoration:none;font:700 10px system-ui;cursor:pointer}
+ #leeProjectFrame{width:100%;height:100%;border:0;background:#fff}
  `;
  document.head.appendChild(style);
  const el=document.createElement("aside");
  el.id="leePublicNarrator";
- el.innerHTML=`<div class="leeNarrHead"><img src="/98civa4fmf.png" alt="Agent Lee"><div><b>Agent Lee · Project Guide</b><small>LeeWay Digital Brain</small></div></div><div class="leeNarrBody" id="leeNarrText">Welcome. This Digital Brain is Leonard Lee's explorable body of work. Scroll, zoom, enter the Projects or Evidence universes, and select a node. I will explain what it is and where the evidence lives.</div><div class="leeNarrActions" id="leeNarrActions"><a href="/projects/rapid-web-develop-original/">View original Rapid Web Develop</a></div>`;
+ el.innerHTML=`<div class="leeNarrHead"><img src="/98civa4fmf.png" alt="Agent Lee"><div><b>Agent Lee · Project Guide</b><small>LeeWay Digital Brain</small></div></div><div class="leeNarrBody" id="leeNarrText">Welcome. This Digital Brain is Leonard Lee's explorable body of work. Scroll, zoom, enter the Projects or Evidence universes, and select a node. I will explain what it is and where the evidence lives.</div><div class="leeNarrActions" id="leeNarrActions"><button type="button" data-lee-open="/projects/rapid-web-develop-original/" data-lee-title="Rapid Web Develop — MacMillion / Artist Platform">View original Rapid Web Develop</button></div>`;
  document.body.appendChild(el);
+ const viewer=document.createElement("section");
+ viewer.id="leeProjectViewer";
+ viewer.innerHTML=`<div class="leeProjectViewerBar"><div><strong id="leeProjectViewerTitle">Project Exhibit</strong><br><span>LeeWay Digital Brain · framed work view</span></div><div><a id="leeProjectViewerExternal" target="_blank" rel="noopener">Open separately</a><button type="button" id="leeProjectViewerClose">Close</button></div></div><iframe id="leeProjectFrame" title="LeeWay project exhibit"></iframe>`;
+ document.body.appendChild(viewer);
+ document.getElementById("leeProjectViewerClose").onclick=()=>{viewer.classList.remove("open");document.getElementById("leeProjectFrame").src="about:blank"};
+ document.addEventListener("click",ev=>{
+   const b=ev.target.closest?.("[data-lee-open]");
+   if(!b)return;
+   const url=b.getAttribute("data-lee-open"),title=b.getAttribute("data-lee-title")||"Project Exhibit";
+   document.getElementById("leeProjectViewerTitle").textContent=title;
+   document.getElementById("leeProjectViewerExternal").href=url;
+   document.getElementById("leeProjectFrame").src=url;
+   viewer.classList.add("open");
+ },true);
 }
 function showNarrator(id){
  installNarrator();
  const p=PMAP[id],e=EMAP[id],t=document.getElementById("leeNarrText"),a=document.getElementById("leeNarrActions");
  if(p){
    t.textContent=p.desc+" This project belongs to "+p.group+" and is classified here as "+p.evidence+" evidence.";
-   a.innerHTML=(p.url?`<a href="${p.url}" target="_blank" rel="noopener">Open project</a>`:"")+(p.repo?`<a href="${p.repo}" target="_blank" rel="noopener">GitHub source</a>`:"");
+   a.innerHTML=(p.url?`<button type="button" data-lee-open="${p.url}" data-lee-title="${p.label.replace(/"/g,"&quot;")}">Open project in frame</button>`:"")+(p.repo?`<a href="${p.repo}" target="_blank" rel="noopener">GitHub source</a>`:"");
  }else if(e){
    t.textContent=e.desc+" This is a public visual evidence artifact in the LeeWay research history.";
-   a.innerHTML=`<a href="${e.url}" target="_blank" rel="noopener">Open evidence</a>`;
+   a.innerHTML=`<button type="button" data-lee-open="${e.url}" data-lee-title="${e.label.replace(/"/g,"&quot;")}">Open evidence in frame</button>`;
  }else if(id==="project::archive"){
    t.textContent="Projects / Built Work contains Leonard Lee's deployed systems, client work, products, research platforms and public source repositories.";
-   a.innerHTML=`<a href="/projects/rapid-web-develop-original/">Original Rapid Web Develop exhibit</a>`;
+   a.innerHTML=`<button type="button" data-lee-open="/projects/rapid-web-develop-original/" data-lee-title="Rapid Web Develop — MacMillion / Artist Platform">Original Rapid Web Develop exhibit</button>`;
  }else if(id==="evidence::archive"){
    t.textContent="Evidence / Research contains visual proof objects—presentations, infographics and research artifacts—that document how the LeeWay body of work developed.";
    a.innerHTML="";
