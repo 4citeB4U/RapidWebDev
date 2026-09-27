@@ -1,9 +1,9 @@
 const qs=s=>document.querySelector(s);
 const world=qs("#world"),nodesEl=qs("#nodes"),edges=qs("#edges"),track=qs("#carouselTrack"),search=qs("#searchBox");
 const hud=qs("#hud"),workspace=qs("#workspace"),workspaceBody=qs("#workspaceBody"),workspaceTitle=qs("#workspaceTitle"),workspaceKicker=qs("#workspaceKicker");
-const openExternal=qs("#workspaceOpenExternal"),agentText=qs("#agentText"),agentNarration=qs("#agentNarration"),agentState=qs("#agentState"),agentTranscript=qs("#agentTranscript"),micBtn=qs("#micBtn");
+const openExternal=qs("#workspaceOpenExternal"),agentText=qs("#agentText"),agentNarration=qs("#agentNarration"),agentState=qs("#agentState"),agentTranscript=qs("#agentTranscript"),micBtn=qs("#micBtn"),reasonBtn=qs("#reasonBtn");
 let projects=[],evidence=[],decks=[],items=[],selected=null,activeItem=null,activeTab="overview";
-let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,recognition=null,listening=false,activeCategory=null;
+let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,recognition=null,listening=false,activeCategory=null,gemmaEngine=null,gemmaConversation=null,gemmaLoading=false,gemmaGenerating=false,agentPersona=null;
 const colors={Core:"#50e6ff","Agentic Systems":"#6f9cff","Scientific Research":"#c978ff",Governance:"#e6d75a",Runtime:"#50e6ff",Capabilities:"#e6d75a",Devices:"#57e49a",Compute:"#56c7ff","Voice / Realtime":"#ffad52","Developer Tools":"#8b9dff",Education:"#e273ff",Legal:"#ff6577",Logistics:"#ff8a16",Operations:"#54e0be","Business / Operations":"#54e0be","Creative AI":"#a67cff",Publishing:"#c978ff","Community / Business":"#c58b64",Safety:"#ff6577",Professional:"#93a8ba","Client / Brand":"#8c74ff",Gaming:"#6fc4ff","Business / Web":"#ff8a16","Publishing / Education":"#e273ff","Physical Systems":"#c58b64",Evidence:"#4de0cf","Other Projects":"#7890a7"};
 const categoryDefs=[
 {id:"cat::core",label:"CORE LEEWAY",groups:["Agentic Systems","Scientific Research","Governance","Runtime","Capabilities","Devices","Compute","Voice / Realtime","Developer Tools"]},
@@ -122,14 +122,73 @@ function openEvidenceDetail(e,d){workspaceTitle.textContent=e.label;if(d){worksp
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
 function chooseVoice(){const voices=speechSynthesis.getVoices();voice=voices.find(v=>/Google.*English/i.test(v.name))||voices.find(v=>/(Guy|Ryan|Christopher|Andrew|Brian|Eric|Daniel|David)/i.test(v.name)&&/^en/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null}
 function speak(text){if(!("speechSynthesis"in window)||!text)return;speechSynthesis.cancel();chooseVoice();const u=new SpeechSynthesisUtterance(text);if(voice)u.voice=voice;u.rate=.94;u.pitch=.93;u.onstart=()=>agentState.textContent="speaking · tap mic to interrupt";u.onend=()=>agentState.textContent=listening?"listening":"ready";speechSynthesis.speak(u)}
-function scoreProject(q,p){const hay=(p.label+" "+p.repo_name+" "+(p.summary||"")+" "+p.group).toLowerCase();if(hay.includes(q))return 100+q.length;return q.split(/\s+/).reduce((n,w)=>n+(w.length>2&&hay.includes(w)?5:0),0)}
+async function enableGemma(){
+ if(gemmaEngine||gemmaLoading)return;
+ if(!("gpu" in navigator)){agentState.textContent="Gemma requires WebGPU on this device";return}
+ gemmaLoading=true;reasonBtn.classList.add("loading");agentState.textContent="loading Gemma 4 locally";
+ try{
+  const {Engine}=await import("https://cdn.jsdelivr.net/npm/@litert-lm/core/+esm");
+  const mobile=/Android|iPhone|iPad|Mobile/i.test(navigator.userAgent);
+  const model=mobile
+   ?"https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it-web.litertlm"
+   :"https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm/resolve/main/gemma-4-E4B-it-web.litertlm";
+  gemmaEngine=await Engine.create({model,mainExecutorSettings:{maxNumTokens:4096}});
+  const persona=agentPersona||{};
+  const preface=[
+   "You are Agent Lee, the public cognitive guide for Leonard Lee and LeeWay Industries.",
+   "Role: "+(persona.roles||[]).join(", "),
+   "Prime directive: "+(persona.prime_directive||"Schema-First, Personality-Second"),
+   "Be calm, concise, technically precise, source-conscious, and never fabricate project facts.",
+   "Use the project context supplied in each user message. Navigation decisions remain controlled by the deterministic LeeWay UI controller."
+  ].join("\n");
+  gemmaConversation=await gemmaEngine.createConversation({preface:{messages:[{role:"system",content:preface}]}});
+  reasonBtn.classList.remove("loading");reasonBtn.classList.add("ready");reasonBtn.textContent="G4";agentState.textContent="Gemma 4 local reasoning ready";
+ }catch(e){
+  console.error(e);gemmaEngine=null;gemmaConversation=null;reasonBtn.classList.remove("loading","ready");agentState.textContent="Gemma load unavailable; deterministic mode active";
+ }finally{gemmaLoading=false}
+}
+async function askGemma(question){
+ if(!gemmaConversation)return null;
+ gemmaGenerating=true;agentState.textContent="Gemma 4 reasoning locally";
+ const ctx=activeItem?{label:activeItem.label,group:groupFor(activeItem),summary:activeItem.summary||activeItem.desc||"",live_url:activeItem.live_url||null,repo:activeItem.repo_url||null,evidence:activeItem.evidence_state||null}:null;
+ const prompt=`Public Digital Brain context:\n${JSON.stringify(ctx)}\n\nVisitor question: ${question}\nAnswer as Agent Lee. If the question asks for navigation, describe the relevant project and let the LeeWay controller handle UI actions.`;
+ let out="";
+ try{
+  const stream=gemmaConversation.sendMessageStreaming(prompt);
+  for await(const chunk of stream){
+   if(!gemmaGenerating)break;
+   for(const item of chunk.content||[])if(item.type==="text"){out+=item.text;agentText.textContent=out}
+  }
+  if(out.trim()){agentNarration.textContent=out.trim();speak(out.trim());return out.trim()}
+ }catch(e){console.error(e);agentState.textContent="Gemma reasoning failed; deterministic mode active"}
+ finally{gemmaGenerating=false}
+ return null;
+}
+function cancelAgentGeneration(){
+ if(gemmaGenerating&&gemmaConversation?.cancel)try{gemmaConversation.cancel()}catch{}
+ gemmaGenerating=false;
+ if("speechSynthesis"in window)speechSynthesis.cancel();
+}
+function scoreProject(q,p){const hay=(p.label+" "+(p.repo_name||"")+" "+(p.summary||"")+" "+(p.group||"")).toLowerCase();if(hay.includes(q))return 100+q.length;return q.split(/\s+/).reduce((n,w)=>n+(w.length>2&&hay.includes(w)?5:0),0)}
 function bestProject(q){return projects.map(p=>[scoreProject(q,p),p]).sort((a,b)=>b[0]-a[0])[0]}
-function handleAgentCommand(raw){const text=raw.trim(),q=text.toLowerCase();agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");if(/\b(stop|quiet|pause)\b/.test(q)){speechSynthesis.cancel();agentState.textContent="ready";return}if(/\b(home|reset|close)\b/.test(q)){closeWorkspace();fit();speak("Back at the main Digital Brain.");return}if(activeItem&&/\b(files?|source|code)\b/.test(q)){openWorkspace(activeItem,"files");speak("Opening the project files.");return}if(activeItem&&/\b(live|website|demo|running)\b/.test(q)){openWorkspace(activeItem,"live");speak(activeItem.live_url?"Opening the live project view.":"I do not have a verified live view for this project yet.");return}if(activeItem&&/\b(evidence|proof|presentation|powerpoint|infographic)\b/.test(q)){openWorkspace(activeItem,"evidence");speak("Opening the evidence linked to this work.");return}let subject=q.replace(/^(show|open|take me to|tell me about|explain|find|go to)\s+/,"").trim();const hit=bestProject(subject);if(hit&&hit[0]>0){selectItem(hit[1].id,false);openWorkspace(hit[1],"overview");speak(narrationFor(hit[1]));return}speak("I can navigate projects, open live views, browse repository files, and show evidence. Name a project or ask for its files, live view, or evidence.")}
+async function handleAgentCommand(raw){
+ const text=raw.trim(),q=text.toLowerCase();agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
+ if(/\b(stop|quiet|pause|interrupt)\b/.test(q)){cancelAgentGeneration();agentState.textContent="ready";return}
+ if(/\b(home|reset|close)\b/.test(q)){closeWorkspace();activeCategory=null;search.value="";rebuildUniverse();speak("Back at the main Digital Brain.");return}
+ if(activeItem&&/\b(files?|source|code)\b/.test(q)){openWorkspace(activeItem,"files");speak("Opening the project files.");return}
+ if(activeItem&&/\b(live|website|demo|running)\b/.test(q)){openWorkspace(activeItem,"live");speak(activeItem.live_url?"Opening the live project view.":"I do not have a verified live view for this project yet.");return}
+ if(activeItem&&/\b(evidence|proof|presentation|powerpoint|infographic)\b/.test(q)){openWorkspace(activeItem,"evidence");speak("Opening the evidence linked to this work.");return}
+ let subject=q.replace(/^(show|open|take me to|tell me about|explain|find|go to)\s+/,"").trim();
+ const hit=bestProject(subject);
+ if(hit&&hit[0]>=10){selectItem(hit[1].id,false);openWorkspace(hit[1],"overview");speak(narrationFor(hit[1]));return}
+ if(gemmaConversation){const answer=await askGemma(text);if(answer)return}
+ speak("I can navigate projects, open live views, browse repository files, show evidence, and—when local reasoning is enabled—answer broader questions about Leonard Lee and LeeWay Industries.");
+}
 function setupRecognition(){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){agentState.textContent="voice input unavailable in this browser";micBtn.disabled=true;return}recognition=new R();recognition.lang="en-US";recognition.continuous=true;recognition.interimResults=true;recognition.onstart=()=>{listening=true;micBtn.classList.add("listening");agentState.textContent="listening"};recognition.onresult=e=>{let final="",interim="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)final+=t;else interim+=t}agentTranscript.textContent=final||interim;agentTranscript.classList.remove("hidden");if(final)handleAgentCommand(final)};recognition.onerror=e=>{agentState.textContent="voice "+e.error};recognition.onend=()=>{if(listening)try{recognition.start()}catch{}}}
-function toggleMic(){speechSynthesis?.cancel?.();if(!recognition)setupRecognition();if(!recognition)return;if(listening){listening=false;recognition.stop();micBtn.classList.remove("listening");agentState.textContent="ready"}else try{recognition.start()}catch{}}
+function toggleMic(){cancelAgentGeneration();if(!recognition)setupRecognition();if(!recognition)return;if(listening){listening=false;recognition.stop();micBtn.classList.remove("listening");agentState.textContent="ready"}else try{recognition.start()}catch{}}
 function startTour(){const seq=projects.filter(p=>p.live_url).slice(0,5);let i=0;const step=()=>{if(i>=seq.length)return;const p=seq[i++];selectItem(p.id,false);speak(narrationFor(p));setTimeout(step,6500)};step()}
 function fit(){scale=innerWidth<900?.58:.78;panX=0;panY=0;setWorldTransform()}
-search.oninput=()=>{activeCategory=null;rebuildUniverse()};qs("#hudClose").onclick=()=>hud.classList.add("hidden");qs("#speakBtn").onclick=()=>speak(agentNarration.textContent||agentText.textContent);qs("#tourBtn").onclick=startTour;qs("#resetBtn").onclick=fit;micBtn.onclick=toggleMic;qs("#workspaceClose").onclick=closeWorkspace;
+search.oninput=()=>{activeCategory=null;rebuildUniverse()};qs("#hudClose").onclick=()=>hud.classList.add("hidden");qs("#speakBtn").onclick=()=>speak(agentNarration.textContent||agentText.textContent);qs("#tourBtn").onclick=startTour;qs("#resetBtn").onclick=fit;micBtn.onclick=toggleMic;reasonBtn.onclick=enableGemma;qs("#workspaceClose").onclick=closeWorkspace;
 document.querySelectorAll(".workspaceTabs button").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll(".workspaceTabs button").forEach(x=>x.classList.toggle("active",x===b));renderWorkspace()});
 workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak")speak(narrationFor(activeItem))});
 qs("#zoomIn").onclick=()=>{scale=clamp(scale+.12,.38,1.9);setWorldTransform()};qs("#zoomOut").onclick=()=>{scale=clamp(scale-.12,.38,1.9);setWorldTransform()};qs("#zoomFit").onclick=fit;
@@ -138,8 +197,8 @@ qs("#stage").addEventListener("pointerdown",e=>{if(e.target.closest(".node,#hud,
 qs("#stage").addEventListener("pointermove",e=>{if(!dragging)return;panX=dragStart.px+e.clientX-dragStart.x;panY=dragStart.py+e.clientY-dragStart.y;setWorldTransform()});qs("#stage").addEventListener("pointerup",()=>dragging=false);qs("#stage").addEventListener("pointercancel",()=>dragging=false);
 speechSynthesis?.addEventListener?.("voiceschanged",chooseVoice);
 async function boot(){
- const [repoList,overrides,estate,visuals,fallback]=await Promise.all([fetchGithubRepos(),fetch("/brain/project-overrides.json").then(r=>r.json()),fetch("/leeway-brain/data/estate-index.json").then(r=>r.json()),fetch("/brain/evidence-visuals.json").then(r=>r.json()),fetch("/brain/project-catalog.json").then(r=>r.json()).catch(()=>({projects:[]}))]);
- const om=new Map((overrides.overrides||[]).map(x=>[x.repo_name,x]));
+ const [repoList,overrides,estate,visuals,fallback,persona]=await Promise.all([fetchGithubRepos(),fetch("/brain/project-overrides.json").then(r=>r.json()),fetch("/leeway-brain/data/estate-index.json").then(r=>r.json()),fetch("/brain/evidence-visuals.json").then(r=>r.json()),fetch("/brain/project-catalog.json").then(r=>r.json()).catch(()=>({projects:[]})),fetch("/brain/agent-lee-persona-public.json").then(r=>r.json()).catch(()=>null)]);
+ agentPersona=persona; const om=new Map((overrides.overrides||[]).map(x=>[x.repo_name,x]));
  const source=repoList.length?repoList:(fallback.projects||[]).map(x=>({name:x.repo_name||x.label,description:x.summary,html_url:x.repo,homepage:x.url,has_pages:!!x.url,default_branch:"main",language:null,size:null,created_at:null,updated_at:null}));
  projects=source.map(r=>{const ov=om.get(r.name)||{};return {id:"repo::"+r.name,repo_name:r.name,label:ov.label||cleanName(r.name),summary:ov.summary||r.description||"Public GitHub project by Leonard Lee / LeeWay Industries.",group:ov.group||classifyRepo(r),repo_url:r.html_url||`https://github.com/4citeB4U/${r.name}`,live_url:liveUrlFor(r,ov),evidence_state:ov.evidence_state||"PUBLIC SOURCE",default_branch:r.default_branch||"main",language:r.language,size:r.size,created_at:r.created_at,updated_at:r.updated_at,kind:"project"}});
  (overrides.estate_only||[]).forEach(x=>projects.push({...x,kind:"project",repo_name:null,repo_url:null,live_url:null}));
