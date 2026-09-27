@@ -1,0 +1,29 @@
+{
+  "schema": "leeway-agent-lee-voice-v1",
+  "preferred_provider": "chirp3-hd",
+  "active_provider": "browser-fallback",
+  "secure_backend_endpoint": null,
+  "chirp3": {
+    "language_code": "en-US",
+    "voice_name": "en-US-Chirp3-HD-Charon",
+    "streaming": true,
+    "requires_server_side_google_cloud_auth": true
+  },
+  "browser_fallback": {
+    "prefer_name_patterns": [
+      "Google.*English",
+      "Guy",
+      "Ryan",
+      "Christopher",
+      "Andrew",
+      "Brian",
+      "Eric",
+      "Daniel",
+      "David"
+    ],
+    "language": "en-US",
+    "rate": 0.94,
+    "pitch": 0.93
+  },
+  "barge_in": true
+}

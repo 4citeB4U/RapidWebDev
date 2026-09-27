@@ -1,0 +1,45 @@
+name: Update Digital Brain Project Manifest
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/generate-project-manifest.mjs"
+      - ".github/workflows/update-project-manifest.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: leeway-project-manifest
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Generate public project manifest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LEEWAY_GITHUB_OWNER: 4citeB4U
+        run: node scripts/generate-project-manifest.mjs
+      - name: Commit manifest changes
+        run: |
+          if git diff --quiet -- brain/generated-projects.json; then
+            echo "No manifest changes."
+            exit 0
+          fi
+          git config user.name "LeeWay Manifest Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add brain/generated-projects.json
+          git commit -m "Update Digital Brain project manifest"
+          git push
