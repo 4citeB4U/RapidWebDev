@@ -1,0 +1,94 @@
+{
+  "schema": "leeway-brain-presentation-veritas-v1",
+  "tested_at": "2026-09-27T18:06:21.318Z",
+  "result": {
+    "intro": {
+      "bodyClass": "brain-intro",
+      "worldOpacity": "0",
+      "carouselOpacity": "0",
+      "enterVisible": "1",
+      "portraitVisible": true,
+      "bubbleHidden": true,
+      "appearanceVisible": true,
+      "waveCanvas": true,
+      "waveSize": [
+        390,
+        844
+      ],
+      "overflow": [
+        390,
+        390
+      ]
+    },
+    "hueAfter": "120",
+    "entered": {
+      "bodyClass": "",
+      "nodes": 7,
+      "carouselHeight": "84px",
+      "worldOpacity": "1",
+      "overflow": [
+        390,
+        390
+      ]
+    },
+    "agent": {
+      "bubbleHidden": false,
+      "state": "voice not-allowed",
+      "inputVisible": true,
+      "reasonVisible": false
+    },
+    "labels": [
+      {
+        "text": "LEONARD LEE LeeWay Industries ┬╖ Systems Builder",
+        "w": 122,
+        "cw": 122,
+        "h": 62,
+        "ch": 62
+      },
+      {
+        "text": "CORE LEEWAY 28 items",
+        "w": 102,
+        "cw": 102,
+        "h": 52,
+        "ch": 52
+      },
+      {
+        "text": "PRODUCTS / APPLICATIONS 31 items",
+        "w": 102,
+        "cw": 102,
+        "h": 52,
+        "ch": 52
+      },
+      {
+        "text": "BUSINESS / CLIENT WORK 17 items",
+        "w": 102,
+        "cw": 102,
+        "h": 52,
+        "ch": 52
+      },
+      {
+        "text": "PROFESSIONAL / LINEAGE 6 items",
+        "w": 102,
+        "cw": 102,
+        "h": 52,
+        "ch": 52
+      },
+      {
+        "text": "OTHER / REFERENCES 5 items",
+        "w": 102,
+        "cw": 102,
+        "h": 52,
+        "ch": 52
+      },
+      {
+        "text": "EVIDENCE / RESEARCH 8 items",
+        "w": 102,
+        "cw": 102,
+        "h": 52,
+        "ch": 52
+      }
+    ],
+    "errors": []
+  },
+  "verdict": "PASS"
+}

@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
 <title>Rapid Web Develop — LeeWay Digital Brain</title>
-<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1015">
+<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1300">
 </head>
-<body>
+<body class="brain-intro">
 <div id="app">
   <header id="topbar">
     <div class="brand"><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
@@ -17,6 +17,7 @@
     </div>
     <div class="top-actions">
       <button id="tourBtn">Agent Lee Guided Tour</button>
+      <button id="appearanceBtn">Appearance</button>
       <button id="resetBtn">Reset View</button>
     </div>
   </header>
@@ -28,7 +29,8 @@
   </div>
 
   <main id="stage">
-    <div id="nucleus"></div>
+    <div id="nucleus" aria-hidden="true"><img id="nucleusFallbackImage" src="/brain/public/assets/digital-brain-nucleus.png" alt=""><canvas id="nucleusWaveCanvas"></canvas></div>
+    <button id="enterBrain" class="enterBrain"><span>ENTER DIGITAL BRAIN</span><small>tap the brain · scroll inward · explore the universe</small></button>
     <div id="world">
       <svg id="edges" aria-hidden="true"></svg>
       <div id="nodes"></div>
@@ -71,21 +73,66 @@
   <section id="projectCarousel">
     <div class="carouselToolbar">
       <div class="carouselTitle"><span>◫</span> Projects / Built Work</div>
+      <button id="carouselPrev" class="carouselNav" aria-label="Previous projects">‹</button>
       <input id="searchBox" type="search" placeholder="Search projects, systems, evidence…">
+      <button id="carouselNext" class="carouselNav" aria-label="Next projects">›</button>
       <div id="carouselCount" class="carouselCount"></div>
     </div>
-    <div id="carouselTrack" class="carouselTrack"></div>
+    <div id="carouselTrack" class="carouselTrack" tabindex="0" aria-label="Scrollable project rail"></div>
   </section>
 
-  <aside id="agentLee">
-    <div class="agentHead">
-      <img src="/98civa4fmf.png" alt="Agent Lee">
-      <div class="agentIdentity"><b>Agent Lee</b><small id="agentState">LeeWay project guide · ready</small></div>
-      <button id="reasonBtn" class="agentReason" aria-label="Enable local Gemma 4 reasoning">G4</button>
-      <button id="micBtn" class="agentMic" aria-label="Talk to Agent Lee">◉</button>
+  <aside id="appearancePanel" class="appearancePanel hidden" aria-label="Digital Brain appearance controls">
+    <div class="appearanceHead"><strong>Brain Appearance</strong><button id="appearanceClose">×</button></div>
+    <label>Background <input id="bgColor" type="color" value="#061427"></label>
+    <label>Accent <input id="accentColor" type="color" value="#50e6ff"></label>
+    <label>Wave speed <input id="nucleusSpeedRange" type="range" min="0" max="2.5" step="0.01" value="0.58"></label>
+    <label>Horizontal wave <input id="nucleusHorizontalRange" type="range" min="0" max="30" step="0.5" value="11"></label>
+    <label>Vertical wave <input id="nucleusVerticalRange" type="range" min="0" max="24" step="0.5" value="7"></label>
+    <label>Background hue <input id="nucleusHueRange" type="range" min="0" max="360" step="1" value="0"></label>
+    <label>Saturation <input id="nucleusSaturationRange" type="range" min="0" max="2" step="0.02" value="1"></label>
+    <label>Brightness <input id="nucleusBrightnessRange" type="range" min="0.25" max="1.45" step="0.01" value="1"></label>
+    <label>Neural dot color <input id="nucleusDotColor" type="color" value="#51eaff"></label>
+    <label>Dot variation <input id="nucleusDotVariationRange" type="range" min="0" max="90" step="1" value="20"></label>
+    <label>Dot strength <input id="nucleusDotStrengthRange" type="range" min="0" max="1" step="0.01" value="0.30"></label>
+    <label>Label scale <input id="labelScaleRange" type="range" min="0.68" max="1.35" step="0.01" value="1"></label>
+    <label>Agent Lee voice
+      <select id="geminiVoiceSelect">
+        <option value="Puck">Puck — upbeat</option>
+        <option value="Iapetus">Iapetus — clear</option>
+        <option value="Charon">Charon — informative</option>
+        <option value="Gacrux">Gacrux — mature</option>
+        <option value="Sadaltager">Sadaltager — knowledgeable</option>
+      </select>
+    </label>
+    <div class="paletteRow">
+      <button class="nucleusPreset" data-nucleus="original">Original Blue</button>
+      <button class="nucleusPreset" data-nucleus="midnight">Midnight Black</button>
+      <button class="nucleusPreset" data-nucleus="storm">Stormy Red</button>
+      <button class="nucleusPreset" data-nucleus="violet">Violet</button>
+      <button class="nucleusPreset" data-nucleus="emerald">Emerald</button>
     </div>
-    <div id="agentText">Welcome to Leonard Lee's Digital Brain. Select a project, system, or evidence object and I will explain what it is, why it matters, and where the proof lives.</div>
-    <div id="agentTranscript" class="agentTranscript hidden"></div>
+    <button id="appearanceReset">Reset appearance</button>
+  </aside>
+
+  <aside id="agentLee" aria-label="Agent Lee">
+    <button id="micBtn" class="agentPortrait" aria-label="Talk to Agent Lee">
+      <img src="/98civa4fmf.png" alt="Agent Lee">
+      <span class="agentPulse" aria-hidden="true"></span>
+    </button>
+    <section id="agentBubble" class="agentBubble hidden" aria-live="polite">
+      <div class="agentBubbleHead">
+        <strong>Agent Lee</strong>
+        <small id="agentState">ready</small>
+        <button id="agentBubbleClose" aria-label="Close Agent Lee">×</button>
+      </div>
+      <div id="agentText">Yo — tap the mic or type it in. I can walk the projects, open the live builds, break down the evidence, and navigate the brain with you.</div>
+      <div id="agentTranscript" class="agentTranscript hidden"></div>
+      <div class="agentInputRow">
+        <textarea id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
+        <button id="agentSend" aria-label="Send to Agent Lee">↑</button>
+        <button id="reasonBtn" class="agentReason" aria-label="Enable local reasoning">G4</button>
+      </div>
+    </section>
   </aside>
 
   <section id="workspace" class="workspace hidden" aria-label="Project workspace">
@@ -109,6 +156,6 @@
   </section>
 </div>
 
-<script src="/brain/public/public-brain.js?v=20260927-1015"></script>
+<script src="/brain/public/public-brain.js?v=20260927-1300"></script>
 </body>
 </html>

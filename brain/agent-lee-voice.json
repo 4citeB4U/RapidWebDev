@@ -1,13 +1,31 @@
 {
-  "schema": "leeway-agent-lee-voice-v1",
-  "preferred_provider": "chirp3-hd",
+  "schema": "leeway-agent-lee-voice-v2",
+  "preferred_provider": "gemini-live",
   "active_provider": "browser-fallback",
-  "secure_backend_endpoint": null,
-  "chirp3": {
-    "language_code": "en-US",
-    "voice_name": "en-US-Chirp3-HD-Charon",
-    "streaming": true,
-    "requires_server_side_google_cloud_auth": true
+  "gemini_live": {
+    "model": "gemini-3.8-live",
+    "voice_name": "Puck",
+    "voice_candidates": [
+      "Puck",
+      "Iapetus",
+      "Charon",
+      "Gacrux",
+      "Sadaltager"
+    ],
+    "response_modalities": [
+      "AUDIO"
+    ],
+    "output_audio_transcription": true,
+    "token_endpoint": null,
+    "requires_ephemeral_token": true,
+    "barge_in": true,
+    "automatic_language_detection": true,
+    "tool_control": true
+  },
+  "tts_fallback": {
+    "model": "gemini-3.8-flash-tts",
+    "voice_name": "Iapetus",
+    "secure_backend_endpoint": null
   },
   "browser_fallback": {
     "prefer_name_patterns": [
@@ -25,5 +43,10 @@
     "rate": 0.94,
     "pitch": 0.93
   },
-  "barge_in": true
+  "provider_order": [
+    "gemini-live",
+    "gemini-tts",
+    "browser-fallback"
+  ],
+  "note": "Gemini Live requires a secure ephemeral-token broker; no long-lived API key may be embedded in GitHub Pages."
 }

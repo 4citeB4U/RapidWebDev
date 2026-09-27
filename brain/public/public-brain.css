@@ -6,11 +6,11 @@ button,input{font:inherit}button{color:var(--text);background:#07131e;border:1px
 .brand{font-size:13px;font-weight:900;letter-spacing:.09em}.brand span{color:#71e4ff}.brand small{display:block;color:#71879a;font-size:8px;letter-spacing:.13em;margin-top:2px}.top-stats{display:flex;gap:7px;align-items:center;flex:1;flex-wrap:wrap}.top-stats span{font-size:9px;color:#9db2c5;border:1px solid rgba(100,150,190,.22);padding:6px 8px;border-radius:999px}.live-dot{color:#65e6b9!important}.top-actions{display:flex;gap:7px}
 #crumbs{position:absolute;z-index:45;left:10px;right:10px;top:62px;display:flex;align-items:center;gap:6px}.crumb{min-height:29px;padding:4px 9px;border-radius:999px;font-size:9px}.crumb.active{color:var(--cyan);border-color:rgba(80,230,255,.45)}.sep{color:#587086}.crumb+span,#crumbCurrent{font-size:9px;color:#7890a7;letter-spacing:.08em}
 #stage{position:absolute;inset:92px 0 228px 0;overflow:hidden;background:#061427;touch-action:none}
-#nucleus{position:absolute;inset:-4%;overflow:hidden;background:#061427}
-#nucleus:before{content:"";position:absolute;inset:-5%;background-image:linear-gradient(rgba(2,8,16,.16),rgba(2,8,16,.23)),url('/brain/public/assets/digital-brain-nucleus.png');background-position:center;background-size:cover;background-repeat:no-repeat;filter:saturate(1.04) contrast(1.04);transform-origin:center;animation:brainDrift 18s ease-in-out infinite alternate;will-change:transform}
-#nucleus:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,transparent 0 18%,rgba(2,5,10,.05) 42%,rgba(2,5,10,.48) 100%);pointer-events:none;animation:brainGlow 9s ease-in-out infinite alternate}
-@keyframes brainDrift{0%{transform:scale(1.035) translate3d(-.8%,-.5%,0) rotate(-.12deg)}100%{transform:scale(1.075) translate3d(.8%,.5%,0) rotate(.12deg)}}
-@keyframes brainGlow{0%{opacity:.82}100%{opacity:1}}
+#nucleus{position:absolute;inset:0;overflow:hidden;background:#061427}
+#nucleusFallbackImage{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:1;opacity:0}
+#nucleusWaveCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2;pointer-events:none;background:transparent}
+#nucleus:after{content:"";position:absolute;inset:0;z-index:3;background:radial-gradient(circle at 50% 50%,transparent 0 18%,rgba(2,5,10,.04) 42%,rgba(2,5,10,.42) 100%);pointer-events:none;animation:brainGlow 9s ease-in-out infinite alternate}
+@keyframes brainGlow{0%{opacity:.78}100%{opacity:1}}
 #world{position:absolute;left:50%;top:50%;width:1400px;height:850px;transform:translate(-50%,-50%) scale(1);transform-origin:center;will-change:transform}
 #edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.edge{stroke:rgba(105,175,225,.28);stroke-width:1.4}.edge.core{stroke:rgba(80,230,255,.42)}.edge.evidence{stroke:rgba(77,224,207,.34);stroke-dasharray:5 5}
 #nodes{position:absolute;inset:0}.node{position:absolute;transform:translate(-50%,-50%);width:142px;min-height:64px;border:1.6px solid var(--zone,#62a8ff);border-radius:16px;background:linear-gradient(160deg,rgba(7,17,27,.96),rgba(3,10,18,.96));color:#eef6ff;padding:9px 8px;text-align:center;box-shadow:0 8px 20px rgba(0,0,0,.35),0 0 18px color-mix(in srgb,var(--zone,#62a8ff) 14%,transparent);cursor:pointer;transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease}.node:hover,.node.selected{transform:translate(-50%,-50%) scale(1.07);border-color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.45),0 0 24px color-mix(in srgb,var(--zone,#62a8ff) 38%,transparent);z-index:9}.node b{display:block;font-size:12px;line-height:1.18;text-shadow:0 1px 2px #000}.node small{display:block;color:#8da5b9;font-size:8.5px;line-height:1.2;margin-top:5px}.node.center{width:210px;min-height:96px;border-width:2.5px;--zone:#50e6ff;background:radial-gradient(circle at 50% 20%,rgba(80,230,255,.18),rgba(6,19,31,.98));box-shadow:0 0 34px rgba(80,230,255,.22)}.node.category{width:165px;min-height:75px}.node.project{width:132px}.node.evidence{border-style:dashed}
@@ -33,3 +33,129 @@ button,input{font:inherit}button{color:var(--text);background:#07131e;border:1px
 #agentLee{pointer-events:none}#agentLee .agentMic,#agentLee .agentReason{pointer-events:auto}
 
 @media(max-width:900px){#hud{display:none!important}}
+
+/* v10 visual fidelity + navigation */
+#nucleusWaveCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:2;pointer-events:none;mix-blend-mode:screen;opacity:.9}
+#nucleus:before{z-index:1}#nucleus:after{z-index:3}
+.node{overflow:hidden}
+.node b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;word-break:break-word;overflow-wrap:anywhere;hyphens:auto}
+.node small{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:break-word;overflow-wrap:anywhere}
+.node.longLabel b{font-size:10px;line-height:1.08}.node.veryLongLabel b{font-size:8.5px;line-height:1.02}.node.veryLongLabel small{display:none}
+.carouselNav{width:34px;min-width:34px;min-height:34px;padding:0;border-radius:50%;font-size:21px;display:grid;place-items:center}
+.carouselTrack{scroll-behavior:smooth;overscroll-behavior-x:contain;touch-action:pan-x}
+.appearancePanel{position:absolute;z-index:95;right:14px;top:70px;width:min(360px,calc(100vw - 28px));padding:13px;border:1px solid rgba(80,230,255,.48);border-radius:18px;background:linear-gradient(160deg,rgba(4,12,22,.98),rgba(2,8,15,.99));box-shadow:0 24px 80px rgba(0,0,0,.65),0 0 35px rgba(80,230,255,.12);backdrop-filter:blur(18px)}
+.appearanceHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.appearanceHead strong{font-size:12px;letter-spacing:.08em;text-transform:uppercase}.appearanceHead button{width:32px;min-height:32px;padding:0}
+.appearancePanel label{display:grid;grid-template-columns:1fr minmax(130px,170px);align-items:center;gap:12px;margin-top:9px;font-size:10px;color:#c8d6e1}
+.appearancePanel input[type=color]{width:100%;height:34px;border:1px solid rgba(107,170,255,.36);border-radius:9px;background:#06101a;padding:2px}
+.appearancePanel input[type=range]{width:100%}
+.paletteRow{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:12px 0}.paletteRow button{min-height:32px;font-size:9px;padding:4px}
+@media(max-width:900px){
+ .appearancePanel{left:7px;right:7px;top:58px;width:auto;max-height:70vh;overflow:auto}
+ .appearancePanel label{grid-template-columns:1fr 120px}
+ .carouselNav{display:grid}
+ .node.longLabel b{font-size:8.3px}.node.veryLongLabel b{font-size:7.4px}
+}
+
+:root{--brain-hue:0deg;--brain-bright:1;--brain-sat:1.04}
+#nucleus:before{filter:hue-rotate(var(--brain-hue)) saturate(var(--brain-sat)) contrast(1.04) brightness(var(--brain-bright))}
+
+.node b{font-size:calc(12px * var(--label-scale,1));line-height:1.16;overflow-wrap:anywhere;word-break:normal}
+.node small{font-size:calc(8.5px * var(--label-scale,1));line-height:1.18;overflow-wrap:anywhere}
+.node.longLabel b{font-size:calc(10px * var(--label-scale,1));line-height:1.08}
+.node.veryLongLabel b{font-size:calc(8.3px * var(--label-scale,1));line-height:1.03}
+@media(max-width:900px){
+ .node b{font-size:calc(9px * var(--label-scale,1))}
+ .node small{font-size:calc(7px * var(--label-scale,1))}
+ .node.longLabel b{font-size:calc(8px * var(--label-scale,1))}
+ .node.veryLongLabel b{font-size:calc(7px * var(--label-scale,1))}
+}
+
+/* Real nucleus canvas is the image authority; do not screen-blend it with a duplicate layer. */
+#nucleusWaveCanvas{mix-blend-mode:normal!important;opacity:1!important}
+
+.node b{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden;white-space:normal;text-overflow:ellipsis;max-height:3.5em}
+.node.veryLongLabel b{-webkit-line-clamp:4;max-height:4.15em}
+@media(max-width:900px){
+ .node b{-webkit-line-clamp:2;max-height:2.35em}
+ .node.veryLongLabel b{-webkit-line-clamp:3;max-height:3.1em}
+}
+
+/* ===== Brain-first presentation state ===== */
+body.brain-intro #world,
+body.brain-intro #projectCarousel,
+body.brain-intro #hud,
+body.brain-intro #crumbs,
+body.brain-intro #zoomControls,
+body.brain-intro #hint,
+body.brain-intro #topbar .top-stats,
+body.brain-intro #topbar .top-actions{opacity:0!important;pointer-events:none!important}
+body.brain-intro #world{transform:translate(-50%,-50%) scale(.72)!important}
+body.brain-intro #projectCarousel{transform:translate(-50%,130%)}
+body.brain-intro #topbar{background:linear-gradient(180deg,rgba(2,5,10,.72),rgba(2,5,10,0));border-bottom:0;pointer-events:none}
+body.brain-intro #topbar .brand{pointer-events:auto}
+.enterBrain{position:absolute;z-index:44;left:50%;bottom:10%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:3px;min-width:230px;padding:10px 16px;border-radius:999px;background:rgba(2,8,15,.55);border:1px solid rgba(80,230,255,.45);backdrop-filter:blur(12px);box-shadow:0 0 35px rgba(80,230,255,.13);color:#eafaff}
+.enterBrain span{font-size:11px;letter-spacing:.16em;font-weight:900}.enterBrain small{font-size:8px;color:#85a0b8;letter-spacing:.04em}
+body:not(.brain-intro) .enterBrain{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(18px)}
+#world,#projectCarousel,#crumbs,#zoomControls,#hint,#topbar .top-stats,#topbar .top-actions,.enterBrain{transition:opacity .38s ease,transform .48s cubic-bezier(.2,.75,.2,1)}
+
+/* ===== Label containment ===== */
+.node{overflow:hidden}
+.node b{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:2!important;line-clamp:2;overflow:hidden!important;white-space:normal!important;text-overflow:ellipsis!important;max-height:2.38em!important;word-break:normal!important;overflow-wrap:anywhere!important}
+.node small{display:-webkit-box!important;-webkit-box-orient:vertical!important;-webkit-line-clamp:1!important;line-clamp:1;overflow:hidden!important;white-space:normal!important;text-overflow:ellipsis!important;max-height:1.35em!important}
+.node.longLabel b{font-size:calc(10.5px * var(--label-scale,1))!important}
+.node.veryLongLabel b{font-size:calc(9.2px * var(--label-scale,1))!important}
+.node.center b{font-size:calc(13px * var(--label-scale,1))!important}
+.node.category b{font-size:calc(11px * var(--label-scale,1))!important}
+
+/* ===== Compact project rail ===== */
+#projectCarousel{height:116px;padding:7px 10px 9px;border-radius:16px;bottom:7px;width:min(94vw,1280px)}
+.carouselToolbar{margin-bottom:6px;min-height:30px}.carouselTitle{font-size:8.5px}.carouselTitle span{width:18px;height:18px}.carouselToolbar input{min-height:30px;font-size:11px;max-width:340px}
+.carouselTrack{gap:7px;padding:1px 0 4px}.projectCard{flex:0 0 166px;padding:7px 8px;border-radius:11px}.projectCard h3{font-size:9.5px;margin:4px 0}.projectCard p{display:none}.cardType,.cardEvidence{font-size:6.8px}.carouselCount{font-size:8px}.carouselNav{min-width:30px;min-height:30px;padding:0;font-size:18px}
+#stage{bottom:126px}
+
+/* ===== Agent Lee portrait microphone + comic bubble ===== */
+#agentLee{position:absolute;z-index:82;left:14px;bottom:134px;width:auto;background:transparent;border:0;box-shadow:none;overflow:visible;backdrop-filter:none;pointer-events:none}
+.agentPortrait{pointer-events:auto;position:relative;width:58px;height:58px;min-height:58px;padding:0;border-radius:50%;border:1px solid rgba(80,230,255,.66);background:radial-gradient(circle,rgba(80,230,255,.14),rgba(2,8,15,.94));box-shadow:0 0 26px rgba(80,230,255,.18);overflow:visible}
+.agentPortrait img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.agentPulse{position:absolute;inset:-5px;border:1px solid rgba(80,230,255,.32);border-radius:50%;opacity:.8}.agentPortrait.listening .agentPulse{animation:agentPulse 1.1s ease-in-out infinite;border-color:#ff8a16}.agentPortrait.listening{border-color:#ff8a16}
+@keyframes agentPulse{50%{transform:scale(1.12);opacity:.2}}
+.agentBubble{pointer-events:auto;position:absolute;left:72px;bottom:4px;width:min(410px,calc(100vw - 110px));max-height:270px;padding:11px;border:1px solid rgba(111,156,255,.48);border-radius:18px 18px 18px 5px;background:linear-gradient(160deg,rgba(5,14,25,.985),rgba(2,8,15,.99));box-shadow:0 20px 65px rgba(0,0,0,.6),0 0 28px rgba(80,230,255,.1);backdrop-filter:blur(16px)}
+.agentBubble:after{content:"";position:absolute;left:-12px;bottom:12px;border-width:10px 12px 0 0;border-style:solid;border-color:rgba(5,14,25,.985) transparent transparent transparent}
+.agentBubbleHead{display:flex;align-items:center;gap:8px;margin-bottom:7px}.agentBubbleHead strong{font-size:11px}.agentBubbleHead small{font-size:8px;color:#7390aa;flex:1}.agentBubbleHead button{min-width:28px;min-height:28px;padding:0}
+#agentText{padding:0;color:#c6d5e2;font-size:10px;line-height:1.5;max-height:120px;overflow:auto}
+.agentTranscript{margin-top:7px;padding:6px 8px;border-left:2px solid #50e6ff;background:rgba(80,230,255,.05);font-size:9px;color:#dff7ff}
+.agentInputRow{display:grid;grid-template-columns:minmax(0,1fr) 34px 36px;gap:6px;margin-top:8px}.agentInputRow textarea{resize:none;min-height:34px;max-height:72px;border:1px solid rgba(111,156,255,.34);border-radius:10px;background:#06101a;color:#edf8ff;padding:8px 9px;font:10px/1.35 system-ui}.agentInputRow button{min-height:34px;padding:0}
+.agentReason{font-size:8px;font-weight:900}
+#agentLee{pointer-events:none}#agentLee .agentPortrait,#agentLee .agentBubble{pointer-events:auto}
+
+/* ===== Appearance panel compact, original-brain inspired ===== */
+.appearancePanel{width:min(390px,calc(100vw - 24px));max-height:74vh;overflow:auto}
+.appearanceHead{position:sticky;top:0;z-index:2;background:rgba(4,12,22,.98);padding-bottom:6px}
+.paletteRow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin-top:10px}.paletteRow button{font-size:8px;min-height:30px}
+
+/* ===== Mobile ===== */
+@media(max-width:900px){
+ #stage{bottom:94px}
+ #projectCarousel{height:84px;width:calc(100vw - 10px);padding:5px 6px;border-radius:12px}
+ .carouselToolbar{margin-bottom:3px;gap:5px}.carouselTitle{display:none}.carouselToolbar input{min-height:27px;font-size:9px;min-width:0}.carouselCount{font-size:7px}.carouselNav{min-width:27px;min-height:27px}
+ .projectCard{flex-basis:118px;padding:5px 6px}.projectCard h3{font-size:8px;margin:3px 0}.cardType,.cardEvidence{font-size:6px}
+ #agentLee{display:block;left:8px;bottom:96px;right:auto;width:auto;max-height:none}
+ .agentPortrait{width:48px;height:48px;min-height:48px}
+ .agentBubble{left:58px;bottom:2px;width:min(315px,calc(100vw - 74px));max-height:220px;padding:9px}
+ #agentText{font-size:9px;max-height:92px}.agentInputRow{grid-template-columns:minmax(0,1fr) 31px 33px}.agentInputRow textarea{font-size:9px;min-height:31px}
+ .node{width:92px!important;min-height:48px!important;padding:5px 5px!important}.node b{font-size:calc(8.3px * var(--label-scale,1))!important;-webkit-line-clamp:2!important;max-height:2.35em!important}.node small{font-size:calc(6.5px * var(--label-scale,1))!important}.node.center{width:126px!important;min-height:66px!important}.node.category{width:104px!important;min-height:54px!important}
+ .enterBrain{bottom:16%;min-width:205px;padding:9px 13px}.enterBrain span{font-size:9.5px}.enterBrain small{font-size:7px}
+}
+
+/* Intro keeps only the brand + appearance control visible */
+body.brain-intro #topbar .top-actions{opacity:1!important;pointer-events:auto!important}
+body.brain-intro #tourBtn,body.brain-intro #resetBtn{display:none!important}
+body.brain-intro #appearanceBtn{display:inline-flex!important}
+
+/* Local reasoning is automatic; no separate public model button */
+.agentReason{display:none!important}
+
+body.brain-intro #stage{inset:0!important}
+body.brain-intro #nucleus{inset:0!important}
+body.brain-intro #agentLee{bottom:18px}
+body.brain-intro .agentPortrait{width:52px;height:52px;min-height:52px}
