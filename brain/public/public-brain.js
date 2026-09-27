@@ -11,13 +11,12 @@ const upstreamRepos=new Set(["gpt-engineer","whisper","BitNet","automatisch","vi
 const colors={Core:"#50e6ff","Agentic Systems":"#6f9cff","Scientific Research":"#c978ff",Governance:"#e6d75a",Runtime:"#50e6ff",Capabilities:"#e6d75a",Devices:"#57e49a",Compute:"#56c7ff","Voice / Realtime":"#ffad52","Developer Tools":"#8b9dff",Education:"#e273ff",Legal:"#ff6577",Logistics:"#ff8a16",Operations:"#54e0be","Business / Operations":"#54e0be","Creative AI":"#a67cff",Publishing:"#c978ff","Community / Business":"#c58b64",Safety:"#ff6577",Professional:"#93a8ba","Client / Brand":"#8c74ff",Gaming:"#6fc4ff","Business / Web":"#ff8a16","Publishing / Education":"#e273ff","Physical Systems":"#c58b64",Evidence:"#4de0cf","Reference / Upstream":"#718096","Other Projects":"#7890a7"};
 const categoryDefs=[
 {id:"cat::core",label:"CORE LEEWAY",groups:["Agentic Systems","Scientific Research","Governance","Runtime","Capabilities","Devices","Compute","Voice / Realtime","Developer Tools"]},
-{id:"cat::products",label:"PRODUCTS / APPLICATIONS",groups:["Education","Legal","Logistics","Operations","Business / Operations","Creative AI","Publishing","Safety","Gaming","Publishing / Education"]},
+{id:"cat::products",label:"PROJECTS / APPLICATIONS",groups:["Education","Legal","Logistics","Operations","Business / Operations","Creative AI","Publishing","Safety","Gaming","Publishing / Education"]},
 {id:"cat::business",label:"BUSINESS / CLIENT WORK",groups:["Business / Web","Community / Business","Client / Brand"]},
 {id:"cat::professional",label:"PROFESSIONAL / LINEAGE",groups:["Professional","Physical Systems"]},
-{id:"cat::other",label:"OTHER / REFERENCES",groups:["Other Projects","Reference / Upstream"]},
-{id:"cat::evidence",label:"EVIDENCE / RESEARCH",groups:["Evidence"]}
+{id:"cat::other",label:"OTHER / REFERENCES",groups:["Other Projects","Reference / Upstream"]}
 ];
-const categoryAnchors={"cat::core":{x:505,y:285},"cat::products":{x:895,y:285},"cat::business":{x:925,y:545},"cat::professional":{x:475,y:545},"cat::other":{x:565,y:675},"cat::evidence":{x:835,y:675}};
+const categoryAnchors={"cat::core":{x:700,y:205},"cat::products":{x:1000,y:350},"cat::business":{x:905,y:610},"cat::professional":{x:495,y:610},"cat::other":{x:400,y:350}};
 function cleanName(n){return String(n||"").replace(/[-_]+/g," ").replace(/\s+/g," ").trim()}
 function classifyRepo(r){
  if(upstreamRepos.has(r.name))return "Reference / Upstream";
@@ -56,7 +55,7 @@ async function fetchGithubRepos(){
  return sets.flat().filter(r=>r&&r.owner?.login==="4citeB4U"&&!r.private);
 }
 function groupFor(x){return x.kind==="evidence"?"Evidence":x.group||"Other Projects"}
-function categoryFor(x){const g=groupFor(x);return categoryDefs.find(c=>c.groups.includes(g))?.id||"cat::other"}
+function categoryFor(x){const g=groupFor(x);if(g==="Evidence")return "__evidence_rail__";return categoryDefs.find(c=>c.groups.includes(g))?.id||"cat::other"}
 function setWorldTransform(){world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function hexRgb(hex){const h=String(hex||"#50e6ff").replace("#","");const n=parseInt(h.length===3?h.split("").map(c=>c+c).join(""):h,16);return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
@@ -250,7 +249,7 @@ function nodeButton(x){
 }
 function renderNodes(filter=""){
  nodesEl.innerHTML="";const cLabel=activeCategory?categoryDefs.find(c=>c.id===activeCategory)?.label:"";
- nodesEl.appendChild(nodeButton({id:"center",label:activeCategory?cLabel:"LEONARD LEE",sub:activeCategory?"tap center to return":"LeeWay Industries · Systems Builder",type:"center",zone:"#50e6ff"}));
+ nodesEl.appendChild(nodeButton({id:"center",label:activeCategory?cLabel:"LEEWAY DIGITAL BRAIN",sub:activeCategory?"tap center to return":"Connect • Reason • Build • Impact",type:"center",zone:"#50e6ff"}));
  const q=filter.toLowerCase();
  if(!activeCategory&&!q){
   categoryDefs.forEach(c=>nodesEl.appendChild(nodeButton({id:c.id,label:c.label,sub:`${items.filter(x=>categoryFor(x)===c.id).length} items`,type:"category",zone:c.id==="cat::evidence"?"#4de0cf":"#62a8ff"})));
@@ -312,7 +311,7 @@ async function presentProject(x){
  const fallback=narrationFor(x);agentText.textContent=fallback;agentNarration.textContent=fallback;speak(fallback);return fallback;
 }
 function resolveItem(id){
- if(id==="center")return {id,label:"Leonard Lee",group:"Systems Builder",summary:"Cross-domain systems work spanning construction, logistics, management, business, software, AI and governed research.",evidence_state:"PUBLIC LINEAGE",kind:"identity"};
+ if(id==="center")return {id,label:"LeeWay Digital Brain",group:"Presentation Core",summary:"The public presentation core for Leonard Lee and LeeWay Industries: projects, evidence, systems lineage, and governed AI in one explorable universe.",evidence_state:"PUBLIC LINEAGE",kind:"identity"};
  if(id?.startsWith("cat::")){const c=categoryDefs.find(x=>x.id===id);return {id,label:c.label,group:"Project Universe",summary:`Contains ${items.filter(y=>categoryFor(y)===id).length} public project or evidence records.`,evidence_state:"PUBLIC PROJECTION",kind:"category"}}
  return items.find(x=>x.id===id);
 }
