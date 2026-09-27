@@ -29,7 +29,105 @@
   </div>
 
   <main id="stage">
-    <div id="nucleus" aria-hidden="true"><img id="nucleusFallbackImage" src="/brain/public/assets/digital-brain-nucleus.png" alt=""><canvas id="nucleusWaveCanvas"></canvas></div>
+    <div id="nucleus" aria-hidden="true">
+      <img id="nucleusFallbackImage" src="/brain/public/assets/digital-brain-nucleus.png" alt="">
+      <canvas id="nucleusWaveCanvas"></canvas>
+
+      <div id="brainCoreVisual" class="brainCoreVisual">
+        <svg viewBox="0 0 900 900" role="img" aria-label="LeeWay Digital Brain">
+          <defs>
+            <filter id="brainGlow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="7" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <filter id="nodeGlow" x="-200%" y="-200%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="5" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+            <radialGradient id="brainHalo" cx="50%" cy="45%">
+              <stop offset="0" stop-color="#35eaff" stop-opacity=".16"/>
+              <stop offset=".52" stop-color="#128cff" stop-opacity=".06"/>
+              <stop offset="1" stop-color="#00101d" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <circle cx="450" cy="430" r="330" fill="url(#brainHalo)"/>
+          <g class="brainOrbits">
+            <circle cx="450" cy="430" r="300"/>
+            <circle cx="450" cy="430" r="270"/>
+            <circle cx="450" cy="430" r="240"/>
+          </g>
+
+          <g class="brainHemisphere" filter="url(#brainGlow)">
+            <path d="M442 195
+              C390 150 317 158 280 208
+              C224 213 190 257 196 309
+              C151 339 150 397 181 432
+              C151 479 171 531 213 551
+              C204 605 243 648 295 647
+              C319 697 381 711 430 681
+              C447 652 449 612 449 566
+              L449 241
+              C448 222 447 207 442 195Z"/>
+            <path d="M458 195
+              C510 150 583 158 620 208
+              C676 213 710 257 704 309
+              C749 339 750 397 719 432
+              C749 479 729 531 687 551
+              C696 605 657 648 605 647
+              C581 697 519 711 470 681
+              C453 652 451 612 451 566
+              L451 241
+              C452 222 453 207 458 195Z"/>
+            <path d="M450 224 C425 260 430 300 450 324 C470 300 475 260 450 224Z"/>
+          </g>
+
+          <g class="brainNetwork">
+            <path d="M270 273 L335 240 L405 285 L365 351 L286 332 Z"/>
+            <path d="M286 332 L334 412 L255 454 L220 394 Z"/>
+            <path d="M334 412 L406 387 L426 473 L365 525 L287 497 Z"/>
+            <path d="M365 525 L420 586 L340 626 L278 568 Z"/>
+            <path d="M630 273 L565 240 L495 285 L535 351 L614 332 Z"/>
+            <path d="M614 332 L566 412 L645 454 L680 394 Z"/>
+            <path d="M566 412 L494 387 L474 473 L535 525 L613 497 Z"/>
+            <path d="M535 525 L480 586 L560 626 L622 568 Z"/>
+            <path d="M405 285 L450 324 L495 285"/>
+            <path d="M406 387 L450 424 L494 387"/>
+            <path d="M426 473 L450 512 L474 473"/>
+            <path d="M420 586 L450 618 L480 586"/>
+          </g>
+
+          <g class="brainNodes" filter="url(#nodeGlow)">
+            <circle cx="270" cy="273" r="6"/><circle cx="335" cy="240" r="7"/><circle cx="405" cy="285" r="6"/>
+            <circle cx="365" cy="351" r="5"/><circle cx="286" cy="332" r="5"/><circle cx="334" cy="412" r="6"/>
+            <circle cx="255" cy="454" r="5"/><circle cx="220" cy="394" r="4"/><circle cx="406" cy="387" r="5"/>
+            <circle cx="426" cy="473" r="6"/><circle cx="365" cy="525" r="5"/><circle cx="287" cy="497" r="4"/>
+            <circle cx="420" cy="586" r="6"/><circle cx="340" cy="626" r="5"/><circle cx="278" cy="568" r="5"/>
+            <circle cx="630" cy="273" r="6"/><circle cx="565" cy="240" r="7"/><circle cx="495" cy="285" r="6"/>
+            <circle cx="535" cy="351" r="5"/><circle cx="614" cy="332" r="5"/><circle cx="566" cy="412" r="6"/>
+            <circle cx="645" cy="454" r="5"/><circle cx="680" cy="394" r="4"/><circle cx="494" cy="387" r="5"/>
+            <circle cx="474" cy="473" r="6"/><circle cx="535" cy="525" r="5"/><circle cx="613" cy="497" r="4"/>
+            <circle cx="480" cy="586" r="6"/><circle cx="560" cy="626" r="5"/><circle cx="622" cy="568" r="5"/>
+            <circle cx="450" cy="324" r="7"/><circle cx="450" cy="424" r="7"/><circle cx="450" cy="512" r="7"/>
+          </g>
+
+          <g class="brainPedestal">
+            <ellipse cx="450" cy="718" rx="220" ry="34"/>
+            <ellipse cx="450" cy="718" rx="170" ry="24"/>
+            <ellipse cx="450" cy="718" rx="112" ry="14"/>
+            <path d="M435 646 L435 706 M465 646 L465 706"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="brainFormulaLayer" class="brainFormulaLayer">
+        <div class="brainQuote">“A connected mind<br>for a more capable world.”</div>
+        <div class="formula formulaA">f(x)=∫ e<sup>−x²</sup>dx</div>
+        <div class="formula formulaB">∑ wᵢxᵢ</div>
+        <div class="formula formulaC">∇²φ = 0</div>
+        <div class="formula formulaD">Ax = b</div>
+      </div>
+    </div>
     <button id="enterBrain" class="enterBrain"><span>ENTER DIGITAL BRAIN</span><small>tap the brain · scroll inward · explore the universe</small></button>
     <div id="world">
       <svg id="edges" aria-hidden="true"></svg>

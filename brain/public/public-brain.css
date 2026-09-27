@@ -181,3 +181,35 @@ body.brain-intro .agentPortrait{width:52px;height:52px;min-height:52px}
  .node.center{width:112px!important;min-height:58px!important}.node.category{width:88px!important;min-height:44px!important}
  .node b{font-size:calc(7.4px * var(--label-scale,1))!important}.node small{font-size:calc(5.8px * var(--label-scale,1))!important}
 }
+
+/* ===== Actual visible Digital Brain authority ===== */
+.brainCoreVisual{position:absolute;z-index:4;left:50%;top:50%;width:min(72vw,820px);aspect-ratio:1;transform:translate(-50%,-50%);pointer-events:none;opacity:.98;filter:drop-shadow(0 0 28px rgba(46,197,255,.18))}
+.brainCoreVisual svg{width:100%;height:100%;overflow:visible}
+.brainOrbits circle{fill:none;stroke:#1aaaff;stroke-width:1.25;stroke-opacity:.34;stroke-dasharray:3 9;transform-origin:450px 430px}
+.brainOrbits circle:nth-child(1){animation:orbitSpin 34s linear infinite}
+.brainOrbits circle:nth-child(2){animation:orbitSpinReverse 27s linear infinite}
+.brainOrbits circle:nth-child(3){animation:orbitPulse 7s ease-in-out infinite}
+.brainHemisphere path{fill:rgba(0,43,78,.08);stroke:#79efff;stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.brainHemisphere path:nth-child(1),.brainHemisphere path:nth-child(2){animation:brainStroke 5.8s ease-in-out infinite alternate}
+.brainNetwork path{fill:none;stroke:#52dfff;stroke-width:1.35;stroke-opacity:.58}
+.brainNodes circle{fill:#d9ffff;stroke:#43dfff;stroke-width:1.5;animation:nodePulse 2.8s ease-in-out infinite}
+.brainNodes circle:nth-child(3n){animation-delay:.7s}.brainNodes circle:nth-child(4n){animation-delay:1.4s}
+.brainPedestal ellipse,.brainPedestal path{fill:none;stroke:#21b9ff;stroke-width:1.3;stroke-opacity:.55}
+.brainPedestal ellipse{animation:pedestalPulse 4.8s ease-in-out infinite}
+.brainFormulaLayer{position:absolute;z-index:5;inset:0;pointer-events:none;color:#b9e3ff;font-family:Georgia,"Times New Roman",serif;text-shadow:0 0 12px rgba(39,148,255,.25)}
+.brainQuote{position:absolute;left:2.4%;top:8%;font-size:clamp(12px,1.2vw,20px);line-height:1.45;font-style:italic;color:#d7eeff}
+.brainQuote:after{content:"";display:block;width:58px;height:3px;margin-top:12px;background:#27e4ea;box-shadow:0 0 12px rgba(39,228,234,.35)}
+.formula{position:absolute;font-size:clamp(14px,1.7vw,28px);opacity:.64}
+.formulaA{left:18%;top:25%}.formulaB{right:19%;top:23%}.formulaC{left:11%;bottom:31%}.formulaD{right:10%;bottom:23%}
+body:not(.brain-intro) .brainCoreVisual{width:min(78vw,930px);opacity:.28;filter:drop-shadow(0 0 22px rgba(46,197,255,.10))}
+body:not(.brain-intro) .brainFormulaLayer{opacity:.16}
+body:not(.brain-intro) #nucleusWaveCanvas{opacity:.82!important}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}@keyframes orbitSpinReverse{to{transform:rotate(-360deg)}}@keyframes orbitPulse{50%{opacity:.75;stroke-width:2}}
+@keyframes brainStroke{0%{stroke-opacity:.62;filter:drop-shadow(0 0 5px rgba(83,225,255,.35))}100%{stroke-opacity:1;filter:drop-shadow(0 0 12px rgba(83,225,255,.65))}}
+@keyframes nodePulse{50%{r:8;opacity:.55}}@keyframes pedestalPulse{50%{stroke-opacity:.9}}
+@media(max-width:900px){
+ .brainCoreVisual{width:min(115vw,720px);top:48%}
+ body:not(.brain-intro) .brainCoreVisual{width:min(122vw,760px);opacity:.22}
+ .brainQuote{left:5%;top:8%;font-size:11px}.formula{font-size:13px}.formulaA{left:12%;top:25%}.formulaB{right:10%;top:24%}.formulaC{left:7%;bottom:32%}.formulaD{right:6%;bottom:24%}
+}
+@media(prefers-reduced-motion:reduce){.brainOrbits circle,.brainHemisphere path,.brainNodes circle,.brainPedestal ellipse{animation:none!important}}
