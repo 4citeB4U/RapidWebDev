@@ -1,0 +1,205 @@
+{
+  "projects": [
+    {
+      "id": "proj::rapid-original",
+      "label": "Rapid Web Develop — MacMillion / Artist Platform",
+      "desc": "Original brother-dedicated artist empowerment experience preserved as a complete project exhibit.",
+      "group": "Business / Web",
+      "url": "/projects/rapid-web-develop-original/",
+      "repo": "https://github.com/4citeB4U/RapidWebDev",
+      "date": "2025",
+      "evidence": "LIVE"
+    },
+    {
+      "id": "proj::leola",
+      "label": "Leola's Library",
+      "desc": "Interactive digital library and audiobook experience centered on Leola's crochet books and narrated learning.",
+      "group": "Publishing / Education",
+      "url": "https://4citeb4u.github.io/leolasliabrary/",
+      "repo": "https://github.com/4citeB4U/leolasliabrary",
+      "date": "2026",
+      "evidence": "LIVE"
+    },
+    {
+      "id": "proj::agent",
+      "label": "Agent Lee — Sum of All Systems",
+      "desc": "Consolidated Agent Lee sovereign operating system lineage.",
+      "group": "Agentic Systems",
+      "repo": "https://github.com/4citeB4U/Agent-Lee-The-Sum-of-All-Systems",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::formula",
+      "label": "LeeWay Formula",
+      "desc": "Mathematical state, routing, quantization and evidence architecture.",
+      "group": "Scientific Research",
+      "repo": "https://github.com/4citeB4U/Leeway-formula-live",
+      "date": "2026",
+      "evidence": "CANONICAL"
+    },
+    {
+      "id": "proj::standards",
+      "label": "LeeWay Standards",
+      "desc": "Governance, authority, receipts and sovereign architecture standards.",
+      "group": "Governance",
+      "repo": "https://github.com/4citeB4U/LeeWay-Standards",
+      "date": "2026",
+      "evidence": "CANONICAL"
+    },
+    {
+      "id": "proj::runtime",
+      "label": "LeeWay Runtime Fabric",
+      "desc": "Governed execution substrate, runtime kernel and capability fabric.",
+      "group": "Runtime",
+      "repo": "https://github.com/4citeB4U/Leeway-Runtime-Fabric",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::skills",
+      "label": "LeeWay Agent Skills",
+      "desc": "Agent skill registry and MCP capability library.",
+      "group": "Capabilities",
+      "repo": "https://github.com/4citeB4U/LeeWay-Agent-Skills",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::device",
+      "label": "LeeWay Device Bridge",
+      "desc": "Governed bridge for phones and cross-device interaction.",
+      "group": "Devices",
+      "repo": "https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::edgegpu",
+      "label": "LeeWay Edge GPU",
+      "desc": "Local WebGPU and edge-compute research and execution layer.",
+      "group": "Compute",
+      "repo": "https://github.com/4citeB4U/LeeWay-Edge-GPU",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::edgertc",
+      "label": "LeeWay Edge RTC",
+      "desc": "Self-hosted RTC and voice orchestration system.",
+      "group": "Voice / Realtime",
+      "repo": "https://github.com/4citeB4U/LeeWay-Edge-RTC",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::vscode",
+      "label": "LeeWay VS Code",
+      "desc": "Governed creator/developer workspace for Agent Lee and LeeWay systems.",
+      "group": "Developer Tools",
+      "repo": "https://github.com/4citeB4U/LEEWAY-VSCODE",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::training",
+      "label": "LeeWay Training",
+      "desc": "AI workforce readiness and training platform.",
+      "group": "Education",
+      "repo": "https://github.com/4citeB4U/Leeway-Training",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::legal",
+      "label": "LeeWay Legal Contract System",
+      "desc": "Governed legal operations and contract workflow platform.",
+      "group": "Legal",
+      "repo": "https://github.com/4citeB4U/Leeway_legal_contract_system",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::truckforms",
+      "label": "TruckForms",
+      "desc": "Trucking forms, compliance and operational workflow SaaS.",
+      "group": "Logistics",
+      "repo": "https://github.com/4citeB4U/TruckForms",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::lex",
+      "label": "LEX Operations Center",
+      "desc": "AI-assisted career, document, task and life operations center.",
+      "group": "Operations",
+      "repo": "https://github.com/4citeB4U/LEXOPSCENTER",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::content",
+      "label": "LeeWay Agentic Content Foundry",
+      "desc": "Node-based agentic content production and orchestration environment.",
+      "group": "Creative AI",
+      "repo": "https://github.com/4citeB4U/Leeway-agentic-content-foundry",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::author",
+      "label": "LeeWay Author Marketing Agent",
+      "desc": "Agentic publishing and author marketing workforce.",
+      "group": "Publishing",
+      "repo": "https://github.com/4citeB4U/LEEWAY-Author-Marketing-Agent",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::blackbook",
+      "label": "The Black Book of Milwaukee",
+      "desc": "Milwaukee business/community directory project.",
+      "group": "Community / Business",
+      "repo": "https://github.com/4citeB4U/TheBlackBookofMilwaukee",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::safety",
+      "label": "UVision Safety App",
+      "desc": "Mobile/web incident, sensor and safety application architecture.",
+      "group": "Safety",
+      "repo": "https://github.com/4citeB4U/uvision-safety-app",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::resume",
+      "label": "Leonard Lee Resume",
+      "desc": "Live professional resume summarizing systems, operations and AI work.",
+      "group": "Professional",
+      "url": "https://4citeb4u.github.io/Leonard-Lee-Resume/",
+      "repo": "https://github.com/4citeB4U/Leonard-Lee-Resume",
+      "date": "2026",
+      "evidence": "LIVE"
+    },
+    {
+      "id": "proj::beast",
+      "label": "Beast AI Website",
+      "desc": "Public Beast AI website and portfolio work.",
+      "group": "Client / Brand",
+      "repo": "https://github.com/4citeB4U/beast-ai-web-site",
+      "date": "2026",
+      "evidence": "SOURCE"
+    },
+    {
+      "id": "proj::leo",
+      "label": "Leo's Insight",
+      "desc": "Gaming, development and learning/community platform.",
+      "group": "Gaming",
+      "repo": "https://github.com/4citeB4U/leosinsight",
+      "date": "2026",
+      "evidence": "SOURCE"
+    }
+  ]
+}
