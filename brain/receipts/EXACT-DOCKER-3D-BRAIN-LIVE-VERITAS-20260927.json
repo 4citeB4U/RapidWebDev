@@ -1,0 +1,50 @@
+{
+  "schema": "leeway-exact-docker-3d-brain-live-veritas-v1",
+  "tested_at": "2026-09-27T19:14:50.670Z",
+  "target": "https://rapidwebdevelop.com/",
+  "deployed_commit": "cc9f4d036c5cff9336d6b3fd1908bd5e64fea86c",
+  "before": {
+    "distance": 18.811233346062135,
+    "camera": [
+      0,
+      0.6500000000000008,
+      18.8
+    ],
+    "galaxy_active": false,
+    "webgl_canvas": true
+  },
+  "after_drag": {
+    "distance": 18.81123334606213,
+    "camera": [
+      16.071275543261134,
+      -9.493214338810478,
+      2.3356977394302643
+    ],
+    "rotation_without_depth_change": "PASS"
+  },
+  "after_inward_travel": {
+    "distance": 7.417103940180091,
+    "camera": [
+      5.2599727007624235,
+      -4.889855066527037,
+      -1.8534927771720493
+    ],
+    "galaxy_active": true,
+    "brain_shell_opacity": 0.04,
+    "universe_opacity": 0.988591,
+    "brain_intro_active": false
+  },
+  "visible_universes": [
+    "LEEWAY DIGITAL BRAIN",
+    "CORE LEEWAY",
+    "PROJECTS / APPLICATIONS",
+    "BUSINESS / CLIENT WORK",
+    "PROFESSIONAL / LINEAGE",
+    "OTHER / REFERENCES"
+  ],
+  "runtime_3d_errors": 0,
+  "expected_headless_limitations": [
+    "Headless verification browser does not load the installed LeeWay Chrome extension, so localhost Agent Lee LLM probes fail there."
+  ],
+  "verdict": "PASS"
+}
