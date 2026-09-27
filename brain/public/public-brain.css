@@ -292,3 +292,32 @@ body.galaxy-active #hint{opacity:1!important;pointer-events:auto!important}
  .brainInternalLabel.user{left:66%}
  #brainDepthHint{bottom:12%;font-size:7.5px;max-width:88vw;white-space:normal;text-align:center}
 }
+
+/* ===== Canonical LeeWay math field around the real 3D brain ===== */
+#brainInternalLabels{display:none!important}
+.brainMathOverlay{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  opacity:calc(var(--brain-shell-alpha,1) * .68);
+  transition:opacity .34s ease;
+  color:rgba(190,201,214,.58);
+  font-family:Cambria Math,STIX Two Math,Georgia,"Times New Roman",serif;
+  text-shadow:0 0 10px rgba(83,142,190,.08)
+}
+.brainMath{
+  position:absolute;
+  font-size:clamp(13px,1.35vw,22px);
+  line-height:1.35;
+  letter-spacing:.01em;
+  white-space:nowrap;
+  opacity:.62
+}
+.brainMathQ{left:6.5%;top:24%}
+.brainMathW{right:8%;top:23%}
+.brainMathS{left:7.5%;bottom:29%}
+.brainMathD{right:9%;bottom:27%}
+body.galaxy-active .brainMathOverlay{opacity:0}
+#brainDepthHint{color:rgba(174,197,213,.64);border-color:rgba(80,190,230,.13);background:rgba(1,6,12,.30)}
+@media(max-width:760px){
+ .brainMath{font-size:10px;opacity:.48}
+ .brainMathQ{left:3%;top:21%}.brainMathW{right:3%;top:22%}.brainMathS{left:3%;bottom:26%}.brainMathD{right:4%;bottom:24%}
+}

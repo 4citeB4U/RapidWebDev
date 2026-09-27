@@ -4,8 +4,8 @@ const hud=qs("#hud"),workspace=qs("#workspace"),workspaceBody=qs("#workspaceBody
 const openExternal=qs("#workspaceOpenExternal"),agentText=qs("#agentText"),agentNarration=qs("#agentNarration"),agentState=qs("#agentState"),agentTranscript=qs("#agentTranscript"),micBtn=qs("#micBtn"),reasonBtn=qs("#reasonBtn"),agentBubble=qs("#agentBubble"),agentBubbleClose=qs("#agentBubbleClose"),agentInput=qs("#agentInput"),agentSend=qs("#agentSend");
 const appearancePanel=qs("#appearancePanel"),nucleusImg=qs("#nucleusFallbackImage"),waveCanvas=qs("#nucleusWaveCanvas"),carouselPrev=qs("#carouselPrev"),carouselNext=qs("#carouselNext");
 let projects=[],evidence=[],decks=[],items=[],selected=null,activeItem=null,activeTab="overview",brainEntered=false;
-let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,voiceConfig=null,audioPlayer=null,recognition=null,listening=false,activeCategory=null,gemmaEngine=null,gemmaConversation=null,gemmaLoading=false,gemmaGenerating=false,agentPersona=null;
-let waveCtx=null,waveRaf=0,appearance={bg:"#061427",accent:"#50e6ff",speed:.58,horizontal:11,vertical:7,secondary:.34,stripHeight:4,hue:0,saturation:1,brightness:1,dotColor:"#51eaff",dotVariation:20,dotStrength:.30,labelScale:1};
+let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,voiceConfig=null,audioPlayer=null,recognition=null,listening=false,activeCategory=null,outwardWheel=0,gemmaEngine=null,gemmaConversation=null,gemmaLoading=false,gemmaGenerating=false,agentPersona=null;
+let waveCtx=null,waveRaf=0,appearance={bg:"#010713",accent:"#00b7e8",speed:.52,horizontal:10,vertical:6.5,secondary:.30,stripHeight:4,hue:0,saturation:.90,brightness:.78,dotColor:"#35d8ff",dotVariation:16,dotStrength:.22,labelScale:1};
 let localProvider=null,localProviderChecked=false;
 const upstreamRepos=new Set(["gpt-engineer","whisper","BitNet","automatisch","view-transitions","llama-models"]);
 const colors={Core:"#50e6ff","Agentic Systems":"#6f9cff","Scientific Research":"#c978ff",Governance:"#e6d75a",Runtime:"#50e6ff",Capabilities:"#e6d75a",Devices:"#57e49a",Compute:"#56c7ff","Voice / Realtime":"#ffad52","Developer Tools":"#8b9dff",Education:"#e273ff",Legal:"#ff6577",Logistics:"#ff8a16",Operations:"#54e0be","Business / Operations":"#54e0be","Creative AI":"#a67cff",Publishing:"#c978ff","Community / Business":"#c58b64",Safety:"#ff6577",Professional:"#93a8ba","Client / Brand":"#8c74ff",Gaming:"#6fc4ff","Business / Web":"#ff8a16","Publishing / Education":"#e273ff","Physical Systems":"#c58b64",Evidence:"#4de0cf","Reference / Upstream":"#718096","Other Projects":"#7890a7"};
@@ -83,11 +83,12 @@ function applyAppearance(next={},persist=true){
  const values={bgColor:"bg",accentColor:"accent",nucleusSpeedRange:"speed",nucleusHorizontalRange:"horizontal",nucleusVerticalRange:"vertical",nucleusHueRange:"hue",nucleusSaturationRange:"saturation",nucleusBrightnessRange:"brightness",nucleusDotColor:"dotColor",nucleusDotVariationRange:"dotVariation",nucleusDotStrengthRange:"dotStrength",labelScaleRange:"labelScale"};
  Object.entries(values).forEach(([id,key])=>{const el=qs("#"+id);if(el&&appearance[key]!=null)el.value=String(appearance[key])});
  rebuildNucleusBase();
- if(persist)try{localStorage.setItem("leeway.brain.appearance",JSON.stringify(appearance))}catch{}
+ window.dispatchEvent(new CustomEvent("leeway-appearance-change",{detail:{...appearance}}));
+ if(persist)try{localStorage.setItem("leeway.brain.appearance.v2",JSON.stringify(appearance))}catch{}
 }
-function loadAppearance(){try{const saved=JSON.parse(localStorage.getItem("leeway.brain.appearance")||"null");if(saved)appearance={...appearance,...saved}}catch{}applyAppearance(appearance,false)}
+function loadAppearance(){try{const saved=JSON.parse(localStorage.getItem("leeway.brain.appearance.v2")||"null");if(saved)appearance={...appearance,...saved}}catch{}applyAppearance(appearance,false)}
 const nucleusPresets={
- original:{bg:"#061427",accent:"#50e6ff",hue:0,saturation:1,brightness:1,dotColor:"#51eaff",dotVariation:20,dotStrength:.30},
+ original:{bg:"#010713",accent:"#00b7e8",hue:0,saturation:.90,brightness:.78,dotColor:"#35d8ff",dotVariation:16,dotStrength:.22},
  midnight:{bg:"#01030a",accent:"#78bfff",hue:0,saturation:.72,brightness:.48,dotColor:"#78bfff",dotVariation:12,dotStrength:.25},
  storm:{bg:"#140609",accent:"#ff6577",hue:145,saturation:1.34,brightness:.72,dotColor:"#ff515e",dotVariation:25,dotStrength:.38},
  violet:{bg:"#120822",accent:"#9b6cff",hue:255,saturation:1.25,brightness:.82,dotColor:"#b06cff",dotVariation:26,dotStrength:.34},
@@ -137,6 +138,24 @@ function enterBrain(){
   return;
  }
 }
+function backOneLevel(){
+  closeWorkspace();
+  if(activeCategory||search.value.trim()){
+    activeCategory=null;search.value="";rebuildUniverse();selectItem("center",false);fit();
+    return "root-universe";
+  }
+  showBrainOnly();
+  return "brain-overview";
+}
+window.__leewayPublicBackOneLevel=backOneLevel;
+window.__leewayPublicState=()=>({
+  brainEntered,
+  activeCategory,
+  scale,
+  search:String(search?.value||""),
+  introActive:Boolean(window.__leewayBrainIntroActive),
+  bodyClass:document.body.className
+});
 function showBrainOnly(){
  closeWorkspace();hud.classList.add("hidden");activeCategory=null;search.value="";brainEntered=false;
  if(window.__leewayEnterBrainOverview){window.__leewayEnterBrainOverview();return}
@@ -259,7 +278,7 @@ function nodeButton(x){
  const p=positions.get(x.id),b=document.createElement("button"),label=String(x.label||"");
  const lengthClass=label.length>42?" veryLongLabel":label.length>26?" longLabel":"";
  b.className="node "+(x.type||"project")+lengthClass+(selected===x.id?" selected":"");b.dataset.id=x.id;b.title=label;b.style.left=p.x+"px";b.style.top=p.y+"px";b.style.setProperty("--zone",x.zone||colors[groupFor(x)]||"#62a8ff");b.innerHTML=`<b>${label}</b><small>${x.sub||""}</small>`;
- b.onclick=e=>{e.stopPropagation();if(x.id==="center"){if(activeCategory||search.value.trim()){activeCategory=null;search.value="";rebuildUniverse();selectItem("center",false)}else selectItem("center",false);return}if(x.type==="category"){activeCategory=x.id;rebuildUniverse();const c=categoryDefs.find(y=>y.id===x.id);qs("#crumbCurrent").textContent=c.label;agentText.textContent=`Entering ${c.label}. Select a project or use the carousel below.`;return}selectItem(x.id,true)};return b;
+ b.onclick=e=>{e.stopPropagation();if(x.id==="center"){backOneLevel();return}if(x.type==="category"){activeCategory=x.id;rebuildUniverse();const c=categoryDefs.find(y=>y.id===x.id);qs("#crumbCurrent").textContent=c.label;agentText.textContent=`Entering ${c.label}. Select a project or use the carousel below.`;return}selectItem(x.id,true)};return b;
 }
 function renderNodes(filter=""){
  nodesEl.innerHTML="";const cLabel=activeCategory?categoryDefs.find(c=>c.id===activeCategory)?.label:"";
@@ -478,7 +497,7 @@ function bindAppearance(){
  const panel=appearancePanel;
  qs("#appearanceBtn").onclick=()=>panel.classList.toggle("hidden");
  qs("#appearanceClose").onclick=()=>panel.classList.add("hidden");
- qs("#appearanceReset").onclick=()=>applyAppearance({bg:"#061427",accent:"#50e6ff",speed:.58,horizontal:11,vertical:7,secondary:.34,stripHeight:4,hue:0,saturation:1,brightness:1,dotColor:"#51eaff",dotVariation:20,dotStrength:.30,labelScale:1});
+ qs("#appearanceReset").onclick=()=>applyAppearance({bg:"#010713",accent:"#00b7e8",speed:.52,horizontal:10,vertical:6.5,secondary:.30,stripHeight:4,hue:0,saturation:.90,brightness:.78,dotColor:"#35d8ff",dotVariation:16,dotStrength:.22,labelScale:1});
  const bindings={
   bgColor:["bg",String],accentColor:["accent",String],nucleusSpeedRange:["speed",Number],
   nucleusHorizontalRange:["horizontal",Number],nucleusVerticalRange:["vertical",Number],
@@ -495,6 +514,8 @@ qs("#hudClose").onclick=()=>hud.classList.add("hidden");
 qs("#speakBtn").onclick=()=>speak(agentNarration.textContent||agentText.textContent);
 qs("#tourBtn").onclick=startTour;
 qs("#resetBtn").onclick=showBrainOnly;
+qs(".crumb.active").onclick=backOneLevel;
+window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
 micBtn.onclick=()=>{openAgentBubble(false);toggleMic()};
 reasonBtn.onclick=async()=>{const p=await probeLocalProvider(true);if(p){speak("Local LeeWay brain connected. "+p.preferred+" is on deck.");return}await enableGemma()};
 qs("#workspaceClose").onclick=closeWorkspace;
@@ -508,7 +529,20 @@ window.addEventListener("resize",()=>{resizeWave();if(innerWidth<900&&scale>.72)
 document.querySelectorAll(".workspaceTabs button").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll(".workspaceTabs button").forEach(x=>x.classList.toggle("active",x===b));renderWorkspace()});
 workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak")speak(narrationFor(activeItem))});
 qs("#zoomIn").onclick=()=>{scale=clamp(scale+.12,.38,1.9);setWorldTransform()};qs("#zoomOut").onclick=()=>{scale=clamp(scale-.12,.38,1.9);setWorldTransform()};qs("#zoomFit").onclick=fit;
-qs("#stage").addEventListener("wheel",e=>{if(window.__leewayBrainIntroActive)return;e.preventDefault();scale=clamp(scale*(e.deltaY<0?1.08:.92),.38,1.9);setWorldTransform()},{passive:false});
+qs("#stage").addEventListener("wheel",e=>{
+ if(window.__leewayBrainIntroActive)return;
+ e.preventDefault();
+ if(e.deltaY>0 && scale<=.42){
+  outwardWheel+=e.deltaY;
+  if(outwardWheel>=160){
+   outwardWheel=0;
+   backOneLevel();
+  }
+  return;
+ }
+ if(e.deltaY<0)outwardWheel=0;
+ scale=clamp(scale*(e.deltaY<0?1.08:.92),.38,1.9);setWorldTransform();
+},{passive:false});
 qs("#stage").addEventListener("pointerdown",e=>{if(window.__leewayBrainIntroActive)return;if(e.target.closest(".node,#hud,#zoomControls,#agentLee,.appearancePanel,#projectCarousel,#workspace"))return;dragging=true;dragStart={x:e.clientX,y:e.clientY,px:panX,py:panY};qs("#stage").setPointerCapture(e.pointerId)});
 qs("#stage").addEventListener("pointermove",e=>{if(!dragging)return;panX=dragStart.px+e.clientX-dragStart.x;panY=dragStart.py+e.clientY-dragStart.y;setWorldTransform()});qs("#stage").addEventListener("pointerup",()=>dragging=false);qs("#stage").addEventListener("pointercancel",()=>dragging=false);
 speechSynthesis?.addEventListener?.("voiceschanged",chooseVoice);

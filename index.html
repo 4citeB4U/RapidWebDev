@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
 <title>Rapid Web Develop â€” LeeWay Digital Brain</title>
 <script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
-<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1500">
+<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1530">
 </head>
 <body class="brain-intro">
 <div id="app">
@@ -37,12 +37,13 @@
 
     <div id="brainUniverseLayer" aria-label="LeeWay 3D brain overview">
       <div id="brain3DCanvas"></div>
-      <div id="brainInternalLabels" aria-hidden="true">
-        <div class="brainInternalLabel system"><strong>LEEWAY</strong><span>systems lineage</span></div>
-        <div class="brainInternalLabel runtime"><strong>DIGITAL BRAIN</strong><span>presentation nexus</span></div>
-        <div class="brainInternalLabel user"><strong>PROJECTS</strong><span>built work + evidence</span></div>
+      <div id="brainMathOverlay" class="brainMathOverlay" aria-hidden="true">
+        <div class="brainMath brainMathQ">Q<sub>69</sub>(ρ)=clamp(round(69ρ),0,69)</div>
+        <div class="brainMath brainMathW">W<sub>t</sub> ∈ ℤ<sup>16×6</sup></div>
+        <div class="brainMath brainMathS">S<sub>t</sub>(x)=⅒ Σ Norm<sub>Ω</sub>(Φ<sub>t,k</sub>(x))</div>
+        <div class="brainMath brainMathD">D(x)=|x−727/24|</div>
       </div>
-      <div id="brainDepthHint">drag to rotate · pinch / scroll inward to enter the LeeWay universe</div>
+      <div id="brainDepthHint">drag the brain to rotate · scroll / pinch inward to enter · scroll outward to return</div>
     </div>
 
     <div id="world">
@@ -97,17 +98,17 @@
 
   <aside id="appearancePanel" class="appearancePanel hidden" aria-label="Digital Brain appearance controls">
     <div class="appearanceHead"><strong>Brain Appearance</strong><button id="appearanceClose">Ã—</button></div>
-    <label>Background <input id="bgColor" type="color" value="#061427"></label>
-    <label>Accent <input id="accentColor" type="color" value="#50e6ff"></label>
-    <label>Wave speed <input id="nucleusSpeedRange" type="range" min="0" max="2.5" step="0.01" value="0.58"></label>
-    <label>Horizontal wave <input id="nucleusHorizontalRange" type="range" min="0" max="30" step="0.5" value="11"></label>
-    <label>Vertical wave <input id="nucleusVerticalRange" type="range" min="0" max="24" step="0.5" value="7"></label>
+    <label>Background <input id="bgColor" type="color" value="#010713"></label>
+    <label>Accent <input id="accentColor" type="color" value="#00b7e8"></label>
+    <label>Wave speed <input id="nucleusSpeedRange" type="range" min="0" max="2.5" step="0.01" value="0.52"></label>
+    <label>Horizontal wave <input id="nucleusHorizontalRange" type="range" min="0" max="30" step="0.5" value="10"></label>
+    <label>Vertical wave <input id="nucleusVerticalRange" type="range" min="0" max="24" step="0.5" value="6.5"></label>
     <label>Background hue <input id="nucleusHueRange" type="range" min="0" max="360" step="1" value="0"></label>
-    <label>Saturation <input id="nucleusSaturationRange" type="range" min="0" max="2" step="0.02" value="1"></label>
-    <label>Brightness <input id="nucleusBrightnessRange" type="range" min="0.25" max="1.45" step="0.01" value="1"></label>
-    <label>Neural dot color <input id="nucleusDotColor" type="color" value="#51eaff"></label>
-    <label>Dot variation <input id="nucleusDotVariationRange" type="range" min="0" max="90" step="1" value="20"></label>
-    <label>Dot strength <input id="nucleusDotStrengthRange" type="range" min="0" max="1" step="0.01" value="0.30"></label>
+    <label>Saturation <input id="nucleusSaturationRange" type="range" min="0" max="2" step="0.02" value="0.90"></label>
+    <label>Brightness <input id="nucleusBrightnessRange" type="range" min="0.25" max="1.45" step="0.01" value="0.78"></label>
+    <label>Neural dot color <input id="nucleusDotColor" type="color" value="#35d8ff"></label>
+    <label>Dot variation <input id="nucleusDotVariationRange" type="range" min="0" max="90" step="1" value="16"></label>
+    <label>Dot strength <input id="nucleusDotStrengthRange" type="range" min="0" max="1" step="0.01" value="0.22"></label>
     <label>Label scale <input id="labelScaleRange" type="range" min="0.68" max="1.35" step="0.01" value="1"></label>
     <label>Agent Lee voice
       <select id="geminiVoiceSelect">
@@ -170,7 +171,7 @@
   </section>
 </div>
 
-<script type="module" src="/brain/public/brain-3d.js?v=20260927-1500"></script>
-<script src="/brain/public/public-brain.js?v=20260927-1500"></script>
+<script type="module" src="/brain/public/brain-3d.js?v=20260927-1530"></script>
+<script src="/brain/public/public-brain.js?v=20260927-1530"></script>
 </body>
 </html>
