@@ -56,7 +56,7 @@ async function fetchGithubRepos(){
 }
 function groupFor(x){return x.kind==="evidence"?"Evidence":x.group||"Other Projects"}
 function categoryFor(x){const g=groupFor(x);if(g==="Evidence")return "__evidence_rail__";return categoryDefs.find(c=>c.groups.includes(g))?.id||"cat::other"}
-function setWorldTransform(){world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`}
+function setWorldTransform(){world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`;window.__leewayGraphCamera={z:scale/4}}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function hexRgb(hex){const h=String(hex||"#50e6ff").replace("#","");const n=parseInt(h.length===3?h.split("").map(c=>c+c).join(""):h,16);return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
 function hexHue(hex){
@@ -84,9 +84,9 @@ function applyAppearance(next={},persist=true){
  Object.entries(values).forEach(([id,key])=>{const el=qs("#"+id);if(el&&appearance[key]!=null)el.value=String(appearance[key])});
  rebuildNucleusBase();
  window.dispatchEvent(new CustomEvent("leeway-appearance-change",{detail:{...appearance}}));
- if(persist)try{localStorage.setItem("leeway.brain.appearance.v2",JSON.stringify(appearance))}catch{}
+ if(persist)try{localStorage.setItem("leeway.brain.appearance.v3",JSON.stringify(appearance))}catch{}
 }
-function loadAppearance(){try{const saved=JSON.parse(localStorage.getItem("leeway.brain.appearance.v2")||"null");if(saved)appearance={...appearance,...saved}}catch{}applyAppearance(appearance,false)}
+function loadAppearance(){try{const saved=JSON.parse(localStorage.getItem("leeway.brain.appearance.v3")||"null");if(saved)appearance={...appearance,...saved}}catch{}applyAppearance(appearance,false)}
 const nucleusPresets={
  original:{bg:"#010713",accent:"#00b7e8",hue:0,saturation:.90,brightness:.78,dotColor:"#35d8ff",dotVariation:16,dotStrength:.22},
  midnight:{bg:"#01030a",accent:"#78bfff",hue:0,saturation:.72,brightness:.48,dotColor:"#78bfff",dotVariation:12,dotStrength:.25},
@@ -519,6 +519,8 @@ window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.
 micBtn.onclick=()=>{openAgentBubble(false);toggleMic()};
 reasonBtn.onclick=async()=>{const p=await probeLocalProvider(true);if(p){speak("Local LeeWay brain connected. "+p.preferred+" is on deck.");return}await enableGemma()};
 qs("#workspaceClose").onclick=closeWorkspace;
+qs("#backOneLevelBtn").onclick=()=>backOneLevel();
+qs("#wholeBrainCrumb").onclick=()=>showBrainOnly();
 agentBubbleClose.onclick=closeAgentBubble;
 agentSend.onclick=submitAgentInput;
 agentInput.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submitAgentInput()}});
@@ -532,12 +534,9 @@ qs("#zoomIn").onclick=()=>{scale=clamp(scale+.12,.38,1.9);setWorldTransform()};q
 qs("#stage").addEventListener("wheel",e=>{
  if(window.__leewayBrainIntroActive)return;
  e.preventDefault();
- if(e.deltaY>0 && scale<=.42){
-  outwardWheel+=e.deltaY;
-  if(outwardWheel>=160){
-   outwardWheel=0;
-   backOneLevel();
-  }
+ if(e.deltaY>0 && scale<=.58){
+  outwardWheel=0;
+  backOneLevel();
   return;
  }
  if(e.deltaY<0)outwardWheel=0;
