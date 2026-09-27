@@ -159,3 +159,25 @@ body.brain-intro #stage{inset:0!important}
 body.brain-intro #nucleus{inset:0!important}
 body.brain-intro #agentLee{bottom:18px}
 body.brain-intro .agentPortrait{width:52px;height:52px;min-height:52px}
+
+/* ===== Reference-image visual language: glass, fine lines, brain-dominant ===== */
+#topbar{min-height:48px;padding:7px 14px;background:linear-gradient(180deg,rgba(2,7,14,.64),rgba(2,7,14,.18));border-bottom:1px solid rgba(115,190,255,.10);backdrop-filter:blur(8px)}
+.brand{font-size:11px;letter-spacing:.15em;text-shadow:0 0 16px rgba(80,230,255,.18)}.brand small{font-size:7px;color:#728aa0}
+#crumbs{top:55px;opacity:.82}.crumb{min-height:25px;padding:3px 8px;background:rgba(4,13,22,.42);border-color:rgba(80,230,255,.14);backdrop-filter:blur(6px)}
+#stage{background:radial-gradient(circle at 50% 48%,rgba(4,20,34,.08),rgba(1,5,10,.02) 52%,rgba(0,0,0,.14) 100%)}
+.node{width:126px;min-height:48px;padding:6px 7px;border-width:1px;border-radius:10px;background:linear-gradient(180deg,rgba(4,15,26,.42),rgba(2,9,16,.32));backdrop-filter:blur(5px);box-shadow:0 6px 18px rgba(0,0,0,.22),0 0 12px color-mix(in srgb,var(--zone,#62a8ff) 12%,transparent)}
+.node:hover,.node.selected{transform:translate(-50%,-50%) scale(1.045);border-color:color-mix(in srgb,var(--zone,#62a8ff) 78%,white 22%);box-shadow:0 8px 22px rgba(0,0,0,.28),0 0 18px color-mix(in srgb,var(--zone,#62a8ff) 26%,transparent)}
+.node.center{width:156px;min-height:66px;border-width:1.25px;border-radius:12px;background:linear-gradient(180deg,rgba(5,24,37,.42),rgba(2,11,20,.34));box-shadow:0 0 20px rgba(80,230,255,.13)}
+.node.category{width:136px;min-height:52px}.node.project{width:116px;min-height:44px}.node.evidence{border-style:solid}
+.node b{font-weight:720!important;letter-spacing:.01em;text-shadow:0 1px 7px rgba(0,0,0,.72)}.node small{color:#87a0b6!important;opacity:.82}
+.edge{stroke:rgba(99,188,239,.14)!important;stroke-width:.75!important}.edge.core{stroke:rgba(80,230,255,.18)!important}.edge.evidence{stroke:rgba(77,224,207,.18)!important;stroke-dasharray:2 5}
+#zoomControls{opacity:.62}#zoomControls button{width:32px;min-height:32px;border-radius:50%;background:rgba(2,10,18,.38);border-color:rgba(80,230,255,.15);backdrop-filter:blur(5px)}
+#projectCarousel{background:linear-gradient(180deg,rgba(2,9,16,.70),rgba(2,7,13,.78));border-color:rgba(90,176,226,.24);box-shadow:0 12px 38px rgba(0,0,0,.32),0 0 18px rgba(80,230,255,.05);backdrop-filter:blur(12px)}
+.projectCard{background:linear-gradient(180deg,rgba(6,17,29,.52),rgba(3,10,18,.48));border-color:rgba(109,161,198,.20);box-shadow:none}.projectCard:hover,.projectCard.active{border-color:rgba(80,230,255,.45);box-shadow:0 0 14px rgba(80,230,255,.07)}
+.carouselToolbar input{background:rgba(3,12,21,.45);border-color:rgba(96,170,217,.22)}
+.appearancePanel,.workspace,.agentBubble{background:linear-gradient(160deg,rgba(4,13,23,.94),rgba(2,8,15,.96));border-color:rgba(94,183,236,.28);box-shadow:0 24px 80px rgba(0,0,0,.52),0 0 25px rgba(80,230,255,.06)}
+@media(max-width:900px){
+ .node{width:78px!important;min-height:40px!important;border-radius:8px;padding:4px 4px!important}
+ .node.center{width:112px!important;min-height:58px!important}.node.category{width:88px!important;min-height:44px!important}
+ .node b{font-size:calc(7.4px * var(--label-scale,1))!important}.node small{font-size:calc(5.8px * var(--label-scale,1))!important}
+}

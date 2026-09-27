@@ -17,7 +17,7 @@ const categoryDefs=[
 {id:"cat::other",label:"OTHER / REFERENCES",groups:["Other Projects","Reference / Upstream"]},
 {id:"cat::evidence",label:"EVIDENCE / RESEARCH",groups:["Evidence"]}
 ];
-const categoryAnchors={"cat::core":{x:700,y:110},"cat::products":{x:1080,y:360},"cat::business":{x:930,y:710},"cat::professional":{x:470,y:710},"cat::other":{x:310,y:360},"cat::evidence":{x:700,y:425}};
+const categoryAnchors={"cat::core":{x:505,y:285},"cat::products":{x:895,y:285},"cat::business":{x:925,y:545},"cat::professional":{x:475,y:545},"cat::other":{x:565,y:675},"cat::evidence":{x:835,y:675}};
 function cleanName(n){return String(n||"").replace(/[-_]+/g," ").replace(/\s+/g," ").trim()}
 function classifyRepo(r){
  if(upstreamRepos.has(r.name))return "Reference / Upstream";
