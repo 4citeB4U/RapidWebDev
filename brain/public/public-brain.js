@@ -1,7 +1,7 @@
 const qs=s=>document.querySelector(s);
 const world=qs("#world"),nodesEl=qs("#nodes"),edges=qs("#edges"),track=qs("#carouselTrack"),search=qs("#searchBox");
 const hud=qs("#hud"),workspace=qs("#workspace"),workspaceBody=qs("#workspaceBody"),workspaceTitle=qs("#workspaceTitle"),workspaceKicker=qs("#workspaceKicker");
-const openExternal=qs("#workspaceOpenExternal"),agentText=qs("#agentText"),agentNarration=qs("#agentNarration"),agentState=qs("#agentState"),agentTranscript=qs("#agentTranscript"),micBtn=qs("#micBtn"),reasonBtn=qs("#reasonBtn"),agentBubble=qs("#agentBubble"),agentBubbleClose=qs("#agentBubbleClose"),agentInput=qs("#agentInput"),agentSend=qs("#agentSend"),enterBrainBtn=qs("#enterBrain");
+const openExternal=qs("#workspaceOpenExternal"),agentText=qs("#agentText"),agentNarration=qs("#agentNarration"),agentState=qs("#agentState"),agentTranscript=qs("#agentTranscript"),micBtn=qs("#micBtn"),reasonBtn=qs("#reasonBtn"),agentBubble=qs("#agentBubble"),agentBubbleClose=qs("#agentBubbleClose"),agentInput=qs("#agentInput"),agentSend=qs("#agentSend");
 const appearancePanel=qs("#appearancePanel"),nucleusImg=qs("#nucleusFallbackImage"),waveCanvas=qs("#nucleusWaveCanvas"),carouselPrev=qs("#carouselPrev"),carouselNext=qs("#carouselNext");
 let projects=[],evidence=[],decks=[],items=[],selected=null,activeItem=null,activeTab="overview",brainEntered=false;
 let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,voiceConfig=null,audioPlayer=null,recognition=null,listening=false,activeCategory=null,gemmaEngine=null,gemmaConversation=null,gemmaLoading=false,gemmaGenerating=false,agentPersona=null;
@@ -129,19 +129,33 @@ function startWave(){
  resizeWave();if(waveRaf)cancelAnimationFrame(waveRaf);if(nucleusImg&&!nucleusImg.complete)nucleusImg.addEventListener("load",()=>{resizeWave()},{once:true});waveRaf=requestAnimationFrame(drawWave)
 }
 function enterBrain(){
- if(brainEntered)return;
- brainEntered=true;
- document.body.classList.remove("brain-intro");
- activeCategory=null;search.value="";
- rebuildUniverse();fit();
- qs("#crumbCurrent").textContent="PROJECT UNIVERSE";
- agentText.textContent="Welcome inside the brain. Pick a universe, or tap me and tell me where you want to go.";
+ const b=window.__leeway3DBrain;
+ if(b){
+  const dir=b.camera.position.clone().sub(b.controls.target).normalize();
+  b.camera.position.copy(b.controls.target).add(dir.multiplyScalar(5.75));
+  b.controls.update();
+  return;
+ }
 }
 function showBrainOnly(){
  closeWorkspace();hud.classList.add("hidden");activeCategory=null;search.value="";brainEntered=false;
+ if(window.__leewayEnterBrainOverview){window.__leewayEnterBrainOverview();return}
  document.body.classList.add("brain-intro");qs("#crumbCurrent").textContent="DIGITAL BRAIN";
  scale=innerWidth<900?.64:.82;panX=0;panY=0;setWorldTransform();
 }
+window.__leewayPublicBrainEntered=()=>{
+ brainEntered=true;
+ activeCategory=null;search.value="";
+ rebuildUniverse();fit();
+ qs("#crumbCurrent").textContent="PROJECT UNIVERSE";
+ agentText.textContent="We inside the brain now. Pick a universe, or tap me and tell me where you want to go.";
+};
+window.__leewayPublicBrainOverview=()=>{
+ brainEntered=false;
+ closeWorkspace();hud.classList.add("hidden");activeCategory=null;search.value="";
+ rebuildUniverse();
+ qs("#crumbCurrent").textContent="DIGITAL BRAIN";
+};
 function openAgentBubble(focus=false){
  agentBubble.classList.remove("hidden");
  if(focus)setTimeout(()=>agentInput?.focus(),60);
@@ -437,7 +451,7 @@ function bestProject(q){return projects.map(p=>[scoreProject(q,p),p]).sort((a,b)
 async function handleAgentCommand(raw){
  const text=raw.trim(),q=text.toLowerCase();agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
  if(/\b(stop|quiet|pause|interrupt)\b/.test(q)){cancelAgentGeneration();agentState.textContent="ready";return}
- if(/\b(home|reset|close)\b/.test(q)){closeWorkspace();activeCategory=null;search.value="";rebuildUniverse();speak("Back at the main Digital Brain.");return}
+ if(/\b(home|reset|close|whole brain)\b/.test(q)){showBrainOnly();speak("Back at the whole three-dimensional Digital Brain.");return}
  if(activeItem&&/\b(files?|source|code)\b/.test(q)){openWorkspace(activeItem,"files");speak("Opening the project files.");return}
  if(activeItem&&/\b(live|website|demo|running)\b/.test(q)){openWorkspace(activeItem,"live");speak(activeItem.live_url?"Opening the live project view.":"I do not have a verified live view for this project yet.");return}
  if(activeItem&&/\b(evidence|proof|presentation|powerpoint|infographic)\b/.test(q)){openWorkspace(activeItem,"evidence");speak("Opening the evidence linked to this work.");return}
@@ -480,12 +494,10 @@ search.oninput=()=>{activeCategory=null;rebuildUniverse()};
 qs("#hudClose").onclick=()=>hud.classList.add("hidden");
 qs("#speakBtn").onclick=()=>speak(agentNarration.textContent||agentText.textContent);
 qs("#tourBtn").onclick=startTour;
-qs("#resetBtn").onclick=fit;
+qs("#resetBtn").onclick=showBrainOnly;
 micBtn.onclick=()=>{openAgentBubble(false);toggleMic()};
 reasonBtn.onclick=async()=>{const p=await probeLocalProvider(true);if(p){speak("Local LeeWay brain connected. "+p.preferred+" is on deck.");return}await enableGemma()};
 qs("#workspaceClose").onclick=closeWorkspace;
-enterBrainBtn.onclick=enterBrain;
-qs("#nucleus").addEventListener("click",()=>{if(!brainEntered)enterBrain()});
 agentBubbleClose.onclick=closeAgentBubble;
 agentSend.onclick=submitAgentInput;
 agentInput.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submitAgentInput()}});
@@ -496,8 +508,8 @@ window.addEventListener("resize",()=>{resizeWave();if(innerWidth<900&&scale>.72)
 document.querySelectorAll(".workspaceTabs button").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll(".workspaceTabs button").forEach(x=>x.classList.toggle("active",x===b));renderWorkspace()});
 workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak")speak(narrationFor(activeItem))});
 qs("#zoomIn").onclick=()=>{scale=clamp(scale+.12,.38,1.9);setWorldTransform()};qs("#zoomOut").onclick=()=>{scale=clamp(scale-.12,.38,1.9);setWorldTransform()};qs("#zoomFit").onclick=fit;
-qs("#stage").addEventListener("wheel",e=>{e.preventDefault();if(!brainEntered){enterBrain();return}scale=clamp(scale*(e.deltaY<0?1.08:.92),.38,1.9);setWorldTransform()},{passive:false});
-qs("#stage").addEventListener("pointerdown",e=>{if(e.target.closest(".node,#hud,#zoomControls,#enterBrain,#agentLee,.appearancePanel,#projectCarousel,#workspace"))return;dragging=true;dragStart={x:e.clientX,y:e.clientY,px:panX,py:panY};qs("#stage").setPointerCapture(e.pointerId)});
+qs("#stage").addEventListener("wheel",e=>{if(window.__leewayBrainIntroActive)return;e.preventDefault();scale=clamp(scale*(e.deltaY<0?1.08:.92),.38,1.9);setWorldTransform()},{passive:false});
+qs("#stage").addEventListener("pointerdown",e=>{if(window.__leewayBrainIntroActive)return;if(e.target.closest(".node,#hud,#zoomControls,#agentLee,.appearancePanel,#projectCarousel,#workspace"))return;dragging=true;dragStart={x:e.clientX,y:e.clientY,px:panX,py:panY};qs("#stage").setPointerCapture(e.pointerId)});
 qs("#stage").addEventListener("pointermove",e=>{if(!dragging)return;panX=dragStart.px+e.clientX-dragStart.x;panY=dragStart.py+e.clientY-dragStart.y;setWorldTransform()});qs("#stage").addEventListener("pointerup",()=>dragging=false);qs("#stage").addEventListener("pointercancel",()=>dragging=false);
 speechSynthesis?.addEventListener?.("voiceschanged",chooseVoice);
 function materializeProjects(source,overrides){

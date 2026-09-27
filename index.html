@@ -3,16 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
-<title>Rapid Web Develop — LeeWay Digital Brain</title>
-<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1445">
+<title>Rapid Web Develop â€” LeeWay Digital Brain</title>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1500">
 </head>
 <body class="brain-intro">
 <div id="app">
   <header id="topbar">
     <div class="brand"><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
     <div class="top-stats">
-      <span id="projectCount">Projects —</span>
-      <span id="evidenceCount">Evidence —</span>
+      <span id="projectCount">Projects â€”</span>
+      <span id="evidenceCount">Evidence â€”</span>
       <span class="live-dot">PUBLIC PROJECTION</span>
     </div>
     <div class="top-actions">
@@ -24,7 +25,7 @@
 
   <div id="crumbs">
     <button class="crumb active">LEEWAY INDUSTRIES</button>
-    <span class="sep">›</span>
+    <span class="sep">â€º</span>
     <span id="crumbCurrent">PROJECT UNIVERSE</span>
   </div>
 
@@ -32,103 +33,18 @@
     <div id="nucleus" aria-hidden="true">
       <img id="nucleusFallbackImage" src="/brain/public/assets/digital-brain-nucleus.png" alt="">
       <canvas id="nucleusWaveCanvas"></canvas>
-
-      <div id="brainCoreVisual" class="brainCoreVisual">
-        <svg viewBox="0 0 900 900" role="img" aria-label="LeeWay Digital Brain">
-          <defs>
-            <filter id="brainGlow" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="7" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="nodeGlow" x="-200%" y="-200%" width="400%" height="400%">
-              <feGaussianBlur stdDeviation="5" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <radialGradient id="brainHalo" cx="50%" cy="45%">
-              <stop offset="0" stop-color="#35eaff" stop-opacity=".16"/>
-              <stop offset=".52" stop-color="#128cff" stop-opacity=".06"/>
-              <stop offset="1" stop-color="#00101d" stop-opacity="0"/>
-            </radialGradient>
-          </defs>
-
-          <circle cx="450" cy="430" r="330" fill="url(#brainHalo)"/>
-          <g class="brainOrbits">
-            <circle cx="450" cy="430" r="300"/>
-            <circle cx="450" cy="430" r="270"/>
-            <circle cx="450" cy="430" r="240"/>
-          </g>
-
-          <g class="brainHemisphere" filter="url(#brainGlow)">
-            <path d="M442 195
-              C390 150 317 158 280 208
-              C224 213 190 257 196 309
-              C151 339 150 397 181 432
-              C151 479 171 531 213 551
-              C204 605 243 648 295 647
-              C319 697 381 711 430 681
-              C447 652 449 612 449 566
-              L449 241
-              C448 222 447 207 442 195Z"/>
-            <path d="M458 195
-              C510 150 583 158 620 208
-              C676 213 710 257 704 309
-              C749 339 750 397 719 432
-              C749 479 729 531 687 551
-              C696 605 657 648 605 647
-              C581 697 519 711 470 681
-              C453 652 451 612 451 566
-              L451 241
-              C452 222 453 207 458 195Z"/>
-            <path d="M450 224 C425 260 430 300 450 324 C470 300 475 260 450 224Z"/>
-          </g>
-
-          <g class="brainNetwork">
-            <path d="M270 273 L335 240 L405 285 L365 351 L286 332 Z"/>
-            <path d="M286 332 L334 412 L255 454 L220 394 Z"/>
-            <path d="M334 412 L406 387 L426 473 L365 525 L287 497 Z"/>
-            <path d="M365 525 L420 586 L340 626 L278 568 Z"/>
-            <path d="M630 273 L565 240 L495 285 L535 351 L614 332 Z"/>
-            <path d="M614 332 L566 412 L645 454 L680 394 Z"/>
-            <path d="M566 412 L494 387 L474 473 L535 525 L613 497 Z"/>
-            <path d="M535 525 L480 586 L560 626 L622 568 Z"/>
-            <path d="M405 285 L450 324 L495 285"/>
-            <path d="M406 387 L450 424 L494 387"/>
-            <path d="M426 473 L450 512 L474 473"/>
-            <path d="M420 586 L450 618 L480 586"/>
-          </g>
-
-          <g class="brainNodes" filter="url(#nodeGlow)">
-            <circle cx="270" cy="273" r="6"/><circle cx="335" cy="240" r="7"/><circle cx="405" cy="285" r="6"/>
-            <circle cx="365" cy="351" r="5"/><circle cx="286" cy="332" r="5"/><circle cx="334" cy="412" r="6"/>
-            <circle cx="255" cy="454" r="5"/><circle cx="220" cy="394" r="4"/><circle cx="406" cy="387" r="5"/>
-            <circle cx="426" cy="473" r="6"/><circle cx="365" cy="525" r="5"/><circle cx="287" cy="497" r="4"/>
-            <circle cx="420" cy="586" r="6"/><circle cx="340" cy="626" r="5"/><circle cx="278" cy="568" r="5"/>
-            <circle cx="630" cy="273" r="6"/><circle cx="565" cy="240" r="7"/><circle cx="495" cy="285" r="6"/>
-            <circle cx="535" cy="351" r="5"/><circle cx="614" cy="332" r="5"/><circle cx="566" cy="412" r="6"/>
-            <circle cx="645" cy="454" r="5"/><circle cx="680" cy="394" r="4"/><circle cx="494" cy="387" r="5"/>
-            <circle cx="474" cy="473" r="6"/><circle cx="535" cy="525" r="5"/><circle cx="613" cy="497" r="4"/>
-            <circle cx="480" cy="586" r="6"/><circle cx="560" cy="626" r="5"/><circle cx="622" cy="568" r="5"/>
-            <circle cx="450" cy="324" r="7"/><circle cx="450" cy="424" r="7"/><circle cx="450" cy="512" r="7"/>
-          </g>
-
-          <g class="brainPedestal">
-            <ellipse cx="450" cy="718" rx="220" ry="34"/>
-            <ellipse cx="450" cy="718" rx="170" ry="24"/>
-            <ellipse cx="450" cy="718" rx="112" ry="14"/>
-            <path d="M435 646 L435 706 M465 646 L465 706"/>
-          </g>
-        </svg>
-      </div>
-
-      <div id="brainFormulaLayer" class="brainFormulaLayer">
-        <div class="brainQuote">“A connected mind<br>for a more capable world.”</div>
-        <div class="formula formulaA">f(x)=∫ e<sup>−x²</sup>dx</div>
-        <div class="formula formulaB">∑ wᵢxᵢ</div>
-        <div class="formula formulaC">∇²φ = 0</div>
-        <div class="formula formulaD">Ax = b</div>
-      </div>
     </div>
-    <button id="enterBrain" class="enterBrain"><span>ENTER DIGITAL BRAIN</span><small>tap the brain · scroll inward · explore the universe</small></button>
+
+    <div id="brainUniverseLayer" aria-label="LeeWay 3D brain overview">
+      <div id="brain3DCanvas"></div>
+      <div id="brainInternalLabels" aria-hidden="true">
+        <div class="brainInternalLabel system"><strong>LEEWAY</strong><span>systems lineage</span></div>
+        <div class="brainInternalLabel runtime"><strong>DIGITAL BRAIN</strong><span>presentation nexus</span></div>
+        <div class="brainInternalLabel user"><strong>PROJECTS</strong><span>built work + evidence</span></div>
+      </div>
+      <div id="brainDepthHint">drag to rotate · pinch / scroll inward to enter the LeeWay universe</div>
+    </div>
+
     <div id="world">
       <svg id="edges" aria-hidden="true"></svg>
       <div id="nodes"></div>
@@ -136,12 +52,12 @@
 
     <section id="hud" class="hidden">
       <div class="hudHeader">
-        <div class="hudIcon" id="hudIcon">◎</div>
+        <div class="hudIcon" id="hudIcon">â—Ž</div>
         <div class="hudTitle">
           <h2 id="hudTitle">Project</h2>
           <div id="hudSubtitle" class="hudSubtitle"></div>
         </div>
-        <button id="hudClose" class="hudClose">×</button>
+        <button id="hudClose" class="hudClose">Ã—</button>
       </div>
       <div class="hudSection">
         <div class="hudSectionTitle">Overview</div>
@@ -160,27 +76,27 @@
     </section>
 
     <div id="zoomControls">
-      <button id="zoomIn">＋</button>
-      <button id="zoomOut">−</button>
-      <button id="zoomFit">⌂</button>
+      <button id="zoomIn">ï¼‹</button>
+      <button id="zoomOut">âˆ’</button>
+      <button id="zoomFit">âŒ‚</button>
     </div>
 
-    <div id="hint">Scroll to zoom · drag empty space to move · select a project to inspect</div>
+    <div id="hint">Scroll to zoom Â· drag empty space to move Â· select a project to inspect</div>
   </main>
 
   <section id="projectCarousel">
     <div class="carouselToolbar">
-      <div class="carouselTitle"><span>◫</span> Projects / Built Work</div>
-      <button id="carouselPrev" class="carouselNav" aria-label="Previous projects">‹</button>
-      <input id="searchBox" type="search" placeholder="Search projects, systems, evidence…">
-      <button id="carouselNext" class="carouselNav" aria-label="Next projects">›</button>
+      <div class="carouselTitle"><span>â—«</span> Projects / Built Work</div>
+      <button id="carouselPrev" class="carouselNav" aria-label="Previous projects">â€¹</button>
+      <input id="searchBox" type="search" placeholder="Search projects, systems, evidenceâ€¦">
+      <button id="carouselNext" class="carouselNav" aria-label="Next projects">â€º</button>
       <div id="carouselCount" class="carouselCount"></div>
     </div>
     <div id="carouselTrack" class="carouselTrack" tabindex="0" aria-label="Scrollable project rail"></div>
   </section>
 
   <aside id="appearancePanel" class="appearancePanel hidden" aria-label="Digital Brain appearance controls">
-    <div class="appearanceHead"><strong>Brain Appearance</strong><button id="appearanceClose">×</button></div>
+    <div class="appearanceHead"><strong>Brain Appearance</strong><button id="appearanceClose">Ã—</button></div>
     <label>Background <input id="bgColor" type="color" value="#061427"></label>
     <label>Accent <input id="accentColor" type="color" value="#50e6ff"></label>
     <label>Wave speed <input id="nucleusSpeedRange" type="range" min="0" max="2.5" step="0.01" value="0.58"></label>
@@ -195,11 +111,11 @@
     <label>Label scale <input id="labelScaleRange" type="range" min="0.68" max="1.35" step="0.01" value="1"></label>
     <label>Agent Lee voice
       <select id="geminiVoiceSelect">
-        <option value="Puck">Puck — upbeat</option>
-        <option value="Iapetus">Iapetus — clear</option>
-        <option value="Charon">Charon — informative</option>
-        <option value="Gacrux">Gacrux — mature</option>
-        <option value="Sadaltager">Sadaltager — knowledgeable</option>
+        <option value="Puck">Puck â€” upbeat</option>
+        <option value="Iapetus">Iapetus â€” clear</option>
+        <option value="Charon">Charon â€” informative</option>
+        <option value="Gacrux">Gacrux â€” mature</option>
+        <option value="Sadaltager">Sadaltager â€” knowledgeable</option>
       </select>
     </label>
     <div class="paletteRow">
@@ -221,13 +137,13 @@
       <div class="agentBubbleHead">
         <strong>Agent Lee</strong>
         <small id="agentState">ready</small>
-        <button id="agentBubbleClose" aria-label="Close Agent Lee">×</button>
+        <button id="agentBubbleClose" aria-label="Close Agent Lee">Ã—</button>
       </div>
-      <div id="agentText">Yo — tap the mic or type it in. I can walk the projects, open the live builds, break down the evidence, and navigate the brain with you.</div>
+      <div id="agentText">Yo â€” tap the mic or type it in. I can walk the projects, open the live builds, break down the evidence, and navigate the brain with you.</div>
       <div id="agentTranscript" class="agentTranscript hidden"></div>
       <div class="agentInputRow">
-        <textarea id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
-        <button id="agentSend" aria-label="Send to Agent Lee">↑</button>
+        <textarea id="agentInput" rows="1" placeholder="Ask Agent Leeâ€¦"></textarea>
+        <button id="agentSend" aria-label="Send to Agent Lee">â†‘</button>
         <button id="reasonBtn" class="agentReason" aria-label="Enable local reasoning">G4</button>
       </div>
     </section>
@@ -241,7 +157,7 @@
       </div>
       <div class="workspaceHeadActions">
         <a id="workspaceOpenExternal" class="workspaceAction hidden" target="_blank" rel="noopener">Open Full</a>
-        <button id="workspaceClose">×</button>
+        <button id="workspaceClose">Ã—</button>
       </div>
     </header>
     <nav class="workspaceTabs">
@@ -254,6 +170,7 @@
   </section>
 </div>
 
-<script src="/brain/public/public-brain.js?v=20260927-1445"></script>
+<script type="module" src="/brain/public/brain-3d.js?v=20260927-1500"></script>
+<script src="/brain/public/public-brain.js?v=20260927-1500"></script>
 </body>
 </html>
