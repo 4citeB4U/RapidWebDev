@@ -1,0 +1,299 @@
+{
+  "meta": {
+    "title": "LeeWay Digital Brain — Public Evidence Explorer",
+    "creator": "Leonard Lee",
+    "purpose": "Public-safe projection of the LeeWay Intellectual Estate",
+    "evidence_rule": "No claims without receipts",
+    "private_authority": "4citeB4U/LEEWAY-INTELLECTUAL-ESTATE"
+  },
+  "nodes": [
+    {
+      "id": "creator",
+      "label": "Leonard Lee",
+      "group": "identity",
+      "x": 50,
+      "y": 50,
+      "summary": "Systems builder across construction, logistics, management, business, software and governed AI."
+    },
+    {
+      "id": "standards",
+      "label": "LeeWay Standards",
+      "group": "governance",
+      "x": 50,
+      "y": 18,
+      "summary": "Structural and constitutional rules for governed execution.",
+      "url": "https://github.com/4citeB4U/LeeWay-Standards"
+    },
+    {
+      "id": "formula",
+      "label": "LeeWay Formula",
+      "group": "formula",
+      "x": 77,
+      "y": 30,
+      "summary": "Mathematical state, routing and evidence architecture.",
+      "url": "https://github.com/4citeB4U/Leeway-formula-live"
+    },
+    {
+      "id": "agent",
+      "label": "Agent Lee",
+      "group": "agent",
+      "x": 82,
+      "y": 57,
+      "summary": "Sovereign agent lineage and integrated operating system.",
+      "url": "https://github.com/4citeB4U/Agent-Lee-The-Sum-of-All-Systems"
+    },
+    {
+      "id": "runtime",
+      "label": "Runtime Fabric",
+      "group": "runtime",
+      "x": 68,
+      "y": 80,
+      "summary": "Governed execution substrate and runtime capability fabric.",
+      "url": "https://github.com/4citeB4U/Leeway-Runtime-Fabric"
+    },
+    {
+      "id": "skills",
+      "label": "Agent Skills",
+      "group": "skills",
+      "x": 37,
+      "y": 82,
+      "summary": "Capability and MCP skill registry.",
+      "url": "https://github.com/4citeB4U/LeeWay-Agent-Skills"
+    },
+    {
+      "id": "device",
+      "label": "Device Bridge",
+      "group": "device",
+      "x": 18,
+      "y": 62,
+      "summary": "Governed cross-device execution and observation.",
+      "url": "https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE"
+    },
+    {
+      "id": "rapid",
+      "label": "Rapid Web Develop",
+      "group": "product",
+      "x": 18,
+      "y": 34,
+      "summary": "Digital product and presentation lineage; origin site preserved.",
+      "url": "https://github.com/4citeB4U/RapidWebDev"
+    },
+    {
+      "id": "physical",
+      "label": "Physical Systems",
+      "group": "domain",
+      "x": 30,
+      "y": 10,
+      "summary": "Construction, equipment, tools, maintenance and infrastructure."
+    },
+    {
+      "id": "operations",
+      "label": "Operations",
+      "group": "domain",
+      "x": 8,
+      "y": 48,
+      "summary": "Logistics, routing, scheduling, transportation and management."
+    },
+    {
+      "id": "business",
+      "label": "Business",
+      "group": "domain",
+      "x": 20,
+      "y": 84,
+      "summary": "Ownership, economics, productivity, customer value and resource tradeoffs."
+    },
+    {
+      "id": "research",
+      "label": "Scientific Research",
+      "group": "evidence",
+      "x": 88,
+      "y": 82,
+      "summary": "Formula experiments, GPU/CPU/storage/media studies, claim ledgers and scientific artifacts."
+    }
+  ],
+  "edges": [
+    [
+      "creator",
+      "standards"
+    ],
+    [
+      "creator",
+      "formula"
+    ],
+    [
+      "creator",
+      "agent"
+    ],
+    [
+      "creator",
+      "runtime"
+    ],
+    [
+      "creator",
+      "skills"
+    ],
+    [
+      "creator",
+      "device"
+    ],
+    [
+      "creator",
+      "rapid"
+    ],
+    [
+      "physical",
+      "creator"
+    ],
+    [
+      "operations",
+      "creator"
+    ],
+    [
+      "business",
+      "creator"
+    ],
+    [
+      "research",
+      "formula"
+    ],
+    [
+      "standards",
+      "runtime"
+    ],
+    [
+      "formula",
+      "runtime"
+    ],
+    [
+      "runtime",
+      "agent"
+    ],
+    [
+      "skills",
+      "agent"
+    ],
+    [
+      "device",
+      "agent"
+    ]
+  ],
+  "evidence": [
+    {
+      "id": "ev-gov-ppt",
+      "title": "The LeeWay AI Governance Blueprint",
+      "type": "PowerPoint",
+      "date": "2026-06-18",
+      "group": "Governance",
+      "file": "evidence/leeway-ai-governance-blueprint.pptx",
+      "summary": "Governance presentation artifact from the professional research archive."
+    },
+    {
+      "id": "ev-sovereign-ppt",
+      "title": "LeeWay Sovereign Standard",
+      "type": "PowerPoint",
+      "date": "2026-06-18",
+      "group": "Standards",
+      "file": "evidence/leeway-sovereign-standard.pptx",
+      "summary": "Presentation artifact documenting the Sovereign Standard."
+    },
+    {
+      "id": "ev-standard-ppt",
+      "title": "The LeeWay AI Standard",
+      "type": "PowerPoint",
+      "date": "2026-06-23",
+      "group": "Standards",
+      "file": "evidence/leeway-ai-standard.pptx",
+      "summary": "Visual presentation of the LeeWay AI Standard."
+    },
+    {
+      "id": "ev-workflow",
+      "title": "Workforce AI Readiness Strategic Workflow",
+      "type": "Infographic",
+      "date": "2026-06-18",
+      "group": "Training",
+      "file": "evidence/workforce-ai-readiness.png",
+      "summary": "Visual workflow connecting human readiness, governance and operational AI."
+    },
+    {
+      "id": "ev-enterprise",
+      "title": "Enterprise AI Governance Architecture",
+      "type": "Infographic",
+      "date": "2026-06-18",
+      "group": "Governance",
+      "file": "evidence/enterprise-ai-governance-architecture.png",
+      "summary": "Enterprise governance architecture visual."
+    },
+    {
+      "id": "ev-risk",
+      "title": "AI Risk and Governance Framework",
+      "type": "Infographic",
+      "date": "2026-06-18",
+      "group": "Governance",
+      "file": "evidence/ai-risk-governance-framework.png",
+      "summary": "Risk, responsibility and governance visual framework."
+    },
+    {
+      "id": "ev-sovereign-img",
+      "title": "Sovereign AI Governance Architecture",
+      "type": "Infographic",
+      "date": "2026-06-26",
+      "group": "Governance",
+      "file": "evidence/sovereign-ai-governance-architecture.png",
+      "summary": "Visual model for sovereign AI governance."
+    },
+    {
+      "id": "ev-privacy",
+      "title": "Privacy-Governed AI Workflow Architecture",
+      "type": "Infographic",
+      "date": "2026-06-26",
+      "group": "Governance",
+      "file": "evidence/privacy-governed-ai-workflow.png",
+      "summary": "Privacy-governed workflow architecture."
+    },
+    {
+      "id": "repo-formula",
+      "title": "LeeWay Formula Live",
+      "type": "Repository",
+      "date": "2026",
+      "group": "Core",
+      "url": "https://github.com/4citeB4U/Leeway-formula-live",
+      "summary": "Canonical Formula authority and scientific evidence map."
+    },
+    {
+      "id": "repo-standards",
+      "title": "LeeWay Standards",
+      "type": "Repository",
+      "date": "2026",
+      "group": "Core",
+      "url": "https://github.com/4citeB4U/LeeWay-Standards",
+      "summary": "Canonical standards/governance authority."
+    },
+    {
+      "id": "repo-agent",
+      "title": "Agent Lee — Sum of All Systems",
+      "type": "Repository",
+      "date": "2026",
+      "group": "Agent Lee",
+      "url": "https://github.com/4citeB4U/Agent-Lee-The-Sum-of-All-Systems",
+      "summary": "Consolidated Agent Lee lineage and runtime source."
+    },
+    {
+      "id": "repo-device",
+      "title": "LeeWay Device Bridge",
+      "type": "Repository",
+      "date": "2026",
+      "group": "Device",
+      "url": "https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE",
+      "summary": "Cross-device governed bridge."
+    },
+    {
+      "id": "repo-resume",
+      "title": "Leonard Lee Resume",
+      "type": "Live Site",
+      "date": "2026",
+      "group": "Professional",
+      "url": "https://4citeb4u.github.io/Leonard-Lee-Resume/",
+      "summary": "Professional summary; this brain provides the evidence layer behind it."
+    }
+  ]
+}

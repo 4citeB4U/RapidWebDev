@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LeeWay Digital Brain — Evidence Explorer</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">RAPID WEB DEVELOP × LEEWAY INDUSTRIES</p>
+      <h1>LeeWay Digital Brain</h1>
+      <p class="subtitle">A visual research-history explorer for Leonard Lee's systems work, evidence, experiments and products.</p>
+    </div>
+    <div class="top-actions">
+      <a class="chip" href="../index.html">Original Rapid Web Develop</a>
+      <a class="chip" href="https://4citeb4u.github.io/Leonard-Lee-Resume/" target="_blank" rel="noreferrer">Resume</a>
+      <span class="status"><i></i> Public evidence projection</span>
+    </div>
+  </header>
+
+  <main class="brain-stage">
+    <section class="brain-map" id="brainMap">
+      <svg id="edgeLayer" aria-hidden="true"></svg>
+      <div class="brain-halo"></div>
+      <div id="nodeLayer"></div>
+      <div class="brain-caption">
+        <strong>Systems Continuum</strong>
+        <span>Physical → Operations → Business → Digital → Cognitive → Governed Intelligence</span>
+      </div>
+    </section>
+
+    <aside class="detail-panel" id="detailPanel">
+      <div class="panel-kicker">SELECTED NODE</div>
+      <h2 id="detailTitle">Leonard Lee</h2>
+      <p id="detailSummary">Select a node to explore its role, evidence and public repositories.</p>
+      <div id="detailMeta" class="detail-meta"></div>
+      <a id="detailLink" class="primary-link hidden" target="_blank" rel="noreferrer">Open public source</a>
+    </aside>
+  </main>
+
+  <section class="timeline-strip">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">LINEAGE</p>
+        <h2>Research History</h2>
+      </div>
+      <div class="timeline-labels">
+        <span>Physical systems</span><span>Operations</span><span>Business</span><span>Software</span><span>AI / LeeWay</span>
+      </div>
+    </div>
+    <div class="timeline-line">
+      <i></i><i></i><i></i><i></i><i></i>
+    </div>
+  </section>
+
+  <section class="evidence-section">
+    <div class="section-head evidence-head">
+      <div>
+        <p class="eyebrow">FILESYSTEM / EVIDENCE</p>
+        <h2>Explore the Work</h2>
+      </div>
+      <input id="evidenceSearch" type="search" placeholder="Search presentations, infographics, repositories, products…">
+      <span id="evidenceCount" class="count"></span>
+    </div>
+    <div id="evidenceTrack" class="evidence-track"></div>
+  </section>
+</div>
+
+<dialog id="viewer">
+  <button class="close" id="viewerClose" aria-label="Close">×</button>
+  <div id="viewerBody"></div>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
