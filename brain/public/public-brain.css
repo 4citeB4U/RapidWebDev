@@ -297,11 +297,11 @@ body.galaxy-active #hint{opacity:1!important;pointer-events:auto!important}
 #brainInternalLabels{display:none!important}
 .brainMathOverlay{
   position:absolute;inset:0;z-index:2;pointer-events:none;
-  opacity:calc(var(--brain-shell-alpha,1) * .68);
+  opacity:calc(var(--brain-shell-alpha,1) * .86);
   transition:opacity .34s ease;
-  color:rgba(190,201,214,.58);
+  color:rgba(176,187,201,.72);
   font-family:Cambria Math,STIX Two Math,Georgia,"Times New Roman",serif;
-  text-shadow:0 0 10px rgba(83,142,190,.08)
+  text-shadow:0 0 8px rgba(35,76,112,.10)
 }
 .brainMath{
   position:absolute;
@@ -309,7 +309,7 @@ body.galaxy-active #hint{opacity:1!important;pointer-events:auto!important}
   line-height:1.35;
   letter-spacing:.01em;
   white-space:nowrap;
-  opacity:.62
+  opacity:.78
 }
 .brainMathQ{left:6.5%;top:24%}
 .brainMathW{right:8%;top:23%}
@@ -318,6 +318,9 @@ body.galaxy-active #hint{opacity:1!important;pointer-events:auto!important}
 body.galaxy-active .brainMathOverlay{opacity:0}
 #brainDepthHint{color:rgba(174,197,213,.64);border-color:rgba(80,190,230,.13);background:rgba(1,6,12,.30)}
 @media(max-width:760px){
- .brainMath{font-size:10px;opacity:.48}
+ .brainMath{font-size:10px;opacity:.64}
  .brainMathQ{left:3%;top:21%}.brainMathW{right:3%;top:22%}.brainMathS{left:3%;bottom:26%}.brainMathD{right:4%;bottom:24%}
 }
+
+body.brain-intro .backCrumb{display:none!important}
+.backCrumb{color:#9db6c9;border-color:rgba(100,168,214,.2);background:rgba(2,9,16,.36)}
