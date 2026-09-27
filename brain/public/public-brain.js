@@ -100,11 +100,16 @@ function resolveItem(id){
 }
 function selectItem(id,open=false){
  selected=id;activeItem=resolveItem(id);renderNodes(search.value.trim());renderCarousel(search.value.trim());if(!activeItem)return;
- const n=narrationFor(activeItem);agentText.textContent=n;agentNarration.textContent=n;qs("#hudTitle").textContent=activeItem.label;qs("#hudSubtitle").textContent=groupFor(activeItem);qs("#hudDesc").textContent=activeItem.summary||activeItem.desc||n;
+ const n=narrationFor(activeItem);agentText.textContent=n;agentNarration.textContent=n;qs("#crumbCurrent").textContent=activeItem.label.toUpperCase();
+ if(["identity","category"].includes(activeItem.kind)){
+   hud.classList.add("hidden");
+   return;
+ }
+ qs("#hudTitle").textContent=activeItem.label;qs("#hudSubtitle").textContent=groupFor(activeItem);qs("#hudDesc").textContent=activeItem.summary||activeItem.desc||n;
  qs("#hudFacts").innerHTML=[["Domain",groupFor(activeItem)],["Evidence",activeItem.evidence_state||activeItem.type||"PUBLIC"],["Updated",activeItem.updated_at?.slice?.(0,10)||activeItem.date||"Historical"],["Identity",activeItem.id]].map(([a,b])=>`<div class="hudFact"><b>${a}</b><span>${b}</span></div>`).join("");
  qs("#openProjectBtn").classList.toggle("hidden",!activeItem.live_url&&!activeItem.url);if(activeItem.live_url||activeItem.url)qs("#openProjectBtn").href=activeItem.live_url||activeItem.url;
  qs("#openRepoBtn").classList.toggle("hidden",!activeItem.repo_url);if(activeItem.repo_url)qs("#openRepoBtn").href=activeItem.repo_url;
- hud.classList.remove("hidden");qs("#crumbCurrent").textContent=activeItem.label.toUpperCase();if(open&&!["identity","category"].includes(activeItem.kind))openWorkspace(activeItem,"overview");
+ hud.classList.remove("hidden");if(open)openWorkspace(activeItem,"overview");
 }
 function renderCarousel(filter=""){
  const q=filter.toLowerCase(),rows=items.filter(x=>(!activeCategory||categoryFor(x)===activeCategory)&&(!q||(x.label+" "+(x.summary||"")+" "+groupFor(x)).toLowerCase().includes(q)));track.innerHTML="";
