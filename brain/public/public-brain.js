@@ -125,8 +125,13 @@ async function renderFiles(x,path=""){if(!x.repo_name){workspaceBody.innerHTML=`
 async function previewFile(f,host){host.innerHTML=`<div class="filePreviewInner">Loading ${esc(f.name)}…</div>`;const ext=(f.name.split(".").pop()||"").toLowerCase(),url=f.download_url||f.html_url;if(/png|jpg|jpeg|gif|webp|svg/.test(ext)){host.innerHTML=`<div class="filePreviewInner"><img src="${esc(url)}" alt=""><p><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></p></div>`;return}if(ext==="pdf"){host.innerHTML=`<iframe class="liveFrame" src="${esc(url)}"></iframe>`;return}if(/mp4|webm/.test(ext)){host.innerHTML=`<div class="filePreviewInner"><video controls src="${esc(url)}"></video></div>`;return}try{const r=await fetch(url);const t=await r.text();host.innerHTML=`<div class="filePreviewInner"><div class="hudButtons"><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></div><pre>${esc(t.slice(0,180000))}</pre></div>`}catch{host.innerHTML=`<div class="filePreviewInner"><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></div>`}}
 function relevantEvidence(x){if(x.kind==="evidence")return [x];const words=(x.label+" "+groupFor(x)).toLowerCase().split(/\W+/).filter(w=>w.length>3);let rows=evidence.filter(e=>words.some(w=>(e.label+" "+(e.summary||"")).toLowerCase().includes(w)));if(!rows.length&&["Scientific Research","Governance","Agentic Systems","Runtime"].includes(groupFor(x)))rows=evidence.slice();return rows}
 function renderEvidence(x){
+ if(x.kind==="evidence"){
+  const directDeck=decks.find(z=>z.title===x.label)||decks.find(z=>(x.label||"").toLowerCase().includes(z.title.toLowerCase().replace(/^the /,"")));
+  openEvidenceDetail(x,directDeck);
+  return;
+ }
  const rows=relevantEvidence(x);workspaceBody.innerHTML=`<div class="evidenceGrid"></div>`;const g=workspaceBody.querySelector(".evidenceGrid");
- if(x.kind!=="evidence"&&x.live_url){
+ if(x.live_url){
   const live={id:"live::"+x.id,label:x.label+" — Live Project",summary:"Running project experience preserved as public execution evidence.",type:"Live Project",url:x.live_url,evidence_state:"LIVE"};
   const tile=document.createElement("article");tile.className="evidenceTile";tile.innerHTML=`<div style="aspect-ratio:16/9;display:grid;place-items:center;background:radial-gradient(circle,rgba(80,230,255,.16),#07101a);font-size:34px">▶</div><div class="evidenceTileBody"><b>${esc(live.label)}</b><small>Live Project Evidence</small></div>`;tile.onclick=()=>openEvidenceDetail(live,null);g.appendChild(tile);
  }
