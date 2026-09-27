@@ -215,6 +215,51 @@ brainLayer.addEventListener('wheel',e=>{
   off.setLength(next);brainCamera.position.copy(orbit.target).add(off);orbit.update();applyDepth();
 },{passive:false});
 
+const brainTouchPoints=new Map();
+let brainPinchStartDistance=0;
+let brainPinchStartDepth=0;
+function brainTouchDistance(){
+  const pts=[...brainTouchPoints.values()];
+  if(pts.length<2)return 0;
+  const dx=pts[0].x-pts[1].x,dy=pts[0].y-pts[1].y;
+  return Math.hypot(dx,dy);
+}
+function endBrainTouch(pointerId){
+  brainTouchPoints.delete(pointerId);
+  if(brainTouchPoints.size<2){
+    brainPinchStartDistance=0;
+    brainPinchStartDepth=0;
+    orbit.enabled=true;
+  }
+}
+brainHost.addEventListener('pointerdown',e=>{
+  if(e.pointerType!=='touch'||!window.__leewayBrainIntroActive)return;
+  brainTouchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(brainTouchPoints.size===2){
+    brainPinchStartDistance=brainTouchDistance();
+    brainPinchStartDepth=depth();
+    orbit.enabled=false;
+    e.preventDefault();
+    e.stopPropagation();
+  }
+},{capture:true,passive:false});
+brainHost.addEventListener('pointermove',e=>{
+  if(e.pointerType!=='touch'||!window.__leewayBrainIntroActive||!brainTouchPoints.has(e.pointerId))return;
+  brainTouchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(brainTouchPoints.size===2&&brainPinchStartDistance>0){
+    const current=brainTouchDistance();
+    const ratio=brainPinchStartDistance/Math.max(1,current);
+    const next=clamp(brainPinchStartDepth*ratio,5.75,42);
+    const off=brainCamera.position.clone().sub(orbit.target).setLength(next);
+    brainCamera.position.copy(orbit.target).add(off);
+    orbit.update();applyDepth();
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }
+},{capture:true,passive:false});
+brainHost.addEventListener('pointerup',e=>endBrainTouch(e.pointerId),{capture:true});
+brainHost.addEventListener('pointercancel',e=>endBrainTouch(e.pointerId),{capture:true});
+
 stageEl.addEventListener('wheel',e=>{
   if(window.__leewayBrainIntroActive)return;
   const gc=window.__leewayGraphCamera;
@@ -246,6 +291,8 @@ function apply3DAppearance(a={}){
   runtimeCore.material.color.copy(accent.clone().multiplyScalar(.75));
   runtimeCore.material.emissive.copy(accent.clone().multiplyScalar(.55));
   ring.material.color.copy(accent.clone().multiplyScalar(.72));
+  orbShell.material.color.copy(bg).lerp(accent,.025);
+  orbShell.material.emissive.copy(accent).multiplyScalar(.10);
   orbWire.material.color.copy(accent).multiplyScalar(.34);
   orbHaloMat.uniforms.uColor.value.copy(accent).multiplyScalar(.42);
   orbHaloMat.uniforms.uStrength.value=.30;

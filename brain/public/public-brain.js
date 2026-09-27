@@ -5,6 +5,7 @@ const openExternal=qs("#workspaceOpenExternal"),agentText=qs("#agentText"),agent
 const appearancePanel=qs("#appearancePanel"),nucleusImg=qs("#nucleusFallbackImage"),waveCanvas=qs("#nucleusWaveCanvas"),carouselPrev=qs("#carouselPrev"),carouselNext=qs("#carouselNext");
 let projects=[],evidence=[],decks=[],items=[],selected=null,activeItem=null,activeTab="overview",brainEntered=false;
 let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,voiceConfig=null,audioPlayer=null,recognition=null,listening=false,activeCategory=null,outwardWheel=0,gemmaEngine=null,gemmaConversation=null,gemmaLoading=false,gemmaGenerating=false,agentPersona=null;
+const graphTouchPoints=new Map();let graphPinchStartDistance=0,graphPinchStartScale=1;
 let waveCtx=null,waveRaf=0,appearance={bg:"#010713",accent:"#00b7e8",speed:.52,horizontal:10,vertical:6.5,secondary:.30,stripHeight:4,hue:0,saturation:.90,brightness:.78,dotColor:"#35d8ff",dotVariation:16,dotStrength:.22,labelScale:1};
 let localProvider=null,localProviderChecked=false;
 const upstreamRepos=new Set(["gpt-engineer","whisper","BitNet","automatisch","view-transitions","llama-models"]);
@@ -542,8 +543,45 @@ qs("#stage").addEventListener("wheel",e=>{
  if(e.deltaY<0)outwardWheel=0;
  scale=clamp(scale*(e.deltaY<0?1.08:.92),.38,1.9);setWorldTransform();
 },{passive:false});
-qs("#stage").addEventListener("pointerdown",e=>{if(window.__leewayBrainIntroActive)return;if(e.target.closest(".node,#hud,#zoomControls,#agentLee,.appearancePanel,#projectCarousel,#workspace"))return;dragging=true;dragStart={x:e.clientX,y:e.clientY,px:panX,py:panY};qs("#stage").setPointerCapture(e.pointerId)});
-qs("#stage").addEventListener("pointermove",e=>{if(!dragging)return;panX=dragStart.px+e.clientX-dragStart.x;panY=dragStart.py+e.clientY-dragStart.y;setWorldTransform()});qs("#stage").addEventListener("pointerup",()=>dragging=false);qs("#stage").addEventListener("pointercancel",()=>dragging=false);
+function graphTouchDistance(){const pts=[...graphTouchPoints.values()];if(pts.length<2)return 0;const dx=pts[0].x-pts[1].x,dy=pts[0].y-pts[1].y;return Math.hypot(dx,dy)}
+function endGraphTouch(pointerId){graphTouchPoints.delete(pointerId);if(graphTouchPoints.size<2){graphPinchStartDistance=0;graphPinchStartScale=scale}}
+qs("#stage").addEventListener("pointerdown",e=>{
+ if(window.__leewayBrainIntroActive)return;
+ if(e.target.closest(".node,#hud,#zoomControls,#agentLee,.appearancePanel,#projectCarousel,#workspace"))return;
+ if(e.pointerType==="touch"){
+  graphTouchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(graphTouchPoints.size===2){
+   dragging=false;
+   graphPinchStartDistance=graphTouchDistance();
+   graphPinchStartScale=scale;
+   e.preventDefault();
+   return;
+  }
+ }
+ dragging=true;dragStart={x:e.clientX,y:e.clientY,px:panX,py:panY};qs("#stage").setPointerCapture(e.pointerId)
+});
+qs("#stage").addEventListener("pointermove",e=>{
+ if(e.pointerType==="touch"&&graphTouchPoints.has(e.pointerId)){
+  graphTouchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(graphTouchPoints.size===2&&graphPinchStartDistance>0){
+   const current=graphTouchDistance();
+   const next=clamp(graphPinchStartScale*(current/graphPinchStartDistance),.38,1.9);
+   if(next<=.58&&current<graphPinchStartDistance*.78){
+    backOneLevel();
+    graphPinchStartDistance=current;
+    graphPinchStartScale=scale;
+   }else{
+    scale=next;setWorldTransform();
+   }
+   e.preventDefault();
+   return;
+  }
+ }
+ if(!dragging)return;
+ panX=dragStart.px+e.clientX-dragStart.x;panY=dragStart.py+e.clientY-dragStart.y;setWorldTransform()
+});
+qs("#stage").addEventListener("pointerup",e=>{dragging=false;endGraphTouch(e.pointerId)});
+qs("#stage").addEventListener("pointercancel",e=>{dragging=false;endGraphTouch(e.pointerId)});
 speechSynthesis?.addEventListener?.("voiceschanged",chooseVoice);
 function materializeProjects(source,overrides){
  const om=new Map((overrides.overrides||[]).map(x=>[x.repo_name,x]));

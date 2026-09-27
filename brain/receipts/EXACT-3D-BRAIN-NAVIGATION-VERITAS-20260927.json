@@ -1,0 +1,37 @@
+{
+  "schema": "leeway-exact-3d-brain-veritas-v1",
+  "tested_at": "2026-09-27T20:52:35.500Z",
+  "authority_source": "E:\\Leeway-Ecosystem v2.1.4\\DigitalBrain\\brain-service\\app\\static\\brain.html",
+  "checks": {
+    "threejs_brain": true,
+    "orbit_rotation": true,
+    "start_camera": [
+      0,
+      0.65,
+      18.8
+    ],
+    "rotated_camera": [
+      -12.276018614220632,
+      4.958698153575734,
+      13.363127613138813
+    ],
+    "dark_cortex": "#010713",
+    "cortex_emissive": "#00182d",
+    "orb_shell_opacity": 0.115,
+    "fresnel_orb_strength": 0.3,
+    "math_color": "rgba(176, 187, 201, 0.72)",
+    "math_opacity": 0.86,
+    "sink_through_transition": {
+      "brain_intro_after": false,
+      "galaxy_active": true,
+      "brain_opacity": 0,
+      "world_opacity": 1
+    },
+    "category_entry": "cat::core",
+    "wheel_back_category_to_root": true,
+    "touch_back_root_to_whole_brain": true,
+    "final_camera_depth": 18.8,
+    "browser_errors": 0
+  },
+  "verdict": "PASS"
+}
