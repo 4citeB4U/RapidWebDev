@@ -17,7 +17,7 @@ const renderer3D=new THREE.WebGLRenderer({antialias:true,alpha:true});
 renderer3D.setPixelRatio(Math.min(devicePixelRatio||1,2));
 renderer3D.setClearColor(0x01050b,0);
 renderer3D.toneMapping=THREE.ACESFilmicToneMapping;
-renderer3D.toneMappingExposure=.92;
+renderer3D.toneMappingExposure=.76;
 brainHost.appendChild(renderer3D.domElement);
 
 const orbit=new OrbitControls(brainCamera,renderer3D.domElement);
@@ -48,19 +48,19 @@ function createBrainHemisphereGeometry(isLeft){
   sphere.computeVertexNormals();return sphere;
 }
 
-scene.add(new THREE.AmbientLight(0x031225,2.25));
-const key=new THREE.DirectionalLight(0x00a8d8,2.9);key.position.set(16,22,18);scene.add(key);
-const rim=new THREE.DirectionalLight(0x183c78,2.7);rim.position.set(-18,-12,-16);scene.add(rim);
-const warm=new THREE.DirectionalLight(0x0a2440,.45);warm.position.set(-12,3,15);scene.add(warm);
+scene.add(new THREE.AmbientLight(0x020914,1.75));
+const key=new THREE.DirectionalLight(0x006e9b,1.95);key.position.set(16,22,18);scene.add(key);
+const rim=new THREE.DirectionalLight(0x102a5c,1.85);rim.position.set(-18,-12,-16);scene.add(rim);
+const warm=new THREE.DirectionalLight(0x07172b,.18);warm.position.set(-12,3,15);scene.add(warm);
 
 const root=new THREE.Group();scene.add(root);
 const hg=new THREE.Group();root.add(hg);
 const leftGeo=createBrainHemisphereGeometry(true),rightGeo=createBrainHemisphereGeometry(false);
 const cortexMat=new THREE.MeshPhysicalMaterial({
-  color:0x010a18,emissive:0x00233f,emissiveIntensity:.58,roughness:.28,metalness:.16,
-  clearcoat:.58,clearcoatRoughness:.16,transparent:true,opacity:.74,depthWrite:false,side:THREE.DoubleSide
+  color:0x010713,emissive:0x001629,emissiveIntensity:.34,roughness:.30,metalness:.17,
+  clearcoat:.62,clearcoatRoughness:.17,transparent:true,opacity:.82,depthWrite:false,side:THREE.DoubleSide
 });
-const wireMat=new THREE.MeshBasicMaterial({color:0x0086b2,wireframe:true,transparent:true,opacity:.23,blending:THREE.AdditiveBlending});
+const wireMat=new THREE.MeshBasicMaterial({color:0x00749c,wireframe:true,transparent:true,opacity:.18,blending:THREE.AdditiveBlending});
 hg.add(new THREE.Mesh(leftGeo,cortexMat),new THREE.Mesh(rightGeo,cortexMat),new THREE.Mesh(leftGeo,wireMat),new THREE.Mesh(rightGeo,wireMat));
 
 const coreLight=new THREE.PointLight(0x50e6ff,4.0,16);root.add(coreLight);
@@ -80,7 +80,7 @@ const orbShell=new THREE.Mesh(
     emissive:0x00172b,
     emissiveIntensity:.18,
     transparent:true,
-    opacity:.055,
+    opacity:.115,
     roughness:.18,
     metalness:.08,
     clearcoat:.7,
@@ -97,11 +97,39 @@ const orbWire=new THREE.Mesh(
     color:0x1a78a6,
     wireframe:true,
     transparent:true,
-    opacity:.055,
+    opacity:.115,
     blending:THREE.AdditiveBlending
   })
 );
 root.add(orbWire);
+
+const orbHaloMat=new THREE.ShaderMaterial({
+  transparent:true,
+  depthWrite:false,
+  side:THREE.BackSide,
+  blending:THREE.AdditiveBlending,
+  uniforms:{uColor:{value:new THREE.Color(0x0b78a8)},uStrength:{value:.30}},
+  vertexShader:`
+    varying vec3 vNormal;
+    varying vec3 vView;
+    void main(){
+      vec4 mvPosition=modelViewMatrix*vec4(position,1.0);
+      vNormal=normalize(normalMatrix*normal);
+      vView=normalize(-mvPosition.xyz);
+      gl_Position=projectionMatrix*mvPosition;
+    }`,
+  fragmentShader:`
+    uniform vec3 uColor;
+    uniform float uStrength;
+    varying vec3 vNormal;
+    varying vec3 vView;
+    void main(){
+      float fresnel=pow(1.0-max(dot(normalize(vNormal),normalize(vView)),0.0),2.35);
+      gl_FragColor=vec4(uColor,fresnel*uStrength);
+    }`
+});
+const orbHalo=new THREE.Mesh(new THREE.SphereGeometry(5.62,64,48),orbHaloMat);
+root.add(orbHalo);
 
 const orbitalGroup=new THREE.Group();
 root.add(orbitalGroup);
@@ -115,7 +143,7 @@ root.add(orbitalGroup);
     new THREE.MeshBasicMaterial({
       color:i===0?0x2aa7d7:0x235e9a,
       transparent:true,
-      opacity:i===0?.22:.15,
+      opacity:i===0?.34:.22,
       blending:THREE.AdditiveBlending
     })
   );
@@ -175,7 +203,7 @@ function enterBrainOverview(){
   window.__leewayPublicBrainOverview?.();
 }
 window.__leewayEnterBrainOverview=enterBrainOverview;
-window.__leeway3DBrain={scene,camera:brainCamera,renderer:renderer3D,controls:orbit,root,hg,orbShell,orbWire,orbitalGroup,cortexMat,wireMat,particles,enterBrainOverview,depth};
+window.__leeway3DBrain={scene,camera:brainCamera,renderer:renderer3D,controls:orbit,root,hg,orbShell,orbWire,orbHalo,orbHaloMat,orbitalGroup,cortexMat,wireMat,particles,enterBrainOverview,depth};
 
 orbit.addEventListener('change',applyDepth);
 
@@ -190,8 +218,10 @@ brainLayer.addEventListener('wheel',e=>{
 stageEl.addEventListener('wheel',e=>{
   if(window.__leewayBrainIntroActive)return;
   const gc=window.__leewayGraphCamera;
-  if(gc && gc.z<=.112 && e.deltaY>0){
-    e.preventDefault();e.stopImmediatePropagation();enterBrainOverview();
+  if(gc && gc.z<=.145 && e.deltaY>0){
+    e.preventDefault();e.stopImmediatePropagation();
+    if(window.__leewayPublicBackOneLevel)window.__leewayPublicBackOneLevel();
+    else enterBrainOverview();
   }
 },{capture:true,passive:false});
 
@@ -208,23 +238,25 @@ function apply3DAppearance(a={}){
   const bg=new THREE.Color(a.bg||"#01050b");
   const dark=bg.clone().lerp(accent,.08);
   const emissive=bg.clone().lerp(accent,.22);
-  cortexMat.color.copy(dark);
-  cortexMat.emissive.copy(emissive);
-  cortexMat.emissiveIntensity=.42+Math.max(0,Number(a.brightness??1)-.5)*.18;
-  wireMat.color.copy(accent.clone().multiplyScalar(.62));
+  cortexMat.color.set("#010713");
+  cortexMat.emissive.set("#00182d");
+  cortexMat.emissiveIntensity=.18+Math.max(0,Number(a.brightness??.78)-.35)*.08;
+  wireMat.color.copy(accent).multiplyScalar(.34);
   pMat.color.copy(accent.clone().lerp(new THREE.Color("#b9f6ff"),.18));
   runtimeCore.material.color.copy(accent.clone().multiplyScalar(.75));
   runtimeCore.material.emissive.copy(accent.clone().multiplyScalar(.55));
   ring.material.color.copy(accent.clone().multiplyScalar(.72));
-  orbWire.material.color.copy(accent.clone().multiplyScalar(.45));
-  orbitalGroup.children.forEach((m,i)=>m.material.color.copy(accent.clone().multiplyScalar(i===0?.56:.36)));
-  key.color.copy(accent.clone().multiplyScalar(.72));
-  coreLight.color.copy(accent.clone().multiplyScalar(.82));
-  scene.fog.color.copy(bg.clone().multiplyScalar(.72));
-  renderer3D.toneMappingExposure=.72+Math.min(1.25,Math.max(.25,Number(a.brightness??1)))*.20;
+  orbWire.material.color.copy(accent).multiplyScalar(.34);
+  orbHaloMat.uniforms.uColor.value.copy(accent).multiplyScalar(.42);
+  orbHaloMat.uniforms.uStrength.value=.30;
+  orbitalGroup.children.forEach((m,i)=>m.material.color.copy(accent).multiplyScalar(i===0?.46:.30));
+  key.color.copy(accent).multiplyScalar(.38);
+  coreLight.color.copy(accent).multiplyScalar(.56);
+  scene.fog.color.copy(bg).multiplyScalar(.72);
+  renderer3D.toneMappingExposure=.56+Math.min(1.10,Math.max(.25,Number(a.brightness??.78)))*.12;
 }
 window.addEventListener("leeway-appearance-change",e=>apply3DAppearance(e.detail||{}));
-try{apply3DAppearance(JSON.parse(localStorage.getItem("leeway.brain.appearance.v2")||"null")||{bg:"#010713",accent:"#00b7e8",brightness:.78})}catch{apply3DAppearance({bg:"#010713",accent:"#00b7e8",brightness:.78})}
+try{apply3DAppearance(JSON.parse(localStorage.getItem("leeway.brain.appearance.v3")||"null")||{bg:"#010713",accent:"#00b7e8",brightness:.78})}catch{apply3DAppearance({bg:"#010713",accent:"#00b7e8",brightness:.78})}
 function resizeBrain(){
   const r=stageEl.getBoundingClientRect();
   brainCamera.aspect=Math.max(.1,r.width/r.height);
@@ -243,8 +275,8 @@ function animateBrain(ts=0){
   orbit.update();
   const t=clock3D.getElapsedTime(),breath=1+Math.sin(t*1.6)*.012;
   hg.scale.setScalar(breath);
-  coreLight.intensity=3.0+Math.sin(t*2.5)*1.0;
-  cortexMat.emissiveIntensity=.62+Math.sin(t*2)*.22;
+  coreLight.intensity=1.65+Math.sin(t*2.5)*.42;
+  cortexMat.emissiveIntensity=.16+Math.sin(t*2)*.045;
   runtimeCore.rotation.x=t*.32;runtimeCore.rotation.y=t*.48;ring.rotation.z=t*.22;
   orbWire.rotation.y=t*.028;orbWire.rotation.x=Math.sin(t*.11)*.04;
   orbitalGroup.rotation.y=t*.018;orbitalGroup.rotation.z=Math.sin(t*.08)*.025;
