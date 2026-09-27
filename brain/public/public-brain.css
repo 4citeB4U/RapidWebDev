@@ -252,7 +252,7 @@ body:not(.brain-intro) #nucleusWaveCanvas{opacity:.82!important}
   pointer-events:none;white-space:nowrap;
   opacity:calc(.92 - var(--ecosystem-alpha,0))
 }
-body.galaxy-active #brainUniverseLayer{pointer-events:none}
+body.galaxy-active #brainUniverseLayer{opacity:0!important;pointer-events:none}
 
 /* The internal project universe is driven by camera depth, not a button state. */
 #world{

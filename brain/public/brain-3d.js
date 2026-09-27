@@ -23,8 +23,7 @@ brainHost.appendChild(renderer3D.domElement);
 const orbit=new OrbitControls(brainCamera,renderer3D.domElement);
 orbit.enableDamping=true;
 orbit.dampingFactor=.055;
-orbit.enableZoom=true;
-orbit.zoomSpeed=.72;
+orbit.enableZoom=false;
 orbit.enablePan=false;
 orbit.minDistance=5.7;
 orbit.maxDistance=50;
@@ -98,7 +97,7 @@ function applyDepth(){
   document.documentElement.style.setProperty('--ecosystem-scale',String(.83+late*.17));
   document.documentElement.style.setProperty('--ecosystem-blur',String((1-late)*1.4)+'px');
   document.documentElement.style.setProperty('--ecosystem-bright',String(.68+late*.32));
-  document.documentElement.style.setProperty('--brain-shell-alpha',String(1-late*.96));
+  document.documentElement.style.setProperty('--brain-shell-alpha',String(1-late));
   document.documentElement.style.setProperty('--brain-label-alpha',String(labelPulse*.92));
 
   if(Math.abs(reveal-lastReveal)>.004){
@@ -129,6 +128,30 @@ window.__leewayEnterBrainOverview=enterBrainOverview;
 window.__leeway3DBrain={scene,camera:brainCamera,renderer:renderer3D,controls:orbit,root,enterBrainOverview,depth};
 
 orbit.addEventListener('change',applyDepth);
+
+brainLayer.addEventListener('wheel',e=>{
+  if(!window.__leewayBrainIntroActive)return;
+  e.preventDefault();e.stopPropagation();
+  const off=brainCamera.position.clone().sub(orbit.target);
+  const next=clamp(off.length()*Math.exp(e.deltaY*.00115),5.75,42);
+  off.setLength(next);brainCamera.position.copy(orbit.target).add(off);orbit.update();applyDepth();
+},{passive:false});
+
+stageEl.addEventListener('wheel',e=>{
+  if(window.__leewayBrainIntroActive)return;
+  const gc=window.__leewayGraphCamera;
+  if(gc && gc.z<=.112 && e.deltaY>0){
+    e.preventDefault();e.stopImmediatePropagation();enterBrainOverview();
+  }
+},{capture:true,passive:false});
+
+const wholeBrain=document.getElementById('homeBtn');
+if(wholeBrain){
+  wholeBrain.addEventListener('contextmenu',e=>e.preventDefault());
+  wholeBrain.addEventListener('dblclick',e=>{
+    e.preventDefault();e.stopPropagation();enterBrainOverview();
+  });
+}
 
 function resizeBrain(){
   const r=stageEl.getBoundingClientRect();
