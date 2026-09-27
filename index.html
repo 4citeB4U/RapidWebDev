@@ -80,10 +80,32 @@
   <aside id="agentLee">
     <div class="agentHead">
       <img src="/98civa4fmf.png" alt="Agent Lee">
-      <div><b>Agent Lee</b><small>LeeWay project guide</small></div>
+      <div class="agentIdentity"><b>Agent Lee</b><small id="agentState">LeeWay project guide · ready</small></div>
+      <button id="micBtn" class="agentMic" aria-label="Talk to Agent Lee">◉</button>
     </div>
     <div id="agentText">Welcome to Leonard Lee's Digital Brain. Select a project, system, or evidence object and I will explain what it is, why it matters, and where the proof lives.</div>
+    <div id="agentTranscript" class="agentTranscript hidden"></div>
   </aside>
+
+  <section id="workspace" class="workspace hidden" aria-label="Project workspace">
+    <header class="workspaceHead">
+      <div>
+        <div id="workspaceKicker" class="workspaceKicker">PROJECT WORKSPACE</div>
+        <h2 id="workspaceTitle">Project</h2>
+      </div>
+      <div class="workspaceHeadActions">
+        <a id="workspaceOpenExternal" class="workspaceAction hidden" target="_blank" rel="noopener">Open Full</a>
+        <button id="workspaceClose">×</button>
+      </div>
+    </header>
+    <nav class="workspaceTabs">
+      <button data-tab="overview" class="active">Overview</button>
+      <button data-tab="live">Live View</button>
+      <button data-tab="files">Files</button>
+      <button data-tab="evidence">Evidence</button>
+    </nav>
+    <div id="workspaceBody" class="workspaceBody"></div>
+  </section>
 </div>
 
 <script src="/brain/public/public-brain.js"></script>

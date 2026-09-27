@@ -1,0 +1,29 @@
+{
+  "agent": "Agent Lee",
+  "persona_authority": "4citeB4U/Agent-Lee-The-Sum-of-All-Systems",
+  "active_reasoning_provider": "deterministic_public_brain",
+  "candidate_reasoning_provider": {
+    "family": "Gemma 4",
+    "preferred_model": "E4B",
+    "mode": "lazy_on_device",
+    "status": "CANDIDATE_NOT_YET_LOADED",
+    "reason": "Keep phone rendering responsive; load local reasoning only on compatible devices."
+  },
+  "voice": {
+    "active_provider": "browser_speech_synthesis",
+    "premium_provider": {
+      "name": "Google Cloud Chirp 3 HD / Gemini TTS",
+      "status": "SECURE_BACKEND_REQUIRED",
+      "notes": "Do not place Cloud credentials in GitHub Pages. Route through authenticated server-side proxy when configured."
+    },
+    "barge_in": "mic_button_interrupts_current_speech_and_starts_listening"
+  },
+  "capabilities": [
+    "project navigation",
+    "live-view navigation",
+    "repository file browsing",
+    "evidence navigation",
+    "spoken explanation",
+    "microphone command input"
+  ]
+}

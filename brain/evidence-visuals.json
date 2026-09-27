@@ -1,0 +1,70 @@
+{
+  "decks": [
+    {
+      "id": "deck::leeway-ai-governance-blueprint",
+      "title": "The LeeWay AI Governance Blueprint",
+      "group": "Governance",
+      "pptx": "/leeway-brain/evidence/leeway-ai-governance-blueprint.pptx",
+      "pdf": "/leeway-brain/evidence/leeway-ai-governance-blueprint.pdf",
+      "thumbnail": "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-01.jpg",
+      "slides": [
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-01.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-02.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-03.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-04.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-05.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-06.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-07.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-08.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-09.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-10.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-11.jpg",
+        "/leeway-brain/evidence/leeway-ai-governance-blueprint-slides/slide-12.jpg"
+      ]
+    },
+    {
+      "id": "deck::leeway-sovereign-standard",
+      "title": "LeeWay Sovereign Standard",
+      "group": "Governance",
+      "pptx": "/leeway-brain/evidence/leeway-sovereign-standard.pptx",
+      "pdf": "/leeway-brain/evidence/leeway-sovereign-standard.pdf",
+      "thumbnail": "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-01.jpg",
+      "slides": [
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-01.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-02.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-03.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-04.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-05.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-06.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-07.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-08.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-09.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-10.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-11.jpg",
+        "/leeway-brain/evidence/leeway-sovereign-standard-slides/slide-12.jpg"
+      ]
+    },
+    {
+      "id": "deck::leeway-ai-standard",
+      "title": "The LeeWay AI Standard",
+      "group": "Governance",
+      "pptx": "/leeway-brain/evidence/leeway-ai-standard.pptx",
+      "pdf": "/leeway-brain/evidence/leeway-ai-standard.pdf",
+      "thumbnail": "/leeway-brain/evidence/leeway-ai-standard-slides/slide-01.jpg",
+      "slides": [
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-01.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-02.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-03.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-04.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-05.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-06.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-07.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-08.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-09.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-10.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-11.jpg",
+        "/leeway-brain/evidence/leeway-ai-standard-slides/slide-12.jpg"
+      ]
+    }
+  ]
+}
