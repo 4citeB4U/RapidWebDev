@@ -498,7 +498,7 @@ async function askRuntimeFabric(question,work,thread){
  completedDraft='';qs('#downloadAgentDraft').disabled=true;await knowledgeReady;if(work.signal.aborted)return null;
  const relevant=projects.map(p=>({p,score:scoreProject(question.toLowerCase(),p)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3);
  const fabricContext=globalThis.LeeWayEcosystemFabric.context();
- const context={thread:{id:thread.id,kind:thread.kind,parentThreadId:thread.parentThreadId},fabric:fabricContext,leeway:LeeWayKnowledge.context(question),selected:activeItem?{name:activeItem.label,summary:activeItem.summary,evidence:activeItem.evidence_state}:null,projects:relevant.map(({p})=>({name:p.label,summary:(p.summary||'').slice(0,350)}))};
+ const context={thread:{id:thread.id,kind:thread.kind,parentThreadId:thread.parentThreadId},fabric:fabricContext,persona:agentPersona?{contact:agentPersona.contact,services:agentPersona.services}:null,leeway:LeeWayKnowledge.context(question),selected:activeItem?{name:activeItem.label,summary:activeItem.summary,evidence:activeItem.evidence_state}:null,categories:categoryDefs.map(c=>c.label),projects:relevant.map(({p})=>({name:p.label,summary:(p.summary||'').slice(0,350)}))};
  const system="You are Agent Lee inside the LeeWay Digital Brain. Use plain English. The Digital Brain is the context/control surface; Runtime Fabric owns persistent execution; Agent Skills owns capability definitions; Voice Fabric owns voice identity; Formula Live owns mathematical authority. Never claim Formula execution unless an authorized evaluator actually ran. Do not claim a GitHub contract is a live execution merely because it loaded. Keep the first answer concise and evidence-grounded.\n"+JSON.stringify(context);
  try{
   const history=thread.history.slice(0,-1).map(({role,content})=>({role,content}));
@@ -552,6 +552,9 @@ function scoreProject(q,p){const hay=(p.label+" "+(p.repo_name||"")+" "+(p.summa
 function bestProject(q){return projects.map(p=>[scoreProject(q,p),p]).sort((a,b)=>b[0]-a[0])[0]}
 function navigateAgentRequest(text){
  const q=text.trim().toLowerCase();
+ if(/(?:contact|reach|email|message).*(?:leonard|creator)|(?:leonard|creator).*(?:contact|reach|email|message)/.test(q))return "You can contact Leonard Lee directly at leonardlee6@outlook.com. His public GitHub profile is @4citeB4U at github.com/4citeB4U; for project-specific public communication, use the relevant repository channels where available.";
+ if(/(?:build|make|create|develop).*(?:for me|for us|something similar|like this)|(?:service|hire|work with leonard)/.test(q))return "Yes. Leonard provides guidance and development support for comparable websites, AI workflows, governed agent systems, and related digital experiences. This public experience does not publish pricing; contact him directly at leonardlee6@outlook.com.";
+ if(/pocket agent/.test(q))return "Pocket Agent Lee is planned as a subscriber gift and early-access release. The source project exists, but this site does not claim the public consumer install and distribution path is complete yet.";
  if(/^(?:go |back |return )?(?:home|back|reset|close|whole brain|to the brain)[.!?]*$/.test(q)){showBrainOnly();return "Back at the Digital Brain.";}
  if(activeItem&&/^(?:show|open|browse)(?: me)?(?: the| project)? (?:files?|source|code)[.!?]*$/.test(q)){openWorkspace(activeItem,"files");return "Opening the project files.";}
  if(activeItem&&/^(?:show|open)(?: me)?(?: the| project)? (?:live view|website|demo)[.!?]*$/.test(q)){openWorkspace(activeItem,"live");return activeItem.live_url?"Opening the listed project link.":"No live view is listed for this project.";}
