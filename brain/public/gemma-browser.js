@@ -6,7 +6,7 @@ function abortError(){return new DOMException('Canceled','AbortError')}
 function ensureWorker(){
   if(worker)return;
   // LiteRT's WASM loader uses importScripts, which requires a classic worker.
-  worker=new Worker(new URL('./gemma-browser-worker.js?v=20260928-retry1',import.meta.url));
+  worker=new Worker(new URL('./gemma-browser-worker.js?v=20260928-storage1',import.meta.url));
   worker.onmessage=({data:m})=>{
     const p=pending.get(m.id);if(!p)return;
     if(m.type==='progress'){p.onProgress?.(m.value);return}

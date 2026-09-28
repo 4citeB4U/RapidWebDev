@@ -12,9 +12,10 @@ async function modelSource(id){
     handle=await cacheRoot.getFileHandle(cacheName,{create:true});
     const file=await handle.getFile();
     if(file.size===BYTES){send(id,'progress',{loaded:BYTES,total:BYTES,cached:true});return file}
-    const space=await navigator.storage.estimate();
-    if(space.quota-space.usage<BYTES*1.05)handle=null;
   }catch{handle=null}
+  if(!handle)throw new Error('Browser model storage is unavailable. The spoken guide still works; try full AI in a browser with storage support.');
+  const space=await navigator.storage.estimate();
+  if(space.quota-space.usage<BYTES*1.15)throw new Error('Not enough browser storage for Gemma 4. Keep using the spoken guide, or free storage and retry.');
   send(id,'state','downloading');
   const response=await fetch(MODEL_URL,{credentials:'omit'});
   if(!response.ok||!response.body)throw new Error(`Model download failed (${response.status}).`);
@@ -25,10 +26,9 @@ async function modelSource(id){
     controller.enqueue(chunk);
   },flush(){if(loaded!==BYTES)throw new Error('The model download is incomplete. Please retry.')}});
   const stream=response.body.pipeThrough(progress);
-  if(!handle){send(id,'progress',{loaded:0,total:BYTES,cached:false,cacheAvailable:false});return stream}
   let writable;
   try{writable=await handle.createWritable()}
-  catch{send(id,'progress',{loaded:0,total:BYTES,cached:false,cacheAvailable:false});return stream}
+  catch{await stream.cancel().catch(()=>{});throw new Error('Browser model storage could not be opened. The spoken guide remains available.');}
   try{await stream.pipeTo(writable)}
   catch(error){
     // pipeTo aborts the file and cancels the download on a write failure.

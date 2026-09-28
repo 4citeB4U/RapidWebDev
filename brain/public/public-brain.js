@@ -323,17 +323,26 @@ function openEvidenceDetail(e,d){
  workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Evidence record")}</p></div>`;
 }
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
-let browserGemma=null,tourEpoch=0,voiceConnecting=false;
+let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,preparationEpoch=0;
 const browserVoice=new LeeWayBrowserVoice(),welcomePlayer=new LeeWayWelcomePlayer();
 const modelPreparation=new LeeWayModelPreparation();
 function updatePreparationStatus(){
  const ready=browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready;
  const busy=gemmaLoading||qs('#loadBrowserVoice').disabled;
- qs('#agentStartupStatus').textContent=ready?'Agent Lee ready':busy?'Agent Lee is preparing...':'Agent Lee needs attention';
+ qs('#agentStartVoice').textContent=ready?'Start conversation':'Full AI conversation';
+ qs('#agentStartupStatus').textContent=ready?'Agent Lee ready':busy?'Agent Lee is preparing...':'Voice One guide ready';
 }
 function enableGemma(){return modelPreparation.run('gemma',loadGemmaImplementation);}
 function enableBrowserVoice(){return modelPreparation.run('voice',loadVoiceImplementation);}
-async function prepareAgent(){await Promise.all([enableGemma(),enableBrowserVoice()]);updatePreparationStatus();}
+async function storagePreflight(kind){
+ const result=await LeeWayPreparationPolicy.check(kind);qs('#storageStatus').textContent=result.message;return result.ok;
+}
+async function prepareAgent(){
+ const button=qs('#enableFullAI'),epoch=preparationEpoch;button.disabled=true;
+ try{if(!navigator.gpu||!await navigator.gpu.requestAdapter().catch(()=>null)){qs('#storageStatus').textContent='Full AI needs WebGPU on this device. The recorded Voice One guide and project navigation still work.';return;}if(!await storagePreflight('all')||epoch!==preparationEpoch)return;fullAIRequested=true;await Promise.all([enableGemma(),enableBrowserVoice()]);updatePreparationStatus();}
+ finally{button.disabled=false;}
+}
+qs('#enableFullAI').onclick=prepareAgent;
 qs('#agentStartupStatus').onclick=()=>openAgentBubble(true);
 let completedDraft='';
 const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Skills and Formula sources verified. Formula evaluator is not connected; no Formula task has run.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
@@ -351,19 +360,21 @@ const browserListener=new LeeWayBrowserListener({
  onMetric:(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail),
  onProgress:p=>showModelProgress("voice",p)
 });
+const voiceDownloadFiles=new Map();
 function showModelProgress(kind,p){
  const bar=qs("#"+kind+"Progress"),label=qs("#"+kind+"LoadStatus");
  bar.hidden=false;
  if(p.message){bar.removeAttribute("value");label.textContent=p.message;return;}
- if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;label.textContent=`${kind==="gemma"?"Gemma 4":"Voice"}: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"model"}`;}
+ if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;if(kind==='voice'&&p.file){voiceDownloadFiles.set(p.file,p.loaded);const received=[...voiceDownloadFiles.values()].reduce((a,b)=>a+b,0);label.textContent=`Voice files: ${(received/1e6).toFixed(0)} MB received or cached. Current file: ${Math.round(p.loaded/p.total*100)}%.`;return;}label.textContent=`${kind==="gemma"?"Gemma 4":"Voice"}: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"model"}`;}
  else{bar.removeAttribute("value");label.textContent=kind==="gemma"?"Preparing Gemma 4...":"Preparing voice files...";}
 }
 async function loadGemmaImplementation(){
  if(browserGemma?.state==="ready")return;
+ const epoch=preparationEpoch;if(!await storagePreflight("gemma")||epoch!==preparationEpoch)return;
  gemmaLoading=true;reasonBtn.disabled=true;LeeWayVoiceMetrics.record("gemma-load-start");
  updatePreparationStatus();
  try{
-  browserGemma=(await import("/brain/public/gemma-browser.js?v=20260928-retry1")).LeeWayBrowserGemma;
+  browserGemma=(await import("/brain/public/gemma-browser.js?v=20260928-storage1")).LeeWayBrowserGemma;
   await browserGemma.load({onProgress:p=>showModelProgress("gemma",p),onState:state=>{
     const names={"loading-runtime":"Preparing Gemma 4...",downloading:"Downloading Gemma 4...",initializing:"Starting Gemma 4 on this device...",ready:"Gemma 4 ready in this browser"};
     LeeWayVoiceMetrics.record("gemma-"+state);qs("#gemmaLoadStatus").textContent=names[state]||state;
@@ -374,7 +385,8 @@ async function loadGemmaImplementation(){
 }
 async function loadVoiceImplementation(){
  const button=qs("#loadBrowserVoice");if(button.disabled||(browserVoice.ready&&browserListener.ready))return;
- button.disabled=true;
+ const epoch=preparationEpoch;if(!await storagePreflight("voice")||epoch!==preparationEpoch)return;
+ button.disabled=true;voiceDownloadFiles.clear();
  updatePreparationStatus();
  try{
   LeeWayVoiceMetrics.record("voice-load-start");
@@ -389,7 +401,7 @@ async function loadVoiceImplementation(){
 }
 async function speak(text,epoch=voiceController.epoch){
  if(!text||!voiceController.current(epoch))return;
- if(!browserVoice.ready){agentState.textContent="Text answer ready. Voice is preparing; check its progress or retry below.";return;}
+ if(!browserVoice.ready){agentState.textContent="Text answer ready. Optional browser voice is not ready; the recorded guide is available now.";return;}
  try{await browserVoice.speak(text,{signal:voiceController.controller.signal,onState:message=>{if(voiceController.current(epoch))agentState.textContent=message.startsWith("Speaking.")&&!browserListener.active?"Speaking. Use Stop to interrupt.":message}});}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(epoch))agentState.textContent=error.message;}
 }
@@ -428,7 +440,7 @@ async function askGemma(question,turn={epoch:voiceController.epoch,signal:voiceC
   output=String(answer||output).trim();stream?.end();LeeWayVoiceMetrics.record("gemma-complete");
   agentText.textContent=output;agentNarration.textContent=output;
   completedDraft=output;qs('#downloadAgentDraft').disabled=!output;
-  if(!stream){voiceController.remember("assistant",output);agentState.textContent="Text answer ready. Voice is preparing; check its progress or retry below.";}
+  if(!stream){voiceController.remember("assistant",output);agentState.textContent="Text answer ready. Optional browser voice is not ready; the recorded guide is available now.";}
   await speech;return output;
  }catch(error){stream?.fail(error);await speech;if(voiceController.current(turn.epoch)&&error.name!=="AbortError")agentState.textContent=error.message;return null;}
  finally{if(voiceController.current(turn.epoch))gemmaGenerating=false;}
@@ -454,17 +466,20 @@ async function handleAgentCommand(raw){
  browserListener.cancelUtterance();const turn=voiceController.begin();voiceController.remember("user",text);
  const navigation=navigateAgentRequest(text);if(navigation){agentText.textContent=navigation;speak(navigation,turn.epoch);return;}
  if(browserGemma?.state==="ready"){await askGemma(text,turn);return;}
- const message="Agent Lee is preparing automatically. Check preparation progress below; if a download failed, use its Retry button. Project navigation works while the models prepare.";
+ const message="The recorded Voice One guide and project navigation work now. Open Optional full AI to enable open-ended answers on this device. No large model download is required to explore.";
  agentText.textContent=message;agentNarration.textContent=message;speak(message,turn.epoch);
 }
 async function playWelcome(turn){
  agentState.textContent="Introducing Agent Lee...";
  agentText.textContent=WELCOME_TEXT;agentNarration.textContent=WELCOME_TEXT;
- try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Preparing conversation models...":"Select Start conversation to ask me a question.";}}
+ try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Preparing conversation models...":"Guide complete. Explore projects now, or enable optional full AI for conversation.";}}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(turn.epoch))agentState.textContent=error.message;}
 }
 qs('#agentWelcome').onclick=()=>{cancelAgentGeneration();const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};void playWelcome(turn);};
 async function toggleMic(){
+ if(!fullAIRequested&&!(browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready)){
+  qs('#fullAISetup').open=true;cancelAgentGeneration();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});return;
+ }
  if(listening||voiceConnecting){endVoice();return;}
  cancelAgentGeneration();voiceConnecting=true;
  const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};
@@ -517,14 +532,15 @@ qs("#tourBtn").onclick=startTour;
 qs("#resetBtn").onclick=showBrainOnly;
 qs(".crumb.active").onclick=backOneLevel;
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
-micBtn.onclick=()=>{openAgentBubble(true);if(!listening&&!voiceConnecting)void toggleMic();};
+micBtn.onclick=()=>{openAgentBubble(true);if(fullAIRequested){if(!listening&&!voiceConnecting)void toggleMic();}else{cancelAgentGeneration();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});}};
+qs('#guideExplore').onclick=()=>{qs('#enterBrainBtn').click();};
 reasonBtn.onclick=enableGemma;
 qs("#loadBrowserVoice").onclick=enableBrowserVoice;
 qs("#voiceExpression").onchange=e=>{cancelAgentGeneration();browserVoice.exaggeration=Number(e.target.value);qs("#voiceLoadStatus").textContent=`Delivery set to ${e.target.selectedOptions[0].text.toLowerCase()}.`;};
 qs("#voicePace").onchange=e=>{browserVoice.setPace(e.target.value);welcomePlayer.setPace(browserVoice.playbackRate);};
 qs("#previewBrowserVoice").onclick=()=>{cancelAgentGeneration();void speak("Hi, I am Agent Lee. What would you like to explore?")};
 qs("#voiceReference").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;if(!browserVoice.ready){qs("#voiceLoadStatus").textContent="Load browser voice before choosing a reference.";e.target.value="";return;}try{cancelAgentGeneration();await browserVoice.setReference(file);qs("#voiceLoadStatus").textContent="Your voice reference is selected on this device only.";}catch(error){qs("#voiceLoadStatus").textContent=error.message;}};
-qs("#unloadBrowserModels").onclick=()=>{endVoice();browserGemma?.unload();void browserVoice.dispose();void browserListener.dispose();reasonBtn.textContent="Load Gemma 4 · 2 GB";qs("#loadBrowserVoice").textContent="Load browser voice · 1.6 GB";qs("#previewBrowserVoice").disabled=true;qs("#gemmaLoadStatus").textContent="Models unloaded from memory.";qs("#voiceLoadStatus").textContent="Cached files may be reused next time.";qs("#agentStartupStatus").textContent="Agent Lee models unloaded";};
+qs("#unloadBrowserModels").onclick=()=>{endVoice();++preparationEpoch;fullAIRequested=false;browserGemma?.unload();void browserVoice.dispose();void browserListener.dispose();reasonBtn.textContent="Load Gemma 4 · 2 GB";qs("#loadBrowserVoice").textContent="Load browser voice · 1.6 GB";qs("#previewBrowserVoice").disabled=true;qs("#gemmaLoadStatus").textContent="Models unloaded from memory.";qs("#voiceLoadStatus").textContent="Cached files may be reused next time.";qs("#agentStartupStatus").textContent="Agent Lee models unloaded";};
 qs("#workspaceClose").onclick=closeWorkspace;
 qs("#backOneLevelBtn").onclick=()=>backOneLevel();
 qs("#wholeBrainCrumb").onclick=()=>showBrainOnly();
@@ -638,6 +654,5 @@ async function boot(){
  }).catch(()=>{});
 }
 boot().catch(e=>{agentText.textContent="Digital Brain project discovery failed: "+e.message;console.error(e)});
-// User-requested default: prepare on entry, reusing revision-pinned browser caches.
-// This does not start the microphone or play audio.
-void prepareAgent();
+// Guide first. Full AI downloads begin only through the explicit setup controls.
+updatePreparationStatus();

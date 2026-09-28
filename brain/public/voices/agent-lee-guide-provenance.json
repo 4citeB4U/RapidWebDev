@@ -1,0 +1,10 @@
+{
+  "preservesPitch": true,
+  "playbackPace": 1.1,
+  "content": "Unchanged from verified Voice One welcome",
+  "deliveredBytes": 143085,
+  "codec": "MP3 64 kbps mono 24000 Hz",
+  "sourceBytes": 854444,
+  "mp3Sha256": "FB25EF21040C2219EFE1A2FDA21908B2E87CD066EA2AF88AFF8EEE815092AAAF",
+  "sourceSha256": "9544FECF66BC53AA5D9135FD79AE806D3CBB73F27034C5030C8530EC506C2216"
+}
