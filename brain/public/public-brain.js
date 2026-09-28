@@ -328,7 +328,8 @@ const browserVoice=new LeeWayBrowserVoice(),welcomePlayer=new LeeWayWelcomePlaye
 const threadWorkplane=new LeeWayThreadWorkplane({maxHands:8,onState:()=>setTimeout(renderThreadState,0)});
 const speechArbiter=new LeeWaySpeechLeaseArbiter(browserVoice,{
  onNavigation:text=>{recordChat('Agent Lee · source',text);agentState.textContent=text;},
- onState:message=>{if(message)agentState.textContent=message;}
+ onState:message=>{if(message)agentState.textContent=message;},
+ onThread:thread=>selectThread(thread.id)
 });
 let selectedThreadId=threadWorkplane.mainThread.id,pendingVoiceThreadId=null;
 const modelPreparation=new LeeWayModelPreparation();
@@ -343,7 +344,9 @@ function renderThreadState(){
  if(box)box.dataset.busy=String(running.length>0);
 }
 function selectThread(threadId){
- const thread=threadWorkplane.selectThread(threadId);selectedThreadId=thread.id;const select=qs('#agentThreadSelect');if(select)select.value=thread.id;renderThreadState();return thread;
+ const thread=threadWorkplane.selectThread(threadId);selectedThreadId=thread.id;const select=qs('#agentThreadSelect');if(select)select.value=thread.id;
+ if(thread.lastOutput){agentText.textContent=thread.lastOutput;agentNarration.textContent=thread.lastOutput;}
+ renderThreadState();return thread;
 }
 function createSideThread(){const side=threadWorkplane.createSideThread();selectThread(side.id);return side;}
 function threadSpeech(thread,text){

@@ -28,8 +28,8 @@ test('speech arbiter pauses one mouth for a side thread, announces source, then 
  const log=[],voice={ready:true,pausePlayback(){log.push('pause');return ['main-audio']},async resumePlayback(h){log.push('resume:'+h.join(','))},stop(){log.push('stop')},
   async speakInsertedStream(stream,{onState}={}){for await(const text of stream){log.push('insert:'+text);onState?.(text)}},
   async speakStream(stream,{beforePlay,onRendered}={}){for await(const text of stream){await beforePlay?.();log.push('main:'+text);onRendered?.(text)}}};
- const s=setup(),w=new s.LeeWayThreadWorkplane(),side=w.createSideThread(),a=new s.LeeWaySpeechLeaseArbiter(voice),mainStream={done:false,[Symbol.asyncIterator](){return this},async next(){if(this.done)return {done:true};this.done=true;await new Promise(r=>setTimeout(r,20));return {value:'main words',done:false}}},
+ const s=setup(),w=new s.LeeWayThreadWorkplane(),side=w.createSideThread(),focused=[],a=new s.LeeWaySpeechLeaseArbiter(voice,{onThread:t=>focused.push(t.id)}),mainStream={done:false,[Symbol.asyncIterator](){return this},async next(){if(this.done)return {done:true};this.done=true;await new Promise(r=>setTimeout(r,20));return {value:'main words',done:false}}},
  sideStream={done:false,[Symbol.asyncIterator](){return this},async next(){if(this.done)return {done:true};this.done=true;return {value:'side words',done:false}}};
  const main=a.speak(w.mainThread,mainStream);await new Promise(r=>setTimeout(r,1));const branch=a.speak(side,sideStream);await branch;await main;
- assert.ok(log.some(x=>x==='pause'));assert.ok(log.some(x=>/insert:The side chat has new information/i.test(x)));assert.ok(log.some(x=>/insert:Back on the main task/i.test(x)||/insert:The main task completed/i.test(x)));assert.ok(log.some(x=>x.startsWith('resume:')));
+ assert.ok(log.some(x=>x==='pause'));assert.ok(log.some(x=>/insert:The side chat has new information/i.test(x)));assert.ok(log.some(x=>/insert:Back on the main task/i.test(x)||/insert:The main task completed/i.test(x)));assert.ok(log.some(x=>x.startsWith('resume:')));assert.deepEqual(focused,[w.mainThread.id,side.id,w.mainThread.id]);
 });
