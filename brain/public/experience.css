@@ -64,7 +64,7 @@ html,body{overflow:clip}body{position:fixed;inset:0}
 .agentTranscript{font-size:13px;color:#c9e8f5;max-height:100px}
 .agentInputRow{grid-template-columns:minmax(0,1fr) 44px}.agentInputRow textarea{font-size:16px;min-height:44px}.agentInputRow button{min-height:44px}
 .voice-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;pointer-events:auto}.voice-controls button{font-size:13px;min-height:42px}
-#reasonBtn.agentReason{display:inline-flex!important;align-items:center;width:auto;padding:8px 12px}
+#reasonBtn.agentReason{display:inline-flex!important;align-items:center;width:auto;height:auto;min-height:40px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:650;color:#c8f3ff;border-color:#365b76}
 .browser-ai-setup{margin:12px 0;padding:12px;border:1px solid #365b76;border-radius:10px;background:#081c2e;font-size:12px;line-height:1.5}
 .browser-ai-setup summary{cursor:pointer;font-size:14px;font-weight:650;color:#bcecff}
 .browser-ai-setup p{color:#bdcede;margin:8px 0}
@@ -72,6 +72,7 @@ html,body{overflow:clip}body{position:fixed;inset:0}
 .browser-ai-setup progress{width:100%;height:8px;accent-color:#5ce0ff}
 .browser-ai-setup progress[hidden]{display:none}
 .browser-ai-setup audio{display:block;width:100%;height:36px;margin:8px 0}
+.browser-ai-setup select{min-height:40px;width:100%;padding:8px;border:1px solid #365b76;border-radius:8px;background:#061321;color:#dff4ff;font-size:14px}
 .reference-label{display:block;margin-top:10px;color:#e3f4ff}.browser-ai-setup input[type=file]{width:100%;font-size:12px;margin:5px 0}
 .browser-ai-setup [role=status]{overflow-wrap:anywhere;color:#b6cddd}
 button:disabled{opacity:.55;cursor:default}
