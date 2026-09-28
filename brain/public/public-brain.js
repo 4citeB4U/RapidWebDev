@@ -369,20 +369,20 @@ async function prepareAgent(){
 }
 qs('#enableFullAI').onclick=prepareAgent;
 qs('#agentStartupStatus').onclick=()=>openAgentBubble(false);
-qs('#clearChatHistory').addEventListener('click',()=>{voiceController.history=[];});
+qs('#clearChatHistory').addEventListener('click',()=>{voiceController.history=[];for(const thread of threadWorkplane.threads.values())thread.history=[];});
 let completedDraft='';
 const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Skills and Formula sources verified. Formula evaluator is not connected; no Formula task has run.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
 qs('#downloadAgentDraft').onclick=()=>{if(!completedDraft)return;const url=URL.createObjectURL(new Blob([completedDraft],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='agent-lee-draft.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 const WELCOME_TEXT="I'm Agent Lee. Welcome to the LeeWay Digital Brain. Drag the brain to rotate it. Scroll up to enter and explore the project cards. Use Return to Brain to come back. Start a conversation when you are ready to ask a question.";
 const voiceController=new LeeWayVoiceController({
  onState:message=>agentState.textContent=message,
- onCancel:()=>{welcomePlayer.stop();browserVoice.stop();if(gemmaGenerating)browserGemma?.cancel();qs("#savedVoiceSample")?.pause();gemmaGenerating=false;tourEpoch++}
+ onCancel:()=>{welcomePlayer.stop();browserVoice.stop();qs("#savedVoiceSample")?.pause();tourEpoch++}
 });
 const browserListener=new LeeWayBrowserListener({
  onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"Local speech recognition ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
- onSpeech:()=>{LeeWayVoiceMetrics.record("speech-onset");voiceController.stop();},
+ onSpeech:()=>{LeeWayVoiceMetrics.record("speech-onset");speechArbiter.pauseCurrent();const active=speechArbiter.active?.thread;pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;},
  onListening:active=>{voiceController.listening=active;listening=active;micBtn.classList.toggle("listening",active);if(!active&&conversationSession.requested&&conversationSession.state==="listening")conversationSession.mute();},
- onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");void handleAgentCommand(text)},
+ onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");const route=pendingVoiceThreadId;pendingVoiceThreadId=null;void handleAgentCommand(text,route)},
  onMetric:(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail),
  onProgress:p=>showModelProgress("recognition",p)
 });
@@ -439,7 +439,8 @@ qs('#exportVoiceTiming').onclick=()=>{
  const report={version:'pipeline1',voice:'Voice One',delivery:browserVoice.exaggeration,pace:browserVoice.playbackRate,device:browserVoice.device,clock:'performance.now milliseconds; page-local',acousticVerification:'NOT_PERFORMED_BY_THIS_REPORT',events:LeeWayVoiceMetrics.snapshot()};
  const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='agent-lee-voice-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
-function cancelAgentGeneration(){browserListener.cancelUtterance();voiceController.stop()}
+function cancelAgentGeneration(){browserListener.cancelUtterance();if(gemmaGenerating)browserGemma?.cancel();voiceController.stop();gemmaGenerating=false;}
+function silenceSpeechOnly(){browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();qs("#savedVoiceSample")?.pause();}
 function endVoice(){conversationSession.mute()}
 async function askGemma(question,turn={epoch:voiceController.epoch,signal:voiceController.controller.signal}){
  if(browserGemma?.state!=="ready")return null;
