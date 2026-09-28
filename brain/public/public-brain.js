@@ -489,17 +489,28 @@ function navigateAgentRequest(text){
  }
  return null;
 }
-async function handleAgentCommand(raw){
- const text=raw.trim(),q=text.toLowerCase();if(!text)return;
+async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
+ let text=raw.trim();if(!text)return;
  agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
- recordChat('You',text);
- if(LeeWayStopIntent(text)){conversationSession.stopSpeaking();return;}
+ if(globalThis.LeeWayPauseIntent?.(text)){speechArbiter.pauseCurrent();return;}
+ if(globalThis.LeeWayResumeIntent?.(text)){await speechArbiter.resumeCurrent();return;}
+ if(LeeWayStopIntent(text)){speechArbiter.cancelSpeech();return;}
+ let thread;
+ if(/^(?:main|main chat|main task)[:,]?\s+/i.test(text)){text=text.replace(/^(?:main|main chat|main task)[:,]?\s+/i,'');thread=threadWorkplane.mainThread;}
+ else if(/^(?:side|side chat)[:,]?\s+/i.test(text)){text=text.replace(/^(?:side|side chat)[:,]?\s+/i,'');thread=threadWorkplane.getThread(selectedThreadId)?.kind==='side'?threadWorkplane.getThread(selectedThreadId):createSideThread();}
+ else if(requestedThreadId==='AUTO_SIDE')thread=createSideThread();
+ else thread=threadWorkplane.getThread(requestedThreadId)||threadWorkplane.getThread(selectedThreadId)||threadWorkplane.mainThread;
+ selectThread(thread.id);recordChat('You · '+threadDisplay(thread),text);threadWorkplane.remember(thread.id,"user",text);
  if(!browserVoice.ready&&/^(?:hi|hello|who are you|introduce yourself|how (?:do i|to) (?:use|explore)(?: this| the site| the website)?)[.!?]*$/i.test(text)){cancelAgentGeneration();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});return;}
- browserListener.cancelUtterance();const turn=voiceController.begin();voiceController.remember("user",text);
- const navigation=navigateAgentRequest(text);if(navigation){agentText.textContent=navigation;recordChat('Agent Lee',navigation);speak(navigation,turn.epoch);return;}
- if(browserGemma?.state==="ready"){await askGemma(text,turn);return;}
+ browserListener.cancelUtterance();
+ const navigation=navigateAgentRequest(text);
+ if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
+ if(browserGemma?.state==="ready"){
+  const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askGemma(text,work,t),{resource:'gemma',priority:thread.kind==='side'?80:50});
+  renderThreadState();try{return await submitted.promise}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;return null;}
+ }
  const message="I received your words. The microphone works independently of full AI. Enable Gemma for open-ended answers and Chatterbox for generated Voice One replies; the recorded guide is available now.";
- agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee',message);speak(message,turn.epoch);
+ agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 async function playWelcome(turn){
  agentState.textContent="Introducing Agent Lee...";
@@ -511,7 +522,7 @@ qs('#agentWelcome').onclick=()=>{cancelAgentGeneration();const turn={epoch:voice
 const conversationSession=new LeeWayConversationSession({
  // Capture and recognition are independent of the optional reasoning/voice models.
  prepare:async()=>true,
- start:()=>browserListener.start(),stop:()=>browserListener.stop(),silence:cancelAgentGeneration,
+ start:()=>browserListener.start(),stop:()=>browserListener.stop(),silence:silenceSpeechOnly,
  onStopped:active=>{agentState.textContent=active?'Stopped speaking. Still listening.':'Speech stopped. Microphone is off.';},
  onState:state=>{
   voiceConnecting=state==='preparing';const active=conversationSession.requested;
@@ -579,6 +590,9 @@ qs("#workspaceClose").onclick=closeWorkspace;
 qs("#backOneLevelBtn").onclick=()=>backOneLevel();
 qs("#wholeBrainCrumb").onclick=()=>showBrainOnly();
 agentBubbleClose.onclick=closeAgentBubble;
+qs('#agentThreadSelect').onchange=e=>{if(e.target.value)selectThread(e.target.value);};
+qs('#agentNewSide').onclick=()=>{const side=createSideThread();agentState.textContent=threadDisplay(side)+' ready.';};
+selectThread(threadWorkplane.mainThread.id);
 agentSend.onclick=submitAgentInput;
 agentInput.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();submitAgentInput()}});
 carouselPrev.onclick=()=>scrollRail(-1);carouselNext.onclick=()=>scrollRail(1);
