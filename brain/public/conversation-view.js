@@ -1,7 +1,13 @@
 (function(root){
+ const normalized=text=>String(text).toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
+ root.LeeWayPauseIntent=text=>{
+  const q=normalized(text);
+  return /^(?:(?:hey|okay|please|agent lee) )*(?:pause|interrupt)(?: (?:talking|speaking|please|now|for a minute))*$/.test(q)||/^(?:hey ){1,}hey$/.test(q)||/^(?:hold (?:up|on)|wait)(?: (?:please|a second|a minute|wait))*$/.test(q);
+ };
+ root.LeeWayResumeIntent=text=>/^(?:(?:okay|please|agent lee) )*(?:resume|continue|go on|keep going)(?: speaking| please)?$/.test(normalized(text));
  root.LeeWayStopIntent=text=>{
-  const q=String(text).toLowerCase().replace(/[.,!?]/g,' ').replace(/\s+/g,' ').trim();
-  return /^(?:(?:hey|okay|please|agent lee) )*(?:stop|quiet|pause|interrupt)(?: (?:talking|speaking|please|now|for a minute))*$/.test(q)||/^(?:hey ){1,}hey$/.test(q)||/^(?:hold (?:up|on)|wait)(?: (?:please|a second|a minute|wait))*$/.test(q);
+  const q=normalized(text);
+  return /^(?:(?:hey|okay|please|agent lee) )*(?:stop|quiet)(?: (?:talking|speaking|please|now|completely))*$/.test(q);
  };
  if(typeof document==='undefined')return;
  const list=document.querySelector('#chatHistoryList'),count=document.querySelector('#chatCount');

@@ -145,6 +145,12 @@
         <button id="agentStop">Stop speaking</button>
         <button id="agentEndVoice">Mute</button>
       </div>
+      <div class="agent-thread-controls" aria-label="Agent Lee conversation threads">
+        <label for="agentThreadSelect">Speaking / typing thread</label>
+        <select id="agentThreadSelect"><option value="">Main task</option></select>
+        <button id="agentNewSide" type="button">New side chat</button>
+        <small id="agentThreadStatus">Main task · ready</small>
+      </div>
       <div id="recognitionLoadStatus" role="status">Speech recognition prepares when you turn on the microphone.</div>
       <progress id="recognitionProgress" aria-label="Speech recognition download" hidden></progress>
       <details id="typeMessage" class="chat-drawer"><summary>Type a message</summary><div class="agentInputRow">
@@ -213,6 +219,8 @@
 <script src="/brain/public/voice-controller.js?v=20260928-browser4"></script>
 <script src="/brain/public/browser-voice.js?v=20260928-auto2"></script>
 <script src="/brain/public/speech-pipeline.js?v=20260928-pipeline2"></script>
+<script src="/brain/public/speech-lease-patch.js?v=20260928-threadpilot1"></script>
+<script src="/brain/public/thread-workplane.js?v=20260928-threadpilot1"></script>
 <script src="/brain/public/welcome-player.js?v=20260928-guide1"></script>
 <script src="/brain/public/leeway-knowledge.js?v=20260928-1"></script>
 <script src="/brain/public/conversation-session.js?v=20260928-mic1"></script>
@@ -220,7 +228,7 @@
 <script src="/brain/public/preparation-policy.js?v=20260928-guide1"></script>
 <script src="/brain/public/model-preparation.js?v=20260928-auto1"></script>
 <script src="/brain/public/browser-listener.js?v=20260928-mic-first1"></script>
-<script src="/brain/public/public-brain.js?v=20260928-welcome-tap1"></script>
+<script src="/brain/public/public-brain.js?v=20260928-threadpilot1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>
