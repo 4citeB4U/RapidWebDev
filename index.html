@@ -6,10 +6,11 @@
 <title>Rapid Web Develop — LeeWay Digital Brain</title>
 <script type="importmap">{"imports":{"three":"/brain/public/vendor/three.module.js","three/addons/":"/brain/public/vendor/"}}</script>
 <link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-browser4">
-<link rel="stylesheet" href="/brain/public/experience.css?v=20260928-foundation2">
+<link rel="stylesheet" href="/brain/public/experience.css?v=20260928-auto1">
 </head>
 <body class="brain-intro">
 <div id="app">
+  <button id="agentStartupStatus" class="agent-startup" aria-live="polite">Agent Lee is preparing...</button>
   <header id="topbar">
     <div class="brand"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4C8 0 3 5 5 8c-5 2-3 8 0 9-1 4 5 6 7 2V4Zm0 0c4-4 9 1 7 4 5 2 3 8 0 9 1 4-5 6-7 2M6 8l3 2-2 4m11-6-3 2 2 4"/></svg><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
     <div class="top-stats">
@@ -155,12 +156,12 @@
       </details>
       <details class="browser-ai-setup" open>
         <summary>Free browser AI</summary>
-        <p>Runs on your device. No account or API fees. First download: about 3.6 GB for chat and voice. A capable device with WebGPU is needed for Gemma 4. Cached files can be reused. Voice preparation can take several minutes on slower GPUs.</p>
+        <p>Agent Lee prepares automatically when this site opens. Models run on your device, with no account or API fees. First download: about 3.6 GB; cached files are reused on return visits. Preparation can take several minutes and requires a capable WebGPU device. The microphone starts only when you choose to talk.</p>
         <button id="reasonBtn" class="agentReason">Load Gemma 4 · 2 GB</button>
-        <div id="gemmaLoadStatus" role="status">Gemma 4 is not loaded.</div>
+        <div id="gemmaLoadStatus" role="status">Preparing Gemma 4 automatically...</div>
         <progress id="gemmaProgress" aria-label="Gemma 4 download" hidden></progress>
         <button id="loadBrowserVoice">Load browser voice · 1.6 GB</button>
-        <div id="voiceLoadStatus" role="status">Chatterbox voice and local speech recognition are not loaded.</div>
+        <div id="voiceLoadStatus" role="status">Preparing Chatterbox and local speech recognition automatically...</div>
         <progress id="voiceProgress" aria-label="Voice model download" hidden></progress>
         <button id="previewBrowserVoice" disabled>Listen to voice</button>
         <label class="reference-label" for="voiceExpression">Delivery</label>
@@ -202,12 +203,13 @@
 
 <script type="module" src="/brain/public/brain-3d.js?v=20260928-browser4"></script>
 <script src="/brain/public/voice-controller.js?v=20260928-browser4"></script>
-<script src="/brain/public/browser-voice.js?v=20260928-sampling1"></script>
+<script src="/brain/public/browser-voice.js?v=20260928-auto1"></script>
 <script src="/brain/public/speech-pipeline.js?v=20260928-pipeline2"></script>
 <script src="/brain/public/welcome-player.js?v=20260928-welcome1"></script>
 <script src="/brain/public/leeway-knowledge.js?v=20260928-1"></script>
+<script src="/brain/public/model-preparation.js?v=20260928-auto1"></script>
 <script src="/brain/public/browser-listener.js?v=20260928-pipeline1"></script>
-<script src="/brain/public/public-brain.js?v=20260928-foundation3"></script>
+<script src="/brain/public/public-brain.js?v=20260928-auto1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>

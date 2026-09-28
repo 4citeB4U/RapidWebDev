@@ -7,6 +7,12 @@ function setup(extra={}){
 test('speaking cannot initiate unsolicited model download',async()=>{
   const {Voice,Worker}=setup(),voice=new Voice();await assert.rejects(voice.speak('Hello.'),/Load the browser voice first/);assert.equal(Worker.instances.length,0);
 });
+test('automatic voice preparation does not wait for audio activation',async()=>{
+ let resumed=0;
+ class AudioContext{constructor(){this.state='suspended'}resume(){resumed++;return new Promise(()=>{})}}
+ const {Voice,Worker}=setup({AudioContext,fetch:async()=>({ok:true,blob:async()=>({})})}),voice=new Voice();voice.setReference=async()=>{};
+ const loading=voice.load();await new Promise(r=>setImmediate(r));const worker=Worker.instances[0];assert.ok(worker);assert.equal(resumed,0);const request=worker.messages.find(m=>m.type==='load');worker.reply(request.id,{device:'webgpu'});await loading;assert.equal(voice.ready,true);assert.equal(resumed,0);
+});
 test('Stop suppresses late generated audio even when inference ignores cancellation',async()=>{
   const {Voice}=setup(),voice=new Voice();voice.ready=true;let played=0;voice.play=async()=>played++;
   const speech=voice.speak('Hello there.');const rejection=assert.rejects(speech,{name:'AbortError'});

@@ -54,14 +54,16 @@
     }
     async audioContext(){
       if(!this.audio||this.audio.state==='closed')this.audio=new (root.AudioContext||root.webkitAudioContext)();
-      if(this.audio.state==='suspended')await this.audio.resume();return this.audio;
+      // Decoding does not require running the audio device. Awaiting resume here
+      // blocks automatic preparation until a gesture under autoplay policy.
+      return this.audio;
     }
-    // Explicit opt-in entry point: downloads approximately 1.5 GB on the first load.
+    // Preparation can run before a gesture; actual speech still follows user action.
     async load(onProgress=()=>{}){
       if(this.ready)return {device:this.device};if(this.loading)return this.loading;
       const lifecycle=this.lifecycle;
       this.loading=(async()=>{
-        // Resume output in the user gesture before any network/model work.
+        // Prepare decoding without requesting microphone or audible playback.
         await this.audioContext();if(lifecycle!==this.lifecycle)throw aborted();
         onProgress({status:'initiate',file:'Chatterbox voice',total:LeeWayBrowserVoice.download.webgpuBytes});
         const result=await this.request('load',{device:this.options.device},onProgress);if(lifecycle!==this.lifecycle)throw aborted();this.device=result.device;

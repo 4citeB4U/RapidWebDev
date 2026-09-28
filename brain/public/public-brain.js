@@ -325,13 +325,23 @@ function openEvidenceDetail(e,d){
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
 let browserGemma=null,tourEpoch=0,voiceConnecting=false;
 const browserVoice=new LeeWayBrowserVoice(),welcomePlayer=new LeeWayWelcomePlayer();
+const modelPreparation=new LeeWayModelPreparation();
+function updatePreparationStatus(){
+ const ready=browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready;
+ const busy=gemmaLoading||qs('#loadBrowserVoice').disabled;
+ qs('#agentStartupStatus').textContent=ready?'Agent Lee ready':busy?'Agent Lee is preparing...':'Agent Lee needs attention';
+}
+function enableGemma(){return modelPreparation.run('gemma',loadGemmaImplementation);}
+function enableBrowserVoice(){return modelPreparation.run('voice',loadVoiceImplementation);}
+async function prepareAgent(){await Promise.all([enableGemma(),enableBrowserVoice()]);updatePreparationStatus();}
+qs('#agentStartupStatus').onclick=()=>openAgentBubble(true);
 let completedDraft='';
 const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Skills and Formula sources verified. Formula evaluator is not connected; no Formula task has run.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
 qs('#downloadAgentDraft').onclick=()=>{if(!completedDraft)return;const url=URL.createObjectURL(new Blob([completedDraft],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='agent-lee-draft.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 const WELCOME_TEXT="I'm Agent Lee. Welcome to the LeeWay Digital Brain. Drag the brain to rotate it. Scroll up to enter and explore the project cards. Use Return to Brain to come back. Start a conversation when you are ready to ask a question.";
 const voiceController=new LeeWayVoiceController({
  onState:message=>agentState.textContent=message,
- onCancel:()=>{welcomePlayer.stop();browserVoice.stop();browserGemma?.cancel();qs("#savedVoiceSample")?.pause();gemmaGenerating=false;tourEpoch++}
+ onCancel:()=>{welcomePlayer.stop();browserVoice.stop();if(gemmaGenerating)browserGemma?.cancel();qs("#savedVoiceSample")?.pause();gemmaGenerating=false;tourEpoch++}
 });
 const browserListener=new LeeWayBrowserListener({
  onState:message=>agentState.textContent=message,
@@ -348,9 +358,10 @@ function showModelProgress(kind,p){
  if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;label.textContent=`${kind==="gemma"?"Gemma 4":"Voice"}: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"model"}`;}
  else{bar.removeAttribute("value");label.textContent=kind==="gemma"?"Preparing Gemma 4...":"Preparing voice files...";}
 }
-async function enableGemma(){
- openAgentBubble(false);if(gemmaLoading||browserGemma?.state==="ready")return;
+async function loadGemmaImplementation(){
+ if(browserGemma?.state==="ready")return;
  gemmaLoading=true;reasonBtn.disabled=true;LeeWayVoiceMetrics.record("gemma-load-start");
+ updatePreparationStatus();
  try{
   browserGemma=(await import("/brain/public/gemma-browser.js?v=20260928-retry1")).LeeWayBrowserGemma;
   await browserGemma.load({onProgress:p=>showModelProgress("gemma",p),onState:state=>{
@@ -359,11 +370,12 @@ async function enableGemma(){
   }});
   reasonBtn.textContent="Gemma 4 ready";reasonBtn.classList.add("ready");agentState.textContent="Gemma 4 ready in this browser";
  }catch(error){qs("#gemmaLoadStatus").textContent=error.message;agentState.textContent="Gemma 4 could not start on this device";reasonBtn.textContent="Retry Gemma 4";}
- finally{gemmaLoading=false;reasonBtn.disabled=false;qs("#gemmaProgress").hidden=true;}
+ finally{gemmaLoading=false;reasonBtn.disabled=false;qs("#gemmaProgress").hidden=true;updatePreparationStatus();}
 }
-async function enableBrowserVoice(){
+async function loadVoiceImplementation(){
  const button=qs("#loadBrowserVoice");if(button.disabled||(browserVoice.ready&&browserListener.ready))return;
  button.disabled=true;
+ updatePreparationStatus();
  try{
   LeeWayVoiceMetrics.record("voice-load-start");
   await browserVoice.load(p=>showModelProgress("voice",p));
@@ -373,11 +385,11 @@ async function enableBrowserVoice(){
   qs("#voiceLoadStatus").textContent=`Agent Lee Voice One ready on ${browserVoice.device==="webgpu"?"GPU":"CPU"}; speech recognition ready.`;
   button.textContent="Browser voice ready";qs("#previewBrowserVoice").disabled=false;
  }catch(error){qs("#voiceLoadStatus").textContent=error.message;button.textContent="Retry browser voice";}
- finally{button.disabled=false;qs("#voiceProgress").hidden=true;}
+ finally{button.disabled=false;qs("#voiceProgress").hidden=true;updatePreparationStatus();}
 }
 async function speak(text,epoch=voiceController.epoch){
  if(!text||!voiceController.current(epoch))return;
- if(!browserVoice.ready){agentState.textContent="Text answer ready. Load browser voice to hear it.";return;}
+ if(!browserVoice.ready){agentState.textContent="Text answer ready. Voice is preparing; check its progress or retry below.";return;}
  try{await browserVoice.speak(text,{signal:voiceController.controller.signal,onState:message=>{if(voiceController.current(epoch))agentState.textContent=message.startsWith("Speaking.")&&!browserListener.active?"Speaking. Use Stop to interrupt.":message}});}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(epoch))agentState.textContent=error.message;}
 }
@@ -416,7 +428,7 @@ async function askGemma(question,turn={epoch:voiceController.epoch,signal:voiceC
   output=String(answer||output).trim();stream?.end();LeeWayVoiceMetrics.record("gemma-complete");
   agentText.textContent=output;agentNarration.textContent=output;
   completedDraft=output;qs('#downloadAgentDraft').disabled=!output;
-  if(!stream){voiceController.remember("assistant",output);agentState.textContent="Text answer ready. Load browser voice to hear it.";}
+  if(!stream){voiceController.remember("assistant",output);agentState.textContent="Text answer ready. Voice is preparing; check its progress or retry below.";}
   await speech;return output;
  }catch(error){stream?.fail(error);await speech;if(voiceController.current(turn.epoch)&&error.name!=="AbortError")agentState.textContent=error.message;return null;}
  finally{if(voiceController.current(turn.epoch))gemmaGenerating=false;}
@@ -442,7 +454,7 @@ async function handleAgentCommand(raw){
  browserListener.cancelUtterance();const turn=voiceController.begin();voiceController.remember("user",text);
  const navigation=navigateAgentRequest(text);if(navigation){agentText.textContent=navigation;speak(navigation,turn.epoch);return;}
  if(browserGemma?.state==="ready"){await askGemma(text,turn);return;}
- const message="Load Gemma 4 below to ask questions. It runs on your device with no API key or paid service. Project navigation works without loading a model.";
+ const message="Agent Lee is preparing automatically. Check preparation progress below; if a download failed, use its Retry button. Project navigation works while the models prepare.";
  agentText.textContent=message;agentNarration.textContent=message;speak(message,turn.epoch);
 }
 async function playWelcome(turn){
@@ -505,14 +517,14 @@ qs("#tourBtn").onclick=startTour;
 qs("#resetBtn").onclick=showBrainOnly;
 qs(".crumb.active").onclick=backOneLevel;
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
-micBtn.onclick=()=>{openAgentBubble(true)};
+micBtn.onclick=()=>{openAgentBubble(true);if(!listening&&!voiceConnecting)void toggleMic();};
 reasonBtn.onclick=enableGemma;
 qs("#loadBrowserVoice").onclick=enableBrowserVoice;
 qs("#voiceExpression").onchange=e=>{cancelAgentGeneration();browserVoice.exaggeration=Number(e.target.value);qs("#voiceLoadStatus").textContent=`Delivery set to ${e.target.selectedOptions[0].text.toLowerCase()}.`;};
 qs("#voicePace").onchange=e=>{browserVoice.setPace(e.target.value);welcomePlayer.setPace(browserVoice.playbackRate);};
 qs("#previewBrowserVoice").onclick=()=>{cancelAgentGeneration();void speak("Hi, I am Agent Lee. What would you like to explore?")};
 qs("#voiceReference").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;if(!browserVoice.ready){qs("#voiceLoadStatus").textContent="Load browser voice before choosing a reference.";e.target.value="";return;}try{cancelAgentGeneration();await browserVoice.setReference(file);qs("#voiceLoadStatus").textContent="Your voice reference is selected on this device only.";}catch(error){qs("#voiceLoadStatus").textContent=error.message;}};
-qs("#unloadBrowserModels").onclick=()=>{endVoice();browserGemma?.unload();void browserVoice.dispose();void browserListener.dispose();reasonBtn.textContent="Load Gemma 4 · 2 GB";qs("#loadBrowserVoice").textContent="Load browser voice · 1.6 GB";qs("#previewBrowserVoice").disabled=true;qs("#gemmaLoadStatus").textContent="Models unloaded from memory.";qs("#voiceLoadStatus").textContent="Cached files may be reused next time.";};
+qs("#unloadBrowserModels").onclick=()=>{endVoice();browserGemma?.unload();void browserVoice.dispose();void browserListener.dispose();reasonBtn.textContent="Load Gemma 4 · 2 GB";qs("#loadBrowserVoice").textContent="Load browser voice · 1.6 GB";qs("#previewBrowserVoice").disabled=true;qs("#gemmaLoadStatus").textContent="Models unloaded from memory.";qs("#voiceLoadStatus").textContent="Cached files may be reused next time.";qs("#agentStartupStatus").textContent="Agent Lee models unloaded";};
 qs("#workspaceClose").onclick=closeWorkspace;
 qs("#backOneLevelBtn").onclick=()=>backOneLevel();
 qs("#wholeBrainCrumb").onclick=()=>showBrainOnly();
@@ -626,3 +638,6 @@ async function boot(){
  }).catch(()=>{});
 }
 boot().catch(e=>{agentText.textContent="Digital Brain project discovery failed: "+e.message;console.error(e)});
+// User-requested default: prepare on entry, reusing revision-pinned browser caches.
+// This does not start the microphone or play audio.
+void prepareAgent();
