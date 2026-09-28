@@ -339,7 +339,7 @@ async function storagePreflight(kind){
 }
 async function prepareAgent(){
  const button=qs('#enableFullAI'),epoch=preparationEpoch;button.disabled=true;
- try{if(!navigator.gpu||!await navigator.gpu.requestAdapter().catch(()=>null)){qs('#storageStatus').textContent='Full AI needs WebGPU on this device. The recorded Voice One guide and project navigation still work.';return;}if(!await storagePreflight('all')||epoch!==preparationEpoch)return;fullAIRequested=true;await Promise.all([enableGemma(),enableBrowserVoice()]);updatePreparationStatus();if(conversationSession.requested)void conversationSession.connect();}
+ try{if(!navigator.gpu||!await navigator.gpu.requestAdapter().catch(()=>null)){qs('#storageStatus').textContent='Full AI needs WebGPU on this device. The recorded Voice One guide and project navigation still work.';return;}if(!await storagePreflight('all')||epoch!==preparationEpoch)return;fullAIRequested=true;await Promise.all([enableGemma(),enableBrowserVoice()]);updatePreparationStatus();}
  finally{button.disabled=false;}
 }
 qs('#enableFullAI').onclick=prepareAgent;
@@ -354,20 +354,20 @@ const voiceController=new LeeWayVoiceController({
  onCancel:()=>{welcomePlayer.stop();browserVoice.stop();if(gemmaGenerating)browserGemma?.cancel();qs("#savedVoiceSample")?.pause();gemmaGenerating=false;tourEpoch++}
 });
 const browserListener=new LeeWayBrowserListener({
- onState:message=>agentState.textContent=message,
+ onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"Local speech recognition ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
  onSpeech:()=>{LeeWayVoiceMetrics.record("speech-onset");voiceController.stop();},
  onListening:active=>{voiceController.listening=active;listening=active;micBtn.classList.toggle("listening",active);if(!active&&conversationSession.requested&&conversationSession.state==="listening")conversationSession.mute();},
  onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");void handleAgentCommand(text)},
  onMetric:(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail),
- onProgress:p=>showModelProgress("voice",p)
+ onProgress:p=>showModelProgress("recognition",p)
 });
 const voiceDownloadFiles=new Map();
 function showModelProgress(kind,p){
  const bar=qs("#"+kind+"Progress"),label=qs("#"+kind+"LoadStatus");
  bar.hidden=false;
  if(p.message){bar.removeAttribute("value");label.textContent=p.message;return;}
- if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;if(kind==='voice'&&p.file){voiceDownloadFiles.set(p.file,p.loaded);const received=[...voiceDownloadFiles.values()].reduce((a,b)=>a+b,0);label.textContent=`Voice files: ${(received/1e6).toFixed(0)} MB received or cached. Current file: ${Math.round(p.loaded/p.total*100)}%.`;return;}label.textContent=`${kind==="gemma"?"Gemma 4":"Voice"}: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"model"}`;}
- else{bar.removeAttribute("value");label.textContent=kind==="gemma"?"Preparing Gemma 4...":"Preparing voice files...";}
+ if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;if(kind==='voice'&&p.file){voiceDownloadFiles.set(p.file,p.loaded);const received=[...voiceDownloadFiles.values()].reduce((a,b)=>a+b,0);label.textContent=`Voice files: ${(received/1e6).toFixed(0)} MB received or cached. Current file: ${Math.round(p.loaded/p.total*100)}%.`;return;}label.textContent=`${kind==="gemma"?"Gemma 4":kind==="recognition"?"Speech recognition":"Voice"}: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"model"}`;}
+ else{bar.removeAttribute("value");label.textContent=kind==="gemma"?"Preparing Gemma 4...":kind==="recognition"?"Preparing local speech recognition...":"Preparing voice files...";}
 }
 async function loadGemmaImplementation(){
  if(browserGemma?.state==="ready")return;
@@ -385,7 +385,7 @@ async function loadGemmaImplementation(){
  finally{gemmaLoading=false;reasonBtn.disabled=false;qs("#gemmaProgress").hidden=true;updatePreparationStatus();}
 }
 async function loadVoiceImplementation(){
- const button=qs("#loadBrowserVoice");if(button.disabled||(browserVoice.ready&&browserListener.ready))return;
+ const button=qs("#loadBrowserVoice");if(button.disabled||browserVoice.ready)return;
  const epoch=preparationEpoch;if(!await storagePreflight("voice")||epoch!==preparationEpoch)return;
  button.disabled=true;voiceDownloadFiles.clear();
  updatePreparationStatus();
@@ -393,9 +393,7 @@ async function loadVoiceImplementation(){
   LeeWayVoiceMetrics.record("voice-load-start");
   await browserVoice.load(p=>showModelProgress("voice",p));
   LeeWayVoiceMetrics.record("voice-load-ready",{device:browserVoice.device});
-  qs("#voiceLoadStatus").textContent="Preparing local speech recognition...";
-  LeeWayVoiceMetrics.record("recognition-load-start");await browserListener.load();LeeWayVoiceMetrics.record("recognition-load-ready");
-  qs("#voiceLoadStatus").textContent=`Agent Lee Voice One ready on ${browserVoice.device==="webgpu"?"GPU":"CPU"}; speech recognition ready.`;
+  qs("#voiceLoadStatus").textContent=`Agent Lee Voice One ready on ${browserVoice.device==="webgpu"?"GPU":"CPU"}.`;
   button.textContent="Browser voice ready";qs("#previewBrowserVoice").disabled=false;
  }catch(error){qs("#voiceLoadStatus").textContent=error.message;button.textContent="Retry browser voice";}
  finally{button.disabled=false;qs("#voiceProgress").hidden=true;updatePreparationStatus();}
@@ -466,10 +464,11 @@ async function handleAgentCommand(raw){
  agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
  recordChat('You',text);
  if(LeeWayStopIntent(text)){conversationSession.stopSpeaking();return;}
+ if(!browserVoice.ready&&/^(?:hi|hello|who are you|introduce yourself|how (?:do i|to) (?:use|explore)(?: this| the site| the website)?)[.!?]*$/i.test(text)){cancelAgentGeneration();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});return;}
  browserListener.cancelUtterance();const turn=voiceController.begin();voiceController.remember("user",text);
  const navigation=navigateAgentRequest(text);if(navigation){agentText.textContent=navigation;recordChat('Agent Lee',navigation);speak(navigation,turn.epoch);return;}
  if(browserGemma?.state==="ready"){await askGemma(text,turn);return;}
- const message="The recorded Voice One guide and project navigation work now. Open Optional full AI to enable open-ended answers on this device. No large model download is required to explore.";
+ const message="I received your words. The microphone works independently of full AI. Enable Gemma for open-ended answers and Chatterbox for generated Voice One replies; the recorded guide is available now.";
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee',message);speak(message,turn.epoch);
 }
 async function playWelcome(turn){
@@ -480,19 +479,15 @@ async function playWelcome(turn){
 }
 qs('#agentWelcome').onclick=()=>{cancelAgentGeneration();const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};void playWelcome(turn);};
 const conversationSession=new LeeWayConversationSession({
- prepare:async()=>{
-  if(browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready)return true;
-  if(!fullAIRequested){qs('#fullAISetup').open=true;return false;}
-  await Promise.all([enableGemma(),enableBrowserVoice()]);
-  return browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready;
- },
+ // Capture and recognition are independent of the optional reasoning/voice models.
+ prepare:async()=>true,
  start:()=>browserListener.start(),stop:()=>browserListener.stop(),silence:cancelAgentGeneration,
  onStopped:active=>{agentState.textContent=active?'Stopped speaking. Still listening.':'Speech stopped. Microphone is off.';},
  onState:state=>{
   voiceConnecting=state==='preparing';const active=conversationSession.requested;
   micBtn.setAttribute('aria-pressed',String(active));micBtn.setAttribute('aria-label',active?'Mute Agent Lee microphone and speech':'Start live conversation with Agent Lee');
   micBtn.dataset.mode=state;qs('#agentStartVoice').textContent=active?'Mute conversation':'Start live conversation';qs('#agentStartVoice').setAttribute('aria-pressed',String(active));
-  agentState.textContent=state==='listening'?'Listening. Speak naturally; tap Agent Lee to mute.':state==='preparing'?'Preparing conversation. Microphone is not listening yet.':state==='setup'?'Microphone is off. Enable full AI below; this conversation will start when ready.':'Muted. Microphone and speech are off.';
+  agentState.textContent=state==='listening'?(browserListener.ready?'Listening. Speak naturally; tap Agent Lee to mute.':'Microphone is on. Preparing local speech recognition...'):state==='preparing'?'Opening microphone. Allow access if your browser asks.':state==='setup'?'Microphone could not start. Check browser permission.':'Muted. Microphone and speech are off.';
  },onError:error=>{agentState.textContent=error.message||'Microphone unavailable. You can type instead.';}
 });
 async function toggleMic(){openAgentBubble(false);await conversationSession.toggle();}

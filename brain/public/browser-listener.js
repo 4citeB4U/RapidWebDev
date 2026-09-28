@@ -20,24 +20,28 @@
     async start(){
       if(this.active)return;
       const epoch=++this.epoch;
-      await this.load();if(epoch!==this.epoch)return;
+      // Request microphone permission from the original click, independently of model downloads.
+      if(epoch!==this.epoch)return;
       const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
       if(epoch!==this.epoch){stream.getTracks().forEach(t=>t.stop());return;}
       this.stream=stream;
       const settings=stream.getAudioTracks()[0]?.getSettings?.()||{};
       this.options.onMetric?.('microphone-start',{sampleRate:settings.sampleRate,echoCancellation:settings.echoCancellation,noiseSuppression:settings.noiseSuppression});
       try{
-        this.audio=new AudioContext({sampleRate:16000});await this.audio.resume();
-        await this.audio.audioWorklet.addModule('/brain/public/voice-capture-worklet.js');
-        if(epoch!==this.epoch){await this.stop();return;}
+        const audio=new AudioContext({sampleRate:16000});this.audio=audio;await audio.resume();
+        if(epoch!==this.epoch)return;
+        await audio.audioWorklet.addModule('/brain/public/voice-capture-worklet.js');
+        if(epoch!==this.epoch)return;
         this.input=this.audio.createMediaStreamSource(stream);
         this.capture=new AudioWorkletNode(this.audio,'leeway-capture');
         this.resetUtterance();this.noise=.002;this.active=true;
         this.capture.port.onmessage=event=>{if(this.active&&epoch===this.epoch)this.consume(new Int16Array(event.data));};
         this.input.connect(this.capture);this.capture.connect(this.audio.destination);
-        this.options.onListening?.(true);this.options.onState?.('Listening on this device. You can interrupt me.');
+        this.options.onListening?.(true);this.options.onState?.(this.ready?'Listening on this device. You can interrupt me.':'Microphone is on. Preparing local speech recognition...');
+        // Never block microphone capture on Chatterbox, Gemma, or recognition loading.
+        void this.load().then(()=>{if(this.active&&epoch===this.epoch)this.options.onState?.('Listening on this device. You can interrupt me.');}).catch(async error=>{if(epoch===this.epoch){await this.stop();this.options.onState?.('Speech recognition failed: '+error.message);}});
         stream.getAudioTracks().forEach(track=>track.onended=()=>void this.stop());
-      }catch(error){await this.stop();throw error;}
+      }catch(error){if(epoch===this.epoch){await this.stop();throw error;}}
     }
     resetUtterance(){this.preRoll=[];this.frames=[];this.voiced=0;this.silence=0;this.inSpeech=false;}
     consume(frame){
@@ -68,6 +72,7 @@
       this.transcribing=true;const {audio,epoch,utterance}=this.waitingClip;this.waitingClip=null;
       this.options.onState?.('Understanding your speech on this device...');
       try{
+        await this.load();if(!this.active||epoch!==this.epoch||utterance!==this.utterance)return;
         const start=performance.now();this.options.onMetric?.('transcription-start');
         const result=await this.request({type:'transcribe',audio:audio.buffer},[audio.buffer]);
         this.options.onMetric?.('transcription-complete',{durationMs:performance.now()-start});
@@ -80,8 +85,9 @@
       ++this.epoch;this.active=false;this.waitingClip=null;this.options.onMetric?.('microphone-stop');
       this.input?.disconnect();this.capture?.disconnect();this.input=null;this.capture=null;
       this.stream?.getTracks().forEach(track=>{track.onended=null;track.stop()});this.stream=null;
-      if(this.audio){await this.audio.close().catch(()=>{});this.audio=null;}
+      const audio=this.audio;this.audio=null;
       this.resetUtterance();this.options.onListening?.(false);
+      if(audio)await audio.close().catch(()=>{});
     }
     async dispose(){await this.stop();this.worker?.terminate();this.worker=null;this.ready=false;for(const task of this.pending.values()){clearTimeout(task.timer);task.reject(new DOMException('Closed','AbortError'));}this.pending.clear();}
   }

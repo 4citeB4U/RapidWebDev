@@ -143,6 +143,8 @@
         <button id="agentStop">Stop speaking</button>
         <button id="agentEndVoice">Mute</button>
       </div>
+      <div id="recognitionLoadStatus" role="status">Speech recognition prepares when you turn on the microphone.</div>
+      <progress id="recognitionProgress" aria-label="Speech recognition download" hidden></progress>
       <details id="typeMessage" class="chat-drawer"><summary>Type a message</summary><div class="agentInputRow">
         <textarea aria-label="Message Agent Lee" id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
         <button id="agentSend" aria-label="Send to Agent Lee" title="Send to Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 7 7M12 4l-7 7M12 4v16"/></svg></button>
@@ -159,13 +161,13 @@
       <p class="guide-note">Recorded Voice One guide · no AI model download. Open-ended conversation needs optional full AI.</p>
       <details id="fullAISetup" class="browser-ai-setup">
         <summary>Optional full AI · about 3.6 GB</summary>
-        <p>Tap Meet Agent Lee for the recorded guide. Tap the portrait to request live conversation. Full conversation downloads Gemma 4, Chatterbox and speech recognition to this device. About 3.6 GB on first use; this can take several minutes and needs sufficient storage, memory and WebGPU support. Completed cached files are reused. Use Wi-Fi for the large download. The microphone opens only when you start a conversation.</p>
+        <p>Tap Meet Agent Lee for the recorded guide. Tap the portrait to request live conversation. Full conversation downloads Gemma 4, Chatterbox and speech recognition to this device. About 3.6 GB on first use; this can take several minutes and needs sufficient storage, memory and WebGPU support. Completed cached files are reused. Use Wi-Fi for the large download. The microphone opens on your first tap, independently of these models. Local speech recognition prepares separately; generated answers and voice still need the optional models.</p>
         <button id="enableFullAI">Enable full AI · about 3.6 GB</button><p id="storageStatus" role="status">Storage is checked before downloading. The guide stays available if full AI cannot run.</p>
         <button id="reasonBtn" class="agentReason">Load Gemma 4 · 2 GB</button>
         <div id="gemmaLoadStatus" role="status">Optional: Gemma 4 is not loaded.</div>
         <progress id="gemmaProgress" aria-label="Gemma 4 download" hidden></progress>
         <button id="loadBrowserVoice">Load browser voice · 1.6 GB</button>
-        <div id="voiceLoadStatus" role="status">Optional: Chatterbox and recognition are not loaded.</div>
+        <div id="voiceLoadStatus" role="status">Optional: Chatterbox is not loaded.</div>
         <progress id="voiceProgress" aria-label="Voice model download" hidden></progress>
         <button id="previewBrowserVoice" disabled>Listen to voice</button>
         <label class="reference-label" for="voiceExpression">Delivery</label>
@@ -215,8 +217,8 @@
 <script src="/brain/public/conversation-view.js?v=20260928-mic1"></script>
 <script src="/brain/public/preparation-policy.js?v=20260928-guide1"></script>
 <script src="/brain/public/model-preparation.js?v=20260928-auto1"></script>
-<script src="/brain/public/browser-listener.js?v=20260928-pipeline1"></script>
-<script src="/brain/public/public-brain.js?v=20260928-mic2"></script>
+<script src="/brain/public/browser-listener.js?v=20260928-mic-first1"></script>
+<script src="/brain/public/public-brain.js?v=20260928-mic-first1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>
