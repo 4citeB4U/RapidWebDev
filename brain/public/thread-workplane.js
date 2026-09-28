@@ -85,7 +85,7 @@
   let done=false;return {[Symbol.asyncIterator](){return this},async next(){if(done)return {done:true};done=true;return {value:text,done:false}},fail(){done=true},dispose(){}};
  }
  class LeeWaySpeechLeaseArbiter{
-  constructor(voice,{onNavigation=()=>{},onState=()=>{}}={}){this.voice=voice;this.onNavigation=onNavigation;this.onState=onState;this.active=null;this.waiters=new Set();}
+  constructor(voice,{onNavigation=()=>{},onState=()=>{},onThread=()=>{}}={}){this.voice=voice;this.onNavigation=onNavigation;this.onState=onState;this.onThread=onThread;this.active=null;this.waiters=new Set();}
   _activate(record){this.active=record||null;for(const wake of [...this.waiters])wake();this.waiters.clear();}
   async waitFor(threadId,signal){
    while(this.active&&this.active.thread.id!==threadId){
@@ -109,7 +109,7 @@
    if(previous?.thread.id===thread.id){await previous.done.catch(()=>{});return this.speak(thread,stream,{signal,onState,onRendered});}
    if(!previous){
     let resolveDone,rejectDone;const done=new Promise((r,j)=>{resolveDone=r;rejectDone=j});done.catch(()=>{});
-    const record={thread,done,resolveDone,rejectDone};this._activate(record);
+    const record={thread,done,resolveDone,rejectDone};this._activate(record);this.onThread(thread);
     try{
      await this._sayNavigation(navigationPhrase(null,thread),signal);
      await this.voice.speakStream(stream,{signal,onState,beforePlay:()=>this.waitFor(thread.id,signal),onRendered});
@@ -120,7 +120,7 @@
    }
    const paused=this.voice.pausePlayback?.()||[];
    let resolveDone,rejectDone;const done=new Promise((r,j)=>{resolveDone=r;rejectDone=j});done.catch(()=>{});
-   const record={thread,done,resolveDone,rejectDone};this._activate(record);
+   const record={thread,done,resolveDone,rejectDone};this._activate(record);this.onThread(thread);
    try{
     await this._sayNavigation(navigationPhrase(previous.thread,thread),signal);
     await this.voice.speakInsertedStream(stream,{signal,onState,beforePlay:()=>this.waitFor(thread.id,signal),onRendered});
@@ -128,6 +128,7 @@
    }catch(error){rejectDone(error);throw error}
    finally{
     if(this.active===record){
+     this.onThread(previous.thread);
      try{await this._sayNavigation(navigationPhrase(thread,previous.thread),signal)}catch{}
      this._activate(previous);try{await this.voice.resumePlayback?.(paused)}catch{}
     }
