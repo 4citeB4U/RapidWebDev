@@ -1,0 +1,99 @@
+{
+  "schema": "leeway-agent-lee-thread-voice-pilot-veritas-v2",
+  "tested_at": "2026-09-28T16:43:21Z",
+  "target": "https://4citeb4u.github.io/RapidWebDev/",
+  "authority": "Creator/Human Authority > LeeWay Standards",
+  "source_repo": "4citeB4U/RapidWebDev",
+  "pilot_pr": 4,
+  "display_sync_pr": 5,
+  "cache_identity_pr": 6,
+  "runtime_merge_commit": "d937238dad5a6703ab176f0ca94f9a8edf2c5026",
+  "display_sync_merge_commit": "0ef25bfcbbfeb1c63e2ba1d6e582a4811e2186f8",
+  "verification_workflow_commit": "f5783d2c6f1c5d58cfa428b1a99b1e1797b4fbf0",
+  "served_cache_identity": {
+    "thread_workplane": "20260928-threadpilot2",
+    "public_brain": "20260928-threadpilot2"
+  },
+  "formula": {
+    "funnel_governance": "APPLIED",
+    "canonical_numeric_evaluation": "NOT_EXECUTED",
+    "reason": "No authorized measured 16x6 voice state was staged; no Q69, F1/F7 ranking, or Formula numeric result was invented."
+  },
+  "source_acceptance": {
+    "display_sync_run_id": 36452499998,
+    "display_sync_tests": 64,
+    "display_sync_pass": 64,
+    "display_sync_fail": 0,
+    "cache_identity_run_id": 36452784624,
+    "cache_identity_tests": 64,
+    "cache_identity_pass": 64,
+    "cache_identity_fail": 0,
+    "status": "PASS"
+  },
+  "provenance_authority": {
+    "run_id": 36452784676,
+    "status": "PASS"
+  },
+  "deployment": {
+    "repaired_runtime_pages_run_id": 36452852695,
+    "repaired_runtime_pages_status": "PASS",
+    "verification_commit_pages_run_id": 36452966376,
+    "verification_commit_pages_status": "PASS",
+    "threadpilot2_http_smoke_run_id": 36452852970,
+    "threadpilot2_http_smoke_status": "PASS",
+    "threadpilot2_http_smoke_artifact_id": 10983969355,
+    "threadpilot2_http_smoke_artifact_digest": "sha256:29b7f900885ed2f19cf4f9ba87407ab7c207284be5ade78975d6ca7747161807"
+  },
+  "live_browser": {
+    "run_id": 36452966944,
+    "status": "PASS",
+    "deployment_precondition": "PASS: workflow waited until the public page served both thread-workplane.js?v=20260928-threadpilot2 and public-brain.js?v=20260928-threadpilot2 before launching Chromium.",
+    "artifact_id": 10984485921,
+    "artifact_digest": "sha256:72cf9c45d3f1b4deb81ee36caa4912a40df4e015b40c74b33facc57585ad1f71",
+    "before_options": 2,
+    "after_options": 3,
+    "selected": "Side chat [LW-THREAD-0002]",
+    "displayed_status": "Side chat [LW-THREAD-0002] · idle · 0/8 hands active",
+    "workplane_loaded": true,
+    "speech_arbiter_loaded": true,
+    "pause_loaded": true,
+    "resume_loaded": true,
+    "inserted_speech_loaded": true,
+    "uncaught_page_errors": 0,
+    "screenshot_verified": true
+  },
+  "evidence_history": {
+    "prior_receipt": "brain/receipts/AGENT-LEE-THREAD-VOICE-PILOT-VERITAS-20260928.json",
+    "preserved_failures": [
+      {
+        "run_id": 36451533483,
+        "classification": "TEST_HARNESS_FAILURE",
+        "cause": "Initial live-browser test required a hidden thread control to be visible before opening Agent Lee."
+      },
+      {
+        "run_id": 36451761793,
+        "classification": "TEST_HARNESS_FAILURE",
+        "cause": "Second live-browser test still waited on hidden selector visibility before opening Agent Lee; corrected to attached -> open -> visible."
+      }
+    ],
+    "post_v1_repair": "Screenshot/evidence review found visible thread could remain on Side after the speech lease returned to Main. PR #5 synchronized visible thread ownership with the spoken lease and restored stored thread output. PR #6 then gave the repaired scripts a new cache identity."
+  },
+  "open_gates": {
+    "acoustic_voice_one": "NOT_TESTED",
+    "chatterbox_clone_voice_quality": "NOT_VERIFIED",
+    "actual_chatterbox_audio_during_main_side_handoff": "NOT_TESTED",
+    "browser_gemma_full_model_load": "NOT_TESTED",
+    "local_system_gemma4": "BLOCKED_DEVICE_OFFLINE",
+    "microphone_barge_in_physical_device": "NOT_TESTED",
+    "main_side_spoken_handoff_physical_device": "NOT_TESTED",
+    "zero_drop_zero_duplicate_acoustic_campaign": "NOT_TESTED",
+    "twenty_turn_interruption_campaign": "NOT_EXECUTED",
+    "conversation_vault_persistence": "NOT_VERIFIED",
+    "learning_ledger_promotion": "NOT_UPDATED"
+  },
+  "promotion": {
+    "live_structural_veritas": "PASS",
+    "reusable_leeway_agent_blue_standard": "BLOCKED_PENDING_OPEN_GATES"
+  },
+  "verdict": "LIVE_STRUCTURAL_PASS_V2"
+}
