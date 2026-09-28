@@ -8,7 +8,7 @@
 <h2>Headphone interruption test</h2><p>This uses the saved Voice One recording, so speech synthesis speed does not affect the interruption test. Put on headphones. Start the test, then say “stop” while the recording plays. End closes the microphone. No microphone recording is saved.</p>
 <button id="acoustic">Start microphone test</button><button id="end">End microphone test</button><pre id="acousticResult">Microphone off.</pre>
 <button id="download">Download timing evidence</button><pre id="timing"></pre><p><a href="/">Return to the Digital Brain</a></p>
-<script src="./browser-voice.js?v=20260928-sampling1"></script><script src="./speech-pipeline.js?v=20260928-pipeline1"></script><script src="./browser-listener.js?v=20260928-pipeline1"></script>
+<script src="./intro-script.js?v=20260928-1"></script><script src="./browser-voice.js?v=20260928-sampling1"></script><script src="./speech-pipeline.js?v=20260928-pipeline1"></script><script src="./browser-listener.js?v=20260928-pipeline1"></script>
 <script>
 const $=s=>document.querySelector(s);let voice=null,control=null,listener=null,acousticVoice=null,acousticControl=null;
 const trials=[];let loadedModel=null;const record=(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail);
@@ -33,7 +33,7 @@ $('#stop').onclick=async()=>{control?.abort();await voice?.dispose();$('#run').d
 $('#welcome').onclick=async()=>{
  $('#welcome').disabled=true;$('#run').disabled=true;$('#load').disabled=true;$('#model').disabled=true;
  try{
-  const lines=["I'm Agent Lee. Welcome to the LeeWay Digital Brain.","Drag the brain to rotate it. Scroll up to enter and explore the project cards.","Use Return to Brain to come back. Start a conversation when you are ready to ask a question."],parts=[];
+  const lines=window.LeeWayIntroCopy?.segments||["I'm Agent Lee. Welcome to the LeeWay Digital Brain."],parts=[];
   for(let i=0;i<lines.length;i++){
    $('#state').textContent='Preparing introduction '+(i+1)+' of '+lines.length;
    const result=await voice.request('generate',{text:lines[i],exaggeration:.25},p=>{if(p.message)$('#state').textContent='Introduction '+(i+1)+': '+p.message});
