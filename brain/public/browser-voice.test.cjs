@@ -44,3 +44,11 @@ test('faster playback preserves pitch, applies pace immediately and releases aud
   voice.setPace(1.2);assert.equal(media.playbackRate,1.2);voice.stop();await rejection;
   assert.equal(media.paused,true);assert.equal(media.src,'');assert.equal(revoked,1);assert.equal(voice.sources.size,0);
 });
+
+test('active downloads extend the load deadline but stalled loads still fail',async()=>{
+ let serial=0;const timers=new Map();
+ const {Voice}=setup({setTimeout:(fn,ms)=>{const id=++serial;timers.set(id,{fn,ms});return id},clearTimeout:id=>timers.delete(id)}),voice=new Voice();
+ const loading=voice.request('load'),failed=assert.rejects(loading,/too long/);const worker=voice.worker,id=worker.messages[0].id,initial=voice.pending.get(id).timer;
+ worker.onmessage({data:{id,type:'progress',data:{loaded:100}}});const renewed=voice.pending.get(id).timer;
+ assert.notEqual(renewed,initial);assert.equal(timers.has(initial),false);assert.equal(timers.get(renewed).ms,900000);timers.get(renewed).fn();await failed;assert.equal(worker.terminated,true);
+});

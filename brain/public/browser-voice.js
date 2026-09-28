@@ -29,7 +29,7 @@
       const worker=this.worker=new Worker(this.options.workerURL||WORKER_URL,{type:'module'});
       worker.onmessage=({data:message})=>{
         const request=this.pending.get(message.id);if(!request)return;
-        if(message.type==='progress'){request.progress?.(message.data);return;}
+        if(message.type==='progress'){if(request.type==='load'){clearTimeout(request.timer);request.timer=setTimeout(request.timeout,15*60_000);}request.progress?.(message.data);return;}
         this.pending.delete(message.id);clearTimeout(request.timer);
         if(message.type==='error')request.reject(new Error(message.data.message));else request.resolve(message.data);
       };
@@ -41,14 +41,15 @@
     request(type,data={},progress,transfer=[]){
       this.createWorker();const id=++this.id;
       return new Promise((resolve,reject)=>{
-        const timer=setTimeout(()=>{
+        const timeout=()=>{
           this.pending.delete(id);reject(new Error('Browser voice took too long. Stop and reload voice, or try a shorter reply.'));
           // A stalled session is not left consuming GPU/CPU in the background.
           this.worker?.terminate();this.worker=null;this.ready=false;
           for(const other of this.pending.values()){clearTimeout(other.timer);other.reject(new Error('Voice worker was restarted.'));}
           this.pending.clear();
-        },type==='load'?15*60_000:5*60_000);
-        this.pending.set(id,{resolve,reject,progress,timer,type});
+        };
+        const timer=setTimeout(timeout,type==='load'?15*60_000:5*60_000);
+        this.pending.set(id,{resolve,reject,progress,timer,type,timeout});
         this.worker.postMessage({id,type,data,epoch:this.epoch},transfer);
       });
     }
