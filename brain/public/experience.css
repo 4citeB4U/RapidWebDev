@@ -141,3 +141,7 @@ body.collection-view #edges,body.collection-view #zoomControls,body.collection-v
 /* Microphone controls stay reachable over an opened project. */
 #agentLee{z-index:92}
 .agentBubbleHead{position:sticky;top:-16px;background:#061321;z-index:3;padding:10px 0;border-bottom:1px solid #35556a}
+
+/* Creator-approved LeeWay logo; preserve the supplied artwork. */
+.brand>.leeway-logo{width:48px;height:48px;flex:0 0 48px;object-fit:contain;border-radius:50%;background:#fff}
+@media(max-width:600px){.brand>.leeway-logo{width:40px;height:40px;flex-basis:40px}}
