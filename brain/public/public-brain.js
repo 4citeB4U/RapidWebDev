@@ -348,7 +348,7 @@ qs('#clearChatHistory').addEventListener('click',()=>{voiceController.history=[]
 let completedDraft='';
 const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Skills and Formula sources verified. Formula evaluator is not connected; no Formula task has run.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
 qs('#downloadAgentDraft').onclick=()=>{if(!completedDraft)return;const url=URL.createObjectURL(new Blob([completedDraft],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='agent-lee-draft.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-const WELCOME_TEXT="I'm Agent Lee. Welcome to the LeeWay Digital Brain. Drag the brain to rotate it. Scroll up to enter and explore the project cards. Use Return to Brain to come back. Start a conversation when you are ready to ask a question.";
+const WELCOME_TEXT=window.LeeWayIntroCopy?.text||"I'm Agent Lee. Welcome to the LeeWay Digital Brain.";
 const voiceController=new LeeWayVoiceController({
  onState:message=>agentState.textContent=message,
  onCancel:()=>{welcomePlayer.stop();browserVoice.stop();if(gemmaGenerating)browserGemma?.cancel();qs("#savedVoiceSample")?.pause();gemmaGenerating=false;tourEpoch++}
