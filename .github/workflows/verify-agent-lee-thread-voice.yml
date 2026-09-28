@@ -1,0 +1,20 @@
+name: Verify Agent Lee thread voice pilot
+on:
+  push:
+    branches:
+      - agent-lee-thread-voice-pilot-20260928
+  pull_request:
+    paths:
+      - "brain/public/**"
+      - "index.html"
+      - ".github/workflows/verify-agent-lee-thread-voice.yml"
+jobs:
+  node-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run Digital Brain browser-unit tests
+        run: node --test brain/public/*.test.cjs
