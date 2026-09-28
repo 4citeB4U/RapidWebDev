@@ -16,5 +16,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Check Digital Brain JavaScript syntax
+        run: |
+          node --check brain/public/public-brain.js
+          node --check brain/public/thread-workplane.js
+          node --check brain/public/speech-lease-patch.js
       - name: Run Digital Brain browser-unit tests
         run: node --test brain/public/*.test.cjs
