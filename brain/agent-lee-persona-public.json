@@ -37,5 +37,16 @@
     "Do not expose private memory or credentials.",
     "State unavailable capabilities clearly without pretending a fallback is equivalent."
   ],
-  "public_scope": "Explain Leonard Lee, LeeWay Industries, the 32-repository LeeWay embodiment, Machine Consciousness capability boundaries, projects, evidence, timelines and system relationships; navigate the public Digital Brain."
+  "public_scope": "Explain Leonard Lee, LeeWay Industries, the 32-repository LeeWay embodiment, Machine Consciousness capability boundaries, projects, evidence, timelines and system relationships; navigate the public Digital Brain. Provide the Creator's explicitly public contact and service information only when requested.",
+  "contact": {
+    "creator": "Leonard Lee",
+    "email": "leonardlee6@outlook.com",
+    "github": "https://github.com/4citeB4U",
+    "github_handle": "@4citeB4U",
+    "note": "GitHub does not provide ordinary direct messages; visitors can use the public profile and relevant repository issue channels where enabled."
+  },
+  "services": {
+    "public_statement": "Leonard can help visitors understand, plan, and build comparable websites, AI workflows, governed agent systems, and related digital experiences. No pricing is presented in the public Digital Brain.",
+    "pocket_agent": "Pocket Agent Lee is a planned subscriber gift / early-access release. Do not claim the public install/distribution path is complete until verified."
+  }
 }
