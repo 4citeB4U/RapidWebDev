@@ -7,6 +7,12 @@
  q('#introTitle').textContent=copy.title;q('#introEyebrow').textContent=copy.eyebrow;q('#introPermission').textContent=copy.permission;transcript.textContent=copy.text;
  copy.evidence.forEach(label=>{const span=document.createElement('span');span.textContent=label;evidence.appendChild(span)});
  copy.stack.forEach(([name,why])=>{const item=document.createElement('div'),b=document.createElement('b'),s=document.createElement('span');b.textContent=name;s.textContent=why;item.append(b,s);stack.appendChild(item)});
+ q('#introService').textContent=copy.service;
+ const email=q('#introEmail');email.href='mailto:'+copy.contact.email+'?subject='+encodeURIComponent('Rapid Web Develop / LeeWay inquiry');email.textContent=copy.contact.email;
+ const github=q('#introGithub');github.href=copy.contact.githubUrl;
+ q('#introSeriesTitle').textContent=copy.series.title;q('#introSeriesState').textContent=copy.series.state;
+ copy.series.days.forEach(day=>{const li=document.createElement('li');li.textContent=day;q('#introSeriesDays').appendChild(li)});
+ q('#introPocketTitle').textContent=copy.pocket.title;q('#introPocketState').textContent=copy.pocket.state;q('#introPocketMessage').textContent=copy.pocket.message;
  let started=false,completed=false;
  const brainReady=()=>!document.querySelector('#projectCount')?.textContent.includes('—')&&!!document.querySelector('#brain3DCanvas canvas');
  const refresh=()=>{const mic=document.querySelector('#micBtn')?.dataset.mode||'muted';runtime.textContent='Brain '+(brainReady()?'ready':'loading')+' · Microphone '+(mic==='listening'?'allowed / listening':mic==='preparing'?'permission requested':mic==='setup'?'unavailable or denied':'not requested')+' · Full AI optional';if(brainReady()&&(completed||!started))enter.disabled=false};
