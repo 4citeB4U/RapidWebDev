@@ -18,3 +18,5 @@ test('side chat route has explicit source identity and one shared Gemma resource
  assert.ok(brain.includes("resource:'gemma'"));
  assert.ok(brain.includes("recordChat('Agent Lee · '+threadDisplay(thread)"));
 });
+
+test('spoken thread ownership drives the visible thread and restores stored thread output',()=>{assert.ok(brain.includes("onThread:thread=>selectThread(thread.id)"));assert.ok(brain.includes("if(thread.lastOutput){agentText.textContent=thread.lastOutput;agentNarration.textContent=thread.lastOutput;}"));});
