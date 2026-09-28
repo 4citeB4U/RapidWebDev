@@ -1,0 +1,40 @@
+{
+  "schema": "leeway-exact-3d-brain-live-veritas-v1",
+  "tested_at": "2026-09-28T00:30:13.428Z",
+  "target": "https://rapidwebdevelop.com/",
+  "deployed_commit": "aef68e64cf9bb91167adf3306773008c7720b66a",
+  "three_version": "0.160.0",
+  "source_authority": "E:\\Leeway-Ecosystem v2.1.4\\DigitalBrain\\brain-service\\app\\static\\brain.html",
+  "checks": {
+    "webgl_brain": true,
+    "camera_start_distance": 18.811233346062135,
+    "rotation": {
+      "initial_azimuth": 0,
+      "rotated_azimuth": -1.135961603967812,
+      "initial_polar": 1.536235625539164,
+      "rotated_polar": 1.0878297119198324
+    },
+    "materials": {
+      "cortex": "#010713",
+      "emissive": "#00182d",
+      "wire": "#00708f"
+    },
+    "orb_shell": true,
+    "orb_wire": true,
+    "orbital_rings": 3,
+    "formulas": [
+      "Q69(ρ)=clamp(round(69ρ),0,69)",
+      "Wt ∈ ℤ16×6",
+      "St(x)=⅒ Σ NormΩ(Φt,k(x))",
+      "D(x)=|x−727/24|"
+    ],
+    "sink_into_universe": true,
+    "entered_camera_distance": 8.219046541321076,
+    "business_subuniverse": true,
+    "back_to_root_universe": true,
+    "back_to_brain_overview": true,
+    "restored_camera_distance": 18.8,
+    "browser_errors": 0
+  },
+  "verdict": "PASS"
+}
