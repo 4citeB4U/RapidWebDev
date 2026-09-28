@@ -6,7 +6,7 @@
 <title>Rapid Web Develop — LeeWay Digital Brain</title>
 <script type="importmap">{"imports":{"three":"/brain/public/vendor/three.module.js","three/addons/":"/brain/public/vendor/"}}</script>
 <link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-browser4">
-<link rel="stylesheet" href="/brain/public/experience.css?v=20260928-auto1">
+<link rel="stylesheet" href="/brain/public/experience.css?v=20260928-mic1">
 </head>
 <body class="brain-intro">
 <div id="app">
@@ -125,9 +125,9 @@
   </aside>
 
   <aside id="agentLee" aria-label="Agent Lee">
-    <button id="micBtn" class="agentPortrait" aria-label="Talk to Agent Lee">
+    <button id="micBtn" class="agentPortrait" aria-label="Start live conversation with Agent Lee" aria-pressed="false" data-mode="muted">
       <img src="/98civa4fmf.png" alt="Agent Lee">
-      <span class="agentPulse" aria-hidden="true"></span>
+      <span class="agentPulse" aria-hidden="true"></span><span class="agentMicBadge" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3M8 22h8"/></svg></span>
     </button>
     <section id="agentBubble" class="agentBubble hidden" aria-live="polite">
       <div class="agentBubbleHead">
@@ -135,18 +135,20 @@
         <small id="agentState">Voice One guide ready</small>
         <button id="agentBubbleClose" aria-label="Close Agent Lee" title="Close Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
-      <div id="agentText">Meet Agent Lee in Voice One, then explore the projects. Full AI conversation is an optional download.</div>
-      <div id="agentTranscript" class="agentTranscript hidden"></div>
+      <div class="speech-balloon lee-balloon"><span class="bubble-speaker">Agent Lee</span><div id="agentText">Meet Agent Lee in Voice One, then explore the projects. Full AI conversation is an optional download.</div>
+      </div><div class="speech-balloon user-balloon hidden" id="userBalloon"><span class="bubble-speaker">You</span><div id="agentTranscript" class="agentTranscript"></div></div>
       <div class="voice-controls" aria-label="Conversation controls">
         <button id="agentWelcome">Meet Agent Lee</button><button id="guideExplore">Explore projects</button>
-          <button id="agentStartVoice">Full AI conversation</button>
+          <button id="agentStartVoice" aria-pressed="false">Start live conversation</button>
         <button id="agentStop">Stop speaking</button>
-        <button id="agentEndVoice">End conversation</button>
+        <button id="agentEndVoice">Mute</button>
       </div>
-      <div class="agentInputRow">
+      <details id="typeMessage" class="chat-drawer"><summary>Type a message</summary><div class="agentInputRow">
         <textarea aria-label="Message Agent Lee" id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
         <button id="agentSend" aria-label="Send to Agent Lee" title="Send to Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 7 7M12 4l-7 7M12 4v16"/></svg></button>
       </div>
+      </details>
+      <details id="chatHistory" class="chat-drawer"><summary>Conversation history <span id="chatCount">0</span></summary><p>This visit only. Reloading clears this history.</p><ol id="chatHistoryList"></ol><button id="clearChatHistory">Clear history</button></details>
       <details class="browser-ai-setup">
         <summary>LeeWay skills and design drafts</summary>
         <p id="leewaySourceStatus" role="status">Checking pinned LeeWay source material...</p>
@@ -209,10 +211,12 @@
 <script src="/brain/public/speech-pipeline.js?v=20260928-pipeline2"></script>
 <script src="/brain/public/welcome-player.js?v=20260928-guide1"></script>
 <script src="/brain/public/leeway-knowledge.js?v=20260928-1"></script>
+<script src="/brain/public/conversation-session.js?v=20260928-mic1"></script>
+<script src="/brain/public/conversation-view.js?v=20260928-mic1"></script>
 <script src="/brain/public/preparation-policy.js?v=20260928-guide1"></script>
 <script src="/brain/public/model-preparation.js?v=20260928-auto1"></script>
 <script src="/brain/public/browser-listener.js?v=20260928-pipeline1"></script>
-<script src="/brain/public/public-brain.js?v=20260928-guide1"></script>
+<script src="/brain/public/public-brain.js?v=20260928-mic1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>

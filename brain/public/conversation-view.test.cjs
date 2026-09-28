@@ -1,0 +1,3 @@
+const test=require('node:test'),assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs');const scope={};vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/conversation-view.js','utf8'),scope);
+test('natural short interruption commands stop speech',()=>{for(const text of ['Stop','Hey, stop talking!','hold up','Hold on a second','hey hey hey','wait wait','stop for a minute'])assert.equal(scope.LeeWayStopIntent(text),true,text);});
+test('ordinary questions are not discarded as stop commands',()=>{for(const text of ['How do I stop an app?','Hey tell me about LeeWay','Hold up, explain the project instead','Stop signs in the design'])assert.equal(scope.LeeWayStopIntent(text),false,text);});

@@ -110,3 +110,31 @@ body.collection-view #edges,body.collection-view #zoomControls,body.collection-v
  .brainMath{font-size:10px}.brainMathQ{top:20%;left:5%}.brainMathW{top:25%;right:5%}.brainMathS{bottom:27%;left:5%}.brainMathD{bottom:23%;right:5%}
  .workspace{inset:62px 6px 6px}.workspaceHead{gap:6px}.workspaceHead h2{font-size:20px}.workspaceHeadActions{gap:5px}.workspacePanel p{font-size:14px}
 }
+/* Conversation surface: clear speaker bubbles, optional typing, collapsed history. */
+.agentBubble{border-radius:24px;border:1px solid #64b6d3;box-shadow:0 12px 38px #0008;padding:16px}
+.speech-balloon{position:relative;padding:13px 15px;margin:12px 8px 18px 0;background:#112b40;border:1px solid #5591b1;border-radius:20px 20px 20px 5px;transition:opacity .5s,max-height .5s,margin .5s,padding .5s;max-height:330px;overflow:auto;opacity:1}
+.speech-balloon .bubble-speaker{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#85d9f2;margin-bottom:6px}
+.user-balloon{margin-left:26px;margin-right:0;background:#123d49;border-color:#59c4ce;border-radius:20px 20px 5px 20px}
+.user-balloon .bubble-speaker{color:#b5f1ee}
+#agentText{margin:0;padding:0;background:none;border:0;max-height:230px;overflow:auto}
+.agentTranscript{margin:0;padding:0;border:0;background:none;font-size:15px;line-height:1.5;white-space:pre-wrap}
+.speech-balloon.bubble-resting{opacity:0;max-height:0;min-height:0;padding-top:0;padding-bottom:0;margin-top:0;margin-bottom:0;border-width:0;pointer-events:none}
+.chat-drawer{margin-top:12px;border:1px solid #35556a;border-radius:13px;padding:11px;background:#0b1c2c}
+.chat-drawer summary{cursor:pointer;font-size:14px;font-weight:600;color:#d0eaf8;min-height:24px}
+.chat-drawer p{font-size:13px;line-height:1.5;color:#c7dce8}
+#chatCount{display:inline-block;padding:0 7px;border-radius:10px;background:#21495a}
+#chatHistoryList{list-style:none;padding:0;margin:12px 0;max-height:260px;overflow:auto}
+#chatHistoryList li{padding:10px 0;border-bottom:1px solid #345064}
+#chatHistoryList strong{font-size:12px;color:#80deed}
+#chatHistoryList p{white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0}
+.agentPortrait[data-mode="listening"]{outline:3px solid #50e2bc;outline-offset:4px}
+.agentPortrait[data-mode="preparing"],.agentPortrait[data-mode="setup"]{outline:2px solid #e5bc68;outline-offset:4px}
+.agentPortrait:after{content:'Mic off';}
+.agentPortrait[data-mode="listening"]:after{content:'Live · tap to mute';color:#9bffdd}
+.agentPortrait[data-mode="preparing"]:after{content:'Preparing · tap to cancel'}
+.agentPortrait[data-mode="setup"]:after{content:'Setup needed · mic off'}
+@media(prefers-reduced-motion:reduce){.speech-balloon{transition:none}}
+.agentMicBadge{position:absolute;right:-3px;bottom:-3px;width:23px;height:23px;display:grid;place-items:center;border:1px solid #7fcbe0;border-radius:50%;background:#082431;color:#ddf9ff}
+.agentMicBadge svg{width:15px;height:15px}
+.agentPortrait[data-mode="listening"] .agentMicBadge{background:#0a5d46}
+.agentPortrait[data-mode="muted"] .agentMicBadge:after{content:'';position:absolute;width:18px;height:2px;background:#f6b7b7;transform:rotate(-45deg)}
