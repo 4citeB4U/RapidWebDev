@@ -446,6 +446,7 @@ async function handleAgentCommand(raw){
  agentText.textContent=message;agentNarration.textContent=message;speak(message,turn.epoch);
 }
 async function playWelcome(turn){
+ agentState.textContent="Introducing Agent Lee...";
  agentText.textContent=WELCOME_TEXT;agentNarration.textContent=WELCOME_TEXT;
  try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Preparing conversation models...":"Select Start conversation to ask me a question.";}}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(turn.epoch))agentState.textContent=error.message;}

@@ -60,7 +60,7 @@ body.galaxy-active .brain-enter-button{display:none}
 body.brain-intro .agentBubble{max-height:min(560px,calc(100dvh - 180px))}
 html,body{overflow:clip}body{position:fixed;inset:0}
 .agentBubble:after{display:none}.agentBubbleHead strong{font-size:16px}.agentBubbleHead small{font-size:12px;color:#b5cbde}
-#agentText{font-size:15px;line-height:1.55;max-height:230px;color:#e0eaf4}
+#agentText{font-size:15px;line-height:1.55;max-height:230px;color:#e0eaf4;white-space:pre-wrap;overflow-wrap:anywhere}
 .agentTranscript{font-size:13px;color:#c9e8f5;max-height:100px}
 .agentInputRow{grid-template-columns:minmax(0,1fr) 44px}.agentInputRow textarea{font-size:16px;min-height:44px}.agentInputRow button{min-height:44px}
 .voice-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;pointer-events:auto}.voice-controls button{font-size:13px;min-height:42px}
