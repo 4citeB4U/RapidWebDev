@@ -403,7 +403,7 @@ async function loadVoiceImplementation(){
 async function speak(text,epoch=voiceController.epoch){
  if(!text||!voiceController.current(epoch))return;
  if(conversationSession.state!=='listening'){agentState.textContent='Microphone and spoken replies are muted. Text remains available.';return;}
- if(!browserVoice.ready){agentState.textContent="Text answer ready. Optional browser voice is not ready; the recorded guide is available now.";return;}
+ if(!browserVoice.ready){agentState.textContent=conversationSession.state!=="listening"?"Text answer ready. Microphone and spoken replies are muted.":"Text answer ready. Optional browser voice is not ready; the recorded guide is available now.";return;}
  try{await browserVoice.speak(text,{signal:voiceController.controller.signal,onState:message=>{if(voiceController.current(epoch))agentState.textContent=message.startsWith("Speaking.")&&!browserListener.active?"Speaking. Use Stop to interrupt.":message}});}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(epoch))agentState.textContent=error.message;}
 }
@@ -442,7 +442,7 @@ async function askGemma(question,turn={epoch:voiceController.epoch,signal:voiceC
   output=String(answer||output).trim();stream?.end();LeeWayVoiceMetrics.record("gemma-complete");
   agentText.textContent=output;agentNarration.textContent=output;
   completedDraft=output;qs('#downloadAgentDraft').disabled=!output;recordChat('Agent Lee',output);
-  if(!stream){voiceController.remember("assistant",output);agentState.textContent="Text answer ready. Optional browser voice is not ready; the recorded guide is available now.";}
+  if(!stream){voiceController.remember("assistant",output);agentState.textContent=conversationSession.state!=="listening"?"Text answer ready. Microphone and spoken replies are muted.":"Text answer ready. Optional browser voice is not ready; the recorded guide is available now.";}
   await speech;return output;
  }catch(error){stream?.fail(error);await speech;if(output)recordChat('Agent Lee · interrupted draft',output);if(voiceController.current(turn.epoch)&&error.name!=="AbortError")agentState.textContent=error.message;return null;}
  finally{if(voiceController.current(turn.epoch))gemmaGenerating=false;}

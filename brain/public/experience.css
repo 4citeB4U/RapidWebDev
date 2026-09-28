@@ -138,3 +138,6 @@ body.collection-view #edges,body.collection-view #zoomControls,body.collection-v
 .agentMicBadge svg{width:15px;height:15px}
 .agentPortrait[data-mode="listening"] .agentMicBadge{background:#0a5d46}
 .agentPortrait[data-mode="muted"] .agentMicBadge:after{content:'';position:absolute;width:18px;height:2px;background:#f6b7b7;transform:rotate(-45deg)}
+/* Microphone controls stay reachable over an opened project. */
+#agentLee{z-index:92}
+.agentBubbleHead{position:sticky;top:-16px;background:#061321;z-index:3;padding:10px 0;border-bottom:1px solid #35556a}
