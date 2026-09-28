@@ -21,7 +21,8 @@ Expose explicit browser capabilities: navigation, drafting, and user-triggered d
 - Preserve the requested reasoning model and verify browser compatibility. Report unsupported hardware or unavailable files instead of substituting silently.
 - Separate identity, reasoning, recognition, voice provider, voice reference, delivery, and playback pace. Agents may have different authorized voices.
 - Use a prepared, content-verified introduction for immediate onboarding. Name the agent, explain the platform and actual controls, and lead into conversation. Do not present it as a newly generated answer.
-- Start conversation initializes required components, shows progress/failures, then opens the microphone. Stop and End cancel pending startup and stale results. Failed initialization must permit a clean retry.
+- Prepare reasoning, voice, and recognition automatically on page startup, reusing cached model files. Show honest progress and retry controls. Preparation must not wait for audio activation or request microphone access. Share in-flight preparation promises with Start conversation; conversation cancellation must not accidentally terminate background preparation. Explicit Unload remains available.
+- Start conversation joins preparation, then opens the microphone with user permission. Stop and End cancel pending conversation startup and stale results. Failed initialization must permit a clean retry.
 - Keep text answers usable when audio is slow or fails; distinguish waiting, speaking, and listening.
 
 ## Conversation invariants
