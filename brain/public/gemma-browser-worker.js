@@ -62,7 +62,7 @@ onmessage=async({data:m})=>{
     }else if(m.type==='generate'){
       if(!engine)throw new Error('The browser model is not loaded.');
       const messages=[];
-      if(m.system)messages.push({role:'system',content:String(m.system).slice(0,4500)});
+      if(m.system)messages.push({role:'system',content:String(m.system).slice(0,6500)});
       // Bounded recent context; each new turn gets a fresh session to prevent
       // unbounded KV-cache growth. Keep roles distinct from user text.
       for(const h of (Array.isArray(m.history)?m.history:[]).slice(-4)){

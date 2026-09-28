@@ -6,7 +6,7 @@ function abortError(){return new DOMException('Canceled','AbortError')}
 function ensureWorker(){
   if(worker)return;
   // LiteRT's WASM loader uses importScripts, which requires a classic worker.
-  worker=new Worker(new URL('./gemma-browser-worker.js?v=20260928-browser4',import.meta.url));
+  worker=new Worker(new URL('./gemma-browser-worker.js?v=20260928-retry1',import.meta.url));
   worker.onmessage=({data:m})=>{
     const p=pending.get(m.id);if(!p)return;
     if(m.type==='progress'){p.onProgress?.(m.value);return}
@@ -40,7 +40,7 @@ async function supported(){
 async function load(options={}){
   if(state==='ready'){options.onState?.('ready');return MODEL}
   if(!await supported())throw new Error('This browser needs WebGPU and a supported GPU. Try an updated Chrome or Edge browser.');
-  return request('load',options);
+  try{return await request('load',options);}catch(error){unload(error);throw error;}
 }
 async function generate(prompt,options={}){
   if(state!=='ready')throw new Error('Load the browser model first.');

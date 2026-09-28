@@ -1,0 +1,4 @@
+interface:
+  display_name: "LeeWay Browser Agent"
+  short_description: "Build and qualify free browser voice agents"
+  default_prompt: "Use $leeway-browser-agent to build a GitHub Pages agent with a selectable voice and evidence-backed LeeWay capabilities."

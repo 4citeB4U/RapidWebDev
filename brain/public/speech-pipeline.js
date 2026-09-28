@@ -24,17 +24,17 @@
           const prefix=text.slice(0,match.index+1);
           // Do not mistake abbreviations, initials, decimals or URLs for sentence ends.
           if(/\b(?:Mr|Mrs|Ms|Dr|Prof|Jr|Sr|vs|etc)\.$/i.test(prefix)||/\b(?:[A-Z]\.)+$/.test(prefix))continue;
-          if(prefix.trim().split(/\s+/).length>=4){cut=match.index+1;break;}
+          if(prefix.trim().split(/\s+/).length>=10){cut=match.index+1;break;}
         }
         const words=[...text.matchAll(/\S+\s+/g)];
-        if(!cut&&this.flush&&words.length>=6)cut=words[Math.min(words.length,18)-1].index+words[Math.min(words.length,18)-1][0].length;
+        if(!cut&&this.flush&&words.length>=10)cut=words[Math.min(words.length,18)-1].index+words[Math.min(words.length,18)-1][0].length;
         if(words.length>=18){const limit=words[17].index+words[17][0].length;if(!cut||cut>limit)cut=limit;}
         if(cut>180)cut=text.lastIndexOf(' ',180);
         if(!cut&&text.length>180){cut=text.lastIndexOf(' ',180);if(cut<1)cut=180;}
         if(!cut&&this.closed)cut=text.length;
         if(cut){this.buffer=text.slice(cut).trimStart();clearTimeout(this.timer);this.timer=null;this.flush=false;return {value:text.slice(0,cut).trim(),done:false};}
         if(this.closed){this.dispose();return {done:true};}
-        await new Promise(resolve=>{this.wake=resolve;if(words.length>=6&&!this.timer)this.timer=setTimeout(()=>{this.flush=true;this.wake?.();},1200);});this.wake=null;
+        await new Promise(resolve=>{this.wake=resolve;if(words.length>=10&&!this.timer)this.timer=setTimeout(()=>{this.flush=true;this.wake?.();},1200);});this.wake=null;
       }
     }
   }
@@ -55,7 +55,7 @@
     const prepare=async()=>{
       const item=await iterator.next();valid();if(item.done)return null;
       if(++number>60)throw new Error('This reply is too long for one spoken turn.');
-      const segment=number,start=performance.now();metrics.record('tts-start',{segment});
+      const segment=number,start=performance.now();metrics.record('tts-start',{segment});if(!this.sources.size)onState('Preparing the next spoken sentence...');
       const result=await this.request('generate',{text:item.value,exaggeration:this.exaggeration},p=>{if(epoch===this.epoch&&p.message&&!this.sources.size)onState(p.message)});
       valid();metrics.record('tts-ready',{segment,durationMs:performance.now()-start,...result.timings});
       return {result,text:item.value,segment};

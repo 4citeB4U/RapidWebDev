@@ -1,0 +1,32 @@
+{
+  "modelId": "onnx-community/chatterbox-ONNX",
+  "revision": "3cab09af388d3f02bba43443fce88c1f4525ac43",
+  "referenceSha256": "638c88b332ecc7a21950511871c724f68f3eb566c59157e46493ee79ec55970e",
+  "exaggeration": 0.25,
+  "sampleRate": 24000,
+  "segments": [
+    {
+      "text": "I'm Agent Lee. Welcome to the LeeWay Digital Brain.",
+      "generationMs": 11063.206400000003,
+      "seconds": 4.56
+    },
+    {
+      "text": "Drag the brain to rotate it. Scroll up to enter and explore the project cards.",
+      "generationMs": 14220.758699999991,
+      "seconds": 6.08
+    },
+    {
+      "text": "Use Return to Brain to come back. Start a conversation when you are ready to ask a question.",
+      "generationMs": 14641.032500000001,
+      "seconds": 6.56
+    }
+  ],
+  "sha256": "9544fecf66bc53aa5d9135fd79ae806d3cbb73f27034c5030c8530ec506c2216",
+  "sampling": {
+    "do_sample": true,
+    "temperature": 0.8,
+    "top_p": 0.95,
+    "top_k": 50
+  },
+  "verification": "Local base.en transcription contains all intended sentences; human voice-quality confirmation pending."
+}

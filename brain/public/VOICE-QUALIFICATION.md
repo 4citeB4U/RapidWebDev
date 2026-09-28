@@ -2,7 +2,7 @@
 
 The main page retains Gemma 4, the user-selected Voice One reference, Chatterbox Calm 0.25 and pitch-preserved playback at 1.1x.
 
-The speech pipeline submits complete clauses during Gemma generation, with an 18-word/180-character fallback and a 1.2-second dwell after six complete words. Text backlog is bounded at 12,000 characters. A single following speech segment can be synthesized during playback. Stop invalidates the stream and pending audio; conversation history includes completed spoken segments, not unplayed generated text. This is conservative: a partially played segment is omitted rather than represented as fully heard.
+The speech pipeline submits complete clauses during Gemma generation, with an 18-word/180-character fallback and a 1.2-second dwell after ten complete words. Text backlog is bounded at 12,000 characters. A single following speech segment can be synthesized during playback. Stop invalidates the stream and pending audio; conversation history includes completed spoken segments, not unplayed generated text. This is conservative: a partially played segment is omitted rather than represented as fully heard.
 
 Free browser AI > Voice timing exposes local-only software timestamps and an export. The bounded report contains no prompts, transcripts or microphone recordings. `playback-start` is a browser media event; `local-stop` is a software cancellation span. Neither proves human hearing or acoustic spill time. Worker phase timings bracket speech-token generation and waveform decoding. Model load states and transcription timing are recorded separately.
 

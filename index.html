@@ -137,7 +137,8 @@
       <div id="agentText">Ask me about a project or the LeeWay ecosystem. Start a conversation to talk, or type below.</div>
       <div id="agentTranscript" class="agentTranscript hidden"></div>
       <div class="voice-controls" aria-label="Conversation controls">
-        <button id="agentStartVoice">Start conversation</button>
+        <button id="agentWelcome">Meet Agent Lee</button>
+          <button id="agentStartVoice">Start conversation</button>
         <button id="agentStop">Stop speaking</button>
         <button id="agentEndVoice">End conversation</button>
       </div>
@@ -145,6 +146,13 @@
         <textarea aria-label="Message Agent Lee" id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
         <button id="agentSend" aria-label="Send to Agent Lee" title="Send to Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 7 7M12 4l-7 7M12 4v16"/></svg></button>
       </div>
+      <details class="browser-ai-setup">
+        <summary>LeeWay skills and design drafts</summary>
+        <p id="leewaySourceStatus" role="status">Checking pinned LeeWay source material...</p>
+        <p>Ask for a design plan or code draft. Download the answer to keep it. Drafts are not executed or deployed.</p>
+        <button id="downloadAgentDraft" disabled>Download answer</button>
+        <p><a href="https://github.com/4citeB4U/LeeWay-Agent-Skills" target="_blank" rel="noopener">Canonical LeeWay Skills</a> · <a href="https://github.com/4citeB4U/Leeway-formula-live" target="_blank" rel="noopener">Canonical Formula</a></p>
+      </details>
       <details class="browser-ai-setup" open>
         <summary>Free browser AI</summary>
         <p>Runs on your device. No account or API fees. First download: about 3.6 GB for chat and voice. A capable device with WebGPU is needed for Gemma 4. Cached files can be reused. Voice preparation can take several minutes on slower GPUs.</p>
@@ -194,10 +202,12 @@
 
 <script type="module" src="/brain/public/brain-3d.js?v=20260928-browser4"></script>
 <script src="/brain/public/voice-controller.js?v=20260928-browser4"></script>
-<script src="/brain/public/browser-voice.js?v=20260928-pipeline1"></script>
-<script src="/brain/public/speech-pipeline.js?v=20260928-pipeline1"></script>
+<script src="/brain/public/browser-voice.js?v=20260928-sampling1"></script>
+<script src="/brain/public/speech-pipeline.js?v=20260928-pipeline2"></script>
+<script src="/brain/public/welcome-player.js?v=20260928-welcome1"></script>
+<script src="/brain/public/leeway-knowledge.js?v=20260928-1"></script>
 <script src="/brain/public/browser-listener.js?v=20260928-pipeline1"></script>
-<script src="/brain/public/public-brain.js?v=20260928-pipeline1"></script>
+<script src="/brain/public/public-brain.js?v=20260928-welcome1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>

@@ -1,22 +1,23 @@
 <!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent Lee voice qualification</title>
 <style>body{font:16px system-ui;background:#061321;color:#e4f5ff;max-width:850px;margin:auto;padding:24px}button,select{font:inherit;margin:6px;padding:10px;background:#12334d;color:#fff;border:1px solid #4bcde4;border-radius:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere}a{color:#64e0ff}</style>
-<h1>Agent Lee voice qualification</h1><p>Voice One, pitch-preserved pace 1.1×. All processing stays in this browser. Models download only when you select Load. Turbo is an experiment; this page does not change the website’s default voice.</p>
+<h1>Agent Lee voice qualification</h1><p><strong>This is a diagnostic test, not a conversation.</strong> <a href="/">Open Agent Lee on the main website for questions and the introduction.</a></p><p>Voice One, pitch-preserved pace 1.1×. All processing stays in this browser. Models download only when you select Load. Turbo is an experiment; this page does not change the website’s default voice.</p>
 <label>Model <select id="model"><option value="base">Current Chatterbox — Calm 0.25</option><option value="turbo">Chatterbox Turbo — experimental delivery</option></select></label>
 <button id="load">Load selected model</button><button id="run" disabled>Run three speech trials</button><button id="stop">Stop and unload</button>
 <p id="state" role="status">Not loaded.</p><pre id="results"></pre>
+<button id="welcome" disabled>Prepare introduction audio</button><audio id="welcomeAudio" controls></audio><a id="welcomeDownload" hidden download="agent-lee-welcome.wav">Download introduction</a>
 <h2>Headphone interruption test</h2><p>This uses the saved Voice One recording, so speech synthesis speed does not affect the interruption test. Put on headphones. Start the test, then say “stop” while the recording plays. End closes the microphone. No microphone recording is saved.</p>
 <button id="acoustic">Start microphone test</button><button id="end">End microphone test</button><pre id="acousticResult">Microphone off.</pre>
 <button id="download">Download timing evidence</button><pre id="timing"></pre><p><a href="/">Return to the Digital Brain</a></p>
-<script src="./browser-voice.js?v=20260928-pipeline1"></script><script src="./speech-pipeline.js?v=20260928-pipeline1"></script><script src="./browser-listener.js?v=20260928-pipeline1"></script>
+<script src="./browser-voice.js?v=20260928-sampling1"></script><script src="./speech-pipeline.js?v=20260928-pipeline1"></script><script src="./browser-listener.js?v=20260928-pipeline1"></script>
 <script>
 const $=s=>document.querySelector(s);let voice=null,control=null,listener=null,acousticVoice=null,acousticControl=null;
 const trials=[];let loadedModel=null;const record=(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail);
 addEventListener('leeway-voice-metric',()=>$('#timing').textContent=JSON.stringify(LeeWayVoiceMetrics.snapshot().slice(-12),null,2));
 $('#load').onclick=async()=>{
  $('#load').disabled=true;$('#run').disabled=true;$('#model').disabled=true;
- try{control?.abort();await voice?.dispose();voice=new LeeWayBrowserVoice({workerURL:'./chatterbox.worker.js?v=20260928-pipeline1&model='+$('#model').value});
+ try{control?.abort();await voice?.dispose();voice=new LeeWayBrowserVoice({workerURL:'./chatterbox.worker.js?v=20260928-sampling1&model='+$('#model').value});
   const start=performance.now();const identity=await voice.load(p=>$('#state').textContent=p.message||('Loading '+(p.file||'model')+(p.progress?' '+Math.round(p.progress)+'%':'')));
-  loadedModel=identity.model;$('#state').textContent='Ready. '+JSON.stringify(identity);record('lab-model-ready',{...identity,durationMs:performance.now()-start});$('#run').disabled=false;
+  loadedModel=identity.model;$('#state').textContent='Ready. '+JSON.stringify(identity);record('lab-model-ready',{...identity,durationMs:performance.now()-start});$('#run').disabled=false;$('#welcome').disabled=false;
  }catch(e){$('#state').textContent=e.message;}finally{$('#load').disabled=false;$('#model').disabled=false;}
 };
 $('#run').onclick=async()=>{
@@ -29,6 +30,21 @@ $('#run').onclick=async()=>{
  }}catch(e){$('#state').textContent=e.name==='AbortError'?'Stopped.':e.message;}finally{$('#run').disabled=!voice?.ready;$('#load').disabled=false;$('#model').disabled=false;}
 };
 $('#stop').onclick=async()=>{control?.abort();await voice?.dispose();$('#run').disabled=true;$('#state').textContent='Stopped and unloaded.';};
+$('#welcome').onclick=async()=>{
+ $('#welcome').disabled=true;$('#run').disabled=true;$('#load').disabled=true;$('#model').disabled=true;
+ try{
+  const lines=["I'm Agent Lee. Welcome to the LeeWay Digital Brain.","Drag the brain to rotate it. Scroll up to enter and explore the project cards.","Use Return to Brain to come back. Start a conversation when you are ready to ask a question."],parts=[];
+  for(let i=0;i<lines.length;i++){
+   $('#state').textContent='Preparing introduction '+(i+1)+' of '+lines.length;
+   const result=await voice.request('generate',{text:lines[i],exaggeration:.25},p=>{if(p.message)$('#state').textContent='Introduction '+(i+1)+': '+p.message});
+   parts.push(new Float32Array(result.audio));parts.push(new Float32Array(4800));record('welcome-segment',{model:loadedModel,segment:i+1,...result.timings});
+  }
+  const length=parts.reduce((n,p)=>n+p.length,0),wav=new ArrayBuffer(44+length*2),view=new DataView(wav),write=(o,t)=>{for(let i=0;i<t.length;i++)view.setUint8(o+i,t.charCodeAt(i))};
+  write(0,'RIFF');view.setUint32(4,wav.byteLength-8,true);write(8,'WAVEfmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,24000,true);view.setUint32(28,48000,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,'data');view.setUint32(40,length*2,true);let offset=44;
+  for(const p of parts)for(const value of p){const s=Math.max(-1,Math.min(1,value));view.setInt16(offset,Math.round(s*(s<0?32768:32767)),true);offset+=2;}
+  const url=URL.createObjectURL(new Blob([wav],{type:'audio/wav'}));$('#welcomeAudio').src=url;$('#welcomeDownload').href=url;$('#welcomeDownload').hidden=false;$('#state').textContent='Introduction ready.';
+ }catch(e){$('#state').textContent=e.message;}finally{$('#welcome').disabled=!voice?.ready;$('#run').disabled=!voice?.ready;$('#load').disabled=false;$('#model').disabled=false;}
+};
 async function endAcoustic(){acousticControl?.abort();acousticControl=null;await listener?.dispose();listener=null;await acousticVoice?.dispose();acousticVoice=null;$('#acoustic').disabled=false;$('#acousticResult').textContent='Microphone off.';}
 $('#acoustic').onclick=async()=>{
  $('#acoustic').disabled=true;const session=acousticControl=new AbortController();
