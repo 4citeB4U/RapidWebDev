@@ -13,5 +13,7 @@
   "reference": "User-selected Voice One from Agent_Voice_One.m4a; bundled at /brain/public/voices/agent-lee-reference.wav.",
   "limitations": "Requires sufficient device memory and WebGPU for Gemma. Chatterbox latency and voice similarity vary by device and require audition. Microphone interruption needs acoustic verification.",
   "chatterbox_exaggeration": 0.25,
-  "delivery": "Calm; user requested less excited delivery after auditioning Voice One."
+  "delivery": "Calm; user requested less excited delivery after auditioning Voice One.",
+  "playback_rate": 1.1,
+  "preserves_pitch": true
 }

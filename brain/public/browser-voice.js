@@ -20,6 +20,7 @@
       this.options=options;this.ready=false;this.loading=null;this.epoch=0;this.id=0;
       this.pending=new Map();this.sources=new Set();this.finishPlayback=new Set();this.device=null;this.lifecycle=0;
       this.exaggeration=.25;
+      this.playbackRate=1.1;
     }
     static get download(){return {model:'onnx-community/chatterbox-ONNX',revision:REVISION,webgpuBytes:1499401538,wasmBytes:1548283901,referenceBytes:720078};}
     static chunks(text){return chunks(text);}
@@ -102,15 +103,21 @@
       }finally{signal?.removeEventListener('abort',stop);}
     }
     async play({audio,sampleRate},epoch){
-      const context=await this.audioContext();if(epoch!==this.epoch)throw aborted();
-      const samples=new Float32Array(audio),buffer=context.createBuffer(1,samples.length,sampleRate);buffer.copyToChannel(samples,0);
+      if(epoch!==this.epoch)throw aborted();
+      const samples=new Float32Array(audio),wav=new ArrayBuffer(44+samples.length*2),view=new DataView(wav);
+      const write=(offset,text)=>{for(let i=0;i<text.length;i++)view.setUint8(offset+i,text.charCodeAt(i))};
+      write(0,'RIFF');view.setUint32(4,wav.byteLength-8,true);write(8,'WAVE');write(12,'fmt ');view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,sampleRate,true);view.setUint32(28,sampleRate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,'data');view.setUint32(40,samples.length*2,true);
+      for(let i=0;i<samples.length;i++){const sample=Math.max(-1,Math.min(1,samples[i]));view.setInt16(44+i*2,Math.round(sample*(sample<0?32768:32767)),true);}
+      const url=URL.createObjectURL(new Blob([wav],{type:'audio/wav'}));
       return new Promise((resolve,reject)=>{
-        const source=context.createBufferSource();source.buffer=buffer;source.connect(context.destination);this.sources.add(source);
+        const media=new root.Audio(url);media.playbackRate=this.playbackRate;media.preservesPitch=true;
+        const source={media,stop:()=>media.pause()};this.sources.add(source);
         let finished=false;
-        const finish=()=>{if(finished)return;finished=true;source.onended=null;this.sources.delete(source);this.finishPlayback.delete(finish);source.disconnect();epoch===this.epoch?resolve():reject(aborted());};
-        this.finishPlayback.add(finish);source.onended=finish;source.start();
+        const finish=error=>{if(finished)return;finished=true;media.onended=null;media.onerror=null;media.pause();media.removeAttribute('src');media.load();URL.revokeObjectURL(url);this.sources.delete(source);this.finishPlayback.delete(finish);if(epoch!==this.epoch)reject(aborted());else if(error)reject(error);else resolve();};
+        this.finishPlayback.add(finish);media.onended=()=>finish();media.onerror=()=>finish(new Error('Browser audio playback failed.'));media.play().catch(finish);
       });
     }
+    setPace(value){this.playbackRate=Math.max(.85,Math.min(1.3,Number(value)||1.1));for(const source of this.sources)if(source.media)source.media.playbackRate=this.playbackRate;}
     stop(){
       ++this.epoch;this.worker?.postMessage({type:'stop',epoch:this.epoch});
       for(const source of this.sources){try{source.stop()}catch{}}

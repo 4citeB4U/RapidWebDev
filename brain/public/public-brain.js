@@ -463,6 +463,7 @@ micBtn.onclick=()=>{openAgentBubble(true)};
 reasonBtn.onclick=enableGemma;
 qs("#loadBrowserVoice").onclick=enableBrowserVoice;
 qs("#voiceExpression").onchange=e=>{cancelAgentGeneration();browserVoice.exaggeration=Number(e.target.value);qs("#voiceLoadStatus").textContent=`Delivery set to ${e.target.selectedOptions[0].text.toLowerCase()}.`;};
+qs("#voicePace").onchange=e=>browserVoice.setPace(e.target.value);
 qs("#previewBrowserVoice").onclick=()=>{cancelAgentGeneration();void speak("Hi, I am Agent Lee. What would you like to explore?")};
 qs("#voiceReference").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;if(!browserVoice.ready){qs("#voiceLoadStatus").textContent="Load browser voice before choosing a reference.";e.target.value="";return;}try{cancelAgentGeneration();await browserVoice.setReference(file);qs("#voiceLoadStatus").textContent="Your voice reference is selected on this device only.";}catch(error){qs("#voiceLoadStatus").textContent=error.message;}};
 qs("#unloadBrowserModels").onclick=()=>{endVoice();browserGemma?.unload();void browserVoice.dispose();void browserListener.dispose();reasonBtn.textContent="Load Gemma 4 · 2 GB";qs("#loadBrowserVoice").textContent="Load browser voice · 1.6 GB";qs("#previewBrowserVoice").disabled=true;qs("#gemmaLoadStatus").textContent="Models unloaded from memory.";qs("#voiceLoadStatus").textContent="Cached files may be reused next time.";};

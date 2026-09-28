@@ -1,7 +1,7 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-function setup(){
+function setup(extra={}){
   class Worker{constructor(){this.messages=[];Worker.instances.push(this)}postMessage(m){this.messages.push(m)}terminate(){this.terminated=true}reply(id,data){this.onmessage({data:{id,type:'complete',data}})}}Worker.instances=[];
-  const scope={Worker,DOMException,AbortController,setTimeout,clearTimeout,console,URL};vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-voice.js','utf8'),scope);
+  const scope={Worker,DOMException,AbortController,setTimeout,clearTimeout,console,URL,...extra};vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-voice.js','utf8'),scope);
   return {Voice:scope.LeeWayBrowserVoice,Worker};
 }
 test('speaking cannot initiate unsolicited model download',async()=>{
@@ -27,4 +27,14 @@ test('AbortSignal interrupts speech and dispose releases worker',async()=>{
 test('speech chunking preserves text and bounds inference-sized sections',()=>{
   const {Voice}=setup(),text=Array.from({length:100},(_,i)=>'word'+i).join(' '),parts=Voice.chunks(text);
   assert.equal(parts.join(' '),text);assert.ok(parts.length>1);assert.ok(parts.every(p=>p.length<=180&&p.split(' ').length<=24));
+});
+test('faster playback preserves pitch, applies pace immediately and releases audio on Stop',async()=>{
+  let media,revoked=0;
+  class Audio{constructor(url){media=this;this.src=url}play(){return Promise.resolve()}pause(){this.paused=true}removeAttribute(){this.src=''}load(){}}
+  const {Voice}=setup({Audio,Blob,URL:{createObjectURL:()=> 'blob:test',revokeObjectURL:()=>revoked++}}),voice=new Voice();
+  const playback=voice.play({audio:new Float32Array([0,.2,-.2]).buffer,sampleRate:24000},voice.epoch);
+  const rejection=assert.rejects(playback,{name:'AbortError'});
+  assert.equal(media.playbackRate,1.1);assert.equal(media.preservesPitch,true);
+  voice.setPace(1.2);assert.equal(media.playbackRate,1.2);voice.stop();await rejection;
+  assert.equal(media.paused,true);assert.equal(media.src,'');assert.equal(revoked,1);assert.equal(voice.sources.size,0);
 });
