@@ -474,7 +474,7 @@ async function handleAgentCommand(raw){
 async function playWelcome(turn){
  agentState.textContent="Introducing Agent Lee...";
  agentText.textContent=WELCOME_TEXT;agentNarration.textContent=WELCOME_TEXT;recordChat('Agent Lee · recorded guide',WELCOME_TEXT);
- try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Preparing conversation models...":"Guide complete. Explore projects now, or enable optional full AI for conversation.";}}
+ try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Allow microphone access to speak with me. The recorded guide is ready.":"Guide complete. Explore projects now, or enable optional full AI for conversation.";}}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(turn.epoch))agentState.textContent=error.message;}
 }
 qs('#agentWelcome').onclick=()=>{cancelAgentGeneration();const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};void playWelcome(turn);};
@@ -490,7 +490,14 @@ const conversationSession=new LeeWayConversationSession({
   agentState.textContent=state==='listening'?(browserListener.ready?'Listening. Speak naturally; tap Agent Lee to mute.':'Microphone is on. Preparing local speech recognition...'):state==='preparing'?'Opening microphone. Allow access if your browser asks.':state==='setup'?'Microphone could not start. Check browser permission.':'Muted. Microphone and speech are off.';
  },onError:error=>{agentState.textContent=error.message||'Microphone unavailable. You can type instead.';}
 });
-async function toggleMic(){openAgentBubble(false);await conversationSession.toggle();}
+async function toggleMic(){
+ openAgentBubble(false);
+ const starting=!conversationSession.requested;
+ const opening=conversationSession.toggle();
+ // Play from the same user gesture; neither permission nor model loading gates the welcome.
+ if(starting)void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});
+ await opening;
+}
 async function startTour(){
  cancelAgentGeneration();const epoch=++tourEpoch;
  const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").slice(0,8);
