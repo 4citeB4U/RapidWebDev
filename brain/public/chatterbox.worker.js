@@ -48,7 +48,7 @@ async function run(message){
       let steps=0;
       const streamer={put(){if(++steps%16===0)progress(id,{message:`Generating speech: ${steps} audio tokens...`})},end(){progress(id,{message:'Rendering the speech waveform...'})}};
       const exaggeration=Number.isFinite(data.exaggeration)?Math.max(0,Math.min(1,data.exaggeration)):.25;
-      waveform=await model.generate({...inputs,...speaker,exaggeration,max_new_tokens:256,stopping_criteria:[stopping],streamer});
+      waveform=await model.generate({...inputs,...speaker,exaggeration,max_new_tokens:384,stopping_criteria:[stopping],streamer});
       if(turn!==epoch)throw new Error('Speech request was interrupted.');
       const samples=waveform.data,buffer=samples.buffer.slice(samples.byteOffset,samples.byteOffset+samples.byteLength);
       self.postMessage({id,type:'complete',data:{audio:buffer,sampleRate:24000}},[buffer]);return null;

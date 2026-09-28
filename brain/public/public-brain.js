@@ -347,7 +347,7 @@ async function enableGemma(){
  openAgentBubble(false);if(gemmaLoading||browserGemma?.state==="ready")return;
  gemmaLoading=true;reasonBtn.disabled=true;
  try{
-  browserGemma=(await import("/brain/public/gemma-browser.js?v=20260928-browser3")).LeeWayBrowserGemma;
+  browserGemma=(await import("/brain/public/gemma-browser.js?v=20260928-browser4")).LeeWayBrowserGemma;
   await browserGemma.load({onProgress:p=>showModelProgress("gemma",p),onState:state=>{
     const names={"loading-runtime":"Preparing Gemma 4...",downloading:"Downloading Gemma 4...",initializing:"Starting Gemma 4 on this device...",ready:"Gemma 4 ready in this browser"};
     qs("#gemmaLoadStatus").textContent=names[state]||state;

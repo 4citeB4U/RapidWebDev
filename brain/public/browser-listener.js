@@ -5,7 +5,7 @@
     async load(){
       if(this.ready)return;
       if(this.loading)return this.loading;
-      this.worker ||= new Worker('/brain/public/listener.worker.js?v=20260928-browser3',{type:'module'});
+      this.worker ||= new Worker('/brain/public/listener.worker.js?v=20260928-browser4',{type:'module'});
       this.worker.onmessage=({data})=>{
         if(data.type==='progress'){this.options.onProgress?.(data.progress);return;}
         const task=this.pending.get(data.id);if(!task)return;
