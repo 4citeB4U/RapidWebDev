@@ -1,0 +1,74 @@
+name: Verify Digital Brain live browser pilot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/verify-digital-brain-live-browser.yml"
+      - "index.html"
+      - "brain/public/public-brain.js"
+      - "brain/public/thread-workplane.js"
+      - "brain/public/speech-lease-patch.js"
+  workflow_dispatch:
+
+jobs:
+  live-browser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install pinned Playwright Chromium
+        run: |
+          mkdir -p "$RUNNER_TEMP/leeway-live-browser"
+          cd "$RUNNER_TEMP/leeway-live-browser"
+          npm init -y >/dev/null 2>&1
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Exercise live Digital Brain thread controls
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP/leeway-live-browser"
+          cat > verify.cjs <<'NODE'
+          const fs=require('fs');
+          const {chromium}=require('playwright');
+          (async()=>{
+            const url='https://4citeb4u.github.io/RapidWebDev/';
+            const browser=await chromium.launch({headless:true});
+            const page=await browser.newPage({viewport:{width:1280,height:900}});
+            const pageErrors=[];
+            page.on('pageerror',e=>pageErrors.push(String(e.message||e)));
+            await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
+            await page.waitForSelector('#agentThreadSelect',{timeout:30000});
+            const before=await page.locator('#agentThreadSelect option').count();
+            const initial=await page.locator('#agentThreadStatus').textContent();
+            const loaded=await page.evaluate(()=>({
+              workplane:typeof globalThis.LeeWayThreadWorkplane==='function',
+              arbiter:typeof globalThis.LeeWaySpeechLeaseArbiter==='function',
+              pause:typeof globalThis.LeeWayBrowserVoice?.prototype?.pausePlayback==='function',
+              resume:typeof globalThis.LeeWayBrowserVoice?.prototype?.resumePlayback==='function',
+              inserted:typeof globalThis.LeeWayBrowserVoice?.prototype?.speakInsertedStream==='function'
+            }));
+            if(!Object.values(loaded).every(Boolean))throw new Error('Thread/voice pilot globals are incomplete: '+JSON.stringify(loaded));
+            if(!String(initial).includes('/8 hands active'))throw new Error('Eight-hand status is not visible: '+initial);
+            await page.click('#agentNewSide');
+            await page.waitForFunction(n=>document.querySelectorAll('#agentThreadSelect option').length===n+1,before);
+            const after=await page.locator('#agentThreadSelect option').count();
+            const selected=await page.locator('#agentThreadSelect option:checked').textContent();
+            const status=await page.locator('#agentThreadStatus').textContent();
+            if(!/Side chat \[LW-THREAD-\d+\]/.test(String(selected)))throw new Error('Side thread ID not exposed: '+selected);
+            if(pageErrors.length)throw new Error('Uncaught live page errors: '+JSON.stringify(pageErrors));
+            const result={url,beforeOptions:before,afterOptions:after,selected,status,loaded,pageErrors,acousticVoice:'NOT_TESTED',gemmaModelLoad:'NOT_TESTED'};
+            fs.writeFileSync('live-browser.json',JSON.stringify(result,null,2));
+            await page.screenshot({path:'live-browser.png',fullPage:true});
+            await browser.close();
+          })().catch(error=>{console.error(error);process.exit(1)});
+          NODE
+          node verify.cjs
+      - name: Upload live browser evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: digital-brain-live-browser-pilot
+          path: |
+            ${{ runner.temp }}/leeway-live-browser/live-browser.json
+            ${{ runner.temp }}/leeway-live-browser/live-browser.png
