@@ -286,7 +286,7 @@ function selectItem(id,open=false){
  qs("#hudFacts").innerHTML=[["Domain",groupFor(activeItem)],["Evidence",activeItem.evidence_state||activeItem.type||"PUBLIC"],["Updated",activeItem.updated_at?.slice?.(0,10)||activeItem.date||"Historical"],["Identity",activeItem.id]].map(([a,b])=>`<div class="hudFact"><b>${a}</b><span>${b}</span></div>`).join("");
  qs("#openProjectBtn").classList.toggle("hidden",!activeItem.live_url&&!activeItem.url);if(activeItem.live_url||activeItem.url)qs("#openProjectBtn").href=activeItem.live_url||activeItem.url;
  qs("#openRepoBtn").classList.toggle("hidden",!activeItem.repo_url);if(activeItem.repo_url)qs("#openRepoBtn").href=activeItem.repo_url;
- hud.classList.remove("hidden");if(open){cancelAgentGeneration();openWorkspace(activeItem,activeItem.kind==="evidence"?"evidence":"overview");}
+ hud.classList.remove("hidden");if(open){silenceSpeechOnly();openWorkspace(activeItem,activeItem.kind==="evidence"?"evidence":"overview");}
 }
 function renderCarousel(filter=""){
  const q=filter.toLowerCase(),rows=items.filter(x=>(!activeCategory||categoryFor(x)===activeCategory)&&(!q||(x.label+" "+(x.summary||"")+" "+groupFor(x)).toLowerCase().includes(q)));track.innerHTML="";
@@ -439,7 +439,12 @@ qs('#exportVoiceTiming').onclick=()=>{
  const report={version:'pipeline1',voice:'Voice One',delivery:browserVoice.exaggeration,pace:browserVoice.playbackRate,device:browserVoice.device,clock:'performance.now milliseconds; page-local',acousticVerification:'NOT_PERFORMED_BY_THIS_REPORT',events:LeeWayVoiceMetrics.snapshot()};
  const url=URL.createObjectURL(new Blob([JSON.stringify(report,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=url;a.download='agent-lee-voice-timing.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 };
-function cancelAgentGeneration(){browserListener.cancelUtterance();if(gemmaGenerating)browserGemma?.cancel();voiceController.stop();gemmaGenerating=false;}
+function cancelAgentGeneration(){
+ browserListener.cancelUtterance();
+ const hand=threadWorkplane.hands.find(h=>h.status==='RUNNING'&&h.resource==='gemma');
+ if(hand?.workId)threadWorkplane.cancelWork(hand.workId);
+ voiceController.stop();gemmaGenerating=false;
+}
 function silenceSpeechOnly(){browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();qs("#savedVoiceSample")?.pause();}
 function endVoice(){conversationSession.mute()}
 async function askGemma(question,work,thread){
@@ -501,7 +506,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  else if(requestedThreadId==='AUTO_SIDE')thread=createSideThread();
  else thread=threadWorkplane.getThread(requestedThreadId)||threadWorkplane.getThread(selectedThreadId)||threadWorkplane.mainThread;
  selectThread(thread.id);recordChat('You · '+threadDisplay(thread),text);threadWorkplane.remember(thread.id,"user",text);
- if(!browserVoice.ready&&/^(?:hi|hello|who are you|introduce yourself|how (?:do i|to) (?:use|explore)(?: this| the site| the website)?)[.!?]*$/i.test(text)){cancelAgentGeneration();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});return;}
+ if(!browserVoice.ready&&/^(?:hi|hello|who are you|introduce yourself|how (?:do i|to) (?:use|explore)(?: this| the site| the website)?)[.!?]*$/i.test(text)){silenceSpeechOnly();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});return;}
  browserListener.cancelUtterance();
  const navigation=navigateAgentRequest(text);
  if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
@@ -518,7 +523,7 @@ async function playWelcome(turn){
  try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Allow microphone access to speak with me. The recorded guide is ready.":"Guide complete. Explore projects now, or enable optional full AI for conversation.";}}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(turn.epoch))agentState.textContent=error.message;}
 }
-qs('#agentWelcome').onclick=()=>{cancelAgentGeneration();const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};void playWelcome(turn);};
+qs('#agentWelcome').onclick=()=>{silenceSpeechOnly();const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};void playWelcome(turn);};
 const conversationSession=new LeeWayConversationSession({
  // Capture and recognition are independent of the optional reasoning/voice models.
  prepare:async()=>true,
@@ -540,7 +545,7 @@ async function toggleMic(){
  await opening;
 }
 async function startTour(){
- cancelAgentGeneration();const epoch=++tourEpoch;
+ silenceSpeechOnly();const epoch=++tourEpoch;
  const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").slice(0,8);
  for(const p of seq){
   if(epoch!==tourEpoch)return;
@@ -568,7 +573,7 @@ function bindAppearance(){
 }
 search.oninput=()=>{activeCategory=null;rebuildUniverse()};
 qs("#hudClose").onclick=()=>hud.classList.add("hidden");
-qs("#speakBtn").onclick=()=>{cancelAgentGeneration();speak(agentNarration.textContent||agentText.textContent)};
+qs("#speakBtn").onclick=()=>{silenceSpeechOnly();speak(agentNarration.textContent||agentText.textContent)};
 qs("#agentStop")?.addEventListener("click",stopSpeech);
 qs("#agentEndVoice")?.addEventListener("click",endVoice);
 qs("#agentStartVoice")?.addEventListener("click",()=>void toggleMic());
@@ -581,10 +586,10 @@ micBtn.onclick=()=>void toggleMic();
 qs('#guideExplore').onclick=()=>{qs('#enterBrainBtn').click();};
 reasonBtn.onclick=enableGemma;
 qs("#loadBrowserVoice").onclick=enableBrowserVoice;
-qs("#voiceExpression").onchange=e=>{cancelAgentGeneration();browserVoice.exaggeration=Number(e.target.value);qs("#voiceLoadStatus").textContent=`Delivery set to ${e.target.selectedOptions[0].text.toLowerCase()}.`;};
+qs("#voiceExpression").onchange=e=>{silenceSpeechOnly();browserVoice.exaggeration=Number(e.target.value);qs("#voiceLoadStatus").textContent=`Delivery set to ${e.target.selectedOptions[0].text.toLowerCase()}.`;};
 qs("#voicePace").onchange=e=>{browserVoice.setPace(e.target.value);welcomePlayer.setPace(browserVoice.playbackRate);};
-qs("#previewBrowserVoice").onclick=()=>{cancelAgentGeneration();void speak("Hi, I am Agent Lee. What would you like to explore?")};
-qs("#voiceReference").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;if(!browserVoice.ready){qs("#voiceLoadStatus").textContent="Load browser voice before choosing a reference.";e.target.value="";return;}try{cancelAgentGeneration();await browserVoice.setReference(file);qs("#voiceLoadStatus").textContent="Your voice reference is selected on this device only.";}catch(error){qs("#voiceLoadStatus").textContent=error.message;}};
+qs("#previewBrowserVoice").onclick=()=>{silenceSpeechOnly();void speak("Hi, I am Agent Lee. What would you like to explore?")};
+qs("#voiceReference").onchange=async e=>{const file=e.target.files?.[0];if(!file)return;if(!browserVoice.ready){qs("#voiceLoadStatus").textContent="Load browser voice before choosing a reference.";e.target.value="";return;}try{silenceSpeechOnly();await browserVoice.setReference(file);qs("#voiceLoadStatus").textContent="Your voice reference is selected on this device only.";}catch(error){qs("#voiceLoadStatus").textContent=error.message;}};
 qs("#unloadBrowserModels").onclick=()=>{endVoice();++preparationEpoch;fullAIRequested=false;browserGemma?.unload();void browserVoice.dispose();void browserListener.dispose();reasonBtn.textContent="Load Gemma 4 · 2 GB";qs("#loadBrowserVoice").textContent="Load browser voice · 1.6 GB";qs("#previewBrowserVoice").disabled=true;qs("#gemmaLoadStatus").textContent="Models unloaded from memory.";qs("#voiceLoadStatus").textContent="Cached files may be reused next time.";qs("#agentStartupStatus").textContent="Agent Lee models unloaded";};
 qs("#workspaceClose").onclick=closeWorkspace;
 qs("#backOneLevelBtn").onclick=()=>backOneLevel();
@@ -604,7 +609,7 @@ new ResizeObserver(syncLayout).observe(qs("#stage"));
 window.addEventListener("resize",syncLayout);
 qs("#enterBrainBtn").onclick=()=>{if(window.__leewayEnterBrain)window.__leewayEnterBrain();else enterBrain()};
 document.querySelectorAll(".workspaceTabs button").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll(".workspaceTabs button").forEach(x=>x.classList.toggle("active",x===b));renderWorkspace()});
-workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak"){cancelAgentGeneration();speak(narrationFor(activeItem))}});
+workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak"){silenceSpeechOnly();speak(narrationFor(activeItem))}});
 qs("#zoomIn").onclick=()=>{scale=clamp(scale+.12,.38,1.9);setWorldTransform()};qs("#zoomOut").onclick=()=>{scale=clamp(scale-.12,.38,1.9);setWorldTransform()};qs("#zoomFit").onclick=fit;
 qs("#stage").addEventListener("wheel",e=>{
  if(window.__leewayBrainIntroActive||innerWidth<900||document.body.classList.contains("collection-view"))return;
