@@ -590,11 +590,13 @@ function materializeProjects(source,overrides){
  return rows;
 }
 function applyProjectSource(source,overrides){
+ const spoken=voiceController.epoch>0?{text:agentText.textContent,narration:agentNarration.textContent}:null;
  projects=materializeProjects(source,overrides);
  items=[...projects,...evidence];
  qs("#projectCount").textContent=`PROJECTS ${projects.length}`;
  qs("#evidenceCount").textContent=`EVIDENCE ${evidence.length}`;
  activeCategory=null;search.value="";rebuildUniverse();selectItem("center",false);
+ if(spoken){agentText.textContent=spoken.text;agentNarration.textContent=spoken.narration;}
 }
 async function boot(){
  const [generated,overrides,estate,visuals,fallback,persona]=await Promise.all([
@@ -612,7 +614,7 @@ async function boot(){
  const fallbackSource=(fallback.projects||[]).map(x=>({name:x.repo_name||x.label,description:x.summary,html_url:x.repo,homepage:x.url,has_pages:!!x.url,default_branch:"main",language:null,size:null,created_at:null,updated_at:null}));
  const durable=(generated.repositories||[]).length?generated.repositories:fallbackSource;
  applyProjectSource(durable,overrides);
- agentState.textContent="Browser AI available — load models to begin";
+ if(agentState.textContent==="ready")agentState.textContent="Browser AI available — load models to begin";
  // Opportunistic freshness: never block rendering on GitHub.
  fetchGithubRepos().then(live=>{
   if(!live.length)return;
