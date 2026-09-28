@@ -2,7 +2,7 @@
 
 **REGION:** LEEWAY_DIGITAL_BRAIN  
 **TAG:** LEEWAY_THREAD_VOICE_PILOT_V1  
-**STATUS:** CANDIDATE — SOURCE/CI VERIFIED; LIVE ACOUSTIC QUALIFICATION PENDING  
+**STATUS:** CANDIDATE — LIVE STRUCTURAL VERIFIED; ACOUSTIC / FULL-MODEL QUALIFICATION PENDING  
 **DATE:** 2026-09-28  
 **CREATOR AUTHORITY:** Leonard Lee / LeeWay Standards  
 **IMPLEMENTATION TARGET:** 4citeB4U/RapidWebDev  
@@ -71,6 +71,22 @@ Candidate future measurement row:
 6. wasted synthesis duration.
 
 Ranges/mappings remain unpromoted until authorized and empirically qualified.
+
+## Live structural verification — 2026-09-28
+
+- Source/unit/integration acceptance: **63 PASS / 0 FAIL**.
+- GitHub Pages deployment: **PASS** at runtime merge commit `48fd47de7820218d0c3f8ad7b5aa2073696e839b`.
+- Live HTTP served-assets smoke: **PASS**.
+- Live Chromium interaction: **PASS**.
+- Live browser selected `Side chat [LW-THREAD-0002]` after clicking **New side chat**.
+- Visible status reported `0/8 hands active`.
+- Workplane, speech arbiter, pause, resume and inserted-speech methods loaded in the served browser.
+- Uncaught live page errors in the verified browser run: **0**.
+- Receipt: `brain/receipts/AGENT-LEE-THREAD-VOICE-PILOT-VERITAS-20260928.json`.
+
+The failed first two live-browser attempts are preserved as test-harness failures: both incorrectly required hidden thread controls to be visible before opening Agent Lee. They were repaired and retested.
+
+**Still open:** acoustic Voice One / clone quality, actual Chatterbox audio under interruption, full browser Gemma model load, local-system Gemma 4 binding, microphone barge-in on a physical device, 20-turn interruption qualification, Conversation Vault persistence, and Blue-standard promotion.
 
 ## Required live acceptance before promotion to LeeWay agent standard
 
