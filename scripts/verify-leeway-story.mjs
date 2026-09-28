@@ -4,14 +4,16 @@ import fs from "node:fs";
 const storyPath="leeway-story.html";
 const manifestPath="leeway-application.manifest.json";
 const adapterPath="brain/public-project-adapter.js";
+const indexPath="index.html";
 
-for(const path of [storyPath,manifestPath,adapterPath]){
+for(const path of [storyPath,manifestPath,adapterPath,indexPath]){
   if(!fs.existsSync(path)) throw new Error("Missing RapidWebDevelop convergence artifact: "+path);
 }
 
 const story=fs.readFileSync(storyPath,"utf8");
 const manifest=JSON.parse(fs.readFileSync(manifestPath,"utf8"));
 const adapter=fs.readFileSync(adapterPath,"utf8");
+const index=fs.readFileSync(indexPath,"utf8");
 
 for(const token of [
   "MOVEMENT I · IMAGINATION",
@@ -52,6 +54,9 @@ if(manifest.evidence?.formulaExecutionClaim!=="NOT_EXECUTED_BY_APPLICATION_MANIF
 
 if(!adapter.includes("proj::leeway-story") || !adapter.includes("/leeway-story.html")){
   throw new Error("Digital Brain project universe does not expose the LeeWay story");
+}
+if(!index.includes("Why LeeWay") || !index.includes("/leeway-story.html")){
+  throw new Error("Digital Brain top bar does not expose the Why LeeWay story");
 }
 
 const authorityUrl=manifest.publicAuthoritySources?.ecosystem;
