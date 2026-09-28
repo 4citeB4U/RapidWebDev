@@ -24,7 +24,7 @@ jobs:
           ok=0
           for i in $(seq 1 30); do
             body="$(curl -fsSL --max-time 20 "$URL" || true)"
-            if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot1' \
+            if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot2' \
               && printf '%s' "$body" | grep -q 'speech-lease-patch.js?v=20260928-threadpilot1' \
               && printf '%s' "$body" | grep -q 'id="agentThreadSelect"' \
               && printf '%s' "$body" | grep -q 'id="agentNewSide"'; then
