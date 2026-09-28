@@ -1,0 +1,42 @@
+name: Verify Digital Brain live thread pilot
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "brain/public/public-brain.js"
+      - "brain/public/thread-workplane.js"
+      - "brain/public/speech-lease-patch.js"
+      - "brain/public/conversation-view.js"
+      - "brain/public/public-brain.css"
+  workflow_dispatch:
+
+jobs:
+  live-pages-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for GitHub Pages publication and verify served pilot
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://4citeb4u.github.io/RapidWebDev/"
+          ok=0
+          for i in $(seq 1 30); do
+            body="$(curl -fsSL --max-time 20 "$URL" || true)"
+            if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot1' \
+              && printf '%s' "$body" | grep -q 'speech-lease-patch.js?v=20260928-threadpilot1' \
+              && printf '%s' "$body" | grep -q 'id="agentThreadSelect"' \
+              && printf '%s' "$body" | grep -q 'id="agentNewSide"'; then
+              ok=1
+              break
+            fi
+            sleep 10
+          done
+          test "$ok" -eq 1
+          printf '%s\n' '{"live_url":"https://4citeb4u.github.io/RapidWebDev/","served_thread_workplane":true,"served_speech_lease_patch":true,"served_thread_controls":true,"acoustic_test":"NOT_PERFORMED"}' > live-smoke.json
+      - name: Upload live smoke evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: digital-brain-live-thread-pilot-smoke
+          path: live-smoke.json
