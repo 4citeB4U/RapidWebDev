@@ -51,6 +51,8 @@ jobs:
             }));
             if(!Object.values(loaded).every(Boolean))throw new Error('Thread/voice pilot globals are incomplete: '+JSON.stringify(loaded));
             if(!String(initial).includes('/8 hands active'))throw new Error('Eight-hand status is not visible: '+initial);
+            await page.click('#agentStartupStatus');
+            await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
             await page.click('#agentNewSide');
             await page.waitForFunction(n=>document.querySelectorAll('#agentThreadSelect option').length===n+1,before);
             const after=await page.locator('#agentThreadSelect option').count();
