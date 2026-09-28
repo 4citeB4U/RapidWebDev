@@ -324,6 +324,52 @@ function openEvidenceDetail(e,d){
 }
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
 let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,preparationEpoch=0;
+const LIVE_LEEWAY_BRIDGE="http://127.0.0.1:8770";
+let liveLeeWayBridge={available:false,lastChecked:0,health:null,lastReceipt:null},liveBridgeAudio=null;
+async function probeLiveLeeWayBridge(force=false){
+ const now=Date.now();if(!force&&now-liveLeeWayBridge.lastChecked<5000)return liveLeeWayBridge.available;
+ liveLeeWayBridge.lastChecked=now;
+ const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),2500);
+ try{
+  const response=await fetch(LIVE_LEEWAY_BRIDGE+"/health",{cache:"no-store",signal:controller.signal});
+  if(!response.ok)throw new Error("bridge "+response.status);
+  liveLeeWayBridge.health=await response.json();liveLeeWayBridge.available=true;
+ }catch{liveLeeWayBridge.available=false;liveLeeWayBridge.health=null}
+ finally{clearTimeout(timer)}
+ globalThis.__leewayLiveBridgeState=()=>({...liveLeeWayBridge});
+ return liveLeeWayBridge.available;
+}
+function stopLiveBridgeAudio(){try{liveBridgeAudio?.pause()}catch{}liveBridgeAudio=null}
+async function playLiveBridgeAudio(audioUrl,signal){
+ if(!audioUrl||conversationSession?.state!=="listening")return;
+ stopLiveBridgeAudio();speechArbiter.cancelSpeech();
+ const audio=new Audio(LIVE_LEEWAY_BRIDGE+audioUrl);liveBridgeAudio=audio;
+ if(signal?.aborted)return;
+ const abort=()=>{try{audio.pause()}catch{}};signal?.addEventListener("abort",abort,{once:true});
+ try{
+  agentState.textContent="Agent Lee is speaking from the live LeeWay runtime.";
+  await audio.play();
+  await new Promise((resolve,reject)=>{audio.onended=resolve;audio.onerror=()=>reject(new Error("Live clone audio playback failed."));});
+ }finally{signal?.removeEventListener("abort",abort);if(liveBridgeAudio===audio)liveBridgeAudio=null}
+}
+async function askLiveLeeWay(question,work,thread){
+ gemmaGenerating=true;agentState.textContent=threadDisplay(thread)+" · LeeWay Formula context → Agent Skills → Gemma 4...";
+ completedDraft="";qs("#downloadAgentDraft").disabled=true;
+ const controller=new AbortController(),abort=()=>controller.abort();work.signal.addEventListener("abort",abort,{once:true});
+ try{
+  const response=await fetch(LIVE_LEEWAY_BRIDGE+"/ask",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({question,threadId:thread.id}),signal:controller.signal});
+  const data=await response.json();if(!response.ok)throw new Error(data.error||("Live LeeWay bridge "+response.status));
+  const output=String(data.answer||"").trim();liveLeeWayBridge.lastReceipt=data.receipt||null;globalThis.__leewayLiveBridgeLastReceipt=data.receipt||null;
+  thread.lastOutput=output;if(selectedThreadId===thread.id){agentText.textContent=output;agentNarration.textContent=output}
+  completedDraft=output;qs("#downloadAgentDraft").disabled=!output;recordChat("Agent Lee · "+threadDisplay(thread)+" · live LeeWay",output);threadWorkplane.remember(thread.id,"assistant",output);
+  LeeWayVoiceMetrics.record("live-leeway-complete",{threadId:thread.id,workId:work.id,latencyMs:data.receipt?.latency_ms?.total});
+  if(data.audio_url)await playLiveBridgeAudio(data.audio_url,work.signal);
+  agentState.textContent=threadDisplay(thread)+" · live LeeWay turn complete.";renderThreadState();return output;
+ }catch(error){
+  if(error.name!=="AbortError"){agentState.textContent=error.message;LeeWayVoiceMetrics.record("live-leeway-error",{threadId:thread.id,workId:work.id});}
+  return null;
+ }finally{work.signal.removeEventListener("abort",abort);gemmaGenerating=false;renderThreadState()}
+}
 const browserVoice=new LeeWayBrowserVoice(),welcomePlayer=new LeeWayWelcomePlayer();
 const threadWorkplane=new LeeWayThreadWorkplane({maxHands:8,onState:()=>setTimeout(renderThreadState,0)});
 const speechArbiter=new LeeWaySpeechLeaseArbiter(browserVoice,{
@@ -448,7 +494,7 @@ function cancelAgentGeneration(){
  if(hand?.workId)threadWorkplane.cancelWork(hand.workId);
  voiceController.stop();gemmaGenerating=false;
 }
-function silenceSpeechOnly(){browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();qs("#savedVoiceSample")?.pause();}
+function silenceSpeechOnly(){browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();stopLiveBridgeAudio();qs("#savedVoiceSample")?.pause();}
 function endVoice(){conversationSession.mute()}
 async function askGemma(question,work,thread){
  if(browserGemma?.state!=="ready")return null;
@@ -513,6 +559,10 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  browserListener.cancelUtterance();
  const navigation=navigateAgentRequest(text);
  if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
+ if(await probeLiveLeeWayBridge()){
+  const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askLiveLeeWay(text,work,t),{resource:'live-leeway',priority:thread.kind==='side'?90:60});
+  renderThreadState();try{return await submitted.promise}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;return null;}
+ }
  if(browserGemma?.state==="ready"){
   const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askGemma(text,work,t),{resource:'gemma',priority:thread.kind==='side'?80:50});
   renderThreadState();try{return await submitted.promise}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;return null;}
