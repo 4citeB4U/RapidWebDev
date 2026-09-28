@@ -7,6 +7,8 @@ Approved choices: GitHub Pages; browser-only free inference; free external model
 
 Reference WAV SHA-256: `638c88b332ecc7a21950511871c724f68f3eb566c59157e46493ee79ec55970e`. Preserve authorization and provenance when replacing voices; do not silently use rejected generated references.
 
+The repaired prepared introduction used explicit sampling (temperature 0.8, top-p 0.95, top-k 50) after greedy decoding dropped later phrases. All three intended segments passed local transcription, but native CPU generation still took roughly 11–15 seconds per 4.6–6.6 seconds of audio. Treat these as measured reference settings, not universally optimal parameters or proof of browser latency. Use content and speed checks for each new voice.
+
 Modules: gemma-browser.js, gemma-browser-worker.js, browser-voice.js, chatterbox.worker.js, browser-listener.js, voice-controller.js, speech-pipeline.js, and welcome-player.js. Recheck current names/code. Unit tests cover lifecycle, not acoustics.
 
 September 2026 findings: Turbo trials on the observed Intel graphics path took approximately 52 and 349 seconds for a two-clause prompt. Turbo did not expose the same exaggeration control and was not promoted. Base Chatterbox prepared-audio generation also needed transcript inspection after later phrases were missing from an initial result. Failed audio is not an acceptable onboarding asset.
