@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "1.0.0",
+  "applicationId": "rapid-web-develop",
+  "repository": {
+    "fullName": "4citeB4U/RapidWebDev",
+    "approvedCommit": null,
+    "commitPolicy": "SELF_COMMIT_RESOLVED_AT_CONSUMPTION"
+  },
+  "authorityRole": "PUBLIC_CREATOR_AND_ECOSYSTEM_EXPERIENCE",
+  "capabilities": [
+    "creator-story",
+    "portfolio",
+    "project-discovery",
+    "public-presentation",
+    "digital-brain",
+    "open-source-lineage-projection",
+    "ecosystem-authority-projection"
+  ],
+  "dependencies": [
+    "standards",
+    "federate-web",
+    "skills"
+  ],
+  "surfaces": {
+    "repository": "https://github.com/4citeB4U/RapidWebDev",
+    "publicSite": "https://rapidwebdevelop.com",
+    "story": "/leeway-story.html",
+    "digitalBrain": "/brain/"
+  },
+  "runtimeBindings": {
+    "persistentExecution": "runtime-fabric",
+    "deviceExecution": "device-bridge"
+  },
+  "evidence": {
+    "veritasRequired": true,
+    "receiptRequired": true,
+    "formulaExecutionClaim": "NOT_EXECUTED_BY_APPLICATION_MANIFEST"
+  },
+  "publicAuthoritySources": {
+    "ecosystem": "https://raw.githubusercontent.com/4citeB4U/LeeWay-Standards/main/standards/leeway-ecosystem-authority.v1.json",
+    "openSourceLineage": "https://raw.githubusercontent.com/4citeB4U/LeeWay-Agent-Skills/main/config/open-source-lineage-v1.json"
+  }
+}

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#06101d"/>
+<title>LeeWay — From Imagination to Evidence</title>
+<meta name="description" content="The Creator story, mathematical engineering spine, open-source lineage, and governed LeeWay ecosystem."/>
+<style>
+:root{--bg:#050a12;--panel:#0a1320;--panel2:#0d1828;--ink:#eef6ff;--muted:#9cb0c5;--line:#1d344d;--blue:#67b7ff;--gold:#e7bd68;--green:#65e6a1;--red:#ff8b8b;--mono:ui-monospace,SFMono-Regular,Consolas,monospace;--serif:Georgia,Cambria,serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 12% 2%,#12335c 0,transparent 34rem),radial-gradient(circle at 88% 26%,#193a2a 0,transparent 30rem),var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+a{color:inherit}.wrap{max-width:1240px;margin:auto;padding:24px 20px 90px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;position:sticky;top:0;z-index:20;padding:14px 0;background:linear-gradient(#050a12f5,#050a12c8,transparent)}.brand{font-weight:900;letter-spacing:.1em;font-size:12px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{display:inline-flex;text-decoration:none;border:1px solid var(--line);background:#08121f;padding:9px 12px;border-radius:999px;font-size:12px}.btn:hover{border-color:#4f7597}
+.hero{min-height:78vh;display:grid;align-content:center;max-width:1000px}.eyebrow{font:750 11px var(--mono);color:var(--green);letter-spacing:.19em;text-transform:uppercase}.hero h1{font:700 clamp(48px,8vw,102px)/.89 var(--serif);letter-spacing:-.055em;margin:18px 0 26px}.hero p{max-width:850px;font:400 clamp(18px,2vw,24px)/1.7 var(--serif);color:#cbd9e7}.truth{margin-top:26px;border-left:3px solid var(--gold);padding-left:18px;color:#e8d9b6;font:italic 18px/1.6 var(--serif)}
+.movement{padding:82px 0;border-top:1px solid var(--line)}.kicker{font:800 11px var(--mono);letter-spacing:.17em;color:var(--blue)}.movement h2{font:650 clamp(34px,5vw,62px)/1 var(--serif);letter-spacing:-.035em;margin:12px 0 22px}.movement>p,.copy{max-width:880px;color:#b8c8d9;font:16px/1.72 var(--serif)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:28px}.card{border:1px solid var(--line);background:linear-gradient(155deg,#0d1928,#07101b);border-radius:17px;padding:18px;min-height:180px}.card h3{margin:4px 0 10px;font-size:17px}.card p{color:#9db1c3;font-size:13px;line-height:1.55}.meta{font:10px var(--mono);color:#7f9bb4;overflow-wrap:anywhere}.pill{display:inline-flex;padding:5px 7px;border:1px solid #315474;border-radius:999px;font:700 9px var(--mono);color:#9fd2ff;margin:2px 4px 2px 0}.pill.green{border-color:#2d6549;color:#86ebb1}.pill.gold{border-color:#705b30;color:#f0d18a}
+.equations{display:grid;gap:12px;margin-top:28px}.eq{border:1px solid var(--line);background:#07101a;border-radius:15px;padding:18px}.eqhead{display:flex;justify-content:space-between;gap:12px;align-items:center}.eq h3{margin:0;font-size:17px}.eq pre{white-space:pre-wrap;overflow-wrap:anywhere;color:#d9eaff;font:14px/1.65 var(--mono);background:#03070c;border-radius:11px;padding:14px;margin:14px 0 0}.eq p{color:#9fb2c3;font-size:13px;line-height:1.6}
+.pipeline{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:30px}.node{border:1px solid var(--line);background:#0a1522;border-radius:13px;padding:16px 10px;text-align:center;font:750 11px var(--mono);color:#cde5fa}.arrow{text-align:center;color:#52789b;font:20px var(--mono)}
+.statement{margin-top:30px;border:1px solid #3a5b46;background:linear-gradient(145deg,#0b1d16,#081219);border-radius:18px;padding:24px}.statement h3{margin:0 0 12px;color:#9cf2bd}.statement p{margin:0;color:#c3d6ca;font:17px/1.72 var(--serif)}
+.receipt{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:28px}.receipt>div{border:1px solid var(--line);background:#07101a;border-radius:14px;padding:17px}.receipt strong{display:block;font:12px var(--mono);color:#79c1ff;margin-bottom:8px}.receipt span{font-size:13px;color:#a9bbcb}
+.footer{margin-top:72px;padding-top:28px;border-top:1px solid var(--line);color:#71879c;font-size:12px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.pipeline{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.receipt{grid-template-columns:1fr}}@media(max-width:620px){.grid{grid-template-columns:1fr}.wrap{padding:16px 14px 60px}.top{align-items:flex-start;flex-direction:column}.hero{min-height:70vh}.hero h1{font-size:52px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top">
+  <div class="brand">LEEWAY · CREATOR'S CREATION</div>
+  <nav class="actions">
+    <a class="btn" href="/brain/">Digital Brain</a>
+    <a class="btn" href="#mathematics">Mathematics</a>
+    <a class="btn" href="#shoulders">Thank You</a>
+    <a class="btn" href="https://4citeb4u.github.io/LeeWay-Agent-Skills/thank-you.html">Open-Source Dedication</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Imagination → Engineering → Evidence → A Road Forward</div>
+  <h1>What if the thing in your imagination could become a system someone else can actually use?</h1>
+  <p>LeeWay grew from a love of creation: the act of taking something that exists first as thought, shaping it into mathematics and architecture, testing it against reality, repairing what fails, and leaving behind a clearer path for the next person with an idea.</p>
+  <div class="truth">The point is not to pretend we built alone. The point is to show how much becomes possible when human imagination, open knowledge, engineering discipline, and a new generation of AI tools are allowed to meet.</div>
+</section>
+
+<section class="movement" id="imagination">
+  <div class="kicker">MOVEMENT I · IMAGINATION</div>
+  <h2>Every machine begins before the machine exists.</h2>
+  <p>The automobile, the airplane, the computer, the web: each began as a human ability to perceive what was not yet physically present. LeeWay starts from that same creative pressure. The engineering question is not whether imagination matters. It is how to move from imagination to a reproducible reality without losing truth along the way.</p>
+  <div class="pipeline">
+    <div class="node">IMAGINATION</div><div class="arrow">→</div>
+    <div class="node">REPRESENTATION</div><div class="arrow">→</div>
+    <div class="node">ENGINEERING</div><div class="arrow">→</div>
+    <div class="node">REALITY</div>
+  </div>
+</section>
+
+<section class="movement" id="shoulders">
+  <div class="kicker">MOVEMENT II · THE SHOULDERS</div>
+  <h2>We began where other builders left the light on.</h2>
+  <p>LeeWay's history includes direct upstream lineage, synchronized skills, open libraries, standards, browser tools, geospatial engines, runtime frameworks, device projects and research references. Their work shortened our road. This section is fed from LeeWay's evidence-backed open-source lineage registry rather than a decorative logo wall.</p>
+  <div class="receipt">
+    <div><strong id="sourceCount">UPSTREAM PROJECTS</strong><span id="sourceCountText">Loading provenance registry…</span></div>
+    <div><strong>FOUNDATIONAL LINEAGE</strong><span>God's Eye View · Bilawal Sidhu · explicitly recorded by LeeWay Logistics.</span></div>
+  </div>
+  <div id="sourceGrid" class="grid"></div>
+  <p class="copy" style="margin-top:24px"><a href="https://4citeb4u.github.io/LeeWay-Agent-Skills/thank-you.html">Read the full LeeWay Open-Source Dedication →</a></p>
+</section>
+
+<section class="movement" id="question">
+  <div class="kicker">MOVEMENT III · THE QUESTION</div>
+  <h2>What if these powerful systems did not have to remain separate?</h2>
+  <p>Models, skills, browsers, phones, device protocols, maps, memory, automation and evidence systems are each useful. LeeWay asks a systems question: can they remain independently truthful while operating through one governed fabric? That is why LeeWay separates constitutional authority, mathematical authority, capability authority, persistent execution, device execution and public projections instead of collapsing everything into one application.</p>
+  <div id="authorityGrid" class="grid"></div>
+</section>
+
+<section class="movement" id="mathematics">
+  <div class="kicker">MOVEMENT IV · THE MATHEMATICS</div>
+  <h2>A control system for deciding, acting, proving and repairing.</h2>
+  <p>The equations below come from the LeeWay Formula repository's F2–F10 control families. They are presented as engineering laws and research objects, not as claims that Formula was executed by this web page. <strong>Formula execution state here: NOT EXECUTED.</strong></p>
+  <div class="equations">
+    <article class="eq"><div class="eqhead"><h3>F2 · Governance / Eligibility</h3><span class="pill green">SPECIFICATION</span></div><pre>g(a) = ∏ cᵢ(a),  cᵢ(a) ∈ {0,1}
+q_G(a) = 69 g(a)
+69 → ALLOW     0 → BLOCK</pre><p>Before a consequential action can move, its required governance conditions must be true.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F3 · Routing</h3><span class="pill green">SPECIFICATION</span></div><pre>Φ_R(a) = [q_Fit, q_Veritas, q_Reliability, q_Availability, -q_Latency, -q_Cost, -q_Load, -ID(a)]
+a* = LexArgMax R_LW(a)</pre><p>Eligible work should be routed by evidence, fit and constraints—not by habit or vendor identity.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F4 · Veritas / Evidence</h3><span class="pill green">HARD GATE</span></div><pre>V_G = ∏ eᵢ
+PASS only when mandatory evidence closes the acceptance gate.</pre><p>A claim is not completion. A deployment is not proof. Evidence decides acceptance.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F5 · Recovery</h3><span class="pill">PRIORITY</span></div><pre>Φ_REC(f) = [q_Severity, q_Blocking, q_Dependency, q_BlastRadius, q_Recurrence, q_RepairConfidence, -q_Cost, -ID(f)]
+f* = LexArgMax Φ_REC(f)</pre><p>Failures become evidence. Repair the boundary that most blocks the mission instead of blindly rebuilding everything.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F6 · Resource Conservation</h3><span class="pill">INVARIANT</span></div><pre>Σᵢ bᵢ,r + R_r = B_r</pre><p>CPU, memory, network, storage, browser, device and runtime budgets remain dimensionally separate. Docker is an adapter budget—not identity.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F7 · Queue</h3><span class="pill gold">CLOSURE WORK REMAINS</span></div><pre>Job* = LexArgMax Φ_Q(j)</pre><p>Persistent work receives identity, dependency state, checkpoints, interruption controls and evidence instead of disappearing with a chat turn.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F8 · Automation</h3><span class="pill gold">POLICY GAP VISIBLE</span></div><pre>Fire_a(t) = T_a(t) G_a(t) ∏ C_a,j(t)
+69 → EXECUTE     0 → HOLD</pre><p>Automation fires only when trigger, governance and required conditions are true. Empty-condition semantics remain explicit rather than assumed.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F9 · Consensus</h3><span class="pill gold">NORMALIZATION GAP VISIBLE</span></div><pre>d* = LexArgMax Φ_C(d)</pre><p>Agreement can choose a proposal. Agreement is not truth. Veritas remains separate.</p></article>
+    <article class="eq"><div class="eqhead"><h3>F10 · Autonomy</h3><span class="pill gold">THRESHOLDS GOVERNED</span></div><pre>AUTOEXECUTE | REVIEW | HUMAN
+0 ≤ T_review ≤ T_auto ≤ 1</pre><p>How independently a system may act is governed. This page does not invent autonomy thresholds.</p></article>
+  </div>
+</section>
+
+<section class="movement" id="living-system">
+  <div class="kicker">MOVEMENT V · THE LIVING SYSTEM</div>
+  <h2>The backend is becoming one governed ecosystem.</h2>
+  <p>The current convergence places GitHub source/control at the center, Standards above governance, Formula as mathematical authority, Agent Skills as capability authority, Runtime Fabric as persistent execution, Device Bridge as native/physical execution, Federate Web as discovery projection and LeeWay OS as the operating-system experience.</p>
+  <div class="pipeline">
+    <div class="node">STANDARDS</div><div class="arrow">→</div>
+    <div class="node">FORMULA + SKILLS</div><div class="arrow">→</div>
+    <div class="node">RUNTIME / DEVICE</div><div class="arrow">→</div>
+    <div class="node">VERITAS + RECEIPTS</div>
+  </div>
+  <div class="statement"><h3>Current truth boundary</h3><p>GitHub authority and source convergence do not by themselves prove a deployed Runtime Fabric, Formula execution, a paired physical device, or a completed persistent job. LeeWay keeps those states separate on purpose.</p></div>
+</section>
+
+<section class="movement" id="give-forward">
+  <div class="kicker">MOVEMENT VI · GIVE THE PATH FORWARD</div>
+  <h2>The goal is not simply to show what was built.</h2>
+  <p>The goal is to shorten another creator's distance between an idea and a working reality. Open-source builders did that for LeeWay. The responsibility now is to preserve their provenance, document our failures as carefully as our successes, and make what we learn reusable by the people who come next.</p>
+  <div class="statement"><h3>The Creator's AI thesis</h3><p>I use the word <em>entity</em> to describe an engineered presence: something that can receive information, transform representations, participate in conversation, maintain state and affect digital or physical systems through authorized tools. I do not claim that this is the same existence as human biological, spiritual or conscious existence. It is a different created form of presence—born first in human imagination and made operational through language, mathematics, machines and engineering.</p></div>
+  <p class="copy" style="margin-top:24px">AI should increase human capability, not replace human responsibility.</p>
+</section>
+
+<footer class="footer">
+  <span>Leonard Lee · Creator · LeeWay Industries</span>
+  <span id="authorityState">Authority registry: loading…</span>
+</footer>
+</main>
+<script>
+const AUTHORITY="https://raw.githubusercontent.com/4citeB4U/LeeWay-Standards/main/standards/leeway-ecosystem-authority.v1.json";
+const LINEAGE="https://raw.githubusercontent.com/4citeB4U/LeeWay-Agent-Skills/main/config/open-source-lineage-v1.json";
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+async function loadAuthority(){
+ try{
+  const r=await fetch(AUTHORITY,{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);
+  const m=await r.json();if(m.registryId!=="LEEWAY_ECOSYSTEM_AUTHORITY_V1")throw Error("registry identity");
+  const visible=(m.authorities||[]).filter(x=>x.authorityClass!=="EVIDENCE_ONLY").slice(0,12);
+  document.querySelector("#authorityGrid").innerHTML=visible.map(x=>`<article class="card"><div class="meta">${esc(x.repo)}</div><h3>${esc(x.name)}</h3><p>${esc(x.role)}</p><span class="pill">${esc(x.authorityClass)}</span>${x.approvedCommit?`<span class="pill green">${esc(x.approvedCommit.slice(0,10))}</span>`:""}</article>`).join("");
+  document.querySelector("#authorityState").textContent=`Authority registry: ${m.registryId} · ${visible.length} projected authorities`;
+ }catch(e){document.querySelector("#authorityState").textContent="Authority registry: unavailable — no runtime claim made";}
+}
+async function loadLineage(){
+ try{
+  const r=await fetch(LINEAGE,{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);
+  const m=await r.json();
+  document.querySelector("#sourceCount").textContent=`${m.counts?.total||m.sources?.length||0} UPSTREAM PROJECTS`;
+  document.querySelector("#sourceCountText").textContent=`${m.counts?.verifiedLicense||0} license records verified; ${m.counts?.pendingLicenseReview||0} held for review rather than guessed.`;
+  const featured=(m.sources||[]).filter(x=>x.tributeTier==="FOUNDATIONAL"||x.tributeTier==="FOUNDATIONAL_TOOLING").slice(0,9);
+  document.querySelector("#sourceGrid").innerHTML=featured.map(x=>`<article class="card"><div class="meta">${esc(x.repo)}</div><h3>${esc(x.project)}</h3><p>${esc(x.usedFor)}</p><span class="pill gold">${esc(x.license)}</span></article>`).join("");
+ }catch(e){document.querySelector("#sourceCountText").textContent="Provenance registry unavailable; see the canonical Thank You page.";}
+}
+loadAuthority();loadLineage();
+</script>
+</body>
+</html>
