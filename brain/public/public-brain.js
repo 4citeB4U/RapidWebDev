@@ -188,7 +188,7 @@ function closeAgentBubble(){
 async function submitAgentInput(){
  const text=String(agentInput?.value||"").trim();if(!text)return;
  openAgentBubble(false);agentInput.value="";agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
- await handleAgentCommand(text);
+ await handleAgentCommand(text,selectedThreadId);
 }
 function scrollRail(dir){track.scrollBy({left:dir*Math.max(260,track.clientWidth*.72),behavior:"smooth"})}
 function buildLayout(filter=""){
@@ -325,7 +325,32 @@ function openEvidenceDetail(e,d){
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
 let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,preparationEpoch=0;
 const browserVoice=new LeeWayBrowserVoice(),welcomePlayer=new LeeWayWelcomePlayer();
+const threadWorkplane=new LeeWayThreadWorkplane({maxHands:8,onState:()=>setTimeout(renderThreadState,0)});
+const speechArbiter=new LeeWaySpeechLeaseArbiter(browserVoice,{
+ onNavigation:text=>{recordChat('Agent Lee · source',text);agentState.textContent=text;},
+ onState:message=>{if(message)agentState.textContent=message;}
+});
+let selectedThreadId=threadWorkplane.mainThread.id,pendingVoiceThreadId=null;
 const modelPreparation=new LeeWayModelPreparation();
+function threadDisplay(thread){return (thread.kind==='main'?'Main task':'Side chat')+' ['+thread.id+']';}
+function renderThreadState(){
+ const select=qs('#agentThreadSelect'),status=qs('#agentThreadStatus'),box=select?.closest('.agent-thread-controls');if(!select)return;
+ const threads=threadWorkplane.listThreads(),existing=new Set([...select.options].map(o=>o.value));
+ for(const thread of threads)if(!existing.has(thread.id)){const option=document.createElement('option');option.value=thread.id;option.textContent=threadDisplay(thread);select.append(option);}
+ if(!select.value||!threadWorkplane.getThread(select.value))select.value=selectedThreadId;
+ const current=threadWorkplane.getThread(select.value)||threadWorkplane.mainThread,snap=threadWorkplane.snapshot(),running=snap.hands.filter(h=>h.status==='RUNNING');
+ if(status)status.textContent=threadDisplay(current)+' · '+current.status.toLowerCase()+' · '+running.length+'/'+snap.maxHands+' hands active';
+ if(box)box.dataset.busy=String(running.length>0);
+}
+function selectThread(threadId){
+ const thread=threadWorkplane.selectThread(threadId);selectedThreadId=thread.id;const select=qs('#agentThreadSelect');if(select)select.value=thread.id;renderThreadState();return thread;
+}
+function createSideThread(){const side=threadWorkplane.createSideThread();selectThread(side.id);return side;}
+function threadSpeech(thread,text){
+ if(!text||conversationSession?.state!=='listening'||!browserVoice.ready)return Promise.resolve();
+ const stream=new LeeWaySpeechStream();stream.push(text);stream.end();
+ return speechArbiter.speak(thread,stream,{onState:message=>{if(message)agentState.textContent=message;},onRendered:part=>LeeWayVoiceMetrics.record('thread-segment-rendered',{threadId:thread.id,characters:part.length})}).catch(error=>{if(error.name!=='AbortError')agentState.textContent=error.message;});
+}
 function updatePreparationStatus(){
  const ready=browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready;
  const busy=gemmaLoading||qs('#loadBrowserVoice').disabled;
