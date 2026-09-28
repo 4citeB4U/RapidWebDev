@@ -1,55 +1,17 @@
 {
-  "schema": "leeway-agent-lee-voice-v2",
-  "preferred_provider": "gemini-live",
-  "active_provider": "unconfigured",
-  "gemini_live": {
-    "model": "gemini-3.8-live",
-    "voice_name": "Charon",
-    "voice_candidates": [
-      "Puck",
-      "Iapetus",
-      "Charon",
-      "Gacrux",
-      "Sadaltager"
-    ],
-    "response_modalities": [
-      "AUDIO"
-    ],
-    "output_audio_transcription": true,
-    "token_endpoint": null,
-    "requires_ephemeral_token": true,
-    "barge_in": true,
-    "automatic_language_detection": true,
-    "tool_control": true
-  },
-  "tts_fallback": {
-    "model": "gemini-3.8-flash-tts",
-    "voice_name": "Charon",
-    "secure_backend_endpoint": null
-  },
-  "browser_fallback": {
-    "prefer_name_patterns": [
-      "Google.*English",
-      "Guy",
-      "Ryan",
-      "Christopher",
-      "Andrew",
-      "Brian",
-      "Eric",
-      "Daniel",
-      "David"
-    ],
-    "language": "en-US",
-    "rate": 0.94,
-    "pitch": 0.93,
-    "enabled": false
-  },
-  "provider_order": [
-    "gemini-live",
-    "gemini-tts"
-  ],
-  "note": "Gemini Live requires a secure ephemeral-token broker; no long-lived API key may be embedded in GitHub Pages.",
-  "reasoning_provider": "local-gemma4",
-  "requested_voice_style": "Deep, lively, natural masculine voice with a gentle Southern American accent. Plain English; no poetry, forced slang or caricature.",
-  "verification": "Natural voice is not yet authenticated or acoustically tested. Browser fallback is not equivalent to the requested voice."
+  "schema": "leeway-agent-lee-voice-v3",
+  "hosting": "GitHub Pages",
+  "reasoning_provider": "browser-gemma4-e2b",
+  "voice_provider": "browser-chatterbox",
+  "transcription_provider": "browser-whisper-tiny-en",
+  "model_download_host": "Hugging Face",
+  "api_key_required": false,
+  "paid_inference_required": false,
+  "local_server_required": false,
+  "automatic_model_download": false,
+  "requested_voice_style": "Deep, lively masculine voice with a Southern American accent. Plain English; no poetry or caricature.",
+  "reference": "User-selected Voice One from Agent_Voice_One.m4a; bundled at /brain/public/voices/agent-lee-reference.wav.",
+  "limitations": "Requires sufficient device memory and WebGPU for Gemma. Chatterbox latency and voice similarity vary by device and require audition. Microphone interruption needs acoustic verification.",
+  "chatterbox_exaggeration": 0.25,
+  "delivery": "Calm; user requested less excited delivery after auditioning Voice One."
 }

@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Browser AI device check</title>
+<body style="font:16px system-ui;background:#061321;color:#dff4ff;padding:24px"><h1>Browser AI device check</h1><p>This check runs on your device and sends no device report anywhere.</p><button id="check">Check GPU</button><pre id="result" style="white-space:pre-wrap"></pre>
+<script>
+document.querySelector('#check').onclick=async()=>{
+ const output=document.querySelector('#result');
+ try{
+  if(!navigator.gpu){output.textContent='WebGPU unavailable in this browser.';return;}
+  const adapter=await navigator.gpu.requestAdapter({powerPreference:'high-performance'});
+  if(!adapter){output.textContent='No WebGPU adapter available.';return;}
+  const info=adapter.info;
+  output.textContent=JSON.stringify({vendor:info?.vendor,architecture:info?.architecture,description:info?.description,softwareAdapter:info?.isFallbackAdapter??adapter.isFallbackAdapter,shaderF16:adapter.features.has('shader-f16'),maxBufferBytes:adapter.limits.maxBufferSize},null,2);
+ }catch(error){output.textContent=error.message;}
+};
+</script>
+<button id="transcribe">Test local transcription with Voice One</button><p>Downloads the speech recognition model if needed. Uses the bundled reference; does not enable your microphone.</p><pre id="transcript" style="white-space:pre-wrap"></pre>
+<script>
+document.querySelector('#transcribe').onclick=async event=>{
+ const button=event.target,output=document.querySelector('#transcript');button.disabled=true;output.textContent='Loading local speech recognition...';
+ const worker=new Worker('./listener.worker.js?v=20260928-browser3',{type:'module'});
+ let context;
+ try{
+  const response=await fetch('./voices/agent-lee-reference.wav?v=638c88b332ec');if(!response.ok)throw new Error('Reference unavailable');
+  context=new AudioContext();const decoded=await context.decodeAudioData(await response.arrayBuffer());
+  const offline=new OfflineAudioContext(1,Math.ceil(decoded.duration*16000),16000),source=offline.createBufferSource();source.buffer=decoded;source.connect(offline.destination);source.start();
+  const data=(await offline.startRendering()).getChannelData(0).slice();
+  worker.onmessage=({data:message})=>{
+   if(message.type==='error'){output.textContent=message.error;worker.terminate();button.disabled=false;}
+   if(message.type==='transcript'){output.textContent=message.text;worker.terminate();button.disabled=false;}
+  };
+  worker.onerror=error=>{output.textContent=error.message||'Speech worker failed';worker.terminate();button.disabled=false;};
+  worker.postMessage({type:'transcribe',id:1,audio:data.buffer},[data.buffer]);
+ }catch(error){output.textContent=error.message;worker.terminate();button.disabled=false;}
+ finally{await context?.close();}
+};
+</script></body></html>
