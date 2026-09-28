@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 function setup(options={}){
-  const scope={window:{},DOMException,Float32Array,Int16Array};vm.createContext(scope);
+  const scope={performance,window:{},DOMException,Float32Array,Int16Array};vm.createContext(scope);
   vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
   const listener=new scope.window.LeeWayBrowserListener(options);listener.resetUtterance();listener.noise=.002;return listener;
 }

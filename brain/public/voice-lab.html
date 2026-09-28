@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Agent Lee voice qualification</title>
+<style>body{font:16px system-ui;background:#061321;color:#e4f5ff;max-width:850px;margin:auto;padding:24px}button,select{font:inherit;margin:6px;padding:10px;background:#12334d;color:#fff;border:1px solid #4bcde4;border-radius:8px}pre{white-space:pre-wrap;overflow-wrap:anywhere}a{color:#64e0ff}</style>
+<h1>Agent Lee voice qualification</h1><p>Voice One, pitch-preserved pace 1.1×. All processing stays in this browser. Models download only when you select Load. Turbo is an experiment; this page does not change the website’s default voice.</p>
+<label>Model <select id="model"><option value="base">Current Chatterbox — Calm 0.25</option><option value="turbo">Chatterbox Turbo — experimental delivery</option></select></label>
+<button id="load">Load selected model</button><button id="run" disabled>Run three speech trials</button><button id="stop">Stop and unload</button>
+<p id="state" role="status">Not loaded.</p><pre id="results"></pre>
+<h2>Headphone interruption test</h2><p>This uses the saved Voice One recording, so speech synthesis speed does not affect the interruption test. Put on headphones. Start the test, then say “stop” while the recording plays. End closes the microphone. No microphone recording is saved.</p>
+<button id="acoustic">Start microphone test</button><button id="end">End microphone test</button><pre id="acousticResult">Microphone off.</pre>
+<button id="download">Download timing evidence</button><pre id="timing"></pre><p><a href="/">Return to the Digital Brain</a></p>
+<script src="./browser-voice.js?v=20260928-pipeline1"></script><script src="./speech-pipeline.js?v=20260928-pipeline1"></script><script src="./browser-listener.js?v=20260928-pipeline1"></script>
+<script>
+const $=s=>document.querySelector(s);let voice=null,control=null,listener=null,acousticVoice=null,acousticControl=null;
+const trials=[];let loadedModel=null;const record=(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail);
+addEventListener('leeway-voice-metric',()=>$('#timing').textContent=JSON.stringify(LeeWayVoiceMetrics.snapshot().slice(-12),null,2));
+$('#load').onclick=async()=>{
+ $('#load').disabled=true;$('#run').disabled=true;$('#model').disabled=true;
+ try{control?.abort();await voice?.dispose();voice=new LeeWayBrowserVoice({workerURL:'./chatterbox.worker.js?v=20260928-pipeline1&model='+$('#model').value});
+  const start=performance.now();const identity=await voice.load(p=>$('#state').textContent=p.message||('Loading '+(p.file||'model')+(p.progress?' '+Math.round(p.progress)+'%':'')));
+  loadedModel=identity.model;$('#state').textContent='Ready. '+JSON.stringify(identity);record('lab-model-ready',{...identity,durationMs:performance.now()-start});$('#run').disabled=false;
+ }catch(e){$('#state').textContent=e.message;}finally{$('#load').disabled=false;$('#model').disabled=false;}
+};
+$('#run').onclick=async()=>{
+ $('#run').disabled=true;$('#load').disabled=true;$('#model').disabled=true;control=new AbortController();
+ try{for(let i=0;i<3;i++){
+  const start=performance.now(),stream=new LeeWaySpeechStream(control.signal);record('lab-trial-start',{trial:i+1,model:loadedModel});
+  const task=voice.speakStream(stream,{signal:control.signal,onState:s=>$('#state').textContent=s});
+  stream.push('I am ready to help. ');stream.push('Tell me what you need.');stream.end();await task;
+  trials.push({model:loadedModel,trial:i+1,elapsedMs:performance.now()-start});$('#results').textContent=JSON.stringify(trials,null,2);
+ }}catch(e){$('#state').textContent=e.name==='AbortError'?'Stopped.':e.message;}finally{$('#run').disabled=!voice?.ready;$('#load').disabled=false;$('#model').disabled=false;}
+};
+$('#stop').onclick=async()=>{control?.abort();await voice?.dispose();$('#run').disabled=true;$('#state').textContent='Stopped and unloaded.';};
+async function endAcoustic(){acousticControl?.abort();acousticControl=null;await listener?.dispose();listener=null;await acousticVoice?.dispose();acousticVoice=null;$('#acoustic').disabled=false;$('#acousticResult').textContent='Microphone off.';}
+$('#acoustic').onclick=async()=>{
+ $('#acoustic').disabled=true;const session=acousticControl=new AbortController();
+ try{await acousticVoice?.dispose();acousticVoice=new LeeWayBrowserVoice();const player=acousticVoice;
+  let detected=false;
+  listener=new LeeWayBrowserListener({onSpeech:()=>{detected=true;record('speech-onset');player.stop();$('#acousticResult').textContent='Speech detected; local playback stopped. Waiting for local transcription...';},onTranscript:text=>{$('#acousticResult').textContent='Recognized: '+text+'\nMicrophone remains on. Select End microphone test to close it.';},onMetric:record});
+  $('#acousticResult').textContent='Preparing local recognition...';await listener.start();if(session.signal.aborted)return;
+  const context=await player.audioContext(),response=await fetch('./voices/agent-lee-reference.wav?v=638c88b332ec'),buffer=await context.decodeAudioData(await response.arrayBuffer());if(session.signal.aborted)return;
+  $('#acousticResult').textContent='Microphone on. Voice One is playing. Say stop now.';
+  try{await player.play({audio:buffer.getChannelData(0).slice().buffer,sampleRate:buffer.sampleRate},player.epoch);if(!session.signal.aborted)$('#acousticResult').textContent='Recording ended without a detected interruption. End the test, then retry.';}catch(e){if(e.name!=='AbortError')throw e;}
+ }catch(e){if(!session.signal.aborted){await endAcoustic();$('#acousticResult').textContent='Microphone off. '+e.message;}}
+};
+$('#end').onclick=endAcoustic;
+$('#download').onclick=()=>{const url=URL.createObjectURL(new Blob([JSON.stringify({trials,events:LeeWayVoiceMetrics.snapshot(),acousticStatus:'Event timings are software evidence; hearing and acoustic spill require human confirmation.'},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='agent-lee-qualification.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+addEventListener('pagehide',()=>{control?.abort();acousticControl?.abort();void listener?.dispose();void voice?.dispose();void acousticVoice?.dispose();});
+</script></html>

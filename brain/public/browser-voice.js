@@ -4,7 +4,7 @@
   const REVISION='3cab09af388d3f02bba43443fce88c1f4525ac43';
   const sourceURL=typeof document!=='undefined'?document.currentScript?.src:null;
   const DEFAULT_REFERENCE=sourceURL?new URL('voices/agent-lee-reference.wav?v=638c88b332ec',sourceURL).href:'/brain/public/voices/agent-lee-reference.wav?v=638c88b332ec';
-  const WORKER_URL=sourceURL?new URL('chatterbox.worker.js?v=20260928-browser4',sourceURL).href:'/brain/public/chatterbox.worker.js?v=20260928-browser4';
+  const WORKER_URL=sourceURL?new URL('chatterbox.worker.js?v=20260928-pipeline1',sourceURL).href:'/brain/public/chatterbox.worker.js?v=20260928-pipeline1';
   function aborted(){return new DOMException('Speech was stopped.','AbortError');}
   function chunks(text){
     const words=String(text).replace(/\s+/g,' ').trim().split(' '),result=[];let next='';
@@ -113,8 +113,8 @@
         const media=new root.Audio(url);media.playbackRate=this.playbackRate;media.preservesPitch=true;
         const source={media,stop:()=>media.pause()};this.sources.add(source);
         let finished=false;
-        const finish=error=>{if(finished)return;finished=true;media.onended=null;media.onerror=null;media.pause();media.removeAttribute('src');media.load();URL.revokeObjectURL(url);this.sources.delete(source);this.finishPlayback.delete(finish);if(epoch!==this.epoch)reject(aborted());else if(error)reject(error);else resolve();};
-        this.finishPlayback.add(finish);media.onended=()=>finish();media.onerror=()=>finish(new Error('Browser audio playback failed.'));media.play().catch(finish);
+        const finish=error=>{if(finished)return;finished=true;media.onended=null;media.onerror=null;media.onplaying=null;media.pause();media.removeAttribute('src');media.load();URL.revokeObjectURL(url);this.sources.delete(source);this.finishPlayback.delete(finish);if(epoch!==this.epoch)reject(aborted());else if(error)reject(error);else resolve();};
+        this.finishPlayback.add(finish);media.onplaying=()=>root.LeeWayVoiceMetrics?.record('playback-start');media.onended=()=>finish();media.onerror=()=>finish(new Error('Browser audio playback failed.'));media.play().catch(finish);
       });
     }
     setPace(value){this.playbackRate=Math.max(.85,Math.min(1.3,Number(value)||1.1));for(const source of this.sources)if(source.media)source.media.playbackRate=this.playbackRate;}

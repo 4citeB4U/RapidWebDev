@@ -24,6 +24,8 @@
       const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
       if(epoch!==this.epoch){stream.getTracks().forEach(t=>t.stop());return;}
       this.stream=stream;
+      const settings=stream.getAudioTracks()[0]?.getSettings?.()||{};
+      this.options.onMetric?.('microphone-start',{sampleRate:settings.sampleRate,echoCancellation:settings.echoCancellation,noiseSuppression:settings.noiseSuppression});
       try{
         this.audio=new AudioContext({sampleRate:16000});await this.audio.resume();
         await this.audio.audioWorklet.addModule('/brain/public/voice-capture-worklet.js');
@@ -54,7 +56,7 @@
       }
       this.frames.push(samples);this.silence=speech?0:this.silence+1;
       if(this.silence>=35||this.frames.length>=750){
-        const frames=this.frames,epoch=this.epoch,utterance=this.utterance;this.resetUtterance();
+        const frames=this.frames,epoch=this.epoch,utterance=this.utterance;this.options.onMetric?.('speech-endpoint',{audioMs:frames.length*20,silenceMs:this.silence*20});this.resetUtterance();
         if(frames.length<15)return;
         const audio=new Float32Array(frames.length*320);frames.forEach((f,i)=>audio.set(f,i*320));
         // At most one queued newer utterance: avoid an unbounded audio backlog.
@@ -66,14 +68,16 @@
       this.transcribing=true;const {audio,epoch,utterance}=this.waitingClip;this.waitingClip=null;
       this.options.onState?.('Understanding your speech on this device...');
       try{
+        const start=performance.now();this.options.onMetric?.('transcription-start');
         const result=await this.request({type:'transcribe',audio:audio.buffer},[audio.buffer]);
+        this.options.onMetric?.('transcription-complete',{durationMs:performance.now()-start});
         if(this.active&&epoch===this.epoch&&utterance===this.utterance&&result.text.trim())this.options.onTranscript?.(result.text.trim());
       }catch(error){if(epoch===this.epoch){this.options.onState?.(error.message);await this.stop();}}
       finally{this.transcribing=false;if(this.active&&this.waitingClip)void this.transcribeNext();}
     }
     cancelUtterance(){this.utterance=(this.utterance||0)+1;this.waitingClip=null;this.resetUtterance();}
     async stop(){
-      ++this.epoch;this.active=false;this.waitingClip=null;
+      ++this.epoch;this.active=false;this.waitingClip=null;this.options.onMetric?.('microphone-stop');
       this.input?.disconnect();this.capture?.disconnect();this.input=null;this.capture=null;
       this.stream?.getTracks().forEach(track=>{track.onended=null;track.stop()});this.stream=null;
       if(this.audio){await this.audio.close().catch(()=>{});this.audio=null;}

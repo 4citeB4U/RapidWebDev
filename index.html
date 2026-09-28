@@ -165,6 +165,7 @@
         <input id="voiceReference" type="file" accept="audio/*">
         <p>Uses Voice One, selected from the original LeeWay ecosystem recordings. You may select another permitted 1–30 second reference; your selection stays on this device.</p>
         <button id="unloadBrowserModels">Unload models</button>
+        <details><summary>Voice timing</summary><p>Local timings only; no recordings or conversation text are saved in this report.</p><button id="exportVoiceTiming">Download timing report</button><pre id="voiceTiming" style="white-space:pre-wrap;font-size:12px"></pre></details>
       </details>
 
     </section>
@@ -193,9 +194,10 @@
 
 <script type="module" src="/brain/public/brain-3d.js?v=20260928-browser4"></script>
 <script src="/brain/public/voice-controller.js?v=20260928-browser4"></script>
-<script src="/brain/public/browser-voice.js?v=20260928-pace1"></script>
-<script src="/brain/public/browser-listener.js?v=20260928-browser4"></script>
-<script src="/brain/public/public-brain.js?v=20260928-pace1"></script>
+<script src="/brain/public/browser-voice.js?v=20260928-pipeline1"></script>
+<script src="/brain/public/speech-pipeline.js?v=20260928-pipeline1"></script>
+<script src="/brain/public/browser-listener.js?v=20260928-pipeline1"></script>
+<script src="/brain/public/public-brain.js?v=20260928-pipeline1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>
