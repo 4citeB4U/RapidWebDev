@@ -1,10 +1,10 @@
 {
   "schema": "leeway-agent-lee-voice-v2",
   "preferred_provider": "gemini-live",
-  "active_provider": "browser-fallback",
+  "active_provider": "unconfigured",
   "gemini_live": {
     "model": "gemini-3.8-live",
-    "voice_name": "Puck",
+    "voice_name": "Charon",
     "voice_candidates": [
       "Puck",
       "Iapetus",
@@ -24,7 +24,7 @@
   },
   "tts_fallback": {
     "model": "gemini-3.8-flash-tts",
-    "voice_name": "Iapetus",
+    "voice_name": "Charon",
     "secure_backend_endpoint": null
   },
   "browser_fallback": {
@@ -41,12 +41,15 @@
     ],
     "language": "en-US",
     "rate": 0.94,
-    "pitch": 0.93
+    "pitch": 0.93,
+    "enabled": false
   },
   "provider_order": [
     "gemini-live",
-    "gemini-tts",
-    "browser-fallback"
+    "gemini-tts"
   ],
-  "note": "Gemini Live requires a secure ephemeral-token broker; no long-lived API key may be embedded in GitHub Pages."
+  "note": "Gemini Live requires a secure ephemeral-token broker; no long-lived API key may be embedded in GitHub Pages.",
+  "reasoning_provider": "local-gemma4",
+  "requested_voice_style": "Deep, lively, natural masculine voice with a gentle Southern American accent. Plain English; no poetry, forced slang or caricature.",
+  "verification": "Natural voice is not yet authenticated or acoustically tested. Browser fallback is not equivalent to the requested voice."
 }

@@ -1,0 +1,97 @@
+/* Current experience layout. Geometry and readable UI have separate sizing. */
+:root{--text:#eef5fc;--muted:#b3c4d6}
+body,button,input,textarea,select{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.ui-icon{width:22px;height:22px;display:inline-block;vertical-align:middle;flex:none}
+button .ui-icon{pointer-events:none}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #82e8ff;outline-offset:3px}
+.brand{display:flex;align-items:center;gap:7px;font-size:12px;letter-spacing:.07em}
+.brand small{display:none}
+.brand>.ui-icon{width:30px;height:30px;color:#72dff5}
+#topbar{min-height:64px;background:#040d19ed;gap:12px}
+.top-actions{margin-left:auto}.top-actions button{font-size:13px;min-height:42px}
+.top-stats{display:none}
+#crumbs{top:68px;opacity:1;gap:8px}
+.crumb{font-size:12px;min-height:36px;background:#08182a}
+#crumbCurrent{font-size:12px;color:#bbcddd;letter-spacing:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#stage{inset:112px 0 188px 0!important}
+body.brain-intro #stage{inset:0!important}
+#nucleus{position:absolute;inset:0!important;width:100%;height:100%}
+#nucleusWaveCanvas{width:100%!important;height:100%!important;inset:0!important;filter:brightness(.72) saturate(1.2)}
+#nucleus:after{background:radial-gradient(ellipse at center,rgba(1,7,19,.22),rgba(1,5,12,.60));animation:none}
+#brainUniverseLayer,#brain3DCanvas{left:0!important;top:0!important;right:0!important;bottom:0!important;transform:none!important;margin:0!important}
+#brain3DCanvas canvas{left:0!important;top:0!important;width:100%!important;height:100%!important;transform:none!important}
+.brain-enter-button{position:absolute;z-index:5;bottom:7%;left:50%;transform:translateX(-50%);padding:12px 24px;min-height:48px;white-space:nowrap;background:#092039;border-color:#5db5d2;font-size:15px;font-weight:650}
+#brainDepthHint{bottom:calc(7% + 61px);font:12px/1.5 system-ui;letter-spacing:0;white-space:normal;width:max-content;max-width:80%;text-align:center;color:#b7cadb;background:#040c18d9}
+body.galaxy-active .brain-enter-button{display:none}
+.brainMathOverlay{font-family:ui-monospace,Consolas,monospace;font-style:normal}
+.brainMath{font-size:clamp(11px,1.05vw,16px);opacity:.64;animation:formulaThought var(--thought-duration,17s) ease-in-out var(--thought-delay,0s) infinite}
+@keyframes formulaThought{0%,100%{opacity:0;transform:translateY(5px)}20%,65%{opacity:.68;transform:translateY(0)}85%{opacity:0;transform:translateY(-4px)}}
+@media(prefers-reduced-motion:reduce){.brainMath{animation:none;opacity:.55}}
+.brainMathQ{top:20%;left:5%}.brainMathW{top:20%;right:5%}
+.brainMathS{bottom:23%;left:5%}.brainMathD{bottom:23%;right:5%}
+#world .node{width:168px!important;min-height:66px!important;padding:12px!important;background:#071525f5;border:1px solid #42667f;border-radius:12px;transform:translate(-50%,-50%) scale(var(--graph-inverse,1))!important;box-shadow:0 5px 20px #0005}
+#world{transition:opacity .25s ease!important}
+#world .node.category{width:240px!important;min-height:90px!important;text-align:left;display:grid;grid-template-columns:36px 1fr;column-gap:14px;align-content:center;border-color:#3186a1;box-shadow:0 0 18px #00c7ff24,inset 0 0 14px #009bd015}
+#world .node.category>.ui-icon{grid-row:1 / 3;width:34px;height:34px;align-self:center;color:#51ddff}
+#world .node.category small{margin-top:5px}
+#world .node.center{width:300px!important;min-height:136px!important;background:#071e34;border-color:#39c2ed;box-shadow:0 0 24px #00c7ff30}
+#world .node.center>.ui-icon{width:38px;height:38px;color:#58ddff;margin-bottom:9px}
+#world .node.center b{font-size:19px!important}
+#world .node.project>.ui-icon{width:20px;height:20px;color:#68c8ed;margin-bottom:5px}
+#world .node b{font:650 calc(14px * var(--label-scale,1))/1.35 system-ui!important;letter-spacing:0;max-height:none!important;display:block;overflow-wrap:normal;word-break:normal;hyphens:none}
+#world .node small{font:11px/1.35 system-ui!important;color:#b3c8d9!important;opacity:1;max-height:none!important;display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}
+#world .node:hover,#world .node:focus-visible{border-color:#8ce9ff;background:#102b41}
+.edge.core{stroke:#2ddcffbb!important;stroke-width:1.7!important}
+#projectCarousel{height:174px;bottom:8px;width:calc(100% - 32px);padding:10px 12px;border-radius:15px;background:#030d1af5}
+.carouselToolbar{gap:8px;margin-bottom:8px}
+.carouselTitle{font-size:11px}.carouselTitle span{background:none;border:0}
+.carouselToolbar input{font-size:14px;min-height:38px;max-width:none;background:#081725}
+.carouselCount{font-size:11px;white-space:nowrap;color:#b5c9da}
+.carouselNav{width:38px;min-width:38px;min-height:38px}
+.carouselTrack{gap:10px}
+.projectCard{flex:0 0 238px;min-height:92px;padding:12px;text-align:left;background:#0b1c2c;border-color:#36546c}
+.projectCard h3{font-size:15px;line-height:1.3;margin:7px 0 0;font-weight:650;white-space:normal}
+.cardType,.cardEvidence{font-size:10px;line-height:1.3;letter-spacing:.03em}.cardEvidence{color:#b6ccdf}
+#zoomControls{opacity:1;bottom:12px}#zoomControls button{width:42px;min-height:42px;background:#05101e}
+#hint{font-size:11px;color:#b6cadd;bottom:20px}
+#agentLee{bottom:200px;left:16px;display:flex;align-items:center;gap:10px}
+.agentPortrait:after{content:'Agent Lee';position:absolute;left:68px;top:15px;white-space:nowrap;font:13px/1.4 system-ui;color:#d6e9f6;background:#04101ddd;padding:5px 9px;border-radius:8px;pointer-events:none}
+.agentBubble{left:0;bottom:74px;width:min(430px,calc(100vw - 32px));max-height:min(560px,72vh);padding:16px;overflow:auto;background:#061321;border-color:#47718d;border-radius:16px}
+.agentBubble:after{display:none}.agentBubbleHead strong{font-size:16px}.agentBubbleHead small{font-size:12px;color:#b5cbde}
+#agentText{font-size:15px;line-height:1.55;max-height:230px;color:#e0eaf4}
+.agentTranscript{font-size:13px;color:#c9e8f5;max-height:100px}
+.agentInputRow{grid-template-columns:minmax(0,1fr) 44px}.agentInputRow textarea{font-size:16px;min-height:44px}.agentInputRow button{min-height:44px}
+.voice-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;pointer-events:auto}.voice-controls button{font-size:13px;min-height:42px}
+#reasonBtn.agentReason{display:inline-flex!important;align-items:center;width:auto;padding:8px 12px}
+.voice-status{font-size:12px;line-height:1.5;color:#b7cddd;margin:8px 0 0}
+.workspacePanel p,.hudSection p{font-size:15px;line-height:1.6;color:#c7d8e7}.workspacePanel h3{font-size:18px}.hudFact b{font-size:11px;color:#aabed0}.hudFact span{font-size:14px}.workspaceTabs button,.hudLink,.workspaceAction{font-size:13px;min-height:42px}
+.workspaceKicker{font-size:11px}.workspaceHead h2{font-size:24px}.workspaceHeadActions button{min-width:44px;min-height:44px}
+.appearancePanel label{font-size:13px}.paletteRow button{font-size:12px;min-height:38px}
+body.collection-view #world{position:absolute;inset:0;width:100%;height:100%;transform:none!important;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+body.collection-view #nodes{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;padding:18px 32px 80px;align-content:start}
+body.collection-view #world .node{position:relative!important;left:auto!important;top:auto!important;transform:none!important;width:100%!important;min-height:110px!important}
+body.collection-view #world .node.center{grid-column:1 / -1;min-height:82px!important}
+body.collection-view #world .node.center>.ui-icon{width:26px;height:26px;margin-bottom:3px}
+body.collection-view #world .node b{max-height:none!important;display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important}
+body.collection-view #edges,body.collection-view #zoomControls,body.collection-view #hint{display:none}
+@media(max-width:899px){
+ #topbar{min-height:58px;padding:8px 12px;flex-wrap:nowrap}.brand{font-size:10px;gap:4px}.brand>.ui-icon{width:25px;height:25px}.top-actions{gap:5px}.top-actions button{font-size:12px;padding:7px}
+ #tourBtn{display:none}#resetBtn{display:none}
+ #crumbs{top:66px;left:10px;right:10px;flex-wrap:wrap}.crumb{font-size:12px}#crumbCurrent{flex-basis:100%;font-size:12px;line-height:20px}
+ #stage{inset:130px 0 188px!important;touch-action:pan-y}
+ #world,body.galaxy-active #world{position:absolute;inset:0;width:100%;height:100%;transform:none!important;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y}
+ #nodes{position:relative;inset:auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:16px 12px 80px;align-content:start}
+ body.collection-view #nodes{grid-template-columns:repeat(2,minmax(0,1fr));padding:16px 12px 80px;gap:12px}
+ #world .node{position:relative!important;left:auto!important;top:auto!important;width:100%!important;min-height:76px!important;transform:none!important;padding:12px 9px!important}
+ #world .node.center{grid-column:1 / -1;width:100%!important;min-height:65px!important}
+ #world .node.category{width:100%!important;grid-template-columns:1fr;text-align:center;gap:5px}#world .node.category>.ui-icon{grid-row:auto;margin:auto;width:26px;height:26px}#world .node.center>.ui-icon{width:28px;height:28px;margin-bottom:5px}
+ #world .node b,#world .node.center b{font-size:14px!important}#world .node small{font-size:11px!important}
+ #edges,#zoomControls,#hint{display:none}
+ #projectCarousel{height:174px;width:calc(100% - 16px);padding:9px;bottom:6px}.carouselTitle{display:none}.carouselToolbar{gap:5px}.carouselCount{display:none}.carouselToolbar input{font-size:14px;min-width:0}.projectCard{flex-basis:205px;min-height:94px;padding:10px}.projectCard h3{font-size:15px}.cardType,.cardEvidence{font-size:10px}
+ #agentLee{bottom:192px;left:14px;right:auto;width:auto;max-height:none}.agentPortrait{width:48px;height:48px;min-height:48px}.agentPortrait:after{left:58px;top:9px;font-size:12px}
+ .agentBubble{left:0;bottom:60px;width:calc(100vw - 28px);max-height:70vh}.agentInputRow{grid-template-columns:minmax(0,1fr) 44px}#agentText{font-size:15px;max-height:180px}
+ body.brain-intro #agentLee{bottom:18px}
+ .brain-enter-button{bottom:12%;font-size:14px}#brainDepthHint{bottom:calc(12% + 58px);font-size:11px;max-width:85%}
+ .brainMath{font-size:10px}.brainMathQ{top:20%;left:5%}.brainMathW{top:25%;right:5%}.brainMathS{bottom:27%;left:5%}.brainMathD{bottom:23%;right:5%}
+ .workspace{inset:62px 6px 6px}.workspaceHead{gap:6px}.workspaceHead h2{font-size:20px}.workspaceHeadActions{gap:5px}.workspacePanel p{font-size:14px}
+}

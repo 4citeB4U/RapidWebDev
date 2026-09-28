@@ -1,4 +1,4 @@
-﻿{
+{
     "overrides":  [
                       {
                           "repo_name":  "ACDIAMONDZ",
@@ -55,7 +55,7 @@
                       },
                       {
                           "repo_name":  "Agent-Lee-The-Sum-of-All-Systems",
-                          "label":  "Agent Lee â€” Sum of All Systems",
+                          "label":  "Agent Lee — Sum of All Systems",
                           "group":  "Agentic Systems",
                           "evidence_state":  "SOURCE"
                       },
@@ -121,7 +121,7 @@
                       },
                       {
                           "repo_name":  "automatisch",
-                          "label":  "Automatisch â€” Upstream Reference",
+                          "label":  "Automatisch — Upstream Reference",
                           "group":  "Reference / Upstream",
                           "evidence_state":  "UPSTREAM REFERENCE"
                       },
@@ -133,7 +133,7 @@
                       },
                       {
                           "repo_name":  "BitNet",
-                          "label":  "BitNet â€” Upstream Reference",
+                          "label":  "BitNet — Upstream Reference",
                           "group":  "Reference / Upstream",
                           "evidence_state":  "UPSTREAM REFERENCE"
                       },
@@ -175,13 +175,13 @@
                       },
                       {
                           "repo_name":  "gpt-engineer",
-                          "label":  "GPT Engineer â€” Upstream Reference",
+                          "label":  "GPT Engineer — Upstream Reference",
                           "group":  "Reference / Upstream",
                           "evidence_state":  "UPSTREAM REFERENCE"
                       },
                       {
                           "repo_name":  "https-4citeb4u.github.io",
-                          "label":  "Leola Crochet Books â€” Historical Pages",
+                          "label":  "Leola Crochet Books — Historical Pages",
                           "group":  "Publishing / Education",
                           "evidence_state":  "HISTORICAL"
                       },
@@ -211,7 +211,7 @@
                       },
                       {
                           "repo_name":  "LeeWay-Agents-the-World-Within",
-                          "label":  "LeeWay Agents â€” The World Within",
+                          "label":  "LeeWay Agents — The World Within",
                           "group":  "Capabilities",
                           "evidence_state":  "HISTORICAL"
                       },
@@ -223,7 +223,7 @@
                       },
                       {
                           "repo_name":  "leeway-ecosystem",
-                          "label":  "LeeWay Ecosystem â€” Early Service Fabric",
+                          "label":  "LeeWay Ecosystem — Early Service Fabric",
                           "group":  "Runtime",
                           "evidence_state":  "HISTORICAL"
                       },
@@ -283,7 +283,7 @@
                       },
                       {
                           "repo_name":  "LEEWAYSTANDARDSdocs",
-                          "label":  "LeeWay Standards Documentation â€” Historical",
+                          "label":  "LeeWay Standards Documentation — Historical",
                           "group":  "Governance",
                           "evidence_state":  "HISTORICAL"
                       },
@@ -369,13 +369,13 @@
                       },
                       {
                           "repo_name":  "library-app",
-                          "label":  "Leola Library App â€” Prototype",
+                          "label":  "Leola Library App — Prototype",
                           "group":  "Publishing / Education",
                           "evidence_state":  "HISTORICAL"
                       },
                       {
                           "repo_name":  "llama-models",
-                          "label":  "Llama Models â€” Upstream Reference",
+                          "label":  "Llama Models — Upstream Reference",
                           "group":  "Reference / Upstream",
                           "evidence_state":  "UPSTREAM REFERENCE"
                       },
@@ -387,13 +387,13 @@
                       },
                       {
                           "repo_name":  "Mr-Android-Agent-Lee_OS",
-                          "label":  "Mr. Android â€” Agent Lee OS",
+                          "label":  "Mr. Android — Agent Lee OS",
                           "group":  "Devices",
                           "evidence_state":  "SOURCE"
                       },
                       {
                           "repo_name":  "RapidWebDev",
-                          "label":  "Rapid Web Develop â€” MacMillion / Artist Platform",
+                          "label":  "Rapid Web Develop — MacMillion / Artist Platform",
                           "group":  "Business / Web",
                           "live_url":  "/projects/rapid-web-develop-original/",
                           "evidence_state":  "LIVE",
@@ -503,7 +503,7 @@
                       },
                       {
                           "repo_name":  "whisper",
-                          "label":  "Whisper â€” Upstream Reference",
+                          "label":  "Whisper — Upstream Reference",
                           "group":  "Reference / Upstream",
                           "evidence_state":  "UPSTREAM REFERENCE"
                       }

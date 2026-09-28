@@ -1,0 +1,17 @@
+# Google voice broker
+
+The public site keeps Gemma 4 as its reasoning provider. Gemini Live captures conversational audio and renders natural speech; its `ask_gemma` tool calls local Gemma for substantive answers. Speech instructions request a deep, lively masculine voice with a gentle Southern American accent. Voice quality and accent must be auditioned, not inferred from configuration.
+
+The optional Node 20+ broker runs only on `127.0.0.1:43118`. Set `GEMINI_API_KEY` or `GOOGLE_API_KEY` in the server process environment, then run `node brain/server/voice-broker.mjs`. Never put either key into a public JSON file or browser code. No key is included in this repository.
+
+Configure `brain/agent-lee-voice.json` with `gemini_live.token_endpoint` set to the broker's `/gemini/live/token` URL, and `tts_fallback.secure_backend_endpoint` to `/gemini/tts`. These endpoints are intentionally unset until a provider is configured. Alternatively, a LeeWay extension may supply a short-lived token through `LIVE_TOKEN`. A public HTTPS site may need browser local-network permission to reach loopback.
+
+`LEEWAY_VOICE_ORIGINS` is a comma-separated exact origin allowlist. Defaults cover rapidwebdevelop.com, the GitHub Pages origin, and local development ports 8080 and 8765. `LEEWAY_VOICE_PORT` defaults to 43118. This broker is for the local owner, not anonymous internet hosting. For public visitors, use an authenticated HTTPS backend with per-user quotas; do not expose this loopback server to the internet. GitHub Pages cannot host a backend.
+
+`GET /health` reports configuration presence only, not successful authentication. Browser speech output is disabled by default. If natural voice is unavailable, the UI explains that and displays the response as text; browser speech input may still accept the user's questions. Browser speech output requires an explicit `browser_fallback.enabled: true` configuration and cannot guarantee the requested accent or full-duplex acoustic quality. Captured live audio goes to Google only after the user starts the microphone; no recordings are retained by this frontend. Model and speech responses use public project context.
+
+For the requested custom voice, `POST /gemini/voice/design` creates an original prompted Southern male voice through Google's Voices API and returns its ID and WAV audition sample. It selects that voice for TTS in the current broker session. Set `LEEWAY_GOOGLE_VOICE_ID` to the returned `voice_...` ID to retain it across restarts. This endpoint is an explicit creation action, never called automatically. TTS uses the current Interactions API with verbatim text, structured speech metadata, and native WAV output. The designed identity applies to TTS; native Live uses its supported Charon preset and separate speech instructions, so an identical voice across both paths is not promised. No custom voice has been generated without a configured Google key.
+
+Verification still required with real credentials and a microphone: voice audition, response latency, speaking over output, saying “hey stop,” speaker echo, headset and phone routes, permission loss, and long conversations. Unit cancellation tests do not prove acoustic performance.
+
+Protocol sources checked September 28, 2026: [Live API](https://ai.google.dev/api/live), [ephemeral tokens](https://ai.google.dev/gemini-api/docs/live-api/ephemeral-tokens), [speech generation](https://ai.google.dev/gemini-api/docs/speech-generation).

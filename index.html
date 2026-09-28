@@ -3,17 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
-<title>Rapid Web Develop â€” LeeWay Digital Brain</title>
+<title>Rapid Web Develop — LeeWay Digital Brain</title>
 <script type="importmap">{"imports":{"three":"/brain/public/vendor/three.module.js","three/addons/":"/brain/public/vendor/"}}</script>
-<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260927-1915">
+<link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-repair1">
+<link rel="stylesheet" href="/brain/public/experience.css?v=20260928-repair1">
 </head>
 <body class="brain-intro">
 <div id="app">
   <header id="topbar">
-    <div class="brand"><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
+    <div class="brand"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4C8 0 3 5 5 8c-5 2-3 8 0 9-1 4 5 6 7 2V4Zm0 0c4-4 9 1 7 4 5 2 3 8 0 9 1 4-5 6-7 2M6 8l3 2-2 4m11-6-3 2 2 4"/></svg><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
     <div class="top-stats">
-      <span id="projectCount">Projects â€”</span>
-      <span id="evidenceCount">Evidence â€”</span>
+      <span id="projectCount">Projects —</span>
+      <span id="evidenceCount">Evidence —</span>
       <span class="live-dot">PUBLIC PROJECTION</span>
     </div>
     <div class="top-actions">
@@ -24,9 +25,9 @@
   </header>
 
   <div id="crumbs">
-    <button id="backOneLevelBtn" class="crumb backCrumb">← Back</button>
-    <button id="wholeBrainCrumb" class="crumb active">LEEWAY INDUSTRIES</button>
-    <span class="sep">â€º</span>
+    <button id="backOneLevelBtn" class="crumb backCrumb">Back</button>
+    <button id="wholeBrainCrumb" class="crumb active">Return to Brain</button>
+    <span class="sep" aria-hidden="true">/</span>
     <span id="crumbCurrent">PROJECT UNIVERSE</span>
   </div>
 
@@ -44,7 +45,8 @@
         <div class="brainMath brainMathS">S<sub>t</sub>(x)=⅒ Σ Norm<sub>Ω</sub>(Φ<sub>t,k</sub>(x))</div>
         <div class="brainMath brainMathD">D(x)=|x−727/24|</div>
       </div>
-      <div id="brainDepthHint">drag the brain to rotate · scroll / pinch inward to enter · scroll outward to return</div>
+      <div id="brainDepthHint">Drag to rotate. Scroll up or spread two fingers to enter.</div>
+      <button id="enterBrainBtn" class="brain-enter-button">Enter Digital Brain</button>
     </div>
 
     <div id="world">
@@ -54,12 +56,12 @@
 
     <section id="hud" class="hidden">
       <div class="hudHeader">
-        <div class="hudIcon" id="hudIcon">â—Ž</div>
+        <div class="hudIcon" id="hudIcon"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
         <div class="hudTitle">
           <h2 id="hudTitle">Project</h2>
           <div id="hudSubtitle" class="hudSubtitle"></div>
         </div>
-        <button id="hudClose" class="hudClose">Ã—</button>
+        <button id="hudClose" class="hudClose" aria-label="Close project details" title="Close project details"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
       <div class="hudSection">
         <div class="hudSectionTitle">Overview</div>
@@ -78,27 +80,27 @@
     </section>
 
     <div id="zoomControls">
-      <button id="zoomIn">ï¼‹</button>
-      <button id="zoomOut">âˆ’</button>
-      <button id="zoomFit">âŒ‚</button>
+      <button id="zoomIn" aria-label="Zoom in" title="Zoom in"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button id="zoomOut" aria-label="Zoom out" title="Zoom out"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/></svg></button>
+      <button id="zoomFit" aria-label="Fit universe" title="Fit universe"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v10h-6v-7H9v7H3z"/></svg></button>
     </div>
 
-    <div id="hint">Scroll to zoom Â· drag empty space to move Â· select a project to inspect</div>
+    <div id="hint">Scroll to zoom · drag empty space to move · select a project to inspect</div>
   </main>
 
   <section id="projectCarousel">
     <div class="carouselToolbar">
-      <div class="carouselTitle"><span>â—«</span> Projects / Built Work</div>
-      <button id="carouselPrev" class="carouselNav" aria-label="Previous projects">â€¹</button>
-      <input id="searchBox" type="search" placeholder="Search projects, systems, evidenceâ€¦">
-      <button id="carouselNext" class="carouselNav" aria-label="Next projects">â€º</button>
+      <div class="carouselTitle"><span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span> Projects / Built Work</div>
+      <button id="carouselPrev" class="carouselNav" aria-label="Previous projects" title="Previous projects"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+      <input aria-label="Search projects" id="searchBox" type="search" placeholder="Search projects, systems, evidence…">
+      <button id="carouselNext" class="carouselNav" aria-label="Next projects" title="Next projects"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
       <div id="carouselCount" class="carouselCount"></div>
     </div>
     <div id="carouselTrack" class="carouselTrack" tabindex="0" aria-label="Scrollable project rail"></div>
   </section>
 
   <aside id="appearancePanel" class="appearancePanel hidden" aria-label="Digital Brain appearance controls">
-    <div class="appearanceHead"><strong>Brain Appearance</strong><button id="appearanceClose">Ã—</button></div>
+    <div class="appearanceHead"><strong>Brain Appearance</strong><button id="appearanceClose" aria-label="Close appearance" title="Close appearance"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
     <label>Background <input id="bgColor" type="color" value="#010713"></label>
     <label>Accent <input id="accentColor" type="color" value="#00b7e8"></label>
     <label>Wave speed <input id="nucleusSpeedRange" type="range" min="0" max="2.5" step="0.01" value="0.52"></label>
@@ -113,11 +115,11 @@
     <label>Label scale <input id="labelScaleRange" type="range" min="0.68" max="1.35" step="0.01" value="1"></label>
     <label>Agent Lee voice
       <select id="geminiVoiceSelect">
-        <option value="Puck">Puck â€” upbeat</option>
-        <option value="Iapetus">Iapetus â€” clear</option>
-        <option value="Charon">Charon â€” informative</option>
-        <option value="Gacrux">Gacrux â€” mature</option>
-        <option value="Sadaltager">Sadaltager â€” knowledgeable</option>
+        <option value="Puck">Puck — upbeat</option>
+        <option value="Iapetus">Iapetus — clear</option>
+        <option value="Charon">Charon — informative</option>
+        <option value="Gacrux">Gacrux — mature</option>
+        <option value="Sadaltager">Sadaltager — knowledgeable</option>
       </select>
     </label>
     <div class="paletteRow">
@@ -139,14 +141,19 @@
       <div class="agentBubbleHead">
         <strong>Agent Lee</strong>
         <small id="agentState">ready</small>
-        <button id="agentBubbleClose" aria-label="Close Agent Lee">Ã—</button>
+        <button id="agentBubbleClose" aria-label="Close Agent Lee" title="Close Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
-      <div id="agentText">Yo â€” tap the mic or type it in. I can walk the projects, open the live builds, break down the evidence, and navigate the brain with you.</div>
+      <div id="agentText">Ask me about a project or the LeeWay ecosystem. Start a conversation to talk, or type below.</div>
       <div id="agentTranscript" class="agentTranscript hidden"></div>
+      <div class="voice-controls" aria-label="Conversation controls">
+        <button id="agentStartVoice">Start conversation</button>
+        <button id="agentStop">Stop speaking</button>
+        <button id="agentEndVoice">End conversation</button>
+        <button id="reasonBtn" class="agentReason" aria-label="Connect Gemma 4">Connect Gemma 4</button>
+      </div>
       <div class="agentInputRow">
-        <textarea id="agentInput" rows="1" placeholder="Ask Agent Leeâ€¦"></textarea>
-        <button id="agentSend" aria-label="Send to Agent Lee">â†‘</button>
-        <button id="reasonBtn" class="agentReason" aria-label="Enable local reasoning">G4</button>
+        <textarea aria-label="Message Agent Lee" id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
+        <button id="agentSend" aria-label="Send to Agent Lee" title="Send to Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 7 7M12 4l-7 7M12 4v16"/></svg></button>
       </div>
     </section>
   </aside>
@@ -159,7 +166,7 @@
       </div>
       <div class="workspaceHeadActions">
         <a id="workspaceOpenExternal" class="workspaceAction hidden" target="_blank" rel="noopener">Open Full</a>
-        <button id="workspaceClose">Ã—</button>
+        <button id="workspaceClose" aria-label="Close project workspace" title="Close project workspace"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
     </header>
     <nav class="workspaceTabs">
@@ -172,7 +179,10 @@
   </section>
 </div>
 
-<script type="module" src="/brain/public/brain-3d.js?v=20260927-1915"></script>
-<script src="/brain/public/public-brain.js?v=20260927-1915"></script>
+<script type="module" src="/brain/public/brain-3d.js?v=20260928-repair1"></script>
+<script src="/brain/public/voice-controller.js?v=20260928-repair1"></script>
+<script src="/brain/public/voice-live.js?v=20260928-repair1"></script>
+<script src="/brain/public/public-brain.js?v=20260928-repair1"></script>
+<script src="/brain/public/ui-icons.js?v=20260928-repair1"></script>
 </body>
 </html>

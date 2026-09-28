@@ -7,7 +7,7 @@ let projects=[],evidence=[],decks=[],items=[],selected=null,activeItem=null,acti
 let scale=1,panX=0,panY=0,dragging=false,dragStart=null,positions=new Map(),voice=null,voiceConfig=null,audioPlayer=null,recognition=null,listening=false,activeCategory=null,outwardWheel=0,gemmaEngine=null,gemmaConversation=null,gemmaLoading=false,gemmaGenerating=false,agentPersona=null;
 const graphTouchPoints=new Map();let graphPinchStartDistance=0,graphPinchStartScale=1,graphPinchBacked=false;
 let waveCtx=null,waveRaf=0,appearance={bg:"#010713",accent:"#00b7e8",speed:.52,horizontal:10,vertical:6.5,secondary:.30,stripHeight:4,hue:0,saturation:.90,brightness:.78,dotColor:"#35d8ff",dotVariation:16,dotStrength:.22,labelScale:1};
-let localProvider=null,localProviderChecked=false;
+let localProvider=null,localProviderChecked=false,localProviderProbe=null;
 const upstreamRepos=new Set(["gpt-engineer","whisper","BitNet","automatisch","view-transitions","llama-models"]);
 const colors={Core:"#50e6ff","Agentic Systems":"#6f9cff","Scientific Research":"#c978ff",Governance:"#e6d75a",Runtime:"#50e6ff",Capabilities:"#e6d75a",Devices:"#57e49a",Compute:"#56c7ff","Voice / Realtime":"#ffad52","Developer Tools":"#8b9dff",Education:"#e273ff",Legal:"#ff6577",Logistics:"#ff8a16",Operations:"#54e0be","Business / Operations":"#54e0be","Creative AI":"#a67cff",Publishing:"#c978ff","Community / Business":"#c58b64",Safety:"#ff6577",Professional:"#93a8ba","Client / Brand":"#8c74ff",Gaming:"#6fc4ff","Business / Web":"#ff8a16","Publishing / Education":"#e273ff","Physical Systems":"#c58b64",Evidence:"#4de0cf","Reference / Upstream":"#718096","Other Projects":"#7890a7"};
 const categoryDefs=[
@@ -17,7 +17,7 @@ const categoryDefs=[
 {id:"cat::professional",label:"PROFESSIONAL / LINEAGE",groups:["Professional","Physical Systems"]},
 {id:"cat::other",label:"OTHER / REFERENCES",groups:["Other Projects","Reference / Upstream"]}
 ];
-const categoryAnchors={"cat::core":{x:700,y:205},"cat::products":{x:1000,y:350},"cat::business":{x:905,y:610},"cat::professional":{x:495,y:610},"cat::other":{x:400,y:350}};
+const categoryAnchors={"cat::core":{x:700,y:205},"cat::products":{x:1160,y:335},"cat::business":{x:1010,y:670},"cat::professional":{x:390,y:670},"cat::other":{x:240,y:335}};
 function cleanName(n){return String(n||"").replace(/[-_]+/g," ").replace(/\s+/g," ").trim()}
 function classifyRepo(r){
  if(upstreamRepos.has(r.name))return "Reference / Upstream";
@@ -57,7 +57,7 @@ async function fetchGithubRepos(){
 }
 function groupFor(x){return x.kind==="evidence"?"Evidence":x.group||"Other Projects"}
 function categoryFor(x){const g=groupFor(x);if(g==="Evidence")return "__evidence_rail__";return categoryDefs.find(c=>c.groups.includes(g))?.id||"cat::other"}
-function setWorldTransform(){world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`;window.__leewayGraphCamera={z:scale/4}}
+function setWorldTransform(){world.style.setProperty("--graph-inverse",String(1/scale));world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`;window.__leewayGraphCamera={z:scale/4}}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function hexRgb(hex){const h=String(hex||"#50e6ff").replace("#","");const n=parseInt(h.length===3?h.split("").map(c=>c+c).join(""):h,16);return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
 function hexHue(hex){
@@ -112,16 +112,16 @@ function rebuildNucleusBase(){
  nucleusBaseCtx.drawImage(nucleusImg,r.x,r.y,r.w,r.h);nucleusBaseCtx.filter="none";detectBrightPoints();
 }
 function resizeWave(){
- if(!waveCanvas)return;nucleusDpr=Math.min(devicePixelRatio||1,2);const rect=waveCanvas.getBoundingClientRect();nucleusW=Math.max(1,Math.round(rect.width));nucleusH=Math.max(1,Math.round(rect.height));
- waveCanvas.width=Math.round(nucleusW*nucleusDpr);waveCanvas.height=Math.round(nucleusH*nucleusDpr);waveCanvas.style.width=nucleusW+"px";waveCanvas.style.height=nucleusH+"px";waveCtx=waveCanvas.getContext("2d",{alpha:true});waveCtx.setTransform(nucleusDpr,0,0,nucleusDpr,0,0);
+ if(!waveCanvas)return;nucleusDpr=Math.min(devicePixelRatio||1,2);const rect=waveCanvas.parentElement.getBoundingClientRect();nucleusW=Math.max(1,Math.round(rect.width));nucleusH=Math.max(1,Math.round(rect.height));
+ waveCanvas.width=Math.round(nucleusW*nucleusDpr);waveCanvas.height=Math.round(nucleusH*nucleusDpr);waveCanvas.style.width="100%";waveCanvas.style.height="100%";waveCtx=waveCanvas.getContext("2d",{alpha:true});waveCtx.setTransform(nucleusDpr,0,0,nucleusDpr,0,0);
  nucleusBase=document.createElement("canvas");nucleusBase.width=Math.round(nucleusW*nucleusDpr);nucleusBase.height=Math.round(nucleusH*nucleusDpr);nucleusBaseCtx=nucleusBase.getContext("2d",{alpha:false,willReadFrequently:true});rebuildNucleusBase();
 }
 function waveOffset(y,t){const i=y/appearance.stripHeight,p=i*.078;return{dx:Math.sin(t*1.72+p)*appearance.horizontal+Math.sin(t*.83+p*.43)*appearance.horizontal*appearance.secondary,dy:Math.cos(t*1.16+p*.67)*appearance.vertical+Math.sin(t*.64+p*.31)*appearance.vertical*.22}}
 function drawWave(ms){
  if(document.hidden){waveRaf=requestAnimationFrame(drawWave);return}
  if(!waveCtx||!waveCanvas||!nucleusBase){waveRaf=requestAnimationFrame(drawWave);return}
- if(matchMedia("(prefers-reduced-motion: reduce)").matches){waveCtx.clearRect(0,0,nucleusW,nucleusH);waveCtx.drawImage(nucleusBase,0,0,nucleusBase.width,nucleusBase.height,0,0,nucleusW,nucleusH);return}
- const t=ms*.001*appearance.speed;waveCtx.clearRect(0,0,nucleusW,nucleusH);const sh=appearance.stripHeight,count=Math.ceil(nucleusH/sh)+2;
+ if(matchMedia("(prefers-reduced-motion: reduce)").matches){waveCtx.clearRect(0,0,nucleusW,nucleusH);waveCtx.drawImage(nucleusBase,0,0,nucleusBase.width,nucleusBase.height,0,0,nucleusW,nucleusH);waveRaf=requestAnimationFrame(drawWave);return}
+ if(document.hidden){waveRaf=requestAnimationFrame(drawWave);return}const t=ms*.001*appearance.speed;waveCtx.clearRect(0,0,nucleusW,nucleusH);const sh=appearance.stripHeight,count=Math.ceil(nucleusH/sh)+2;
  for(let i=0;i<count;i++){const y=i*sh,p=i*.078,dx=Math.sin(t*1.72+p)*appearance.horizontal+Math.sin(t*.83+p*.43)*appearance.horizontal*appearance.secondary,dy=Math.cos(t*1.16+p*.67)*appearance.vertical+Math.sin(t*.64+p*.31)*appearance.vertical*.22;
   waveCtx.drawImage(nucleusBase,0,Math.max(0,Math.round(y*nucleusDpr)),nucleusBase.width,Math.max(1,Math.round((sh+2)*nucleusDpr)),dx,y+dy,nucleusW,sh+3)}
  if(appearance.dotStrength>0&&brightPoints.length){const c=hexToHsl(appearance.dotColor);waveCtx.save();waveCtx.globalCompositeOperation="screen";for(const p of brightPoints){const o=waveOffset(p.y,t),pulse=.5+.5*Math.sin(ms*.0013+p.phase),hue=(c.h+Math.sin(ms*.00055+p.phase)*appearance.dotVariation+360)%360,alpha=appearance.dotStrength*(.22+.34*pulse),rad=1.25+2.2*pulse;waveCtx.shadowColor=`hsla(${hue},100%,66%,${Math.min(1,alpha*1.8)})`;waveCtx.shadowBlur=8+10*pulse;waveCtx.fillStyle=`hsla(${hue},${Math.max(65,c.s)}%,${Math.max(58,c.l)}%,${alpha})`;waveCtx.beginPath();waveCtx.arc(p.x+o.dx,p.y+o.dy,rad,0,Math.PI*2);waveCtx.fill()}waveCtx.restore();waveCtx.shadowBlur=0}
@@ -168,7 +168,7 @@ window.__leewayPublicBrainEntered=()=>{
  activeCategory=null;search.value="";
  rebuildUniverse();fit();
  qs("#crumbCurrent").textContent="PROJECT UNIVERSE";
- agentText.textContent="We inside the brain now. Pick a universe, or tap me and tell me where you want to go.";
+ agentText.textContent="Choose a category to explore its projects. Use Back or Return to Brain at any time.";
 };
 window.__leewayPublicBrainOverview=()=>{
  brainEntered=false;
@@ -182,7 +182,7 @@ function openAgentBubble(focus=false){
 }
 function closeAgentBubble(){
  agentBubble.classList.add("hidden");
- if(listening&&recognition){listening=false;try{recognition.stop()}catch{}}
+ endVoice();
  micBtn.classList.remove("listening");agentState.textContent=localProvider?("local brain · "+(localProvider.preferred||localProvider.type)):"ready";
 }
 async function submitAgentInput(){
@@ -214,7 +214,12 @@ async function loopbackFetch(url,options={}){
  }
 }
 async function probeLocalProvider(force=false){
+ if(localProviderProbe)return localProviderProbe;
  if(localProviderChecked&&!force)return localProvider;
+ localProviderProbe=discoverLocalProvider();
+ try{return await localProviderProbe}finally{localProviderProbe=null}
+}
+async function discoverLocalProvider(){
  localProviderChecked=true;agentState.textContent="checking local LeeWay brain";
  const ext=await extensionBridgeRequest("HEALTH",null,1400);
  if(ext?.ok&&ext.data?.ok){
@@ -235,12 +240,17 @@ async function probeLocalProvider(force=false){
  }
  agentState.textContent="browser brain ready · local model optional";return null
 }
-async function askLocalProvider(question){
- const p=await probeLocalProvider();if(!p)return null;
- const ctx={project:activeItem?{label:activeItem.label,group:groupFor(activeItem),summary:activeItem.summary||"",live_url:activeItem.live_url||null,repo:activeItem.repo_url||null,evidence:activeItem.evidence_state||null}:null,persona:agentPersona};
+async function askLocalProvider(question,turn={epoch:voiceController.epoch,signal:voiceController.controller.signal},quiet=false){
+ const p=await probeLocalProvider();if(!p||!voiceController.current(turn.epoch))return null;
+ const model=(p.models||[]).map(m=>typeof m==='string'?m:m.name).find(m=>/^gemma4[:/]/i.test(m));
+ if(!model){agentState.textContent="Gemma 4 is not available from this provider.";return null;}
+ const relevant=projects.map(p=>({p,score:scoreProject(question.toLowerCase(),p)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5);
+ const ctx={project:activeItem?{label:activeItem.label,group:groupFor(activeItem),summary:activeItem.summary||"",live_url:activeItem.live_url||null,repo:activeItem.repo_url||null,evidence:activeItem.evidence_state||null}:null,history:voiceController.history.slice(-6).map(m=>({role:m.role,content:m.content.slice(0,1500)})),projectCount:projects.length,categories:categoryDefs.map(c=>c.label),relevantProjects:relevant.map(({p})=>({label:p.label,summary:(p.summary||"").slice(0,600),repo:p.repo_url,evidence:p.evidence_state}))};
  try{
   agentState.textContent=`reasoning locally · ${p.preferred}`;
-  const body={model:p.preferred,prompt:question,context:ctx};
+  const instruction="You are Agent Lee. Gemma 4 is the reasoning authority. Answer in clear plain English, normally two to four sentences. No poetry, forced slang or slogans. Ground LeeWay facts in the provided evidence. A URL is not proof a service works. Conversation history contains text displayed on screen, not proof of audio heard. Say when evidence is missing.";
+  const appScope="This website is a public project explorer: a rotatable 3D brain opens five categories; visitors can search project cards, read overviews, open public GitHub files and linked evidence, and return to the brain. Connected Gemma 4 answers questions. Google voice needs a separately authenticated connection. Descriptions of other LeeWay repositories are context, not features deployed inside this website. Do not call this website an autonomous operating system or claim it executes research or real-world tasks. Use ordinary concrete words.";
+  const body={model,prompt:instruction+"\nConversation and project context: "+JSON.stringify(ctx)+"\nCurrent application boundary: "+appScope+"\nQuestion: "+question,context:ctx,options:{num_predict:384,temperature:.3}};
   let data;
   if(p.type==="extension-leeway-bridge"){
    const ext=await extensionBridgeRequest("CHAT",body,120000);
@@ -248,14 +258,15 @@ async function askLocalProvider(question){
    data=ext.data||{};
   }else{
    const url=p.type==="leeway-bridge"?p.base+"/llm/chat":p.base+"/api/chat";
-   const payload=p.type==="leeway-bridge"?body:{model:p.preferred,stream:false,messages:[{role:"system",content:"You are Agent Lee, Leonard Lee's cognitive core controller and executive producer. Speak with confident hip-hop-poetic cadence while remaining technically precise. Explain the selected project with purpose, architecture, status, evidence, and how it fits LeeWay. Never fabricate facts."},{role:"user",content:`Context: ${JSON.stringify(ctx.project)}\nVisitor: ${question}`}]};
-   const r=await loopbackFetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+   const payload=p.type==="leeway-bridge"?body:{model,stream:false,options:body.options,messages:[{role:"system",content:instruction+"\nEvidence: "+JSON.stringify(ctx)+"\nCurrent application boundary: "+appScope}, {role:"user",content:question}]};
+   const r=await loopbackFetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload),signal:turn.signal});
    if(!r.ok)throw new Error("local provider "+r.status);
    data=await r.json();
   }
   const out=(data.text||data.message?.content||data.response||"").trim();
-  if(out){agentText.textContent=out;agentNarration.textContent=out;speak(out);agentState.textContent=`local brain · ${p.preferred}`;return out}
- }catch(e){console.warn("Local provider unavailable",e);localProvider=null;localProviderChecked=false}
+  if(!voiceController.current(turn.epoch))return null;
+  if(out){agentText.textContent=out;agentNarration.textContent=out;voiceController.remember("assistant",out);if(!quiet)speak(out,turn.epoch);return out}
+ }catch(e){if(!voiceController.current(turn.epoch))return null;console.warn("Local provider unavailable");localProvider=null;localProviderChecked=false}
  return null
 }
 function buildLayout(filter=""){
@@ -278,10 +289,11 @@ function renderEdges(filter=""){
 function nodeButton(x){
  const p=positions.get(x.id),b=document.createElement("button"),label=String(x.label||"");
  const lengthClass=label.length>42?" veryLongLabel":label.length>26?" longLabel":"";
- b.className="node "+(x.type||"project")+lengthClass+(selected===x.id?" selected":"");b.dataset.id=x.id;b.title=label;b.style.left=p.x+"px";b.style.top=p.y+"px";b.style.setProperty("--zone",x.zone||colors[groupFor(x)]||"#62a8ff");b.innerHTML=`<b>${label}</b><small>${x.sub||""}</small>`;
+ b.className="node "+(x.type||"project")+lengthClass+(selected===x.id?" selected":"");b.dataset.id=x.id;b.title=label;b.style.left=p.x+"px";b.style.top=p.y+"px";b.style.setProperty("--zone",x.zone||colors[groupFor(x)]||"#62a8ff");b.innerHTML=`<b>${esc(label)}</b><small>${esc(x.sub||"")}</small>`;
  b.onclick=e=>{e.stopPropagation();if(x.id==="center"){backOneLevel();return}if(x.type==="category"){activeCategory=x.id;rebuildUniverse();const c=categoryDefs.find(y=>y.id===x.id);qs("#crumbCurrent").textContent=c.label;agentText.textContent=`Entering ${c.label}. Select a project or use the carousel below.`;return}selectItem(x.id,true)};return b;
 }
 function renderNodes(filter=""){
+ document.body.classList.toggle("collection-view",Boolean(activeCategory||filter));
  nodesEl.innerHTML="";const cLabel=activeCategory?categoryDefs.find(c=>c.id===activeCategory)?.label:"";
  nodesEl.appendChild(nodeButton({id:"center",label:activeCategory?cLabel:"LEEWAY DIGITAL BRAIN",sub:activeCategory?"tap center to return":"Connect • Reason • Build • Impact",type:"center",zone:"#50e6ff"}));
  const q=filter.toLowerCase();
@@ -292,11 +304,11 @@ function renderNodes(filter=""){
  }
 }
 function narrationFor(x){
- if(x.id==="center")return "Welcome to the LeeWay Digital Brain. This is Leonard Lee's whole systems record on one stage — construction in the foundation, logistics in the bloodstream, business in the rhythm, software in the circuitry, and governed AI in the crown. Pick a universe and we can walk the work, not just read the labels.";
- if(x.id?.startsWith("cat::"))return `${x.label} is one lane in the cipher, holding ${items.filter(y=>categoryFor(y)===x.id).length} explorable records. Step inside and I can break down the purpose, open a live build, walk the source files, or pull the evidence that proves the work.`;
- if(x.kind==="evidence")return `${x.label} is evidence on the record — not decoration, not hype. This artifact documents the research history behind LeeWay. Open it and we can inspect the slides, PDF, original source, and the claim context it supports.`;
- const status=x.live_url?"live right now and viewable inside the brain":x.repo_url?"source-backed on GitHub, with the repository open for inspection":"preserved through the LeeWay estate even where a public runtime is not available";
- return `Now on deck: ${x.label}. This joint runs in the ${x.group||"systems"} lane. ${x.summary||x.desc||"It is part of the LeeWay body of work."} Status: ${status}. Evidence state: ${x.evidence_state||"public source"}. In the bigger composition, this project is one bar in Leonard Lee's systems lineage — build it, route it, verify it, then let the receipts talk.`;
+ if(x.id==="center")return "This is the LeeWay Digital Brain. Explore the five categories to see projects, source code and supporting evidence. What would you like to explore?";
+ if(x.id?.startsWith("cat::"))return `${x.label} contains ${items.filter(y=>categoryFor(y)===x.id).length} records. Choose a project for its overview, website, files or evidence.`;
+ if(x.kind==="evidence")return `${x.label}. ${x.summary||"This reference is part of the LeeWay research archive."}`;
+ const status=x.live_url?"A website link is available; its current runtime health has not been checked.":x.repo_url?"Source code is available on GitHub.":"No public website is linked.";
+ return `${x.label}. ${x.summary||x.desc||"A project in the LeeWay ecosystem."} ${status} What would you like to know about it?`;
 }
 async function projectEvidenceContext(x){
  const ctx={
@@ -323,10 +335,10 @@ async function projectEvidenceContext(x){
  return ctx;
 }
 function projectPresentationPrompt(ctx){
- const status=ctx.live_url?"A live view is verified at "+ctx.live_url:ctx.repo_url?"Public GitHub source is available at "+ctx.repo_url:"No public live runtime is currently verified.";
+ const status=ctx.live_url?"A website link is configured at "+ctx.live_url:ctx.repo_url?"Public GitHub source is available at "+ctx.repo_url:"No public live runtime is currently verified.";
  return [
   "Give a polished spoken presentation of this selected Digital Brain record.",
-  "Stay fully in Agent Lee's hip-hop poetic vernacular while remaining professional, readable, and technically precise.",
+  "Use clear, conversational English. Avoid poetry, metaphors, hype, forced slang and repetitive introductions. Start with a direct answer in two to four sentences; provide more detail when asked.",
   "Cover only evidence-supported points: what it is, why it exists, the problem it addresses, documented architecture/capabilities, live status, available evidence/source, and how it fits the broader LeeWay systems lineage.",
   "HARD EVIDENCE RULE: every factual claim must be directly supported by the JSON context or README excerpt below.",
   "Never upgrade a source label into a stronger claim. Do not say full-stack, production-ready, complete, proven, revenue-generating, autonomous, or deployed unless those exact ideas are supported in the supplied evidence.",
@@ -336,13 +348,16 @@ function projectPresentationPrompt(ctx){
   JSON.stringify(ctx)
  ].join("\n");
 }
-async function presentProject(x){
+async function presentProject(x,turn=voiceController.begin()){
  if(!x)return null;
  const evidenceCtx=await projectEvidenceContext(x);
+ if(!voiceController.current(turn.epoch))return null;
  const prompt=projectPresentationPrompt(evidenceCtx);
- const local=await askLocalProvider(prompt);if(local)return local;
- if(gemmaConversation){const g=await askGemma(prompt);if(g)return g}
- const fallback=narrationFor(x);agentText.textContent=fallback;agentNarration.textContent=fallback;speak(fallback);return fallback;
+ const local=await askLocalProvider(prompt,turn);if(local)return local;
+ if(!voiceController.current(turn.epoch))return null;
+ if(gemmaConversation){const g=await askGemma(prompt,turn);if(g)return g}
+ if(!voiceController.current(turn.epoch))return null;
+ const fallback=narrationFor(x);agentText.textContent=fallback;agentNarration.textContent=fallback;speak(fallback,turn.epoch);return fallback;
 }
 function resolveItem(id){
  if(id==="center")return {id,label:"LeeWay Digital Brain",group:"Presentation Core",summary:"The public presentation core for Leonard Lee and LeeWay Industries: projects, evidence, systems lineage, and governed AI in one explorable universe.",evidence_state:"PUBLIC LINEAGE",kind:"identity"};
@@ -360,15 +375,15 @@ function selectItem(id,open=false){
  qs("#hudFacts").innerHTML=[["Domain",groupFor(activeItem)],["Evidence",activeItem.evidence_state||activeItem.type||"PUBLIC"],["Updated",activeItem.updated_at?.slice?.(0,10)||activeItem.date||"Historical"],["Identity",activeItem.id]].map(([a,b])=>`<div class="hudFact"><b>${a}</b><span>${b}</span></div>`).join("");
  qs("#openProjectBtn").classList.toggle("hidden",!activeItem.live_url&&!activeItem.url);if(activeItem.live_url||activeItem.url)qs("#openProjectBtn").href=activeItem.live_url||activeItem.url;
  qs("#openRepoBtn").classList.toggle("hidden",!activeItem.repo_url);if(activeItem.repo_url)qs("#openRepoBtn").href=activeItem.repo_url;
- hud.classList.remove("hidden");if(open){openWorkspace(activeItem,activeItem.kind==="evidence"?"evidence":"overview");presentProject(activeItem).catch(()=>{});}
+ hud.classList.remove("hidden");if(open){cancelAgentGeneration();openWorkspace(activeItem,activeItem.kind==="evidence"?"evidence":"overview");}
 }
 function renderCarousel(filter=""){
  const q=filter.toLowerCase(),rows=items.filter(x=>(!activeCategory||categoryFor(x)===activeCategory)&&(!q||(x.label+" "+(x.summary||"")+" "+groupFor(x)).toLowerCase().includes(q)));track.innerHTML="";
- rows.forEach(x=>{const b=document.createElement("button");b.className="projectCard"+(selected===x.id?" active":"");b.innerHTML=`<div class="cardTop"><span class="cardType">${x.kind==="evidence"?x.type:"PROJECT"}</span><span class="cardEvidence">${x.evidence_state||""}</span></div><h3>${x.label}</h3><p>${x.summary||""}</p>`;b.onclick=()=>selectItem(x.id,true);track.appendChild(b)});qs("#carouselCount").textContent=`${rows.length} items`;
+ rows.forEach(x=>{const b=document.createElement("button");b.className="projectCard"+(selected===x.id?" active":"");b.innerHTML=`<div class="cardTop"><span class="cardType">${esc(x.kind==="evidence"?x.type:"PROJECT")}</span><span class="cardEvidence">${esc(x.evidence_state||"")}</span></div><h3>${esc(x.label)}</h3><p>${esc(x.summary||"")}</p>`;b.onclick=()=>selectItem(x.id,true);track.appendChild(b)});qs("#carouselCount").textContent=`${rows.length} items`;
 }
 function rebuildUniverse(){const q=search.value.trim();buildLayout(q);renderEdges(q);renderNodes(q);renderCarousel(q);fit()}
 function openWorkspace(x,tab="overview"){activeItem=x;activeTab=tab;workspace.classList.remove("hidden");workspaceTitle.textContent=x.label;workspaceKicker.textContent=x.kind==="evidence"?"EVIDENCE WORKSPACE":"PROJECT WORKSPACE";const ext=x.live_url||x.url||x.repo_url;openExternal.classList.toggle("hidden",!ext);if(ext)openExternal.href=ext;document.querySelectorAll(".workspaceTabs button").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));renderWorkspace()}
-function closeWorkspace(){workspace.classList.add("hidden")}
+function closeWorkspace(){workspace.classList.add("hidden");hud.classList.add("hidden");qs("#crumbCurrent").textContent=activeCategory?categoryDefs.find(c=>c.id===activeCategory)?.label:"PROJECT UNIVERSE"}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function overviewHtml(x){return `<div class="workspaceGrid"><section class="workspacePanel"><h3>What this is</h3><p>${esc(x.summary||x.desc||"Public project record.")}</p><div class="hudFacts">${[["Category",groupFor(x)],["Evidence",x.evidence_state||"PUBLIC"],["Language",x.language||"—"],["Created",x.created_at?.slice?.(0,10)||x.date||"—"],["Updated",x.updated_at?.slice?.(0,10)||"—"],["Repository size",x.size!=null?Math.round(x.size/1024)+" MB":"—"]].map(([a,b])=>`<div class="hudFact"><b>${a}</b><span>${esc(b)}</span></div>`).join("")}</div></section><section class="workspacePanel"><h3>Agent Lee</h3><p>${esc(narrationFor(x))}</p><div class="hudButtons">${x.live_url?`<button data-work-action="live">Live View</button>`:""}${x.repo_name?`<button data-work-action="files">Browse Files</button>`:""}<button data-work-action="evidence">Evidence</button><button data-work-action="speak">Narrate</button></div></section></div>`}
 function renderLive(x){if(!x.live_url){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No verified live URL</h3><p>This project has source evidence but no live view has been discovered yet.</p></div>`;return}workspaceBody.innerHTML=`<div class="workspacePanel"><p>Live project viewport. If a project blocks framing, use Open Full.</p></div><iframe class="liveFrame" src="${esc(x.live_url)}" title="${esc(x.label)} live view" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe>`}
@@ -397,25 +412,47 @@ function openEvidenceDetail(e,d){
  workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Evidence record")}</p></div>`;
 }
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
-function chooseVoice(){if(!("speechSynthesis"in window))return;const voices=speechSynthesis.getVoices();voice=voices.find(v=>/Google.*English/i.test(v.name))||voices.find(v=>/(Guy|Ryan|Christopher|Andrew|Brian|Eric|Daniel|David)/i.test(v.name)&&/^en/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null}
-function stopSpeech(){if(audioPlayer){try{audioPlayer.pause();audioPlayer.src=""}catch{}audioPlayer=null}if("speechSynthesis"in window)speechSynthesis.cancel()}
-async function speak(text){
- if(!text)return;stopSpeech();
- const endpoint=voiceConfig?.secure_backend_endpoint;
- if(endpoint){
-  try{
-   agentState.textContent="speaking · premium voice";
-   const r=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text,voice:voiceConfig?.chirp3?.voice_name||"en-US-Chirp3-HD-Charon",language_code:voiceConfig?.chirp3?.language_code||"en-US"})});
-   if(!r.ok)throw new Error("voice "+r.status);
-   const blob=await r.blob(),url=URL.createObjectURL(blob);audioPlayer=new Audio(url);
-   audioPlayer.onended=()=>{URL.revokeObjectURL(url);audioPlayer=null;agentState.textContent=listening?"listening":"ready"};
-   await audioPlayer.play();return;
-  }catch(e){console.warn("Premium voice unavailable, using browser fallback",e)}
+const voiceController=new LeeWayVoiceController({
+ onState:message=>agentState.textContent=message,
+ onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden")},
+ onListening:active=>{listening=active;micBtn.classList.toggle("listening",active);micBtn.setAttribute("aria-pressed",String(active))},
+ onCancel:()=>{if(gemmaGenerating&&gemmaConversation?.cancel)try{gemmaConversation.cancel()}catch{}gemmaGenerating=false;tourEpoch++},
+ onCommand:text=>handleAgentCommand(text)
+});
+let tourEpoch=0,voiceConnecting=false;
+const liveVoice=new LeeWayLiveVoice({
+ onState:message=>agentState.textContent=message,
+ onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden")},
+ onOutput:text=>{agentText.textContent=text;agentNarration.textContent=text},
+ onInterrupt:()=>voiceController.stop(),
+ onClose:()=>{listening=false;micBtn.classList.remove("listening");micBtn.setAttribute("aria-pressed","false")},
+ onQuestion:async question=>{
+   const turn=voiceController.begin();voiceController.remember("user",question);
+   const navigation=navigateAgentRequest(question);if(navigation)return navigation;
+   const answer=await askLocalProvider(question,turn,true);
+   if(!voiceController.current(turn.epoch))return null;
+   return answer||"Gemma 4 is unavailable. I can show project information on screen, but I cannot give a new reasoned answer right now.";
+ },
+ getToken:async config=>{
+   if(config.token_endpoint){
+     const url=new URL(config.token_endpoint,location.href);
+     if(url.protocol!=="https:"&&!["127.0.0.1","localhost"].includes(url.hostname))throw new Error("The voice token broker requires HTTPS.");
+     const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:config.model,voice:config.voice_name})});
+     if(!response.ok)throw new Error("Natural voice broker unavailable.");return response.json();
+   }
+   const result=await extensionBridgeRequest("LIVE_TOKEN",{model:config.model,voice:config.voice_name},4000);
+   if(result?.ok)return result.data||result;
+   throw new Error("Natural voice is not connected. Browser voice fallback is available.");
  }
- if(!("speechSynthesis"in window))return;chooseVoice();const u=new SpeechSynthesisUtterance(text);if(voice)u.voice=voice;
- u.rate=voiceConfig?.browser_fallback?.rate??.94;u.pitch=voiceConfig?.browser_fallback?.pitch??.93;
- u.onstart=()=>agentState.textContent="speaking · tap mic to interrupt";u.onend=()=>agentState.textContent=listening?"listening":"ready";speechSynthesis.speak(u)
+});
+function chooseVoice(){}
+function stopSpeech(){voiceController.stop();if(liveVoice.connected)liveVoice.stop()}
+async function speak(text,epoch=voiceController.epoch){
+ if(!text||!voiceController.current(epoch))return;
+ if(liveVoice.connected){liveVoice.say("Read the following Gemma 4 answer exactly, without adding facts: "+text);return;}
+ return voiceController.speak(text,voiceConfig||{},epoch);
 }
+function endVoice(){voiceConnecting=false;voiceController.dispose();void liveVoice.close();listening=false;micBtn.classList.remove("listening")}
 async function enableGemma(){
  if(gemmaEngine||gemmaLoading)return;
  if(!("gpu" in navigator)){agentState.textContent="Gemma requires WebGPU on this device";return}
@@ -444,7 +481,7 @@ async function enableGemma(){
   console.error(e);gemmaEngine=null;gemmaConversation=null;reasonBtn.classList.remove("loading","ready");agentState.textContent="Gemma load unavailable; deterministic mode active";
  }finally{gemmaLoading=false}
 }
-async function askGemma(question){
+async function askGemma(question,turn={epoch:voiceController.epoch,signal:voiceController.controller.signal}){
  if(!gemmaConversation)return null;
  gemmaGenerating=true;agentState.textContent="Gemma 4 reasoning locally";
  const ctx=activeItem?{label:activeItem.label,group:groupFor(activeItem),summary:activeItem.summary||activeItem.desc||"",live_url:activeItem.live_url||null,repo:activeItem.repo_url||null,evidence:activeItem.evidence_state||null}:null;
@@ -453,47 +490,67 @@ async function askGemma(question){
  try{
   const stream=gemmaConversation.sendMessageStreaming(prompt);
   for await(const chunk of stream){
-   if(!gemmaGenerating)break;
+   if(!voiceController.current(turn.epoch))break;
    for(const item of chunk.content||[])if(item.type==="text"){out+=item.text;agentText.textContent=out}
   }
-  if(out.trim()){agentNarration.textContent=out.trim();speak(out.trim());return out.trim()}
+  if(voiceController.current(turn.epoch)&&out.trim()){agentNarration.textContent=out.trim();voiceController.remember("assistant",out.trim());speak(out.trim(),turn.epoch);return out.trim()}
  }catch(e){console.error(e);agentState.textContent="Gemma reasoning failed; deterministic mode active"}
- finally{gemmaGenerating=false}
+ finally{if(voiceController.current(turn.epoch))gemmaGenerating=false}
  return null;
 }
-function cancelAgentGeneration(){
- if(gemmaGenerating&&gemmaConversation?.cancel)try{gemmaConversation.cancel()}catch{}
- gemmaGenerating=false;
- stopSpeech();
-}
+function cancelAgentGeneration(){voiceController.stop();if(liveVoice.connected)liveVoice.stop()}
 function scoreProject(q,p){const hay=(p.label+" "+(p.repo_name||"")+" "+(p.summary||"")+" "+(p.group||"")).toLowerCase();if(hay.includes(q))return 100+q.length;return q.split(/\s+/).reduce((n,w)=>n+(w.length>2&&hay.includes(w)?5:0),0)}
 function bestProject(q){return projects.map(p=>[scoreProject(q,p),p]).sort((a,b)=>b[0]-a[0])[0]}
-async function handleAgentCommand(raw){
- const text=raw.trim(),q=text.toLowerCase();agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
- if(/\b(stop|quiet|pause|interrupt)\b/.test(q)){cancelAgentGeneration();agentState.textContent="ready";return}
- if(/\b(home|reset|close|whole brain)\b/.test(q)){showBrainOnly();speak("Back at the whole three-dimensional Digital Brain.");return}
- if(activeItem&&/\b(files?|source|code)\b/.test(q)){openWorkspace(activeItem,"files");speak("Opening the project files.");return}
- if(activeItem&&/\b(live|website|demo|running)\b/.test(q)){openWorkspace(activeItem,"live");speak(activeItem.live_url?"Opening the live project view.":"I do not have a verified live view for this project yet.");return}
- if(activeItem&&/\b(evidence|proof|presentation|powerpoint|infographic)\b/.test(q)){openWorkspace(activeItem,"evidence");speak("Opening the evidence linked to this work.");return}
- let subject=q.replace(/^(show|open|take me to|tell me about|explain|find|go to)\s+/,"").trim();
- const hit=bestProject(subject);
- if(hit&&hit[0]>=10){selectItem(hit[1].id,false);openWorkspace(hit[1],"overview");await presentProject(hit[1]);return}
- const local=await askLocalProvider(text);if(local)return
- if(gemmaConversation){const answer=await askGemma(text);if(answer)return}
- speak("I can navigate projects, open live views, browse repository files, show evidence, and—when local reasoning is enabled—answer broader questions about Leonard Lee and LeeWay Industries.");
+function navigateAgentRequest(text){
+ const q=text.trim().toLowerCase();
+ if(/^(?:go |back |return )?(?:home|back|reset|close|whole brain|to the brain)[.!?]*$/.test(q)){showBrainOnly();return "Back at the Digital Brain.";}
+ if(activeItem&&/^(?:show|open|browse)(?: me)?(?: the| project)? (?:files?|source|code)[.!?]*$/.test(q)){openWorkspace(activeItem,"files");return "Opening the project files.";}
+ if(activeItem&&/^(?:show|open)(?: me)?(?: the| project)? (?:live view|website|demo)[.!?]*$/.test(q)){openWorkspace(activeItem,"live");return activeItem.live_url?"Opening the listed project link.":"No live view is listed for this project.";}
+ if(activeItem&&/^(?:show|open)(?: me)?(?: the| project)? (?:evidence|proof|presentation)[.!?]*$/.test(q)){openWorkspace(activeItem,"evidence");return "Opening the linked evidence.";}
+ if(/^(show|open|take me to|find|go to) /.test(q)){
+   const subject=q.replace(/^(show|open|take me to|find|go to) +/,"").trim(),hit=bestProject(subject);
+   if(hit&&hit[0]>=10){selectItem(hit[1].id,false);openWorkspace(hit[1],"overview");return narrationFor(hit[1]);}
+ }
+ return null;
 }
-function setupRecognition(){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){agentState.textContent="voice input unavailable in this browser";micBtn.disabled=true;return}recognition=new R();recognition.lang="en-US";recognition.continuous=true;recognition.interimResults=true;recognition.onstart=()=>{listening=true;openAgentBubble(false);micBtn.classList.add("listening");agentState.textContent="listening"};recognition.onresult=e=>{let final="",interim="";for(let i=e.resultIndex;i<e.results.length;i++){const t=e.results[i][0].transcript;if(e.results[i].isFinal)final+=t;else interim+=t}const heard=(final||interim).trim();if(heard&&(("speechSynthesis"in window&&speechSynthesis.speaking)||audioPlayer)){stopSpeech();if(gemmaGenerating)cancelAgentGeneration();agentState.textContent="interrupted · listening"}agentTranscript.textContent=heard;agentTranscript.classList.remove("hidden");if(final)handleAgentCommand(final)};recognition.onerror=e=>{agentState.textContent="voice "+e.error};recognition.onend=()=>{if(listening)try{recognition.start()}catch{}}}
-function toggleMic(){cancelAgentGeneration();if(!recognition)setupRecognition();if(!recognition)return;if(listening){listening=false;recognition.stop();micBtn.classList.remove("listening");agentState.textContent="ready"}else try{recognition.start()}catch{}}
+async function handleAgentCommand(raw){
+ const text=raw.trim(),q=text.toLowerCase();if(!text)return;
+ agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
+ if(/^(?:(?:hey|okay|please|agent lee)[, ]+)*(?:stop|quiet|pause|interrupt)(?: (?:talking|speaking|please|now))?[.!?]*$/i.test(q)){cancelAgentGeneration();return;}
+ const turn=voiceController.begin();voiceController.remember("user",text);
+ const navigation=navigateAgentRequest(text);if(navigation){agentText.textContent=navigation;speak(navigation,turn.epoch);return;}
+ if(liveVoice.connected){liveVoice.say(text);return;}
+ const local=await askLocalProvider(text,turn);if(local||!voiceController.current(turn.epoch))return;
+ if(gemmaConversation){const answer=await askGemma(text,turn);if(answer||!voiceController.current(turn.epoch))return;}
+ const message="Gemma 4 is not connected. I can still open projects and show their recorded information. Use the Reason button to connect local reasoning.";
+ agentText.textContent=message;agentNarration.textContent=message;speak(message,turn.epoch);
+}
+function setupRecognition(){return voiceController.startListening()}
+async function toggleMic(){
+ if(listening||voiceConnecting){endVoice();return;}
+ cancelAgentGeneration();voiceConnecting=true;
+ try{
+   if(voiceConfig?.preferred_provider==="gemini-live"){
+     const connected=await liveVoice.connect(voiceConfig.gemini_live||{},{projects:projects.map(p=>({label:p.label,summary:p.summary})),selected:activeItem});
+     if(!voiceConnecting)return;
+     if(connected){listening=true;micBtn.classList.add("listening");micBtn.setAttribute("aria-pressed","true");return;}
+   }
+   if(voiceConnecting)setupRecognition();
+ }catch(error){
+   if(voiceConnecting){agentState.textContent=error.message;setupRecognition();}
+ }finally{voiceConnecting=false;}
+}
 async function startTour(){
- const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").sort((a,b)=>(!!b.live_url-!!a.live_url)||String(b.updated_at||"").localeCompare(String(a.updated_at||""))).slice(0,8);
+ cancelAgentGeneration();const epoch=++tourEpoch;
+ const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").slice(0,8);
  for(const p of seq){
+  if(epoch!==tourEpoch)return;
   selectItem(p.id,false);openWorkspace(p,"overview");
-  const spoken=await presentProject(p);
-  const words=String(spoken||"").trim().split(/\s+/).filter(Boolean).length;
-  await new Promise(r=>setTimeout(r,Math.min(16000,Math.max(6500,words*115))));
+  const spoken=narrationFor(p);agentText.textContent=spoken;agentNarration.textContent=spoken;await speak(spoken);
+  await new Promise(r=>setTimeout(r,Math.min(16000,Math.max(6500,spoken.split(/\s+/).length*180))));
  }
 }
-function fit(){scale=innerWidth<900?.58:.78;panX=0;panY=0;setWorldTransform()}
+function fit(){const height=qs("#stage").clientHeight;scale=innerWidth<900?.58:Math.min(.78,Math.max(.38,(height-130)/490));panX=0;panY=0;setWorldTransform()}
 function bindAppearance(){
  const panel=appearancePanel;
  qs("#appearanceBtn").onclick=()=>panel.classList.toggle("hidden");
@@ -512,13 +569,17 @@ function bindAppearance(){
 }
 search.oninput=()=>{activeCategory=null;rebuildUniverse()};
 qs("#hudClose").onclick=()=>hud.classList.add("hidden");
-qs("#speakBtn").onclick=()=>speak(agentNarration.textContent||agentText.textContent);
+qs("#speakBtn").onclick=()=>{cancelAgentGeneration();speak(agentNarration.textContent||agentText.textContent)};
+qs("#agentStop")?.addEventListener("click",cancelAgentGeneration);
+qs("#agentEndVoice")?.addEventListener("click",endVoice);
+qs("#agentStartVoice")?.addEventListener("click",()=>{openAgentBubble(false);if(!listening&&!voiceConnecting)void toggleMic()});
+window.addEventListener("pagehide",endVoice);
 qs("#tourBtn").onclick=startTour;
 qs("#resetBtn").onclick=showBrainOnly;
 qs(".crumb.active").onclick=backOneLevel;
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
-micBtn.onclick=()=>{openAgentBubble(false);toggleMic()};
-reasonBtn.onclick=async()=>{const p=await probeLocalProvider(true);if(p){speak("Local LeeWay brain connected. "+p.preferred+" is on deck.");return}await enableGemma()};
+micBtn.onclick=()=>{openAgentBubble(true)};
+reasonBtn.onclick=async()=>{const p=await probeLocalProvider(true);if(p){speak("Local LeeWay brain connected. "+p.preferred+" is ready.");return}await enableGemma()};
 qs("#workspaceClose").onclick=closeWorkspace;
 qs("#backOneLevelBtn").onclick=()=>backOneLevel();
 qs("#wholeBrainCrumb").onclick=()=>showBrainOnly();
@@ -528,12 +589,16 @@ agentInput.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.pre
 carouselPrev.onclick=()=>scrollRail(-1);carouselNext.onclick=()=>scrollRail(1);
 track.addEventListener("wheel",e=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){e.preventDefault();track.scrollLeft+=e.deltaY}},{passive:false});
 bindAppearance();loadAppearance();startWave();
-window.addEventListener("resize",()=>{resizeWave();if(innerWidth<900&&scale>.72)fit()});
+let layoutFrame=0;
+const syncLayout=()=>{cancelAnimationFrame(layoutFrame);layoutFrame=requestAnimationFrame(()=>{resizeWave();fit()})};
+new ResizeObserver(syncLayout).observe(qs("#stage"));
+window.addEventListener("resize",syncLayout);
+qs("#enterBrainBtn").onclick=()=>{if(window.__leewayEnterBrain)window.__leewayEnterBrain();else enterBrain()};
 document.querySelectorAll(".workspaceTabs button").forEach(b=>b.onclick=()=>{activeTab=b.dataset.tab;document.querySelectorAll(".workspaceTabs button").forEach(x=>x.classList.toggle("active",x===b));renderWorkspace()});
-workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak")speak(narrationFor(activeItem))});
+workspace.addEventListener("click",e=>{const a=e.target.closest("[data-work-action]");if(!a)return;const x=a.dataset.workAction;if(x==="live"){activeTab="live";renderWorkspace()}else if(x==="files"){activeTab="files";renderWorkspace()}else if(x==="evidence"){activeTab="evidence";renderWorkspace()}else if(x==="speak"){cancelAgentGeneration();speak(narrationFor(activeItem))}});
 qs("#zoomIn").onclick=()=>{scale=clamp(scale+.12,.38,1.9);setWorldTransform()};qs("#zoomOut").onclick=()=>{scale=clamp(scale-.12,.38,1.9);setWorldTransform()};qs("#zoomFit").onclick=fit;
 qs("#stage").addEventListener("wheel",e=>{
- if(window.__leewayBrainIntroActive)return;
+ if(window.__leewayBrainIntroActive||innerWidth<900||document.body.classList.contains("collection-view"))return;
  e.preventDefault();
  const minScale=innerWidth<900?.58:.78;
  if(e.deltaY>0 && scale<=minScale+.012){
@@ -547,7 +612,7 @@ qs("#stage").addEventListener("wheel",e=>{
 function graphTouchDistance(){const pts=[...graphTouchPoints.values()];if(pts.length<2)return 0;const dx=pts[0].x-pts[1].x,dy=pts[0].y-pts[1].y;return Math.hypot(dx,dy)}
 function endGraphTouch(pointerId){graphTouchPoints.delete(pointerId);if(graphTouchPoints.size<2){graphPinchStartDistance=0;graphPinchStartScale=scale;graphPinchBacked=false}}
 qs("#stage").addEventListener("pointerdown",e=>{
- if(window.__leewayBrainIntroActive)return;
+ if(window.__leewayBrainIntroActive||innerWidth<900||document.body.classList.contains("collection-view"))return;
  if(e.target.closest(".node,#hud,#zoomControls,#agentLee,.appearancePanel,#projectCarousel,#workspace"))return;
  if(e.pointerType==="touch"){
   graphTouchPoints.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -584,7 +649,7 @@ qs("#stage").addEventListener("pointermove",e=>{
 });
 qs("#stage").addEventListener("pointerup",e=>{dragging=false;endGraphTouch(e.pointerId)});
 qs("#stage").addEventListener("pointercancel",e=>{dragging=false;endGraphTouch(e.pointerId)});
-speechSynthesis?.addEventListener?.("voiceschanged",chooseVoice);
+window.speechSynthesis?.addEventListener?.("voiceschanged",chooseVoice);
 function materializeProjects(source,overrides){
  const om=new Map((overrides.overrides||[]).map(x=>[x.repo_name,x]));
  const rows=(source||[]).map(r=>{const ov=om.get(r.name)||{};return {id:"repo::"+r.name,repo_name:r.name,label:ov.label||cleanName(r.name),summary:ov.summary||r.description||"Public GitHub project by Leonard Lee / LeeWay Industries.",group:ov.group||classifyRepo(r),repo_url:r.html_url||`https://github.com/4citeB4U/${r.name}`,live_url:liveUrlFor(r,ov),evidence_state:ov.evidence_state||(upstreamRepos.has(r.name)?"UPSTREAM REFERENCE":"PUBLIC SOURCE"),default_branch:r.default_branch||"main",language:r.language,size:r.size,created_at:r.created_at,updated_at:r.updated_at,kind:"project"}});
@@ -615,7 +680,7 @@ async function boot(){
  const fallbackSource=(fallback.projects||[]).map(x=>({name:x.repo_name||x.label,description:x.summary,html_url:x.repo,homepage:x.url,has_pages:!!x.url,default_branch:"main",language:null,size:null,created_at:null,updated_at:null}));
  const durable=(generated.repositories||[]).length?generated.repositories:fallbackSource;
  applyProjectSource(durable,overrides);
- chooseVoice();setupRecognition();if(recognition)listening=false;probeLocalProvider().catch(()=>{});
+ chooseVoice();probeLocalProvider().catch(()=>{});
  // Opportunistic freshness: never block rendering on GitHub.
  fetchGithubRepos().then(live=>{
   if(!live.length)return;
