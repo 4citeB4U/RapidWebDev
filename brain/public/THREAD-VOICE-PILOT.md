@@ -2,7 +2,7 @@
 
 **REGION:** LEEWAY_DIGITAL_BRAIN  
 **TAG:** LEEWAY_THREAD_VOICE_PILOT_V1  
-**STATUS:** CANDIDATE — LIVE STRUCTURAL VERIFIED; ACOUSTIC / FULL-MODEL QUALIFICATION PENDING  
+**STATUS:** CANDIDATE — LIVE STRUCTURAL VERIFIED V2; ACOUSTIC / FULL-MODEL QUALIFICATION PENDING  
 **DATE:** 2026-09-28  
 **CREATOR AUTHORITY:** Leonard Lee / LeeWay Standards  
 **IMPLEMENTATION TARGET:** 4citeB4U/RapidWebDev  
@@ -82,7 +82,9 @@ Ranges/mappings remain unpromoted until authorized and empirically qualified.
 - Visible status reported `0/8 hands active`.
 - Workplane, speech arbiter, pause, resume and inserted-speech methods loaded in the served browser.
 - Uncaught live page errors in the verified browser run: **0**.
-- Receipt: `brain/receipts/AGENT-LEE-THREAD-VOICE-PILOT-VERITAS-20260928.json`.
+- V1 receipt retained: `brain/receipts/AGENT-LEE-THREAD-VOICE-PILOT-VERITAS-20260928.json`.
+- Superseding V2 structural receipt: `brain/receipts/AGENT-LEE-THREAD-VOICE-PILOT-VERITAS-20260928-V2.json`.
+- V2 additionally proves display-source/speech-source synchronization repair, `threadpilot2` cache identity, and a Chromium run that waited for the repaired public deployment before executing.
 
 The failed first two live-browser attempts are preserved as test-harness failures: both incorrectly required hidden thread controls to be visible before opening Agent Lee. They were repaired and retested.
 
@@ -107,4 +109,4 @@ The failed first two live-browser attempts are preserved as test-harness failure
 
 ## Promotion law
 
-This pilot becomes a reusable LeeWay agent standard only after the live/acoustic acceptance gate passes and a versioned standard is promoted through Veritas/Receipt/Learning Ledger. Until then it remains a candidate implementation, not constitutional authority.
+This pilot becomes the reusable LeeWay **Blue Standard** for agents only after the physical/acoustic acceptance gate passes and a versioned standard is promoted through Veritas/Receipt/Learning Ledger. Live structural verification alone is not sufficient. Until then it remains a candidate implementation, not constitutional authority.
