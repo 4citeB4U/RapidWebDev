@@ -34,7 +34,6 @@
     const jobs=[
       ['voiceContract',SOURCES.voice.contract],
       ['voiceBinding',SOURCES.voice.binding],
-      ['runtimeRegistry',SOURCES.runtime.registry],
       ['skillsManifest',SOURCES.skills.manifest],
       ['skillsRegistry',SOURCES.skills.registry],
       ['formulaBindings',SOURCES.formula.bindings],
