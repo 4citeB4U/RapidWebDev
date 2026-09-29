@@ -1,29 +1,42 @@
 {
   "agent": "Agent Lee",
+  "identity_policy": "SINGLE_BRAIN_SINGLE_AGENT_IDENTITY",
   "persona_authority": "4citeB4U/Agent-Lee-The-Sum-of-All-Systems",
-  "active_reasoning_provider": "deterministic_public_brain",
-  "candidate_reasoning_provider": {
-    "family": "Gemma 4",
-    "preferred_model": "E4B",
-    "mode": "lazy_on_device",
-    "status": "CANDIDATE_NOT_YET_LOADED",
-    "reason": "Keep phone rendering responsive; load local reasoning only on compatible devices."
+  "brain_surface": "rapidwebdevelop.com",
+  "reasoning": {
+    "primary_provider": "leeway-runtime-fabric",
+    "endpoint": "https://leeway-runtime-fabric.fly.dev/v1/chat/completions",
+    "browser_local_fallback": "OPTIONAL_HIDDEN_FALLBACK_NOT_REQUIRED",
+    "no_required_browser_model_download": true
+  },
+  "fabric_authorities": {
+    "voice": "4citeB4U/LeeWay-Voice-Fabric",
+    "runtime": "4citeB4U/Leeway-Runtime-Fabric",
+    "skills": "4citeB4U/LeeWay-Agent-Skills",
+    "formula": "4citeB4U/Leeway-formula-live"
   },
   "voice": {
-    "active_provider": "browser_speech_synthesis",
-    "premium_provider": {
-      "name": "Google Cloud Chirp 3 HD / Gemini TTS",
-      "status": "SECURE_BACKEND_REQUIRED",
-      "notes": "Do not place Cloud credentials in GitHub Pages. Route through authenticated server-side proxy when configured."
-    },
-    "barge_in": "mic_button_interrupts_current_speech_and_starts_listening"
+    "authority": "4citeB4U/LeeWay-Voice-Fabric",
+    "voicePackageId": "agent-lee-voice-one",
+    "startup_mode": "PREPARED_VOICE_ONE_ASSET_NO_MODEL_DOWNLOAD",
+    "conversation_mode": "VOICE_FABRIC_CONTRACT",
+    "barge_in": "pause_or_stop_voice_without_implicitly_canceling_upstream_work"
+  },
+  "formula": {
+    "authority": "4citeB4U/Leeway-formula-live",
+    "rule": "No numerical Formula claim without authorized mapping plus executed evaluator receipt."
   },
   "capabilities": [
     "project navigation",
     "live-view navigation",
-    "repository file browsing",
-    "evidence navigation",
-    "spoken explanation",
+    "repository/evidence navigation",
+    "GitHub fabric discovery",
+    "runtime-fabric reasoning",
+    "agent-skills context",
+    "formula-governed context",
+    "Voice Fabric identity and speech",
+    "multi-thread eight-hand workplane",
+    "one-mouth speech lease",
     "microphone command input"
   ]
 }

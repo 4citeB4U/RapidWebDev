@@ -145,3 +145,57 @@ body.collection-view #edges,body.collection-view #zoomControls,body.collection-v
 /* Creator-approved LeeWay logo; preserve the supplied artwork. */
 .brand>.leeway-logo{width:48px;height:48px;flex:0 0 48px;object-fit:contain;border-radius:50%;background:#fff}
 @media(max-width:600px){.brand>.leeway-logo{width:40px;height:40px;flex-basis:40px}}
+
+
+/* 2026-09-29 canonical opening: glass story plate owns the intro; brain renders behind it. */
+.intro-story-glass{
+ position:fixed;inset:0;z-index:130;display:grid;place-items:center;padding:clamp(18px,4vw,48px);
+ background:radial-gradient(circle at 50% 44%,rgba(7,27,48,.22),rgba(1,5,12,.62));
+ backdrop-filter:blur(8px) saturate(1.05);-webkit-backdrop-filter:blur(8px) saturate(1.05);
+ transition:opacity 1s ease,visibility 1s ease;
+}
+.intro-story-glass.story-complete{opacity:0;visibility:hidden;pointer-events:none}
+.intro-story-plate{
+ width:min(880px,92vw);height:min(640px,78dvh);display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;
+ padding:clamp(22px,4vw,48px);border:1px solid rgba(137,221,255,.34);border-radius:28px;
+ background:linear-gradient(145deg,rgba(5,18,33,.72),rgba(7,26,46,.48));
+ box-shadow:0 30px 100px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.09);
+ backdrop-filter:blur(22px) saturate(1.18);-webkit-backdrop-filter:blur(22px) saturate(1.18);
+ overflow:hidden;
+}
+.intro-story-kicker{font:750 11px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.18em;color:#75dcff;text-align:center}
+.intro-story-viewport{position:relative;overflow:hidden;mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent);-webkit-mask-image:linear-gradient(to bottom,transparent,#000 14%,#000 86%,transparent)}
+.intro-story-scroll{max-width:720px;margin:0 auto;padding:48vh 24px 54vh;text-align:center;transform:translateY(0)}
+.intro-story-scroll.scrolling{animation:introStoryRoll 20s linear forwards}
+.intro-story-scroll h1{font:650 clamp(34px,6vw,68px)/1.02 Georgia,serif;letter-spacing:-.035em;margin:28px 0;color:#f2f8ff}
+.intro-story-scroll p{font:400 clamp(18px,2.5vw,25px)/1.65 Georgia,serif;color:#d1dfeb;margin:30px auto;max-width:680px}
+.intro-story-scroll .intro-story-dedication{font-style:italic;color:#a9c9dc}
+.intro-story-scroll .intro-story-close{font-weight:650;color:#aeeeff}
+@keyframes introStoryRoll{from{transform:translateY(0)}to{transform:translateY(calc(-100% + 48vh))}}
+.intro-story-actions{display:flex;justify-content:center;gap:10px;padding-top:12px}
+.intro-story-actions button{min-height:46px;padding:10px 18px;border-radius:999px;font-size:14px}
+.intro-story-actions #introStoryBegin{background:#0b3152;border-color:#5cdcff;color:#eaffff}
+.intro-story-skip{background:transparent;color:#a8bfd1}
+.intro-story-status{text-align:center;font-size:11px;color:#8eacc0;margin-top:9px;min-height:16px}
+body.story-intro #topbar,body.story-intro #crumbs,body.story-intro #projectCarousel,
+body.story-intro #agentLee,body.story-intro #appearancePanel,body.story-intro #zoomControls,
+body.story-intro #hint,body.story-intro .brain-enter-button,body.story-intro #brainDepthHint{
+ opacity:0!important;pointer-events:none!important;
+}
+body.story-intro #brainMathOverlay{opacity:.28}
+body.story-intro #brainUniverseLayer{filter:brightness(.72) saturate(.92)}
+body:not(.story-intro) #brainUniverseLayer{transition:filter .9s ease}
+.fabric-status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}
+.fabric-status-card{border:1px solid #31526b;border-radius:10px;padding:10px;background:#071827}
+.fabric-status-card b{display:block;font-size:12px;color:#dff6ff}
+.fabric-status-card span{display:block;font-size:11px;color:#94aec1;margin-top:3px}
+.fabric-status-card[data-state="PASS"]{border-color:#33795b}
+.fabric-status-card[data-state="DEGRADED"]{border-color:#8a6b32}
+.fabric-note{font-size:12px;color:#a9bfd0}
+body:not(.brain-intro) .agent-startup{bottom:16px}
+@media(max-width:600px){
+ .intro-story-plate{width:94vw;height:78dvh;padding:20px 16px;border-radius:22px}
+ .intro-story-scroll{padding-left:10px;padding-right:10px}
+ .intro-story-scroll.scrolling{animation-duration:22s}
+ .fabric-status-grid{grid-template-columns:1fr}
+}
