@@ -374,7 +374,7 @@ qs('#enableFullAI').onclick=prepareAgent;
 qs('#agentStartupStatus').onclick=()=>openAgentBubble(false);
 qs('#clearChatHistory').addEventListener('click',()=>{voiceController.history=[];for(const thread of threadWorkplane.threads.values())thread.history=[];});
 let completedDraft='';
-const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Skills and Formula sources verified. Formula evaluator is not connected; no Formula task has run.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
+const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Agent Skills and Formula sources loaded. Runtime/Formula execution is reported separately from source authority.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
 qs('#downloadAgentDraft').onclick=()=>{if(!completedDraft)return;const url=URL.createObjectURL(new Blob([completedDraft],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='agent-lee-draft.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 const WELCOME_TEXT="I'm Agent Lee. Welcome to the LeeWay Digital Brain. Drag the brain to rotate it. Scroll up to enter and explore the project cards. Use Return to Brain to come back. Start a conversation when you are ready to ask a question.";
 const voiceController=new LeeWayVoiceController({
@@ -450,6 +450,30 @@ function cancelAgentGeneration(){
 }
 function silenceSpeechOnly(){browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();qs("#savedVoiceSample")?.pause();}
 function endVoice(){conversationSession.mute()}
+async function askRuntimeFabric(question,work,thread){
+ if(!globalThis.LeeWayEcosystemFabric)return null;
+ gemmaGenerating=true;
+ agentState.textContent=threadDisplay(thread)+' · Runtime Fabric is reasoning with LeeWay context...';
+ completedDraft='';qs('#downloadAgentDraft').disabled=true;await knowledgeReady;if(work.signal.aborted)return null;
+ const relevant=projects.map(p=>({p,score:scoreProject(question.toLowerCase(),p)})).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,3);
+ const fabricContext=globalThis.LeeWayEcosystemFabric.context();
+ const context={thread:{id:thread.id,kind:thread.kind,parentThreadId:thread.parentThreadId},fabric:fabricContext,leeway:LeeWayKnowledge.context(question),selected:activeItem?{name:activeItem.label,summary:activeItem.summary,evidence:activeItem.evidence_state}:null,projects:relevant.map(({p})=>({name:p.label,summary:(p.summary||'').slice(0,350)}))};
+ const system="You are Agent Lee inside the LeeWay Digital Brain. Use plain English. The Digital Brain is the context/control surface; Runtime Fabric owns persistent execution; Agent Skills owns capability definitions; Voice Fabric owns voice identity; Formula Live owns mathematical authority. Never claim Formula execution unless an authorized evaluator actually ran. Do not claim a GitHub contract is a live execution merely because it loaded. Keep the first answer concise and evidence-grounded.\n"+JSON.stringify(context);
+ try{
+  const history=thread.history.slice(0,-1).map(({role,content})=>({role,content}));
+  const data=await globalThis.LeeWayEcosystemFabric.chat([{role:'system',content:system},...history,{role:'user',content:question}],{signal:work.signal});
+  if(work.signal.aborted)return null;
+  const output=String(data?.choices?.[0]?.message?.content||data?.response||'').trim();
+  if(!output)throw new Error('Runtime Fabric returned no answer.');
+  thread.lastOutput=output;if(selectedThreadId===thread.id){agentText.textContent=output;agentNarration.textContent=output;}
+  completedDraft=output;qs('#downloadAgentDraft').disabled=false;recordChat('Agent Lee · '+threadDisplay(thread)+' · Runtime Fabric',output);threadWorkplane.remember(thread.id,'assistant',output);
+  agentState.textContent=threadDisplay(thread)+' · Runtime Fabric answer ready.';
+  renderThreadState();return output;
+ }catch(error){
+  if(error.name!=='AbortError')agentState.textContent='Runtime Fabric: '+error.message;
+  return null;
+ }finally{gemmaGenerating=false;renderThreadState();}
+}
 async function askGemma(question,work,thread){
  if(browserGemma?.state!=="ready")return null;
  gemmaGenerating=true;agentState.textContent=threadDisplay(thread)+' · Gemma 4 is thinking on this device...';
@@ -513,11 +537,16 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  browserListener.cancelUtterance();
  const navigation=navigateAgentRequest(text);
  if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
+ const fabric=globalThis.LeeWayEcosystemFabric;
+ if(fabric?.state?.status==="AUTHORITY_CONNECTED"&&fabric?.state?.runtime?.status==="ok"&&fabric?.state?.agent?.status==="ACTIVE_HEALTHY"){
+  const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askRuntimeFabric(text,work,t),{resource:'runtime-fabric',priority:thread.kind==='side'?90:70});
+  renderThreadState();try{const answer=await submitted.promise;if(answer)return answer;}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;}
+ }
  if(browserGemma?.state==="ready"){
-  const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askGemma(text,work,t),{resource:'gemma',priority:thread.kind==='side'?80:50});
+  const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askGemma(text,work,t),{resource:'gemma-fallback',priority:thread.kind==='side'?80:50});
   renderThreadState();try{return await submitted.promise}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;return null;}
  }
- const message="I received your words. The microphone works independently of full AI. Enable Gemma for open-ended answers and Chatterbox for generated Voice One replies; the recorded guide is available now.";
+ const message="I received your words. The LeeWay authority fabrics are loaded, but the Runtime Fabric chat route is not currently returning answers. Project navigation remains available; no browser model download is required.";
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 async function playWelcome(turn){
