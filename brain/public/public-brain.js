@@ -355,10 +355,12 @@ function threadSpeech(thread,text){
  return speechArbiter.speak(thread,stream,{onState:message=>{if(message)agentState.textContent=message;},onRendered:part=>LeeWayVoiceMetrics.record('thread-segment-rendered',{threadId:thread.id,characters:part.length})}).catch(error=>{if(error.name!=='AbortError')agentState.textContent=error.message;});
 }
 function updatePreparationStatus(){
- const ready=browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready;
+ const fabric=globalThis.LeeWayEcosystemFabric?.state;
+ const fabricReady=fabric?.status==='AUTHORITY_CONNECTED'&&fabric?.runtime?.status==='ok'&&fabric?.agent?.status==='ACTIVE_HEALTHY';
+ if(fabricReady){qs('#agentStartupStatus').textContent='Agent Lee · LeeWay fabrics ready';return;}
+ const fallbackReady=browserGemma?.state==='ready'&&browserVoice.ready&&browserListener.ready;
  const busy=gemmaLoading||qs('#loadBrowserVoice').disabled;
- // Session controls report microphone state independently of model readiness.
- qs('#agentStartupStatus').textContent=ready?'Agent Lee ready':busy?'Agent Lee is preparing...':'Voice One guide ready';
+ qs('#agentStartupStatus').textContent=fallbackReady?'Agent Lee · browser fallback ready':busy?'Agent Lee is preparing fallback...':'LeeWay fabrics connecting…';
 }
 function enableGemma(){return modelPreparation.run('gemma',loadGemmaImplementation);}
 function enableBrowserVoice(){return modelPreparation.run('voice',loadVoiceImplementation);}
@@ -434,6 +436,7 @@ async function speak(text,epoch=voiceController.epoch){
  catch(error){if(error.name!=="AbortError"&&voiceController.current(epoch))agentState.textContent=error.message;}
 }
 function stopSpeech(){conversationSession.stopSpeaking()}
+window.addEventListener('leeway-fabric-ready',()=>updatePreparationStatus());
 window.addEventListener('leeway-voice-metric',()=>{
  const view=qs('#voiceTiming');if(!view)return;
  view.textContent=LeeWayVoiceMetrics.snapshot().slice(-10).map(e=>`${(e.atMs/1000).toFixed(2)}s ${e.stage}${e.durationMs!=null?' '+Math.round(e.durationMs)+'ms':''}`).join('\n');
