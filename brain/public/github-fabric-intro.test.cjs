@@ -13,7 +13,7 @@ assert(index.includes('class="story-intro brain-intro"'));
 assert(index.includes('id="introStoryGlass"'));
 assert(index.includes('id="introStoryScroll"'));
 assert(index.includes('id="introStoryBegin"'));
-assert(index.includes('/brain/public/ecosystem-fabric.js?v=20260929-fabric1'));
+assert(index.includes('/brain/public/ecosystem-fabric.js?v=20260929-fabric2'));
 assert(index.includes('/brain/public/intro-story.js?v=20260929-story1'));
 assert(css.includes('.intro-story-glass'));
 assert(css.includes('@keyframes introStoryRoll'));
@@ -25,6 +25,7 @@ for(const repo of ['LeeWay-Voice-Fabric','Leeway-Runtime-Fabric','LeeWay-Agent-S
   assert(fabric.includes(repo),repo+' missing from fabric projection');
 }
 assert(fabric.includes('https://leeway-runtime-fabric.fly.dev/v1/chat/completions'));
+assert(!fabric.includes("['runtimeRegistry'"));
 assert.strictEqual(runtime.reasoning.primary_provider,'leeway-runtime-fabric');
 assert.strictEqual(runtime.reasoning.no_required_browser_model_download,true);
 assert.strictEqual(runtime.identity_policy,'SINGLE_BRAIN_SINGLE_AGENT_IDENTITY');
