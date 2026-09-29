@@ -1,0 +1,32 @@
+name: Verify GitHub fabric Digital Brain intro
+
+on:
+  push:
+    branches:
+      - digital-brain-github-fabric-intro-20260929
+    paths:
+      - "index.html"
+      - "brain/public/experience.css"
+      - "brain/public/ecosystem-fabric.js"
+      - "brain/public/intro-story.js"
+      - "brain/public/public-brain.js"
+      - "brain/agent-lee-runtime-config.json"
+      - "brain/agent-lee-voice.json"
+      - "brain/public/github-fabric-intro.test.cjs"
+  workflow_dispatch:
+
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run architecture contract
+        run: node brain/public/github-fabric-intro.test.cjs
+      - name: Syntax check public JS
+        run: |
+          node --check brain/public/ecosystem-fabric.js
+          node --check brain/public/intro-story.js
+          node --check brain/public/public-brain.js
