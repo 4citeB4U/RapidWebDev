@@ -9,9 +9,29 @@
 <link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-browser4">
 <link rel="stylesheet" href="/brain/public/experience.css?v=20260928-logo1">
 </head>
-<body class="brain-intro">
+<body class="story-intro brain-intro">
+<section id="introStoryGlass" class="intro-story-glass" aria-label="LeeWay opening story">
+  <div class="intro-story-plate">
+    <div class="intro-story-kicker">LEEWAY · RAPID WEB DEVELOP</div>
+    <div class="intro-story-viewport" aria-live="polite">
+      <div id="introStoryScroll" class="intro-story-scroll">
+        <p class="intro-story-dedication">For the builders who turned imagination into tools, and for the creators coming next.</p>
+        <h1>Welcome to the LeeWay Digital Brain.</h1>
+        <p>I'm Agent Lee. Welcome to the LeeWay Digital Brain.</p>
+        <p>Drag the brain to rotate it. Scroll up to enter and explore the project cards.</p>
+        <p>Use Return to Brain to come back. Start a conversation when you are ready to ask a question.</p>
+        <p class="intro-story-close">AI should increase human capability, not replace human responsibility.</p>
+      </div>
+    </div>
+    <div class="intro-story-actions">
+      <button id="introStoryBegin" type="button">Begin the story</button>
+      <button id="introStorySkip" type="button" class="intro-story-skip">Skip</button>
+    </div>
+    <div id="introStoryStatus" class="intro-story-status">Prepared Voice One narration · the brain initializes behind the glass</div>
+  </div>
+</section>
 <div id="app">
-  <button id="agentStartupStatus" class="agent-startup" aria-live="polite">Voice One guide ready</button>
+  <button id="agentStartupStatus" class="agent-startup" aria-live="polite">LeeWay fabrics connecting…</button>
   <header id="topbar">
     <div class="brand"><img class="leeway-logo" src="/brain/public/brand/leeway-official-logo.png" width="48" height="48" alt="LeeWay official logo"><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
     <div class="top-stats">
@@ -137,7 +157,7 @@
         <small id="agentState">Voice One guide ready</small>
         <button id="agentBubbleClose" aria-label="Close Agent Lee" title="Close Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
-      <div class="speech-balloon lee-balloon"><span class="bubble-speaker">Agent Lee</span><div id="agentText">Meet Agent Lee in Voice One, then explore the projects. Full AI conversation is an optional download.</div>
+      <div class="speech-balloon lee-balloon"><span class="bubble-speaker">Agent Lee</span><div id="agentText">Agent Lee is connecting to the LeeWay fabric authorities. Project navigation remains available while live capabilities verify.</div>
       </div><div class="speech-balloon user-balloon hidden" id="userBalloon"><span class="bubble-speaker">You</span><div id="agentTranscript" class="agentTranscript"></div></div>
       <div class="voice-controls" aria-label="Conversation controls">
         <button id="agentWelcome">Meet Agent Lee</button><button id="guideExplore">Explore projects</button>
@@ -166,9 +186,14 @@
         <button id="downloadAgentDraft" disabled>Download answer</button>
         <p><a href="https://github.com/4citeB4U/LeeWay-Agent-Skills" target="_blank" rel="noopener">Canonical LeeWay Skills</a> · <a href="https://github.com/4citeB4U/Leeway-formula-live" target="_blank" rel="noopener">Canonical Formula</a></p>
       </details>
-      <p class="guide-note">Recorded Voice One guide · no AI model download. Open-ended conversation needs optional full AI.</p>
-      <details id="fullAISetup" class="browser-ai-setup">
-        <summary>Optional full AI · about 3.6 GB</summary>
+      <p class="guide-note">Agent Lee uses the governed LeeWay fabrics. Browser-local model downloads are not required for the normal experience.</p>
+      <details id="fullAISetup" class="browser-ai-setup fabric-status-panel">
+        <summary>LeeWay fabric status</summary>
+        <p id="fabricStatusSummary">Connecting Voice Fabric, Runtime Fabric, Agent Skills and Formula Live…</p>
+        <div id="fabricStatusGrid" class="fabric-status-grid"></div>
+        <p class="fabric-note">The Digital Brain uses published LeeWay contracts and cloud/runtime services. It does not require a multi-gigabyte browser model download for normal conversation.</p>
+        <div class="legacy-browser-ai" hidden>
+        <summary>Legacy browser-local fallback</summary>
         <p>Tap Meet Agent Lee for the recorded guide. Tap the portrait to request live conversation. Full conversation downloads Gemma 4, Chatterbox and speech recognition to this device. About 3.6 GB on first use; this can take several minutes and needs sufficient storage, memory and WebGPU support. Completed cached files are reused. Use Wi-Fi for the large download. The microphone opens on your first tap, independently of these models. Local speech recognition prepares separately; generated answers and voice still need the optional models.</p>
         <button id="enableFullAI">Enable full AI · about 3.6 GB</button><p id="storageStatus" role="status">Storage is checked before downloading. The guide stays available if full AI cannot run.</p>
         <button id="reasonBtn" class="agentReason">Load Gemma 4 · 2 GB</button>
@@ -189,6 +214,7 @@
         <p>Uses Voice One, selected from the original LeeWay ecosystem recordings. You may select another permitted 1–30 second reference; your selection stays on this device.</p>
         <button id="unloadBrowserModels">Unload models</button>
         <details><summary>Voice timing</summary><p>Local timings only; no recordings or conversation text are saved in this report.</p><button id="exportVoiceTiming">Download timing report</button><pre id="voiceTiming" style="white-space:pre-wrap;font-size:12px"></pre></details>
+        </div>
       </details>
 
     </section>
@@ -228,7 +254,9 @@
 <script src="/brain/public/preparation-policy.js?v=20260928-guide1"></script>
 <script src="/brain/public/model-preparation.js?v=20260928-auto1"></script>
 <script src="/brain/public/browser-listener.js?v=20260928-mic-first1"></script>
-<script src="/brain/public/public-brain.js?v=20260928-threadpilot2"></script>
+<script src="/brain/public/ecosystem-fabric.js?v=20260929-fabric1"></script>
+<script src="/brain/public/public-brain.js?v=20260929-fabric1"></script>
+<script src="/brain/public/intro-story.js?v=20260929-story1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>
