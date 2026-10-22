@@ -1,9 +1,9 @@
 {
   "schema": "leeway-public-project-manifest-v1",
   "owner": "4citeB4U",
-  "count": 63,
-  "generated_at": "2026-10-21T22:24:50.743Z",
-  "source_hash": "f58e2061278ff01ed9af835fdfeeb9cae9242820ce504166af0d5d45bb1306b7",
+  "count": 64,
+  "generated_at": "2026-10-22T01:34:20.767Z",
+  "source_hash": "fca81f1290b3688176350305ee701d774d0cfdb25aa537bfb7968d416c39f200",
   "repositories": [
     {
       "id": 1135007080,
@@ -502,6 +502,22 @@
       "fork": false
     },
     {
+      "id": 1429007181,
+      "name": "LeeWay-Model-Hub",
+      "description": "Canonical LeeWay Model Hub microservice, portable widget, and governed inference-provider contracts",
+      "html_url": "https://github.com/4citeB4U/LeeWay-Model-Hub",
+      "homepage": "https://leeway-model-hub.vercel.app",
+      "has_pages": true,
+      "default_branch": "main",
+      "language": "JavaScript",
+      "size": 65,
+      "created_at": "2026-10-21T22:47:43Z",
+      "updated_at": "2026-10-21T23:55:29Z",
+      "pushed_at": "2026-10-21T23:55:26Z",
+      "archived": false,
+      "fork": false
+    },
+    {
       "id": 1344216432,
       "name": "LeeWay-Pocket-Agent",
       "description": "Voice-first Android Agent Lee with cloned speech, barge-in, memory, vision, research, and a minimal voxel-sphere UI.",
@@ -510,10 +526,10 @@
       "has_pages": true,
       "default_branch": "main",
       "language": "Kotlin",
-      "size": 20923,
+      "size": 20933,
       "created_at": "2026-08-23T21:03:30Z",
-      "updated_at": "2026-10-08T21:34:26Z",
-      "pushed_at": "2026-10-21T22:21:03Z",
+      "updated_at": "2026-10-21T23:05:04Z",
+      "pushed_at": "2026-10-21T23:05:00Z",
       "archived": false,
       "fork": false
     },
@@ -782,10 +798,10 @@
       "has_pages": true,
       "default_branch": "main",
       "language": "HTML",
-      "size": 187442,
+      "size": 187452,
       "created_at": "2025-04-14T09:47:24Z",
-      "updated_at": "2026-10-21T18:42:31Z",
-      "pushed_at": "2026-10-21T18:42:26Z",
+      "updated_at": "2026-10-21T22:24:56Z",
+      "pushed_at": "2026-10-21T22:24:52Z",
       "archived": false,
       "fork": false
     },
