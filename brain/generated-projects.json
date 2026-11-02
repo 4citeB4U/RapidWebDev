@@ -2,8 +2,8 @@
   "schema": "leeway-public-project-manifest-v1",
   "owner": "4citeB4U",
   "count": 60,
-  "generated_at": "2026-11-02T07:43:50.069Z",
-  "source_hash": "5a99fd098a68e352c258af99aa8396d8662684ae3d8aa3918c38b4642266331f",
+  "generated_at": "2026-11-02T18:28:30.732Z",
+  "source_hash": "bd904a1332ac38a63e638395c979d6875c3db792b02ac76b4dd2e5ad4feb503c",
   "repositories": [
     {
       "id": 1135340303,
@@ -766,10 +766,10 @@
       "has_pages": true,
       "default_branch": "main",
       "language": "HTML",
-      "size": 187744,
+      "size": 187382,
       "created_at": "2025-04-14T09:47:24Z",
-      "updated_at": "2026-11-02T00:50:28Z",
-      "pushed_at": "2026-11-02T00:50:25Z",
+      "updated_at": "2026-11-02T07:43:55Z",
+      "pushed_at": "2026-11-02T07:43:51Z",
       "archived": false,
       "fork": false
     },
