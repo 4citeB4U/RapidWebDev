@@ -11,6 +11,12 @@
 # LICENSE = Existing repository terms unchanged; no new license asserted.
 name: Verify Agent Lee engineering journey browser (structural)
 on:
+  push:
+    branches: ["creator/agent-lee-engineering-journey-20261108"]
+    paths:
+      - "index.html"
+      - "brain/public/**"
+      - ".github/workflows/verify-engineering-journey-browser.yml"
   pull_request:
     paths:
       - "index.html"
