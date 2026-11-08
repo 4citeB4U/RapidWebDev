@@ -650,7 +650,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
   const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askGemma(text,work,t),{resource:'gemma-fallback',priority:thread.kind==='side'?80:50});
   renderThreadState();try{return await submitted.promise}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;return null;}
  }
- const message="I can tell the documented engineering journey and navigate LeeWay projects without an LLM. The public Machine Consciousness question route is still being finished. Ask why LeeWay was created, ask about the engineering method, or say continue the story. Optional AI models require your explicit selection.";
+ const message="I can answer Creator, repository, Digital Brain, diagnostics, Machine Consciousness and Voice Fabric questions from the deterministic public projection, and I can narrate the documented engineering journey without an LLM. Live authenticated carrier actions are not exposed here; optional AI models require your explicit selection.";
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 async function playWelcome(turn){

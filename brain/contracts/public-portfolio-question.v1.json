@@ -12,11 +12,12 @@
   },
   "schemaVersion": 1,
   "contractId": "leeway.public.portfolio.question.v1",
-  "implementationState": "CONTRACT_ONLY_UNBOUND",
+  "implementationState": "DETERMINISTIC_PUBLIC_PROJECTION_BOUND_PROVIDER_UNBOUND",
   "productOwner": "4citeB4U/RapidWebDev",
   "serviceOwner": "4citeB4U/Leeway-Runtime-Fabric",
   "cognitiveProviderOwner": "4citeB4U/Machine-Consciousness",
   "consumerInterface": "globalThis.LeeWayEcosystemFabric.publicQuestion",
+  "deterministicProjectionInterface": "globalThis.LeeWayMachineConsciousnessPublic.answer",
   "callShape": "publicQuestion(question, {signal, threadId})",
   "request": {
     "question": {"type": "string", "minLength": 1, "maxLength": 600},
@@ -46,8 +47,9 @@
     "Promote a JavaScript mock, source-only probe or public UI result to live Machine Consciousness qualification",
     "Silently route provider failure through Qwen, Gemma or Gemini while reporting an LLM-free answer"
   ],
-  "currentUIFallback": "Use RapidWebDev engineering-journey.js source narration; other unsupported questions report bounded unavailability until the approved provider is connected.",
+  "currentUIFallback": "Use the checked-in Machine Consciousness public projection for Creator, repository, Digital Brain, diagnostics, Machine Consciousness and Voice Fabric questions; use engineering-journey.js for documented story narration; other questions report bounded unavailability until the approved provider is connected.",
   "qualification": {
+    "deterministicProjectionSourceTests": "PASS_ON_LOCAL_DEVICE_BRIDGE_RUN",
     "publicEndToEnd": "NOT_EXECUTED",
     "independentVeritas": "NOT_VERIFIED",
     "llmUsedFalseObservedAtRuntime": "NOT_OBSERVED",

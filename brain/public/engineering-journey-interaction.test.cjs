@@ -54,7 +54,7 @@ test('intro talk gesture emits exactly one conversation entry; recorded intro re
 test('reserved consciousness integration is unbound and rejects incorrect public authority/LLM profile',()=>{
  const contract=JSON.parse(read('../contracts/public-portfolio-question.v1.json'));
  const brain=read('public-brain.js');
- assert.equal(contract.implementationState,'CONTRACT_ONLY_UNBOUND');
+ assert.equal(contract.implementationState,'DETERMINISTIC_PUBLIC_PROJECTION_BOUND_PROVIDER_UNBOUND');
  assert.equal(contract.serviceOwner,'4citeB4U/Leeway-Runtime-Fabric');
  assert.equal(contract.cognitiveProviderOwner,'4citeB4U/Machine-Consciousness');
  assert.equal(contract.response.policy,'READ_ONLY_PORTFOLIO');
