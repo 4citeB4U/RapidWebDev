@@ -19,6 +19,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   const engineeringLoop='https://github.com/4citeB4U/LeeWay-Engineering/blob/main/docs/diagrams/01-engineering-loop.mmd';
   const formulaUrl='https://github.com/4citeB4U/Leeway-formula-live';
   const consciousnessUrl='https://github.com/4citeB4U/Machine-Consciousness/blob/main/README.md';
+  const skillsUrl='https://github.com/4citeB4U/LeeWay-Agent-Skills/blob/main/AGENTS.md';
   const voiceUrl='https://github.com/4citeB4U/LeeWay-Voice-Fabric/blob/main/README.md';
   const bridgeUrl='https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE/blob/main/README.md';
   const chapters=Object.freeze([
@@ -58,6 +59,11 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
       sources:[bridgeUrl,standardsUrl]
     },
     {
+      id:'identity',title:'Why Agent Lee was created',
+      text:"Why Agent Lee? As LeeWay grew from one application into many connected capabilities, its Creator needed continuity—one governed identity that could guide a person through the work instead of making every screen feel like a different assistant. Agent Lee became the recognizable voice and interface to that system. But identity is not execution authority. Standards govern the rules. Formula frames mathematical decisions. Runtime Fabric carries work forward. Machine Consciousness is the cognitive runtime, and Device Bridge connects authorized devices. Agent Lee's job is to tell the story, answer within supported knowledge, and make it clear what has actually been proven. He is the guide through the journey, not a substitute for the entire machine.",
+      sources:[consciousnessUrl,skillsUrl,standardsUrl]
+    },
+    {
       id:'next',title:'An unfinished road worth building',
       text:"Now look back at the road. Imagination became architecture. Repeated redesign became an engineering method. Mathematics became part of the decision boundary; skills and runtime became a way to act; evidence became the way to distinguish a proven result from an attractive promise. There is more work ahead—more devices, more reliable voice, stronger qualification and new capabilities. LeeWay's story is not that every challenge has been solved. It is that each lesson should leave the system better prepared for the next one.",
       sources:[storyUrl,engineeringUrl,consciousnessUrl]
@@ -76,7 +82,8 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     if(/\b(formula|mathematics|mathematical|equation)\b/.test(q))return 3;
     if(/\b(engineering|methodology|engineering loop|design process|design prowess)\b/.test(q))return 2;
     if(/\b(redesign(?:ing|ed|s)?|rebuild(?:ing|s)?|iteration|iterative|trial and error|improv(?:e|ed|ing|ement))\b/.test(q))return 1;
-    if(/\b(what comes next|future of leeway|the future|what is next)\b/.test(q))return 7;
+    if(/\b(why agent lee|why.*create.*agent lee|why.*build.*agent lee|who is agent lee|why does agent lee exist|purpose of agent lee)\b/.test(q))return 7;
+    if(/\b(what comes next|future of leeway|the future|what is next)\b/.test(q))return 8;
     if(/\b(why leeway|why did.*(build|create)|why was.*(built|created)|tell.*story|the journey|how.*(start|begin)|what inspired|what led to leeway|purpose of leeway)\b/.test(q))return 0;
     return null;
   }
