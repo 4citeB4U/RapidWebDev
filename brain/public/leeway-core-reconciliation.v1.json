@@ -15,7 +15,8 @@
     "GitHub source, CI workflow result, public website, receipt, and physically observed execution are distinct claim classes.",
     "Private repository source URLs must not be publicized.",
     "Historical/optional entries are not automatically current canonical authority.",
-    "No arbitrary word overlap is sufficient to attach evidence to a repository."
+    "No arbitrary word overlap is sufficient to attach evidence to a repository.",
+    "A verified configuration value for a website URL is a discoverable preview, not proof of live inference or backend execution."
   ],
   "currentStandardsRegistrySpine": [
     {
@@ -108,7 +109,8 @@
       "why": "Connects authorized software capabilities to real devices under permissions and receipts.",
       "sourceState": "PUBLIC_SOURCE",
       "sourceUrl": "https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE",
-      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO",
+      "configuredViewUrl": "https://leeway-device-bridge.vercel.app/"
     },
     {
       "name": "LeeWay-Pocket-Agent",
@@ -128,7 +130,8 @@
       "why": "Owns Agent Lee's speech identity, selected voice engines, interruptions and playout boundaries.",
       "sourceState": "PUBLIC_SOURCE",
       "sourceUrl": "https://github.com/4citeB4U/LeeWay-Voice-Fabric",
-      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO",
+      "configuredViewUrl": "https://4citeb4u.github.io/LeeWay-Voice-Fabric/"
     },
     {
       "name": "Leeway-live",
@@ -178,7 +181,8 @@
       "why": "Explains the Creator journey and projects; it displays the ecosystem, but is not a runtime authority.",
       "sourceState": "PUBLIC_SOURCE",
       "sourceUrl": "https://github.com/4citeB4U/RapidWebDev",
-      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO",
+      "configuredViewUrl": "https://rapidwebdevelop.com/"
     },
     {
       "name": "LeeWay-Edge-RTC",
