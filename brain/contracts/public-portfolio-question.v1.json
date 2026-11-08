@@ -1,0 +1,56 @@
+{
+  "_leeway_header": {
+    "tag": "LEEWAY.RAPIDWEBDEV.CONTRACT.PUBLIC_PORTFOLIO_QUESTION",
+    "region": "LEEWAY.RAPIDWEBDEV.CONTRACT",
+    "what": "Define the bounded browser-facing Machine Consciousness response contract for the existing Runtime Fabric",
+    "why": "Let local Codex attach the qualified Machine Consciousness provider without replacing the portfolio or exposing host controls",
+    "who": "LeeWay Creator, RapidWebDev product owner, Runtime Fabric provider owner",
+    "where": "brain/contracts/public-portfolio-question.v1.json",
+    "when": "2026-11-08",
+    "how": "Bind the existing ecosystem-fabric publicQuestion method only after authenticated read-only admission and independent qualification",
+    "license": "No new license asserted; existing repository terms govern"
+  },
+  "schemaVersion": 1,
+  "contractId": "leeway.public.portfolio.question.v1",
+  "implementationState": "CONTRACT_ONLY_UNBOUND",
+  "productOwner": "4citeB4U/RapidWebDev",
+  "serviceOwner": "4citeB4U/Leeway-Runtime-Fabric",
+  "cognitiveProviderOwner": "4citeB4U/Machine-Consciousness",
+  "consumerInterface": "globalThis.LeeWayEcosystemFabric.publicQuestion",
+  "callShape": "publicQuestion(question, {signal, threadId})",
+  "request": {
+    "question": {"type": "string", "minLength": 1, "maxLength": 600},
+    "threadId": {"type": "string", "purpose": "public conversation correlation only, not user identity"},
+    "signal": {"type": "AbortSignal", "purpose": "cancel response delivery without canceling persistent unrelated work"}
+  },
+  "response": {
+    "authority": "LEEWAY_MACHINE_CONSCIOUSNESS",
+    "policy": "READ_ONLY_PORTFOLIO",
+    "text": {"type": "string", "minLength": 1, "maxLength": 5000},
+    "sources": {"type": "array", "maxItems": 8, "allowedPrefix": "https://github.com/4citeB4U/"},
+    "llm": {"used": false},
+    "receiptRef": {"type": "string", "optional": true, "note": "Only if actually produced and sanitized; a ref alone is not verification"}
+  },
+  "requiredServerGates": [
+    "Use the existing Runtime Fabric admission/auth/session authority, not a new internet-facing control plane",
+    "Read-only public portfolio knowledge; prohibit host commands, files, private memory, privileged Device Bridge skills or executable tool calls",
+    "Validate public question length and rate limits server-side; deny unauthorized origins, unsafe input and unknown operations",
+    "Provide explicit denial and unavailable responses, with bounded timeouts and audit metadata",
+    "Document current source SHA, deployment issuer, provider identity and real no-LLM proof; do not trust client-supplied llm.used",
+    "Prevent client access to service credentials and tenant-private receipts",
+    "Verify independent Veritas/Receipt Authority where required before production promotion"
+  ],
+  "forbidden": [
+    "Directly expose machine-consciousness/carrier-server.mjs or its local /respond endpoint to the public internet",
+    "Include OAuth secrets, Device Bridge owner tokens, host paths, raw transcripts or device-local evidence in static assets",
+    "Promote a JavaScript mock, source-only probe or public UI result to live Machine Consciousness qualification",
+    "Silently route provider failure through Qwen, Gemma or Gemini while reporting an LLM-free answer"
+  ],
+  "currentUIFallback": "Use RapidWebDev engineering-journey.js source narration; other unsupported questions report bounded unavailability until the approved provider is connected.",
+  "qualification": {
+    "publicEndToEnd": "NOT_EXECUTED",
+    "independentVeritas": "NOT_VERIFIED",
+    "llmUsedFalseObservedAtRuntime": "NOT_OBSERVED",
+    "acousticPlayback": "NOT_VERIFIED"
+  }
+}
