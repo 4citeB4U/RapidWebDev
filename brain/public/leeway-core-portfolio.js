@@ -59,7 +59,7 @@ LICENSE = No new license asserted.
       evidence_state:status,
       verification:entry.verification||'RUNTIME_NOT_VERIFIED_BY_PORTFOLIO',
       repo_url:sourceUrl,
-      live_url:null, // Do not assume a GitHub Pages flag/URL establishes runtime execution.
+      live_url:sourceUrl&&entry.configuredViewUrl?entry.configuredViewUrl:null, // Public configured preview is still not execution proof.
       default_branch:original?.default_branch||'main',
       kind:'project',
       language:original?.language||null,
@@ -69,7 +69,8 @@ LICENSE = No new license asserted.
   };
   function enrich(rows){
     if(!catalog)return rows||[];
-    const map=new Map((rows||[]).filter(x=>x?.kind==='project').map(x=>[canonicalName(x.repo_name),x]));
+    const map=new Map((rows||[]).filter(x=>x?.kind==='project'&&x.repo_name).map(x=>[canonicalName(x.repo_name),x]));
+    const unkeyed=(rows||[]).filter(x=>x?.kind==='project'&&!x.repo_name);
     const order=[];
     for(const entry of catalog.historical17){
       const key=canonicalName(entry.name),existing=map.get(key);
@@ -92,7 +93,7 @@ LICENSE = No new license asserted.
       core_scope:null
     }));
     const others=(rows||[]).filter(x=>x?.kind!=='project');
-    return [...order,...rest,...others];
+    return [...order,...rest,...unkeyed,...others];
   }
   function evidenceFor(project){
     if(project?.kind==='evidence')return [];
