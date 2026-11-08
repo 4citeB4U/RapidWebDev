@@ -14,6 +14,7 @@
       registry:'https://raw.githubusercontent.com/4citeB4U/Leeway-Runtime-Fabric/main/adapter.registry.json',
       health:'https://leeway-runtime-fabric.fly.dev/runtime/health',
       agentHealth:'https://leeway-runtime-fabric.fly.dev/agent-lee/health',
+      publicQuestion:'https://leeway-runtime-fabric.fly.dev/agent-lee/public-question',
       chat:'https://leeway-runtime-fabric.fly.dev/v1/chat/completions'
     },
     skills:{
@@ -87,6 +88,14 @@
     if(!r.ok)throw new Error(body?.error||body?.message||('Runtime Fabric chat HTTP '+r.status));
     return body;
   }
-  root.LeeWayEcosystemFabric={SOURCES,state,load,snapshot,context,chat,render};
+  async function publicQuestion(question,{signal,threadId}={}){
+    const value=String(question??'').trim();
+    if(!value||value.length>600)throw new Error('Public questions must contain 1-600 characters.');
+    const r=await fetch(SOURCES.runtime.publicQuestion,{method:'POST',headers:{'Content-Type':'application/json','x-leeway-profile':'rapidweb-digital-brain'},body:JSON.stringify({question:value,threadId}),signal});
+    let body={};try{body=await r.json()}catch{}
+    if(!r.ok)throw new Error(body?.message||body?.error||('Machine Consciousness public question HTTP '+r.status));
+    return body;
+  }
+  root.LeeWayEcosystemFabric={SOURCES,state,load,snapshot,context,chat,publicQuestion,render};
   load().catch(error=>{state.status='AUTHORITY_DEGRADED';state.error=error.message;render();root.dispatchEvent(new CustomEvent('leeway-fabric-ready',{detail:snapshot()}));});
 })(globalThis);
