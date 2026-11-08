@@ -1,0 +1,54 @@
+# LEEWAY HEADER — DO NOT REMOVE
+# REGION: LEEWAY.RAPIDWEBDEV.CI
+# TAG: LEEWAY.RAPIDWEBDEV.ENGINEERING_JOURNEY_BROWSER_GATE
+# 5WH:
+# WHAT = Structural Chromium smoke for the public engineering-journey experience.
+# WHY = Distinguish real browser DOM/session wiring from model, audio or Machine Consciousness qualification.
+# WHO = LeeWay Industries / Creator-authorized RapidWebDev contributors.
+# WHERE = .github/workflows/verify-engineering-journey-browser.yml.
+# WHEN = 2026-11-08.
+# HOW = Checkout PR, serve static assets, use controlled speech mocks, retain bounded JSON structural evidence.
+# LICENSE = Existing repository terms unchanged; no new license asserted.
+name: Verify Agent Lee engineering journey browser (structural)
+on:
+  push:
+    branches: ["creator/agent-lee-engineering-journey-20261108"]
+    paths:
+      - "index.html"
+      - "brain/public/**"
+      - ".github/workflows/verify-engineering-journey-browser.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "brain/public/**"
+      - "brain/contracts/**"
+      - ".github/workflows/verify-engineering-journey-browser.yml"
+permissions:
+  contents: read
+jobs:
+  structural-chromium:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install pinned Chromium browser harness
+        run: |
+          npm install --no-save --no-audit --no-fund playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Serve the exact PR checkout
+        run: |
+          python3 -m http.server 8870 --bind 127.0.0.1 > /tmp/leeway-journey-http.log 2>&1 &
+          sleep 2
+          curl --fail --silent --show-error http://127.0.0.1:8870/ >/dev/null
+      - name: Verify one-click story, source links, follow-up and mute
+        run: node brain/public/engineering-journey.browser.cjs
+      - name: Upload source-structural evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: leeway-engineering-journey-structural
+          path: engineering-journey-browser-structural.json
+          if-no-files-found: ignore

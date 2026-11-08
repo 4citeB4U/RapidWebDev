@@ -9,6 +9,13 @@
     "browser_local_fallback": "OPTIONAL_HIDDEN_FALLBACK_NOT_REQUIRED",
     "no_required_browser_model_download": true
   },
+  "machine_consciousness": {
+    "authority": "4citeB4U/Machine-Consciousness",
+    "public_projection": "/brain/public/agent-lee-public-knowledge.v1.json",
+    "route": "DETERMINISTIC_PUBLIC_PROFILE_BEFORE_RUNTIME_FABRIC",
+    "direct_carrier_exposure": "PROHIBITED",
+    "llm_required_for_creator_ecosystem_and_digital_brain_questions": false
+  },
   "fabric_authorities": {
     "voice": "4citeB4U/LeeWay-Voice-Fabric",
     "runtime": "4citeB4U/Leeway-Runtime-Fabric",

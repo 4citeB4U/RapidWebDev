@@ -1,3 +1,16 @@
+/*
+LEEWAY HEADER — DO NOT REMOVE
+REGION: LEEWAY.RAPIDWEBDEV.PUBLIC_STYLE
+TAG: LEEWAY.RAPIDWEBDEV.ENGINEERING_JOURNEY_STYLES
+5WH:
+WHAT = Preserve existing public experience styles and add accessible journey controls.
+WHY = Expose source-linked narration and one-gesture conversation on desktop and mobile.
+WHO = LeeWay Industries / Creator-authorized RapidWebDev contributors.
+WHERE = brain/public/experience.css in 4citeB4U/RapidWebDev.
+WHEN = 2026-11-08 scoped update.
+HOW = Add flexible opening actions, focus feedback, and small source-evidence panel styles.
+LICENSE = Existing repository terms unchanged; no new license asserted.
+*/
 /* Current experience layout. Geometry and readable UI have separate sizing. */
 :root{--text:#eef5fc;--muted:#b3c4d6}
 body,button,input,textarea,select{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
@@ -172,9 +185,15 @@ body.collection-view #edges,body.collection-view #zoomControls,body.collection-v
 .intro-story-scroll .intro-story-dedication{font-style:italic;color:#a9c9dc}
 .intro-story-scroll .intro-story-close{font-weight:650;color:#aeeeff}
 @keyframes introStoryRoll{from{transform:translateY(0)}to{transform:translateY(calc(-100% + 48vh))}}
-.intro-story-actions{display:flex;justify-content:center;gap:10px;padding-top:12px}
+.intro-story-actions{display:flex;justify-content:center;gap:10px;padding-top:12px;flex-wrap:wrap}
 .intro-story-actions button{min-height:46px;padding:10px 18px;border-radius:999px;font-size:14px}
 .intro-story-actions #introStoryBegin{background:#0b3152;border-color:#5cdcff;color:#eaffff}
+.intro-story-actions #introStoryTalk{background:#0b5644;border:1px solid #66e9bf;color:#effff9;font-weight:700}
+.intro-story-actions #introStoryTalk:focus-visible{outline:3px solid #d2fff2;outline-offset:3px}
+#agentEvidence:not([hidden]){margin:5px 0 12px}
+#agentEvidenceList{padding-left:20px;margin:8px 0}
+#agentEvidenceList li{margin-bottom:6px;overflow-wrap:anywhere}
+#agentEvidenceList a{color:#83ddff;text-decoration:underline}
 .intro-story-skip{background:transparent;color:#a8bfd1}
 .intro-story-status{text-align:center;font-size:11px;color:#8eacc0;margin-top:9px;min-height:16px}
 body.story-intro #topbar,body.story-intro #crumbs,body.story-intro #projectCarousel,
