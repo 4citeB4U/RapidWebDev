@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "id": "LEEWAY_RAPIDWEBDEV_CORE_RECONCILIATION_20261108",
+  "sourceClassification": "HISTORICAL_17_INTEGRATION_SCOPE_NOT_EQUAL_TO_CURRENT_CORE_AUTHORITY",
+  "authorityRef": "https://github.com/4citeB4U/LeeWay-Standards/blob/main/standards/leeway-ecosystem-authority.v1.json",
+  "description": "The 2026-10-08 seventeen-repository integration roster is reconciled with the active Standards authority registry and newer systems. No role is silently promoted by inclusion.",
+  "counts": {
+    "historicalIntegrationCore": 10,
+    "direct": 6,
+    "optional": 1
+  },
+  "checkedAt": "2026-11-08",
+  "renderRule": "SOURCE_VISIBLE_IS_NOT_EXECUTED",
+  "evidenceRules": [
+    "GitHub source, CI workflow result, public website, receipt, and physically observed execution are distinct claim classes.",
+    "Private repository source URLs must not be publicized.",
+    "Historical/optional entries are not automatically current canonical authority.",
+    "No arbitrary word overlap is sufficient to attach evidence to a repository.",
+    "A verified configuration value for a website URL is a discoverable preview, not proof of live inference or backend execution.",
+    "LeeWay Engineering is an education/conformance source, not an independent constitutional, execution, Formula or Veritas authority."
+  ],
+  "currentStandardsRegistrySpine": [
+    {
+      "name": "LeeWay-Standards",
+      "status": "REQUIRED_AUTHORITY"
+    },
+    {
+      "name": "Leeway-formula-live",
+      "status": "REQUIRED_AUTHORITY"
+    },
+    {
+      "name": "LeeWay-Agent-Skills",
+      "status": "REQUIRED_AUTHORITY"
+    },
+    {
+      "name": "Leeway-Runtime-Fabric",
+      "status": "REQUIRED_AUTHORITY"
+    },
+    {
+      "name": "LEEWAY-DEVICE-BRIDGE",
+      "status": "REQUIRED_AUTHORITY"
+    },
+    {
+      "name": "Leeway-Federate-Web",
+      "status": "REQUIRED_AUTHORITY"
+    },
+    {
+      "name": "leeway-ecosystemv2.14",
+      "status": "REQUIRED_LEEWAY_OS_SURFACE"
+    },
+    {
+      "name": "Machine-Consciousness",
+      "status": "ACTIVE_ENGINEERING_CORE"
+    },
+    {
+      "name": "LeeWay-Continuum",
+      "status": "ACTIVE_ENGINEERING_CORE"
+    },
+    {
+      "name": "Receipt-Authority",
+      "status": "EVIDENCE_CUSTODIAN"
+    }
+  ],
+  "historical17": [
+    {
+      "name": "LeeWay-Standards",
+      "scope": "CORE",
+      "role": "Constitutional governance",
+      "group": "Governance",
+      "why": "The governing laws and source-of-truth hierarchy; every component answers to the Standards before it acts.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Standards",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "Leeway-formula-live",
+      "scope": "CORE",
+      "role": "Mathematical authority",
+      "group": "Scientific Research",
+      "why": "The mathematical reasoning about admission, routing, recovery, evidence and resource constraints.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/Leeway-formula-live",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "Leeway-Runtime-Fabric",
+      "scope": "CORE",
+      "role": "Persistent execution",
+      "group": "Runtime",
+      "why": "Keeps governed work alive beyond a web conversation and coordinates authorized workers and tasks.",
+      "sourceState": "PRIVATE_SOURCE",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LeeWay-Agent-Skills",
+      "scope": "CORE",
+      "role": "Capabilities and skills",
+      "group": "Capabilities",
+      "why": "Portable skills and contracts define what Agent Lee and other authorized workers can do.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Agent-Skills",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LEEWAY-DEVICE-BRIDGE",
+      "scope": "CORE",
+      "role": "Native device execution",
+      "group": "Devices",
+      "why": "Connects authorized software capabilities to real devices under permissions and receipts.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO",
+      "configuredViewUrl": "https://leeway-device-bridge.vercel.app/"
+    },
+    {
+      "name": "LeeWay-Pocket-Agent",
+      "scope": "CORE",
+      "role": "Mobile Agent Lee surface",
+      "group": "Devices",
+      "why": "Extends Agent Lee's presence to mobile hardware and its available sensory tools.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Pocket-Agent",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LeeWay-Voice-Fabric",
+      "scope": "CORE",
+      "role": "Speech authority",
+      "group": "Voice / Realtime",
+      "why": "Owns Agent Lee's speech identity, selected voice engines, interruptions and playout boundaries.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Voice-Fabric",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO",
+      "configuredViewUrl": "https://4citeb4u.github.io/LeeWay-Voice-Fabric/"
+    },
+    {
+      "name": "Leeway-live",
+      "scope": "CORE",
+      "role": "Phone/browser surface",
+      "group": "Devices",
+      "why": "A phone and browser access surface connected to the governed ecosystem.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/Leeway-live",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "Leeway-Federate-Web",
+      "scope": "CORE",
+      "role": "Discovery and transport projection",
+      "group": "Runtime",
+      "why": "Enables discovery and authorized federation while staying subordinate to the runtime and identity authority.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/Leeway-Federate-Web",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LeeWay-Digital-Workforce",
+      "scope": "CORE",
+      "role": "Contracted digital workforce",
+      "group": "Operations",
+      "why": "Delivers governed LeeWay digital workers and preserves employer contract and task boundaries.",
+      "sourceState": "PRIVATE_SOURCE",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LeeWay-Agent-Workstation-Open-Notebook",
+      "scope": "DIRECT",
+      "role": "Research and workstation",
+      "group": "Developer Tools",
+      "why": "Provides an associated research workstation and grounded notebook surface.",
+      "sourceState": "PRIVATE_SOURCE",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "RapidWebDev",
+      "scope": "DIRECT",
+      "role": "Public creator portfolio",
+      "group": "Business / Web",
+      "why": "Explains the Creator journey and projects; it displays the ecosystem, but is not a runtime authority.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/RapidWebDev",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO",
+      "configuredViewUrl": "https://rapidwebdevelop.com/"
+    },
+    {
+      "name": "LeeWay-Edge-RTC",
+      "scope": "DIRECT",
+      "role": "Realtime communications adapter",
+      "group": "Voice / Realtime",
+      "why": "Researches and supplies realtime communications capabilities to authorized services.",
+      "sourceState": "PRIVATE_SOURCE",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LeeWay-Edge-GPU",
+      "scope": "DIRECT",
+      "role": "GPU research and execution",
+      "group": "Compute",
+      "why": "Explores LeeWay GPU and mathematical inference capabilities; source does not itself prove hardware-independent production execution.",
+      "sourceState": "PUBLIC_SOURCE",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Edge-GPU",
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "Leeway-Digital-Employment-Center",
+      "scope": "DIRECT",
+      "role": "Historical employment center",
+      "group": "Operations",
+      "why": "Historical employment UI lineage; the original repository could not be located in the current connected GitHub lookup.",
+      "sourceState": "REPOSITORY_UNRESOLVED",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "leeway-creative-writing--and-marketing-agent",
+      "scope": "DIRECT",
+      "role": "Creative employee capability",
+      "group": "Creative AI",
+      "why": "An associated creative-writing and marketing worker capability; execution needs its own current evidence.",
+      "sourceState": "PRIVATE_SOURCE",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    },
+    {
+      "name": "LEEWAY-BRIDGE-",
+      "scope": "OPTIONAL",
+      "role": "Historical optional bridge",
+      "group": "Developer Tools",
+      "why": "Optional legacy bridge experiment, not a second control plane or production dependency.",
+      "sourceState": "PRIVATE_SOURCE",
+      "sourceUrl": null,
+      "verification": "RUNTIME_NOT_VERIFIED_BY_PORTFOLIO"
+    }
+  ],
+  "additionalPublicSystemSummaries": [
+    {
+      "name": "Machine-Consciousness",
+      "role": "Deterministic cognitive orchestration",
+      "why": "Connects identity, state, capability routing and bounded deterministic response; public portfolio binding remains under qualification.",
+      "sourceUrl": "https://github.com/4citeB4U/Machine-Consciousness",
+      "verification": "PUBLIC_SOURCE_ONLY"
+    },
+    {
+      "name": "LeeWay-Continuum",
+      "role": "Durable state and storage",
+      "why": "Maintains governed durable data and replaceable storage compartments under the existing runtime authority.",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Continuum",
+      "verification": "PUBLIC_SOURCE_ONLY"
+    },
+    {
+      "name": "Receipt-Authority",
+      "role": "Evidence custody",
+      "why": "Preserves the original receipts and source/evidence custody without fabricating acceptance.",
+      "sourceUrl": "https://github.com/4citeB4U/Receipt-Authority",
+      "verification": "PUBLIC_SOURCE_ONLY"
+    },
+    {
+      "name": "leeway-ecosystemv2.14",
+      "role": "LeeWay OS presentation",
+      "why": "Represents the primary LeeWay operating-system interface and governed application shell.",
+      "sourceUrl": "https://github.com/4citeB4U/leeway-ecosystemv2.14",
+      "verification": "PUBLIC_SOURCE_ONLY"
+    },
+    {
+      "name": "LeeWay-Engineering",
+      "role": "LeeWay Engineering education and conformance method",
+      "why": "Documents the Creator's iterative investigate, diagnose, plan, implement, test, validate, repair, retest, verify, evidence, checkpoint and continue discipline; teaches contributors without replacing Standards or Receipt Authority.",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Engineering",
+      "verification": "PUBLIC_SOURCE_ONLY",
+      "group": "Education"
+    }
+  ]
+}

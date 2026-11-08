@@ -69,7 +69,14 @@ async function fetchGithubRepos(){
  return sets.flat().filter(r=>r&&r.owner?.login==="4citeB4U"&&!r.private);
 }
 function groupFor(x){return x.kind==="evidence"?"Evidence":x.group||"Other Projects"}
-function categoryFor(x){const g=groupFor(x);if(g==="Evidence")return "__evidence_rail__";return categoryDefs.find(c=>c.groups.includes(g))?.id||"cat::other"}
+function categoryFor(x){
+ const g=groupFor(x);
+ if(g==="Evidence")return "__evidence_rail__";
+ if(x.core_scope==="CORE"||x.core_priority)return "cat::core";
+ if(x.core_scope==="DIRECT")return "cat::products";
+ if(x.core_scope==="OPTIONAL")return "cat::other";
+ return categoryDefs.filter(c=>c.id!=="cat::core").find(c=>c.groups.includes(g))?.id||"cat::other";
+}
 function setWorldTransform(){world.style.setProperty("--graph-inverse",String(1/scale));world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`;window.__leewayGraphCamera={z:scale/4}}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function hexRgb(hex){const h=String(hex||"#50e6ff").replace("#","");const n=parseInt(h.length===3?h.split("").map(c=>c+c).join(""):h,16);return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
@@ -239,11 +246,15 @@ function renderNodes(filter=""){
  }
 }
 function narrationFor(x){
- if(x.id==="center")return "This is the LeeWay Digital Brain. Explore the five categories to see projects, source code and supporting evidence. What would you like to explore?";
- if(x.id?.startsWith("cat::"))return `${x.label} contains ${items.filter(y=>categoryFor(y)===x.id).length} records. Choose a project for its overview, website, files or evidence.`;
- if(x.kind==="evidence")return `${x.label}. ${x.summary||"This reference is part of the LeeWay research archive."}`;
- const status=x.live_url?"A website link is available; its current runtime health has not been checked.":x.repo_url?"Source code is available on GitHub.":"No public website is linked.";
- return `${x.label}. ${x.summary||x.desc||"A project in the LeeWay ecosystem."} ${status} What would you like to know about it?`;
+ if(x.id==="center")return "Welcome to the LeeWay Digital Brain. This is the Creator's engineering journey—from the reason the system was imagined, through the designs, rebuilding, Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the evidence that separates source code from actual execution.";
+ if(x.id?.startsWith("cat::"))return `${x.label} contains ${items.filter(y=>categoryFor(y)===x.id).length} records. The group is based on LeeWay's documented roles, rather than repository name guesses. Choose a project to learn why it was built and what its evidence proves.`;
+ if(x.kind==="evidence")return `${x.label}. ${x.summary||"This artifact belongs to the public historical research archive; it is not automatically evidence for every project."}`;
+ if(x.core_role){
+  const source=x.repo_url?"The named GitHub repository source is available.":"No public source link is exposed for this record.";
+  return `${x.label}: ${x.core_role}. ${x.summary} ${source} Portfolio evidence state: ${x.evidence_state}. A repository or configured link does not establish successful production execution.`;
+ }
+ const status=x.live_url?"A website link is configured; its backend execution has not been verified.":x.repo_url?"Public source is listed; current runtime operation has not been verified.":"No public repository or live execution is linked.";
+ return `${x.label}. ${x.summary||x.desc||"A project in the Creator's software portfolio."} ${status} Ask me why it was developed or view its exact evidence.`;
 }
 async function projectEvidenceContext(x){
  const ctx={
@@ -310,30 +321,56 @@ function openWorkspace(x,tab="overview"){activeItem=x;activeTab=tab;workspace.cl
 function closeWorkspace(){workspace.classList.add("hidden");hud.classList.add("hidden");qs("#crumbCurrent").textContent=activeCategory?categoryDefs.find(c=>c.id===activeCategory)?.label:"PROJECT UNIVERSE"}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function overviewHtml(x){return `<div class="workspaceGrid"><section class="workspacePanel"><h3>What this is</h3><p>${esc(x.summary||x.desc||"Public project record.")}</p><div class="hudFacts">${[["Category",groupFor(x)],["Evidence",x.evidence_state||"PUBLIC"],["Language",x.language||"—"],["Created",x.created_at?.slice?.(0,10)||x.date||"—"],["Updated",x.updated_at?.slice?.(0,10)||"—"],["Repository size",x.size!=null?Math.round(x.size/1024)+" MB":"—"]].map(([a,b])=>`<div class="hudFact"><b>${a}</b><span>${esc(b)}</span></div>`).join("")}</div></section><section class="workspacePanel"><h3>Agent Lee</h3><p>${esc(narrationFor(x))}</p><div class="hudButtons">${x.live_url?`<button data-work-action="live">Live View</button>`:""}${x.repo_name?`<button data-work-action="files">Browse Files</button>`:""}<button data-work-action="evidence">Evidence</button><button data-work-action="speak">Narrate</button></div></section></div>`}
-function renderLive(x){if(!x.live_url){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No verified live URL</h3><p>This project has source evidence but no live view has been discovered yet.</p></div>`;return}workspaceBody.innerHTML=`<div class="workspacePanel"><p>Live project viewport. If a project blocks framing, use Open Full.</p></div><iframe class="liveFrame" src="${esc(x.live_url)}" title="${esc(x.label)} live view" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe>`}
+function renderLive(x){if(!x.live_url){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No configured preview URL</h3><p>No publicly configured browser preview is associated with this project.</p></div>`;return}workspaceBody.innerHTML=`<div class="workspacePanel"><p>Configured website preview only. Page visibility does not prove backend execution, independent verification, or production readiness. If framing is blocked, use Open Full.</p></div><iframe class="liveFrame" src="${esc(x.live_url)}" title="${esc(x.label)} linked website preview" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe>`}
 async function renderFiles(x,path=""){if(!x.repo_name){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No GitHub repository</h3><p>This record comes from the Estate Projection rather than a public repository.</p></div>`;return}workspaceBody.innerHTML=`<div class="fileBrowser"><div class="fileList"><div class="fileListHead">Loading repository…</div></div><div class="filePreview"><div class="filePreviewInner">Select a file to preview it.</div></div></div>`;const list=workspaceBody.querySelector(".fileList"),preview=workspaceBody.querySelector(".filePreview");try{const u=`https://api.github.com/repos/4citeB4U/${encodeURIComponent(x.repo_name)}/contents/${path}?ref=${encodeURIComponent(x.default_branch||"main")}`;const r=await fetch(u,{headers:{Accept:"application/vnd.github+json"}});if(!r.ok)throw new Error("GitHub "+r.status);const data=await r.json();const rows=Array.isArray(data)?data:[data];list.innerHTML=`<div class="fileListHead">${esc(x.repo_name)} /${esc(path)}</div>`;rows.sort((a,b)=>(a.type===b.type?a.name.localeCompare(b.name):a.type==="dir"?-1:1)).forEach(f=>{const b=document.createElement("button");b.className="fileEntry";b.innerHTML=`<span class="fileGlyph">${f.type==="dir"?"▣":"▤"}</span><span class="fileName">${esc(f.name)}</span>`;b.onclick=()=>f.type==="dir"?renderFiles(x,f.path):previewFile(f,preview);list.appendChild(b)})}catch(e){list.innerHTML=`<div class="fileListHead">Unable to load files</div><div class="filePreviewInner">${esc(e.message)}</div>`}}
 async function previewFile(f,host){host.innerHTML=`<div class="filePreviewInner">Loading ${esc(f.name)}…</div>`;const ext=(f.name.split(".").pop()||"").toLowerCase(),url=f.download_url||f.html_url;if(/png|jpg|jpeg|gif|webp|svg/.test(ext)){host.innerHTML=`<div class="filePreviewInner"><img src="${esc(url)}" alt=""><p><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></p></div>`;return}if(ext==="pdf"){host.innerHTML=`<iframe class="liveFrame" src="${esc(url)}"></iframe>`;return}if(/mp4|webm/.test(ext)){host.innerHTML=`<div class="filePreviewInner"><video controls src="${esc(url)}"></video></div>`;return}try{const r=await fetch(url);const t=await r.text();host.innerHTML=`<div class="filePreviewInner"><div class="hudButtons"><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></div><pre>${esc(t.slice(0,180000))}</pre></div>`}catch{host.innerHTML=`<div class="filePreviewInner"><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></div>`}}
-function relevantEvidence(x){if(x.kind==="evidence")return [x];const words=(x.label+" "+groupFor(x)).toLowerCase().split(/\W+/).filter(w=>w.length>3);let rows=evidence.filter(e=>words.some(w=>(e.label+" "+(e.summary||"")).toLowerCase().includes(w)));if(!rows.length&&["Scientific Research","Governance","Agentic Systems","Runtime"].includes(groupFor(x)))rows=evidence.slice();return rows}
+function relevantEvidence(x){
+ if(x.kind==="evidence")return [x];
+ // Evidence must have an exact project/repository binding, never an overlapping keyword.
+ const attached=evidence.filter(e=>e.project_id===x.id||(x.repo_name&&e.repo_name===x.repo_name));
+ const source=globalThis.LeeWayCorePortfolio?.evidenceFor(x)||[];
+ const seen=new Set();
+ return [...source,...attached].filter(e=>{const key=e.url||e.id;if(!key||seen.has(key))return false;seen.add(key);return true;});
+}
 function renderEvidence(x){
  if(x.kind==="evidence"){
-  const directDeck=decks.find(z=>z.title===x.label)||decks.find(z=>(x.label||"").toLowerCase().includes(z.title.toLowerCase().replace(/^the /,"")));
+  const directDeck=decks.find(z=>z.title===x.label);
   openEvidenceDetail(x,directDeck);
   return;
  }
- const rows=relevantEvidence(x);workspaceBody.innerHTML=`<div class="evidenceGrid"></div>`;const g=workspaceBody.querySelector(".evidenceGrid");
+ const rows=relevantEvidence(x);
+ workspaceBody.innerHTML=`<div class="workspacePanel"><h3>Evidence for ${esc(x.label)}</h3><p>Repository source, CI history, configured website links, and real execution are different claim classes. This page does not convert one into another. Only evidence explicitly associated with this project is shown.</p><p><b>Current portfolio status:</b> ${esc(x.evidence_state||"NOT VERIFIED")}</p></div><div class="evidenceGrid"></div>`;
+ const g=workspaceBody.querySelector(".evidenceGrid");
  if(x.live_url){
-  const live={id:"live::"+x.id,label:x.label+" — Live Project",summary:"Running project experience preserved as public execution evidence.",type:"Live Project",url:x.live_url,evidence_state:"LIVE"};
-  const tile=document.createElement("article");tile.className="evidenceTile";tile.innerHTML=`<div style="aspect-ratio:16/9;display:grid;place-items:center;background:radial-gradient(circle,rgba(80,230,255,.16),#07101a);font-size:34px">▶</div><div class="evidenceTileBody"><b>${esc(live.label)}</b><small>Live Project Evidence</small></div>`;tile.onclick=()=>openEvidenceDetail(live,null);g.appendChild(tile);
+  const linked={id:"linked::"+x.id,label:x.label+" — Configured website",summary:"A website URL is configured, but the current backend and physical execution have not been verified by this portfolio.",type:"Configured Website",url:x.live_url,evidence_state:"LINK ONLY · NOT EXECUTION"};
+  const tile=document.createElement("article");tile.className="evidenceTile";
+  tile.innerHTML=`<div class="evidenceTileBody"><b>${esc(linked.label)}</b><small>LINK ONLY · NOT EXECUTION</small></div>`;
+  tile.onclick=()=>openEvidenceDetail(linked,null);g.appendChild(tile);
  }
- rows.forEach(e=>{const d=decks.find(z=>z.title===e.label)||decks.find(z=>(e.label||"").toLowerCase().includes(z.title.toLowerCase().replace(/^the /,"")));const tile=document.createElement("article");tile.className="evidenceTile";tile.innerHTML=`${d?`<img src="${d.thumbnail}" alt="">`:e.url&&/\.(png|jpe?g)$/i.test(e.url)?`<img src="${e.url}" alt="">`:`<div style="aspect-ratio:16/9;display:grid;place-items:center;background:#07101a;font-size:34px">◫</div>`}<div class="evidenceTileBody"><b>${esc(e.label)}</b><small>${esc(e.type||"Evidence")}</small></div>`;tile.onclick=()=>openEvidenceDetail(e,d);g.appendChild(tile)});
- if(!g.children.length)g.innerHTML=`<div class="workspacePanel"><p>No public evidence has been linked to this project yet.</p></div>`;
+ rows.forEach(e=>{
+  const d=e.kind==="evidence"?decks.find(z=>z.title===e.label):null;
+  const tile=document.createElement("article");tile.className="evidenceTile";
+  const title=e.label||e.title,classification=e.claim||e.evidence_state||e.type||"SOURCE REFERENCE";
+  tile.innerHTML=`${d?`<img src="${esc(d.thumbnail)}" alt="">`:""}<div class="evidenceTileBody"><b>${esc(title)}</b><small>${esc(classification)}</small></div>`;
+  tile.onclick=()=>openEvidenceDetail({...e,label:title},d);g.appendChild(tile);
+ });
+ if(!g.children.length)g.innerHTML='<div class="workspacePanel"><p>No project-specific public evidence has been admitted for this repository. The global research archive remains separate.</p></div>';
 }
 function openEvidenceDetail(e,d){
- workspaceTitle.textContent=e.label;
- if(e.type==="Live Project"&&e.url){workspaceBody.innerHTML=`<iframe class="liveFrame" src="${esc(e.url)}" title="${esc(e.label)}" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe><div class="hudButtons"><a class="workspaceAction" href="${esc(e.url)}" target="_blank" rel="noopener">Open Full</a></div>`;return}
- if(d){workspaceBody.innerHTML=`<iframe class="liveFrame" src="${d.pdf}" title="${esc(e.label)}"></iframe><div class="slideStrip">${d.slides.map(s=>`<img loading="lazy" src="${s}" alt="">`).join("")}</div><div class="hudButtons"><a class="workspaceAction" href="${d.pptx}">PowerPoint</a><a class="workspaceAction" href="${d.pdf}" target="_blank">PDF</a></div>`;return}
- if(e.url&&/\.(png|jpe?g)$/i.test(e.url)){workspaceBody.innerHTML=`<div class="workspacePanel"><img style="max-width:100%;border-radius:12px" src="${e.url}" alt=""><p>${esc(e.summary||"")}</p></div>`;return}
- workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Evidence record")}</p></div>`;
+ workspaceTitle.textContent=e.label||e.title;
+ const citedType=e.type||'Evidence reference';
+ if(["Source Code","CI History","Configured Website"].includes(citedType)&&e.url){
+  workspaceBody.innerHTML=`<section class="workspacePanel"><h3>${esc(citedType)}</h3><p>${esc(e.summary||e.claim||"Linked public source. This is not physical execution evidence.")}</p><p>Current claim: ${esc(e.claim||e.evidence_state||"SOURCE ONLY")}</p><div class="hudButtons"><a class="workspaceAction" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">Open original reference</a></div></section>`;
+  return;
+ }
+ if(d){
+  workspaceBody.innerHTML=`<iframe class="liveFrame" src="${esc(d.pdf)}" title="${esc(e.label)}"></iframe><div class="slideStrip">${d.slides.map(src=>`<img loading="lazy" src="${esc(src)}" alt="">`).join("")}</div><div class="hudButtons"><a class="workspaceAction" href="${esc(d.pptx)}">PowerPoint</a><a class="workspaceAction" href="${esc(d.pdf)}" target="_blank">PDF</a></div>`;
+  return;
+ }
+ if(e.url&&/\.(png|jpe?g)$/i.test(e.url)){
+  workspaceBody.innerHTML=`<div class="workspacePanel"><img style="max-width:100%;border-radius:12px" src="${esc(e.url)}" alt=""><p>${esc(e.summary||"")}</p></div>`;return;
+ }
+ workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Historical evidence reference")}</p><p>Evidence has not been upgraded to runtime proof.</p></div>`;
 }
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
 let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,optionalModelOptIn=false,preparationEpoch=0;
@@ -555,6 +592,7 @@ function navigateAgentRequest(text){
  if(/(?:contact|reach|email|message).*(?:leonard|creator)|(?:leonard|creator).*(?:contact|reach|email|message)/.test(q))return "You can contact Leonard Lee directly at leonardlee6@outlook.com. His public GitHub profile is @4citeB4U at github.com/4citeB4U; for project-specific public communication, use the relevant repository channels where available.";
  if(/(?:build|make|create|develop).*(?:for me|for us|something similar|like this)|(?:service|hire|work with leonard)/.test(q))return "Yes. Leonard provides guidance and development support for comparable websites, AI workflows, governed agent systems, and related digital experiences. This public experience does not publish pricing; contact him directly at leonardlee6@outlook.com.";
  if(/pocket agent/.test(q))return "Pocket Agent Lee is planned as a subscriber gift and early-access release. The source project exists, but this site does not claim the public consumer install and distribution path is complete yet.";
+
  if(/^(?:go |back |return )?(?:home|back|reset|close|whole brain|to the brain)[.!?]*$/.test(q)){showBrainOnly();return "Back at the Digital Brain.";}
  if(activeItem&&/^(?:show|open|browse)(?: me)?(?: the| project)? (?:files?|source|code)[.!?]*$/.test(q)){openWorkspace(activeItem,"files");return "Opening the project files.";}
  if(activeItem&&/^(?:show|open)(?: me)?(?: the| project)? (?:live view|website|demo)[.!?]*$/.test(q)){openWorkspace(activeItem,"live");return activeItem.live_url?"Opening the listed project link.":"No live view is listed for this project.";}
@@ -569,7 +607,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  let text=raw.trim();if(!text)return;
  agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
  if(globalThis.LeeWayPauseIntent?.(text)){speechArbiter.pauseCurrent();return;}
- if(globalThis.LeeWayResumeIntent?.(text)){await speechArbiter.resumeCurrent();return;}
+ if(globalThis.LeeWayResumeIntent?.(text)&&[...(browserVoice.sources||[])].some(source=>source.leewayPaused)){await speechArbiter.resumeCurrent();return;}
  if(LeeWayStopIntent(text)){void globalThis.LeeWayPortfolioVoiceSession?.stop();speechArbiter.cancelSpeech();return;}
  let thread;
  if(/^(?:main|main chat|main task)[:,]?\s+/i.test(text)){text=text.replace(/^(?:main|main chat|main task)[:,]?\s+/i,'');thread=threadWorkplane.mainThread;}
@@ -706,14 +744,50 @@ if(typeof document!=='undefined')document.addEventListener('visibilitychange',()
  if(document.hidden&&conversationSession.requested)endVoice();
 });
 async function startTour(){
+ // The tour is a real conversation entry, not a timed slideshow or model-dependent recording.
  silenceSpeechOnly();const epoch=++tourEpoch;
- const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").slice(0,8);
- for(const p of seq){
-  if(epoch!==tourEpoch)return;
-  selectItem(p.id,false);openWorkspace(p,"overview");
-  const spoken=narrationFor(p);agentText.textContent=spoken;agentNarration.textContent=spoken;await speak(spoken);
-  await new Promise(r=>setTimeout(r,Math.min(16000,Math.max(6500,spoken.split(/\s+/).length*180))));
+ openAgentBubble(false);
+ if(!conversationSession.requested){
+  // The button click is the browser gesture that requests microphone permission.
+  const opening=conversationSession.toggle();
+  void globalThis.LeeWayPortfolioVoiceSession?.prime().catch(error=>{
+   if(epoch===tourEpoch)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);
+  });
+  await opening;
  }
+ if(epoch!==tourEpoch)return;
+ if(conversationSession.state!=='listening'){
+  agentState.textContent='Guided tour needs microphone permission for a hands-free conversation. Typed project exploration remains available.';
+  return;
+ }
+ const stages=globalThis.LeeWayCorePortfolio?.tour()||[];
+ const intro=globalThis.LeeWayEngineeringJourney?.answer('tell me the story');
+ const steps=[];
+ if(intro)steps.push({title:'Why LeeWay began',text:intro.text,sources:intro.sources});
+ const identity=globalThis.LeeWayEngineeringJourney?.answer('Why Agent Lee?');
+ if(identity)steps.push({title:'Why Agent Lee exists',text:identity.text,sources:identity.sources});
+ for(const stage of stages){
+  const project=projects.find(x=>x.core_repo_name===stage.repoName||x.repo_name===stage.repoName);
+  if(!project)continue;
+  const text='Our next chapter is '+stage.title+'. '+stage.narrative+' '+narrationFor(project);
+  steps.push({title:stage.repoName,text,project,sources:project.repo_url?[project.repo_url]:[]});
+ }
+ if(!steps.length){agentState.textContent='The source-grounded LeeWay tour inventory is unavailable. No invented tour was played.';return;}
+ for(let i=0;i<steps.length;i++){
+  if(epoch!==tourEpoch||conversationSession.state!=='listening')return;
+  const chapter=steps[i];
+  if(chapter.project){selectItem(chapter.project.id,false);openWorkspace(chapter.project,'overview');}
+  agentText.textContent=chapter.text;agentNarration.textContent=chapter.text;
+  showPublicAnswerSources(chapter.sources||[]);
+  agentState.textContent='Guided journey · chapter '+(i+1)+' of '+steps.length+' · '+chapter.title;
+  const result=await speakFromFabric(chapter.text,chapter.title);
+  if(epoch!==tourEpoch)return;
+  if(result?.state!=='VOICE_FABRIC_RESPONSE'){
+   agentState.textContent='Tour stopped: Voice Fabric did not confirm the spoken chapter. No silent slide advancement.';
+   return;
+  }
+ }
+ if(epoch===tourEpoch)agentState.textContent='Guided journey complete. I am still listening for your questions.';
 }
 function fit(){const height=qs("#stage").clientHeight;scale=innerWidth<900?.58:Math.min(.78,Math.max(.38,(height-130)/490));panX=0;panY=0;setWorldTransform()}
 function bindAppearance(){
@@ -740,6 +814,7 @@ qs("#agentEndVoice")?.addEventListener("click",endVoice);
 qs("#agentStartVoice")?.addEventListener("click",()=>void toggleMic());
 window.addEventListener("pagehide",endVoice);
 qs("#tourBtn").onclick=startTour;
+qs('#agentGuidedTour').onclick=()=>{void startTour();};
 qs("#resetBtn").onclick=showBrainOnly;
 qs(".crumb.active").onclick=backOneLevel;
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
@@ -833,7 +908,7 @@ function materializeProjects(source,overrides){
 }
 function applyProjectSource(source,overrides){
  const spoken=voiceController.epoch>0?{text:agentText.textContent,narration:agentNarration.textContent}:null;
- projects=materializeProjects(source,overrides);
+ projects=globalThis.LeeWayCorePortfolio?.enrich(materializeProjects(source,overrides))||materializeProjects(source,overrides);
  items=[...projects,...evidence];
  qs("#projectCount").textContent=`PROJECTS ${projects.length}`;
  qs("#evidenceCount").textContent=`EVIDENCE ${evidence.length}`;
@@ -849,6 +924,8 @@ async function boot(){
   fetch("/brain/project-catalog.json").then(r=>r.json()).catch(()=>({projects:[]})),
   fetch("/brain/agent-lee-persona-public.json").then(r=>r.json()).catch(()=>null)
  ]);
+ // Keep the original catalog available if the supplemental core roster cannot load.
+ try{await globalThis.LeeWayCorePortfolio?.load();}catch(error){console.warn('LeeWay core reconciliation unavailable:',error.message);}
  agentPersona=persona;
  decks=visuals.decks||[];
  evidence=(estate.evidence||[]).filter(x=>x.file).map(x=>({id:"evidence::"+x.id,label:x.title,summary:x.summary,group:"Evidence",type:x.type,url:"/leeway-brain/"+String(x.file).replace(/^\/+/, ""),date:x.date,evidence_state:"PUBLIC REFERENCE",kind:"evidence"}));
