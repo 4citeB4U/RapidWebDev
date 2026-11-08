@@ -603,7 +603,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  let text=raw.trim();if(!text)return;
  agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
  if(globalThis.LeeWayPauseIntent?.(text)){speechArbiter.pauseCurrent();return;}
- if(globalThis.LeeWayResumeIntent?.(text)){await speechArbiter.resumeCurrent();return;}
+ if(globalThis.LeeWayResumeIntent?.(text)&&[...(browserVoice.sources||[])].some(source=>source.leewayPaused)){await speechArbiter.resumeCurrent();return;}
  if(LeeWayStopIntent(text)){void globalThis.LeeWayPortfolioVoiceSession?.stop();speechArbiter.cancelSpeech();return;}
  let thread;
  if(/^(?:main|main chat|main task)[:,]?\s+/i.test(text)){text=text.replace(/^(?:main|main chat|main task)[:,]?\s+/i,'');thread=threadWorkplane.mainThread;}
