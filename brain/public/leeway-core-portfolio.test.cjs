@@ -71,6 +71,7 @@ test('tour covers genuine engineering spine and real selected speaker, never a t
  assert.ok(tour.length>=9);
  assert.equal(tour[0].repoName,'LeeWay-Standards');
  assert.ok(tour.some(x=>x.repoName==='Machine-Consciousness'));
+ assert.equal(tour[1].repoName,'LeeWay-Engineering');
  assert.ok(tour.some(x=>x.repoName==='Leeway-Runtime-Fabric'));
  const brain=fs.readFileSync(__dirname+'/public-brain.js','utf8');
  const start=brain.indexOf('async function startTour()');
