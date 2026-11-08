@@ -43,7 +43,7 @@ const {chromium}=require('playwright');
    sources:document.querySelectorAll('#agentEvidenceList a').length,
    story:document.querySelector('#agentText')?.textContent||'',
    speechRequests:globalThis.__voiceEvents.filter(x=>x.type==='speech.request').length,
-   introHidden:document.querySelector('#introStoryGlass')?.classList.contains('story-complete')||false
+   introHidden:!document.querySelector('#introStoryGlass')||document.querySelector('#introStoryGlass').classList.contains('story-complete')
   }));
   assert.equal(first.micMode,'listening');
   assert.equal(first.introHidden,true);
