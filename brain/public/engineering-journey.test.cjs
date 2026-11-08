@@ -75,7 +75,7 @@ test('existing Digital Brain loads story and canonical speech client before main
   const story=brain.indexOf('LeeWayEngineeringJourney?.answer(text)');
   const models=brain.indexOf('LeeWayEcosystemFabric;',story);
   assert.ok(story>0&&models>story,'documented story is resolved before model-dependent chat');
-  assert.ok(brain.includes('LeeWayPortfolioVoiceSession.speak(narrative.text)'));
+  assert.ok(brain.includes('speakFromFabric(narrative.text,narrative.title)'));
   assert.ok(brain.includes('LeeWayPortfolioVoiceSession?.stop()'));
 });
 test('canonical Voice Fabric client is source-only, fail-closed, and syntactically valid',()=>{
