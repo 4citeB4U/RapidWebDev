@@ -362,10 +362,35 @@ function selectThread(threadId){
  renderThreadState();return thread;
 }
 function createSideThread(){const side=threadWorkplane.createSideThread();selectThread(side.id);return side;}
+function speakFromFabric(text,title='Agent Lee'){
+ if(!text||conversationSession?.state!=='listening'||!globalThis.LeeWayPortfolioVoiceSession)return Promise.resolve();
+ return globalThis.LeeWayPortfolioVoiceSession.speak(text).then(result=>{
+  if(result?.state==='SUPERSEDED')return result;
+  if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=title+' · Voice Fabric completed its playback request; human hearing not independently tested.';
+  else agentState.textContent=title+' · Voice Fabric '+String(result?.state||'unavailable');
+  return result;
+ }).catch(error=>{if(conversationSession.state==='listening')agentState.textContent=title+' · Voice Fabric unavailable: '+String(error.message||error);});
+}
 function threadSpeech(thread,text){
- if(!text||conversationSession?.state!=='listening'||!browserVoice.ready)return Promise.resolve();
- const stream=new LeeWaySpeechStream();stream.push(text);stream.end();
- return speechArbiter.speak(thread,stream,{onState:message=>{if(message)agentState.textContent=message;},onRendered:part=>LeeWayVoiceMetrics.record('thread-segment-rendered',{threadId:thread.id,characters:part.length})}).catch(error=>{if(error.name!=='AbortError')agentState.textContent=error.message;});
+ if(!text||conversationSession?.state!=='listening')return Promise.resolve();
+ return speakFromFabric(text,threadDisplay(thread));
+}
+function showPublicAnswerSources(sources=[]){
+ const holder=qs('#agentEvidence'),list=qs('#agentEvidenceList');
+ if(!holder||!list)return;
+ list.replaceChildren();
+ for(const value of sources.slice(0,8)){
+  try{
+   const url=new URL(String(value));
+   if(url.protocol!=='https:'||url.hostname!=='github.com'||!url.pathname.startsWith('/4citeB4U/'))continue;
+   const item=document.createElement('li'),link=document.createElement('a');
+   link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';
+   link.textContent=url.pathname.split('/').slice(1,4).join(' / ')||'LeeWay source';
+   item.append(link);list.append(item);
+  }catch{}
+ }
+ holder.hidden=list.children.length===0;
+ if(holder.hidden)holder.open=false;
 }
 function updatePreparationStatus(){
  const fabric=globalThis.LeeWayEcosystemFabric?.state;
@@ -551,6 +576,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  selectThread(thread.id);recordChat('You · '+threadDisplay(thread),text);threadWorkplane.remember(thread.id,"user",text);
  if(!browserVoice.ready&&/^(?:hi|hello|who are you|introduce yourself|how (?:do i|to) (?:use|explore)(?: this| the site| the website)?)[.!?]*$/i.test(text)){silenceSpeechOnly();void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});return;}
  browserListener.cancelUtterance();
+ showPublicAnswerSources([]);
  const navigation=navigateAgentRequest(text);
  if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
  const narrative=globalThis.LeeWayEngineeringJourney?.answer(text);
@@ -563,12 +589,8 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
   threadWorkplane.remember(thread.id,'assistant',narrative.text);
   agentState.textContent=narrative.title+' · '+narrative.sources.length+' documented sources · no LLM';
   renderThreadState();
-  if(conversationSession.state==='listening'&&globalThis.LeeWayPortfolioVoiceSession){
-   void globalThis.LeeWayPortfolioVoiceSession.speak(narrative.text).then(result=>{
-    if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=narrative.title+' · Voice Fabric response returned; acoustic playback not independently verified.';
-    else if(result?.state!=='SUPERSEDED')agentState.textContent=narrative.title+' · Voice Fabric '+String(result?.state||'unavailable');
-   }).catch(error=>{agentState.textContent=narrative.title+' · Voice One unavailable: '+String(error.message||error);});
-  }
+  showPublicAnswerSources(narrative.sources);
+  void speakFromFabric(narrative.text,narrative.title);
   return narrative.text;
  }
  const fabric=globalThis.LeeWayEcosystemFabric;
