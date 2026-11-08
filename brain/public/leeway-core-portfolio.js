@@ -83,7 +83,7 @@ LICENSE = No new license asserted.
       const key=canonicalName(entry.name);
       if(order.some(x=>canonicalName(x.core_repo_name)===key))continue;
       const existing=map.get(key);
-      order.push(describe({...entry,scope:'EXTENDED',group:'Agentic Systems',corePriority:spines.get(key)?.status||null},existing));
+      order.push(describe({...entry,scope:'EXTENDED',group:entry.group||'Agentic Systems',corePriority:spines.get(key)?.status||null},existing));
       map.delete(key);
     }
     // Preserve the remaining public and historical projects; distinguish source from execution.
@@ -108,7 +108,7 @@ LICENSE = No new license asserted.
   }
   function tour(){
     if(!catalog)return [];
-    const prefer=['LeeWay-Standards','Leeway-formula-live','Leeway-Runtime-Fabric','LeeWay-Agent-Skills','LEEWAY-DEVICE-BRIDGE','Machine-Consciousness','LeeWay-Continuum','LeeWay-Voice-Fabric','LeeWay-Digital-Workforce','RapidWebDev'];
+    const prefer=['LeeWay-Standards','LeeWay-Engineering','Leeway-formula-live','Leeway-Runtime-Fabric','LeeWay-Agent-Skills','LEEWAY-DEVICE-BRIDGE','Machine-Consciousness','LeeWay-Continuum','LeeWay-Voice-Fabric','LeeWay-Digital-Workforce','RapidWebDev'];
     const all=[...catalog.historical17,...(catalog.additionalPublicSystemSummaries||[])];
     return prefer.map(name=>all.find(x=>canonicalName(x.name)===canonicalName(name))).filter(Boolean).map(x=>({
       repoName:x.name,
