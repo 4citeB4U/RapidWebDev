@@ -58,7 +58,10 @@ const {chromium}=require('playwright');
   assert.ok(second.speechRequests>=2);
   await page.locator('#agentEndVoice').click();
   await page.waitForFunction(()=>document.querySelector('#micBtn')?.dataset?.mode==='muted');
-  // The user-requested Guided Tour must genuinely request the microphone and produce project narrations.
+  // The tour button belongs to the project-universe view, not the initial 3D brain intro.
+  await page.locator('#enterBrainBtn').click();
+  await page.waitForFunction(()=>!document.body.classList.contains('brain-intro'),{timeout:15000});
+  // The user-requested Guided Tour must request the mic and actually narrate the core.
   await page.locator('#tourBtn').click();
   await page.waitForFunction(()=>document.querySelector('#agentState')?.textContent?.includes('Guided journey complete'),{timeout:15000});
   const tour=await page.evaluate(()=>({
