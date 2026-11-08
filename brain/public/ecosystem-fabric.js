@@ -14,7 +14,7 @@
       registry:'https://raw.githubusercontent.com/4citeB4U/Leeway-Runtime-Fabric/main/adapter.registry.json',
       health:'https://leeway-runtime-fabric.fly.dev/runtime/health',
       agentHealth:'https://leeway-runtime-fabric.fly.dev/agent-lee/health',
-      publicQuestion:'https://leeway-runtime-fabric.fly.dev/agent-lee/public-question',
+      publicQuestion:'https://leeway-runtime-fabric.vercel.app/agent-lee/public-question',
       chat:'https://leeway-runtime-fabric.fly.dev/v1/chat/completions'
     },
     skills:{
