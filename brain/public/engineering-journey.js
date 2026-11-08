@@ -75,7 +75,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     if(/\b(machine consciousness|consciousness|not an llm|without an llm)\b/.test(q))return 4;
     if(/\b(formula|mathematics|mathematical|equation)\b/.test(q))return 3;
     if(/\b(engineering|methodology|engineering loop|design process|design prowess)\b/.test(q))return 2;
-    if(/\b(redesign|rebuild|iteration|iterative|trial and error|improve)\b/.test(q))return 1;
+    if(/\b(redesign(?:ing|ed|s)?|rebuild(?:ing|s)?|iteration|iterative|trial and error|improv(?:e|ed|ing|ement))\b/.test(q))return 1;
     if(/\b(what comes next|future of leeway|the future|what is next)\b/.test(q))return 7;
     if(/\b(why leeway|why did.*(build|create)|why was.*(built|created)|tell.*story|the journey|how.*(start|begin)|what inspired)\b/.test(q))return 0;
     return null;
