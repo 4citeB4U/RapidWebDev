@@ -814,6 +814,7 @@ qs("#agentEndVoice")?.addEventListener("click",endVoice);
 qs("#agentStartVoice")?.addEventListener("click",()=>void toggleMic());
 window.addEventListener("pagehide",endVoice);
 qs("#tourBtn").onclick=startTour;
+qs('#agentGuidedTour').onclick=()=>{void startTour();};
 qs("#resetBtn").onclick=showBrainOnly;
 qs(".crumb.active").onclick=backOneLevel;
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
