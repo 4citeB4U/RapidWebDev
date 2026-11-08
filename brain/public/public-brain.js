@@ -321,30 +321,56 @@ function openWorkspace(x,tab="overview"){activeItem=x;activeTab=tab;workspace.cl
 function closeWorkspace(){workspace.classList.add("hidden");hud.classList.add("hidden");qs("#crumbCurrent").textContent=activeCategory?categoryDefs.find(c=>c.id===activeCategory)?.label:"PROJECT UNIVERSE"}
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 function overviewHtml(x){return `<div class="workspaceGrid"><section class="workspacePanel"><h3>What this is</h3><p>${esc(x.summary||x.desc||"Public project record.")}</p><div class="hudFacts">${[["Category",groupFor(x)],["Evidence",x.evidence_state||"PUBLIC"],["Language",x.language||"—"],["Created",x.created_at?.slice?.(0,10)||x.date||"—"],["Updated",x.updated_at?.slice?.(0,10)||"—"],["Repository size",x.size!=null?Math.round(x.size/1024)+" MB":"—"]].map(([a,b])=>`<div class="hudFact"><b>${a}</b><span>${esc(b)}</span></div>`).join("")}</div></section><section class="workspacePanel"><h3>Agent Lee</h3><p>${esc(narrationFor(x))}</p><div class="hudButtons">${x.live_url?`<button data-work-action="live">Live View</button>`:""}${x.repo_name?`<button data-work-action="files">Browse Files</button>`:""}<button data-work-action="evidence">Evidence</button><button data-work-action="speak">Narrate</button></div></section></div>`}
-function renderLive(x){if(!x.live_url){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No verified live URL</h3><p>This project has source evidence but no live view has been discovered yet.</p></div>`;return}workspaceBody.innerHTML=`<div class="workspacePanel"><p>Live project viewport. If a project blocks framing, use Open Full.</p></div><iframe class="liveFrame" src="${esc(x.live_url)}" title="${esc(x.label)} live view" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe>`}
+function renderLive(x){if(!x.live_url){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No configured preview URL</h3><p>No publicly configured browser preview is associated with this project.</p></div>`;return}workspaceBody.innerHTML=`<div class="workspacePanel"><p>Configured website preview only. Page visibility does not prove backend execution, independent verification, or production readiness. If framing is blocked, use Open Full.</p></div><iframe class="liveFrame" src="${esc(x.live_url)}" title="${esc(x.label)} linked website preview" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe>`}
 async function renderFiles(x,path=""){if(!x.repo_name){workspaceBody.innerHTML=`<div class="workspacePanel"><h3>No GitHub repository</h3><p>This record comes from the Estate Projection rather than a public repository.</p></div>`;return}workspaceBody.innerHTML=`<div class="fileBrowser"><div class="fileList"><div class="fileListHead">Loading repository…</div></div><div class="filePreview"><div class="filePreviewInner">Select a file to preview it.</div></div></div>`;const list=workspaceBody.querySelector(".fileList"),preview=workspaceBody.querySelector(".filePreview");try{const u=`https://api.github.com/repos/4citeB4U/${encodeURIComponent(x.repo_name)}/contents/${path}?ref=${encodeURIComponent(x.default_branch||"main")}`;const r=await fetch(u,{headers:{Accept:"application/vnd.github+json"}});if(!r.ok)throw new Error("GitHub "+r.status);const data=await r.json();const rows=Array.isArray(data)?data:[data];list.innerHTML=`<div class="fileListHead">${esc(x.repo_name)} /${esc(path)}</div>`;rows.sort((a,b)=>(a.type===b.type?a.name.localeCompare(b.name):a.type==="dir"?-1:1)).forEach(f=>{const b=document.createElement("button");b.className="fileEntry";b.innerHTML=`<span class="fileGlyph">${f.type==="dir"?"▣":"▤"}</span><span class="fileName">${esc(f.name)}</span>`;b.onclick=()=>f.type==="dir"?renderFiles(x,f.path):previewFile(f,preview);list.appendChild(b)})}catch(e){list.innerHTML=`<div class="fileListHead">Unable to load files</div><div class="filePreviewInner">${esc(e.message)}</div>`}}
 async function previewFile(f,host){host.innerHTML=`<div class="filePreviewInner">Loading ${esc(f.name)}…</div>`;const ext=(f.name.split(".").pop()||"").toLowerCase(),url=f.download_url||f.html_url;if(/png|jpg|jpeg|gif|webp|svg/.test(ext)){host.innerHTML=`<div class="filePreviewInner"><img src="${esc(url)}" alt=""><p><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></p></div>`;return}if(ext==="pdf"){host.innerHTML=`<iframe class="liveFrame" src="${esc(url)}"></iframe>`;return}if(/mp4|webm/.test(ext)){host.innerHTML=`<div class="filePreviewInner"><video controls src="${esc(url)}"></video></div>`;return}try{const r=await fetch(url);const t=await r.text();host.innerHTML=`<div class="filePreviewInner"><div class="hudButtons"><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></div><pre>${esc(t.slice(0,180000))}</pre></div>`}catch{host.innerHTML=`<div class="filePreviewInner"><a class="workspaceAction" target="_blank" href="${esc(f.html_url)}">Open on GitHub</a></div>`}}
-function relevantEvidence(x){if(x.kind==="evidence")return [x];const words=(x.label+" "+groupFor(x)).toLowerCase().split(/\W+/).filter(w=>w.length>3);let rows=evidence.filter(e=>words.some(w=>(e.label+" "+(e.summary||"")).toLowerCase().includes(w)));if(!rows.length&&["Scientific Research","Governance","Agentic Systems","Runtime"].includes(groupFor(x)))rows=evidence.slice();return rows}
+function relevantEvidence(x){
+ if(x.kind==="evidence")return [x];
+ // Evidence must have an exact project/repository binding, never an overlapping keyword.
+ const attached=evidence.filter(e=>e.project_id===x.id||(x.repo_name&&e.repo_name===x.repo_name));
+ const source=globalThis.LeeWayCorePortfolio?.evidenceFor(x)||[];
+ const seen=new Set();
+ return [...source,...attached].filter(e=>{const key=e.url||e.id;if(!key||seen.has(key))return false;seen.add(key);return true;});
+}
 function renderEvidence(x){
  if(x.kind==="evidence"){
-  const directDeck=decks.find(z=>z.title===x.label)||decks.find(z=>(x.label||"").toLowerCase().includes(z.title.toLowerCase().replace(/^the /,"")));
+  const directDeck=decks.find(z=>z.title===x.label);
   openEvidenceDetail(x,directDeck);
   return;
  }
- const rows=relevantEvidence(x);workspaceBody.innerHTML=`<div class="evidenceGrid"></div>`;const g=workspaceBody.querySelector(".evidenceGrid");
+ const rows=relevantEvidence(x);
+ workspaceBody.innerHTML=`<div class="workspacePanel"><h3>Evidence for ${esc(x.label)}</h3><p>Repository source, CI history, configured website links, and real execution are different claim classes. This page does not convert one into another. Only evidence explicitly associated with this project is shown.</p><p><b>Current portfolio status:</b> ${esc(x.evidence_state||"NOT VERIFIED")}</p></div><div class="evidenceGrid"></div>`;
+ const g=workspaceBody.querySelector(".evidenceGrid");
  if(x.live_url){
-  const live={id:"live::"+x.id,label:x.label+" — Live Project",summary:"Running project experience preserved as public execution evidence.",type:"Live Project",url:x.live_url,evidence_state:"LIVE"};
-  const tile=document.createElement("article");tile.className="evidenceTile";tile.innerHTML=`<div style="aspect-ratio:16/9;display:grid;place-items:center;background:radial-gradient(circle,rgba(80,230,255,.16),#07101a);font-size:34px">▶</div><div class="evidenceTileBody"><b>${esc(live.label)}</b><small>Live Project Evidence</small></div>`;tile.onclick=()=>openEvidenceDetail(live,null);g.appendChild(tile);
+  const linked={id:"linked::"+x.id,label:x.label+" — Configured website",summary:"A website URL is configured, but the current backend and physical execution have not been verified by this portfolio.",type:"Configured Website",url:x.live_url,evidence_state:"LINK ONLY · NOT EXECUTION"};
+  const tile=document.createElement("article");tile.className="evidenceTile";
+  tile.innerHTML=`<div class="evidenceTileBody"><b>${esc(linked.label)}</b><small>LINK ONLY · NOT EXECUTION</small></div>`;
+  tile.onclick=()=>openEvidenceDetail(linked,null);g.appendChild(tile);
  }
- rows.forEach(e=>{const d=decks.find(z=>z.title===e.label)||decks.find(z=>(e.label||"").toLowerCase().includes(z.title.toLowerCase().replace(/^the /,"")));const tile=document.createElement("article");tile.className="evidenceTile";tile.innerHTML=`${d?`<img src="${d.thumbnail}" alt="">`:e.url&&/\.(png|jpe?g)$/i.test(e.url)?`<img src="${e.url}" alt="">`:`<div style="aspect-ratio:16/9;display:grid;place-items:center;background:#07101a;font-size:34px">◫</div>`}<div class="evidenceTileBody"><b>${esc(e.label)}</b><small>${esc(e.type||"Evidence")}</small></div>`;tile.onclick=()=>openEvidenceDetail(e,d);g.appendChild(tile)});
- if(!g.children.length)g.innerHTML=`<div class="workspacePanel"><p>No public evidence has been linked to this project yet.</p></div>`;
+ rows.forEach(e=>{
+  const d=e.kind==="evidence"?decks.find(z=>z.title===e.label):null;
+  const tile=document.createElement("article");tile.className="evidenceTile";
+  const title=e.label||e.title,classification=e.claim||e.evidence_state||e.type||"SOURCE REFERENCE";
+  tile.innerHTML=`${d?`<img src="${esc(d.thumbnail)}" alt="">`:""}<div class="evidenceTileBody"><b>${esc(title)}</b><small>${esc(classification)}</small></div>`;
+  tile.onclick=()=>openEvidenceDetail({...e,label:title},d);g.appendChild(tile);
+ });
+ if(!g.children.length)g.innerHTML='<div class="workspacePanel"><p>No project-specific public evidence has been admitted for this repository. The global research archive remains separate.</p></div>';
 }
 function openEvidenceDetail(e,d){
- workspaceTitle.textContent=e.label;
- if(e.type==="Live Project"&&e.url){workspaceBody.innerHTML=`<iframe class="liveFrame" src="${esc(e.url)}" title="${esc(e.label)}" loading="eager" sandbox="allow-scripts allow-forms allow-popups allow-downloads allow-same-origin"></iframe><div class="hudButtons"><a class="workspaceAction" href="${esc(e.url)}" target="_blank" rel="noopener">Open Full</a></div>`;return}
- if(d){workspaceBody.innerHTML=`<iframe class="liveFrame" src="${d.pdf}" title="${esc(e.label)}"></iframe><div class="slideStrip">${d.slides.map(s=>`<img loading="lazy" src="${s}" alt="">`).join("")}</div><div class="hudButtons"><a class="workspaceAction" href="${d.pptx}">PowerPoint</a><a class="workspaceAction" href="${d.pdf}" target="_blank">PDF</a></div>`;return}
- if(e.url&&/\.(png|jpe?g)$/i.test(e.url)){workspaceBody.innerHTML=`<div class="workspacePanel"><img style="max-width:100%;border-radius:12px" src="${e.url}" alt=""><p>${esc(e.summary||"")}</p></div>`;return}
- workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Evidence record")}</p></div>`;
+ workspaceTitle.textContent=e.label||e.title;
+ const citedType=e.type||'Evidence reference';
+ if(["Source Code","CI History","Configured Website"].includes(citedType)&&e.url){
+  workspaceBody.innerHTML=`<section class="workspacePanel"><h3>${esc(citedType)}</h3><p>${esc(e.summary||e.claim||"Linked public source. This is not physical execution evidence.")}</p><p>Current claim: ${esc(e.claim||e.evidence_state||"SOURCE ONLY")}</p><div class="hudButtons"><a class="workspaceAction" href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">Open original reference</a></div></section>`;
+  return;
+ }
+ if(d){
+  workspaceBody.innerHTML=`<iframe class="liveFrame" src="${esc(d.pdf)}" title="${esc(e.label)}"></iframe><div class="slideStrip">${d.slides.map(src=>`<img loading="lazy" src="${esc(src)}" alt="">`).join("")}</div><div class="hudButtons"><a class="workspaceAction" href="${esc(d.pptx)}">PowerPoint</a><a class="workspaceAction" href="${esc(d.pdf)}" target="_blank">PDF</a></div>`;
+  return;
+ }
+ if(e.url&&/\.(png|jpe?g)$/i.test(e.url)){
+  workspaceBody.innerHTML=`<div class="workspacePanel"><img style="max-width:100%;border-radius:12px" src="${esc(e.url)}" alt=""><p>${esc(e.summary||"")}</p></div>`;return;
+ }
+ workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Historical evidence reference")}</p><p>Evidence has not been upgraded to runtime proof.</p></div>`;
 }
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
 let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,optionalModelOptIn=false,preparationEpoch=0;
