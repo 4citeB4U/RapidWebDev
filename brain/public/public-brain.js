@@ -336,7 +336,7 @@ function openEvidenceDetail(e,d){
  workspaceBody.innerHTML=`<div class="workspacePanel"><p>${esc(e.summary||"Evidence record")}</p></div>`;
 }
 function renderWorkspace(){if(!activeItem)return;if(activeTab==="overview")workspaceBody.innerHTML=overviewHtml(activeItem);else if(activeTab==="live")renderLive(activeItem);else if(activeTab==="files")renderFiles(activeItem);else renderEvidence(activeItem)}
-let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,preparationEpoch=0;
+let browserGemma=null,tourEpoch=0,voiceConnecting=false,fullAIRequested=false,optionalModelOptIn=false,preparationEpoch=0;
 const browserVoice=new LeeWayBrowserVoice(),welcomePlayer=new LeeWayWelcomePlayer();
 const threadWorkplane=new LeeWayThreadWorkplane({maxHands:8,onState:()=>setTimeout(renderThreadState,0)});
 const speechArbiter=new LeeWaySpeechLeaseArbiter(browserVoice,{
@@ -385,7 +385,7 @@ async function prepareAgent(){
  try{if(!navigator.gpu||!await navigator.gpu.requestAdapter().catch(()=>null)){qs('#storageStatus').textContent='Full AI needs WebGPU on this device. The recorded Voice One guide and project navigation still work.';return;}if(!await storagePreflight('all')||epoch!==preparationEpoch)return;fullAIRequested=true;await Promise.all([enableGemma(),enableBrowserVoice()]);updatePreparationStatus();}
  finally{button.disabled=false;}
 }
-qs('#enableFullAI').onclick=prepareAgent;
+qs('#enableFullAI').onclick=()=>{optionalModelOptIn=true;void prepareAgent();};
 qs('#agentStartupStatus').onclick=()=>openAgentBubble(false);
 qs('#clearChatHistory').addEventListener('click',()=>{voiceController.history=[];for(const thread of threadWorkplane.threads.values())thread.history=[];});
 let completedDraft='';
@@ -572,15 +572,43 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
   return narrative.text;
  }
  const fabric=globalThis.LeeWayEcosystemFabric;
- if(fabric?.state?.status==="AUTHORITY_CONNECTED"&&fabric?.state?.runtime?.status==="ok"&&fabric?.state?.agent?.status==="ACTIVE_HEALTHY"){
+ // Codex handoff: the owning Runtime Fabric may install a public read-only question function here.
+ // Absence is expected while Machine Consciousness is being qualified. No host execution from visitors.
+ if(typeof fabric?.publicQuestion==='function'){
+  const submitted=threadWorkplane.submit(thread.id,text,async(work)=>{
+   const output=await fabric.publicQuestion(text,{signal:work.signal,threadId:thread.id});
+   if(work.signal.aborted)return null;
+   if(output?.authority!=='LEEWAY_MACHINE_CONSCIOUSNESS'||output?.policy!=='READ_ONLY_PORTFOLIO'||output?.llm?.used!==false||typeof output.text!=='string'||!output.text.trim()||output.text.length>5000){
+    throw new Error('Public Machine Consciousness reply does not meet the read-only answer contract.');
+   }
+   return output;
+  },{resource:'portfolio-question',priority:thread.kind==='side'?90:70});
+  renderThreadState();
+  try{
+   const output=await submitted.promise;
+   if(output){
+    thread.lastOutput=output.text;
+    if(selectedThreadId===thread.id){agentText.textContent=output.text;agentNarration.textContent=output.text;}
+    showPublicAnswerSources(Array.isArray(output.sources)?output.sources:[]);
+    recordChat('Agent Lee · '+threadDisplay(thread)+' · Machine Consciousness (provider-reported)',output.text);
+    threadWorkplane.remember(thread.id,'assistant',output.text);
+    agentState.textContent='Machine Consciousness response · independent receipt verification pending';
+    void speakFromFabric(output.text,'Machine Consciousness');
+    renderThreadState();
+    return output.text;
+   }
+  }catch(error){if(error.name!=='AbortError')agentState.textContent='Public consciousness route unavailable: '+String(error.message||error);}
+ }
+
+ if(optionalModelOptIn&&fabric?.state?.status==="AUTHORITY_CONNECTED"&&fabric?.state?.runtime?.status==="ok"&&fabric?.state?.agent?.status==="ACTIVE_HEALTHY"){
   const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askRuntimeFabric(text,work,t),{resource:'runtime-fabric',priority:thread.kind==='side'?90:70});
   renderThreadState();try{const answer=await submitted.promise;if(answer)return answer;}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;}
  }
- if(browserGemma?.state==="ready"){
+ if(optionalModelOptIn&&browserGemma?.state==="ready"){
   const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askGemma(text,work,t),{resource:'gemma-fallback',priority:thread.kind==='side'?80:50});
   renderThreadState();try{return await submitted.promise}catch(error){if(error.name!=='AbortError')agentState.textContent=error.message;return null;}
  }
- const message="I received your words. The LeeWay authority fabrics are loaded, but the Runtime Fabric chat route is not currently returning answers. Project navigation remains available; no browser model download is required.";
+ const message="I can tell the documented engineering journey and navigate LeeWay projects without an LLM. The public Machine Consciousness question route is still being finished. Ask why LeeWay was created, ask about the engineering method, or say continue the story. Optional AI models require your explicit selection.";
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 async function playWelcome(turn){
@@ -650,7 +678,7 @@ qs(".crumb.active").onclick=backOneLevel;
 window.addEventListener("keydown",e=>{if(e.key==="Escape"&&!workspace.classList.contains("hidden")){closeWorkspace();return}if(e.key==="Escape"){e.preventDefault();backOneLevel()}});
 micBtn.onclick=()=>void toggleMic();
 qs('#guideExplore').onclick=()=>{qs('#enterBrainBtn').click();};
-reasonBtn.onclick=enableGemma;
+reasonBtn.onclick=()=>{optionalModelOptIn=true;void enableGemma();};
 qs("#loadBrowserVoice").onclick=enableBrowserVoice;
 qs("#voiceExpression").onchange=e=>{silenceSpeechOnly();browserVoice.exaggeration=Number(e.target.value);qs("#voiceLoadStatus").textContent=`Delivery set to ${e.target.selectedOptions[0].text.toLowerCase()}.`;};
 qs("#voicePace").onchange=e=>{browserVoice.setPace(e.target.value);welcomePlayer.setPace(browserVoice.playbackRate);};
