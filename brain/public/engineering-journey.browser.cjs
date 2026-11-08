@@ -34,6 +34,8 @@ const {chromium}=require('playwright');
     stop:async()=>{globalThis.__voiceEvents.push({type:'speech.stop'});return{state:'STOP_REQUESTED'};}
    };
   });
+  // Preserve the separately merged public intro gate and exercise the underlying story CTA.
+  if(await page.locator('#leewayIntroGate').count())await page.locator('#introSkip').click();
   await page.locator('#introStoryTalk').click();
   await page.waitForFunction(()=>document.querySelector('#agentText')?.textContent?.includes('Before LeeWay had a Runtime'),{timeout:10000});
   const first=await page.evaluate(()=>({
@@ -56,11 +58,23 @@ const {chromium}=require('playwright');
   assert.ok(second.speechRequests>=2);
   await page.locator('#agentEndVoice').click();
   await page.waitForFunction(()=>document.querySelector('#micBtn')?.dataset?.mode==='muted');
+  // The user-requested Guided Tour must genuinely request the microphone and produce project narrations.
+  await page.locator('#tourBtn').click();
+  await page.waitForFunction(()=>document.querySelector('#agentState')?.textContent?.includes('Guided journey complete'),{timeout:15000});
+  const tour=await page.evaluate(()=>({
+    micMode:document.querySelector('#micBtn')?.dataset?.mode,
+    speechRequests:globalThis.__voiceEvents.filter(x=>x.type==='speech.request').length,
+    finalState:document.querySelector('#agentState')?.textContent||''
+  }));
+  assert.equal(tour.micMode,'listening');
+  assert.ok(tour.speechRequests>=12,'core tour should speak the story and all ten core chapter summaries');
+  await page.locator('#agentEndVoice').click();
+  await page.waitForFunction(()=>document.querySelector('#micBtn')?.dataset?.mode==='muted');
   const result={
     class:'STRUCTURAL_CHROMIUM_ONLY',publicMachineConsciousness:'NOT_EXECUTED',physicalMicrophone:'MOCKED',
-    audioPlayback:'MOCKED',humanHearing:'NOT_EXECUTED',scenario:'one-click entry, story answer, citations, follow-up without second mic click, mute',
+    audioPlayback:'MOCKED',humanHearing:'NOT_EXECUTED',scenario:'one-click entry, source references, spoken follow-up, guided ten-core chapter tour, mute',
     initial:{mode:first.micMode,sources:first.sources,speechRequests:first.speechRequests},
-    continued:second,muted:true,
+    continued:second,tour,muted:true,
     pageErrors:errors
   };
   fs.writeFileSync('engineering-journey-browser-structural.json',JSON.stringify(result,null,2));
