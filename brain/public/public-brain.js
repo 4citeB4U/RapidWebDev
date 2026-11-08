@@ -677,8 +677,8 @@ async function startEngineeringJourney(){
  await handleAgentCommand('tell me the story');
  if(conversationSession.state!=='listening')agentState.textContent='Story available as text. Allow microphone access to continue hands-free.';
 }
-window.addEventListener('leeway-start-engineering-conversation',()=>{void startEngineeringJourney();});
-document.addEventListener('visibilitychange',()=>{
+if(typeof window!=='undefined')window.addEventListener('leeway-start-engineering-conversation',()=>{void startEngineeringJourney();});
+if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{
  // Microphone privacy: backgrounding the page mutes capture rather than silently keeping it alive.
  if(document.hidden&&conversationSession.requested)endVoice();
 });
