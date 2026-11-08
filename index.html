@@ -37,10 +37,11 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
       </div>
     </div>
     <div class="intro-story-actions">
-      <button id="introStoryBegin" type="button">Begin the story</button>
+      <button id="introStoryTalk" type="button" aria-label="Start an interactive narrated engineering journey with Agent Lee">Talk with Agent Lee</button>
+      <button id="introStoryBegin" type="button">Play recorded introduction</button>
       <button id="introStorySkip" type="button" class="intro-story-skip">Skip</button>
     </div>
-    <div id="introStoryStatus" class="intro-story-status">Prepared Voice One narration · the brain initializes behind the glass</div>
+    <div id="introStoryStatus" class="intro-story-status" role="status">Choose Talk with Agent Lee to request microphone permission once. The microphone stays active until muted while this tab is visible. Recorded introduction needs no microphone.</div>
   </div>
 </section>
 <div id="app">
@@ -171,9 +172,11 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
         <button id="agentBubbleClose" aria-label="Close Agent Lee" title="Close Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
       <div class="speech-balloon lee-balloon"><span class="bubble-speaker">Agent Lee</span><div id="agentText">Agent Lee is connecting to the LeeWay fabric authorities. Project navigation remains available while live capabilities verify.</div>
-      </div><div class="speech-balloon user-balloon hidden" id="userBalloon"><span class="bubble-speaker">You</span><div id="agentTranscript" class="agentTranscript"></div></div>
+      </div>
+      <details id="agentEvidence" class="chat-drawer" hidden><summary>Sources for this answer</summary><ul id="agentEvidenceList"></ul></details>
+      <div class="speech-balloon user-balloon hidden" id="userBalloon"><span class="bubble-speaker">You</span><div id="agentTranscript" class="agentTranscript"></div></div>
       <div class="voice-controls" aria-label="Conversation controls">
-        <button id="agentWelcome">Meet Agent Lee</button><button id="guideExplore">Explore projects</button>
+        <button id="agentWelcome">Meet Agent Lee</button><button id="agentEngineeringStory" type="button">Engineering journey</button><button id="guideExplore">Explore projects</button>
           <button id="agentStartVoice" aria-pressed="false">Start live conversation</button>
         <button id="agentStop">Stop speaking</button>
         <button id="agentEndVoice">Mute</button>
@@ -199,7 +202,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
         <button id="downloadAgentDraft" disabled>Download answer</button>
         <p><a href="https://github.com/4citeB4U/LeeWay-Agent-Skills" target="_blank" rel="noopener">Canonical LeeWay Skills</a> · <a href="https://github.com/4citeB4U/Leeway-formula-live" target="_blank" rel="noopener">Canonical Formula</a></p>
       </details>
-      <p class="guide-note">Agent Lee uses the governed LeeWay fabrics. Browser-local model downloads are not required for the normal experience.</p>
+      <p class="guide-note">Engineering journey answers use public LeeWay sources without an LLM. Speech uses the selected LeeWay Voice Fabric provider; microphone transcription uses the existing browser speech-recognition adapter. A qualified public Machine Consciousness connection is pending. Mute ends listening. Optional AI models require explicit selection.</p>
       <details id="fullAISetup" class="browser-ai-setup fabric-status-panel">
         <summary>LeeWay fabric status</summary>
         <p id="fabricStatusSummary">Connecting Voice Fabric, Runtime Fabric, Agent Skills and Formula Live…</p>
