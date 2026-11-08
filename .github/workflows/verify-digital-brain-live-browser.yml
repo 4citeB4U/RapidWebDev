@@ -25,7 +25,7 @@ jobs:
           npm init -y >/dev/null 2>&1
           npm install --no-save playwright@1.55.0
           npx playwright install --with-deps chromium
-      - name: Wait for repaired threadpilot2 deployment
+      - name: Wait for current Digital Brain deployment
         shell: bash
         run: |
           set -euo pipefail
@@ -33,8 +33,8 @@ jobs:
           ok=0
           for i in $(seq 1 30); do
             body="$(curl -fsSL --max-time 20 "$URL" || true)"
-            if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot2' \
-              && printf '%s' "$body" | grep -q 'public-brain.js?v=20260928-threadpilot2'; then
+            if printf '%s' "$body" | grep -q '/brain/public/thread-workplane.js?' \
+              && printf '%s' "$body" | grep -q '/brain/public/public-brain.js?'; then
               ok=1
               break
             fi
