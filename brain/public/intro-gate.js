@@ -19,7 +19,7 @@
  const timer=setInterval(refresh,500);refresh();
  addEventListener('leeway-intro-complete',()=>{completed=true;enter.disabled=!brainReady();q('#introAgentStatus').textContent='Introduction complete · Digital Brain ready when loading finishes.';refresh()});
  begin.addEventListener('click',()=>{if(started)return;started=true;begin.disabled=true;q('#introAgentStatus').textContent='Agent Lee is introducing the LeeWay public working estate.';const mic=document.querySelector('#micBtn');if(mic)mic.click();else{q('#introAgentStatus').textContent='Voice controls are still loading. You can read the introduction below.';enter.disabled=!brainReady();}refresh()});
- const close=()=>{clearInterval(timer);gate.classList.add('intro-gate-hidden');gate.setAttribute('aria-hidden','true')};
+ const close=()=>{if(gate.contains(document.activeElement))document.activeElement.blur();clearInterval(timer);gate.classList.add('intro-gate-hidden');gate.setAttribute('aria-hidden','true')};
  enter.addEventListener('click',close);
  skip.addEventListener('click',()=>{document.querySelector('#agentStop')?.click();completed=true;close()});
  addEventListener('pagehide',()=>clearInterval(timer),{once:true});

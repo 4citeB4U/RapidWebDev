@@ -18,6 +18,13 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
 <link rel="icon" type="image/png" href="/brain/public/brand/leeway-official-logo.png">
 <title>Rapid Web Develop — LeeWay Digital Brain</title>
+<script>
+  // Voice capture requires a secure context. Preserve the canonical host while
+  // repairing legacy HTTP entry links before any microphone code initializes.
+  if (location.protocol === 'http:' && /^(rapidwebdevelop\.com|www\.rapidwebdevelop\.com)$/i.test(location.hostname)) {
+    location.replace('https://' + location.hostname + location.pathname + location.search + location.hash);
+  }
+</script>
 <script type="importmap">{"imports":{"three":"/brain/public/vendor/three.module.js","three/addons/":"/brain/public/vendor/"}}</script>
 <link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-browser4">
 <link rel="stylesheet" href="/brain/public/experience.css?v=20260928-logo1">
