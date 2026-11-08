@@ -16,7 +16,8 @@
     "Private repository source URLs must not be publicized.",
     "Historical/optional entries are not automatically current canonical authority.",
     "No arbitrary word overlap is sufficient to attach evidence to a repository.",
-    "A verified configuration value for a website URL is a discoverable preview, not proof of live inference or backend execution."
+    "A verified configuration value for a website URL is a discoverable preview, not proof of live inference or backend execution.",
+    "LeeWay Engineering is an education/conformance source, not an independent constitutional, execution, Formula or Veritas authority."
   ],
   "currentStandardsRegistrySpine": [
     {
@@ -263,6 +264,14 @@
       "why": "Represents the primary LeeWay operating-system interface and governed application shell.",
       "sourceUrl": "https://github.com/4citeB4U/leeway-ecosystemv2.14",
       "verification": "PUBLIC_SOURCE_ONLY"
+    },
+    {
+      "name": "LeeWay-Engineering",
+      "role": "LeeWay Engineering education and conformance method",
+      "why": "Documents the Creator's iterative investigate, diagnose, plan, implement, test, validate, repair, retest, verify, evidence, checkpoint and continue discipline; teaches contributors without replacing Standards or Receipt Authority.",
+      "sourceUrl": "https://github.com/4citeB4U/LeeWay-Engineering",
+      "verification": "PUBLIC_SOURCE_ONLY",
+      "group": "Education"
     }
   ]
 }
