@@ -69,7 +69,14 @@ async function fetchGithubRepos(){
  return sets.flat().filter(r=>r&&r.owner?.login==="4citeB4U"&&!r.private);
 }
 function groupFor(x){return x.kind==="evidence"?"Evidence":x.group||"Other Projects"}
-function categoryFor(x){const g=groupFor(x);if(g==="Evidence")return "__evidence_rail__";return categoryDefs.find(c=>c.groups.includes(g))?.id||"cat::other"}
+function categoryFor(x){
+ const g=groupFor(x);
+ if(g==="Evidence")return "__evidence_rail__";
+ if(x.core_scope==="CORE"||x.core_priority)return "cat::core";
+ if(x.core_scope==="DIRECT")return "cat::products";
+ if(x.core_scope==="OPTIONAL")return "cat::other";
+ return categoryDefs.filter(c=>c.id!=="cat::core").find(c=>c.groups.includes(g))?.id||"cat::other";
+}
 function setWorldTransform(){world.style.setProperty("--graph-inverse",String(1/scale));world.style.transform=`translate(calc(-50% + ${panX}px),calc(-50% + ${panY}px)) scale(${scale})`;window.__leewayGraphCamera={z:scale/4}}
 function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
 function hexRgb(hex){const h=String(hex||"#50e6ff").replace("#","");const n=parseInt(h.length===3?h.split("").map(c=>c+c).join(""):h,16);return {r:(n>>16)&255,g:(n>>8)&255,b:n&255}}
@@ -239,11 +246,15 @@ function renderNodes(filter=""){
  }
 }
 function narrationFor(x){
- if(x.id==="center")return "This is the LeeWay Digital Brain. Explore the five categories to see projects, source code and supporting evidence. What would you like to explore?";
- if(x.id?.startsWith("cat::"))return `${x.label} contains ${items.filter(y=>categoryFor(y)===x.id).length} records. Choose a project for its overview, website, files or evidence.`;
- if(x.kind==="evidence")return `${x.label}. ${x.summary||"This reference is part of the LeeWay research archive."}`;
- const status=x.live_url?"A website link is available; its current runtime health has not been checked.":x.repo_url?"Source code is available on GitHub.":"No public website is linked.";
- return `${x.label}. ${x.summary||x.desc||"A project in the LeeWay ecosystem."} ${status} What would you like to know about it?`;
+ if(x.id==="center")return "Welcome to the LeeWay Digital Brain. This is the Creator's engineering journey—from the reason the system was imagined, through the designs, rebuilding, Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the evidence that separates source code from actual execution.";
+ if(x.id?.startsWith("cat::"))return `${x.label} contains ${items.filter(y=>categoryFor(y)===x.id).length} records. The group is based on LeeWay's documented roles, rather than repository name guesses. Choose a project to learn why it was built and what its evidence proves.`;
+ if(x.kind==="evidence")return `${x.label}. ${x.summary||"This artifact belongs to the public historical research archive; it is not automatically evidence for every project."}`;
+ if(x.core_role){
+  const source=x.repo_url?"The named GitHub repository source is available.":"No public source link is exposed for this record.";
+  return `${x.label}: ${x.core_role}. ${x.summary} ${source} Portfolio evidence state: ${x.evidence_state}. A repository or configured link does not establish successful production execution.`;
+ }
+ const status=x.live_url?"A website link is configured; its backend execution has not been verified.":x.repo_url?"Public source is listed; current runtime operation has not been verified.":"No public repository or live execution is linked.";
+ return `${x.label}. ${x.summary||x.desc||"A project in the Creator's software portfolio."} ${status} Ask me why it was developed or view its exact evidence.`;
 }
 async function projectEvidenceContext(x){
  const ctx={
@@ -830,7 +841,7 @@ function materializeProjects(source,overrides){
 }
 function applyProjectSource(source,overrides){
  const spoken=voiceController.epoch>0?{text:agentText.textContent,narration:agentNarration.textContent}:null;
- projects=materializeProjects(source,overrides);
+ projects=globalThis.LeeWayCorePortfolio?.enrich(materializeProjects(source,overrides))||materializeProjects(source,overrides);
  items=[...projects,...evidence];
  qs("#projectCount").textContent=`PROJECTS ${projects.length}`;
  qs("#evidenceCount").textContent=`EVIDENCE ${evidence.length}`;
@@ -846,6 +857,8 @@ async function boot(){
   fetch("/brain/project-catalog.json").then(r=>r.json()).catch(()=>({projects:[]})),
   fetch("/brain/agent-lee-persona-public.json").then(r=>r.json()).catch(()=>null)
  ]);
+ // Keep the original catalog available if the supplemental core roster cannot load.
+ try{await globalThis.LeeWayCorePortfolio?.load();}catch(error){console.warn('LeeWay core reconciliation unavailable:',error.message);}
  agentPersona=persona;
  decks=visuals.decks||[];
  evidence=(estate.evidence||[]).filter(x=>x.file).map(x=>({id:"evidence::"+x.id,label:x.title,summary:x.summary,group:"Evidence",type:x.type,url:"/leeway-brain/"+String(x.file).replace(/^\/+/, ""),date:x.date,evidence_state:"PUBLIC REFERENCE",kind:"evidence"}));
