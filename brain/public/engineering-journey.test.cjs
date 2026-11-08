@@ -29,6 +29,7 @@ test('engineering story uses first-party sources and no model or execution claim
     ['Explain the Formula','formula'],
     ['What is Machine Consciousness?','consciousness'],
     ['Tell me about Voice Fabric','voice'],
+    ['Why did you create Agent Lee?','identity'],
     ['What is Device Bridge?','devices'],
     ['What is the future of LeeWay?','next']
   ]){
@@ -60,7 +61,7 @@ test('ordinary unrelated requests do not get fictional answers',()=>{
 });
 test('published chapters are bounded and do not claim production acceptance',()=>{
   const j=load();
-  assert.equal(j.chapters.length,8);
+  assert.equal(j.chapters.length,9);
   const text=j.chapters.map(c=>c.title).join(' ');
   assert.match(text,/method|journey|machine|voice/i);
 });
