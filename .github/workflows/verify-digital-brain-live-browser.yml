@@ -77,6 +77,13 @@ jobs:
                 return !node || node.classList.contains('intro-gate-hidden');
               });
             }
+            const story=page.locator('#introStoryGlass');
+            if(await story.isVisible().catch(()=>false)){
+              const skipStory=page.locator('#introStorySkip');
+              if(await skipStory.isVisible().catch(()=>false)) await skipStory.click();
+              else await page.locator('#introStoryTalk').dispatchEvent('click');
+              await page.waitForFunction(()=>!document.querySelector('#introStoryGlass'));
+            }
             await page.click('#agentStartupStatus');
             await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
             await page.click('#agentNewSide');
