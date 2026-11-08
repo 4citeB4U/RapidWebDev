@@ -67,6 +67,16 @@ jobs:
             }));
             if(!Object.values(loaded).every(Boolean))throw new Error('Thread/voice pilot globals are incomplete: '+JSON.stringify(loaded));
             if(!String(initial).includes('/8 hands active'))throw new Error('Eight-hand status is not visible: '+initial);
+            const introGate=page.locator('#leewayIntroGate');
+            if(await introGate.isVisible().catch(()=>false)){
+              const skip=page.locator('#introSkip');
+              if(await skip.isVisible().catch(()=>false)) await skip.click();
+              else if(await page.locator('#introEnter').isEnabled().catch(()=>false)) await page.locator('#introEnter').click();
+              await page.waitForFunction(()=>{
+                const node=document.querySelector('#leewayIntroGate');
+                return !node || node.classList.contains('intro-gate-hidden');
+              });
+            }
             await page.click('#agentStartupStatus');
             await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
             await page.click('#agentNewSide');
