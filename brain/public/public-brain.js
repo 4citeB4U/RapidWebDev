@@ -1,3 +1,16 @@
+/*
+LEEWAY HEADER — DO NOT REMOVE
+REGION: LEEWAY.RAPIDWEBDEV.PUBLIC_BRAIN
+TAG: LEEWAY.RAPIDWEBDEV.AGENT_LEE_CONVERSATION_ENTRYPOINT
+5WH:
+WHAT = Preserve the existing public Digital Brain and add source-grounded engineering journey narration.
+WHY = Provide bounded non-LLM engineering-story responses through existing microphone/session and canonical Voice Fabric.
+WHO = LeeWay Industries / Creator-authorized RapidWebDev contributors.
+WHERE = brain/public/public-brain.js in 4citeB4U/RapidWebDev.
+WHEN = 2026-11-08 scoped addition; original source/history preserved.
+HOW = Route documented questions before optional model chat; stop spoken work on existing interruption controls.
+LICENSE = Existing repository terms unchanged; no new license asserted.
+*/
 const qs=s=>document.querySelector(s);
 const world=qs("#world"),nodesEl=qs("#nodes"),edges=qs("#edges"),track=qs("#carouselTrack"),search=qs("#searchBox");
 const hud=qs("#hud"),workspace=qs("#workspace"),workspaceBody=qs("#workspaceBody"),workspaceTitle=qs("#workspaceTitle"),workspaceKicker=qs("#workspaceKicker");
@@ -385,7 +398,7 @@ const voiceController=new LeeWayVoiceController({
 });
 const browserListener=new LeeWayBrowserListener({
  onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"Local speech recognition ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
- onSpeech:()=>{LeeWayVoiceMetrics.record("speech-onset");speechArbiter.pauseCurrent();const active=speechArbiter.active?.thread;pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;},
+ onSpeech:()=>{void globalThis.LeeWayPortfolioVoiceSession?.stop();LeeWayVoiceMetrics.record("speech-onset");speechArbiter.pauseCurrent();const active=speechArbiter.active?.thread;pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;},
  onListening:active=>{voiceController.listening=active;listening=active;micBtn.classList.toggle("listening",active);if(!active&&conversationSession.requested&&conversationSession.state==="listening")conversationSession.mute();},
  onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");const route=pendingVoiceThreadId;pendingVoiceThreadId=null;void handleAgentCommand(text,route)},
  onMetric:(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail),
@@ -451,7 +464,7 @@ function cancelAgentGeneration(){
  if(hand?.workId)threadWorkplane.cancelWork(hand.workId);
  voiceController.stop();gemmaGenerating=false;
 }
-function silenceSpeechOnly(){browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();qs("#savedVoiceSample")?.pause();}
+function silenceSpeechOnly(){void globalThis.LeeWayPortfolioVoiceSession?.stop();browserListener.cancelUtterance();welcomePlayer.stop();speechArbiter.cancelSpeech();qs("#savedVoiceSample")?.pause();}
 function endVoice(){conversationSession.mute()}
 async function askRuntimeFabric(question,work,thread){
  if(!globalThis.LeeWayEcosystemFabric)return null;
@@ -529,7 +542,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
  if(globalThis.LeeWayPauseIntent?.(text)){speechArbiter.pauseCurrent();return;}
  if(globalThis.LeeWayResumeIntent?.(text)){await speechArbiter.resumeCurrent();return;}
- if(LeeWayStopIntent(text)){speechArbiter.cancelSpeech();return;}
+ if(LeeWayStopIntent(text)){void globalThis.LeeWayPortfolioVoiceSession?.stop();speechArbiter.cancelSpeech();return;}
  let thread;
  if(/^(?:main|main chat|main task)[:,]?\s+/i.test(text)){text=text.replace(/^(?:main|main chat|main task)[:,]?\s+/i,'');thread=threadWorkplane.mainThread;}
  else if(/^(?:side|side chat)[:,]?\s+/i.test(text)){text=text.replace(/^(?:side|side chat)[:,]?\s+/i,'');thread=threadWorkplane.getThread(selectedThreadId)?.kind==='side'?threadWorkplane.getThread(selectedThreadId):createSideThread();}
@@ -540,6 +553,24 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  browserListener.cancelUtterance();
  const navigation=navigateAgentRequest(text);
  if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
+ const narrative=globalThis.LeeWayEngineeringJourney?.answer(text);
+ if(narrative){
+  // Curated public narrative: no Formula evaluation, native action, or LLM execution is claimed.
+  thread.lastOutput=narrative.text;
+  if(selectedThreadId===thread.id){agentText.textContent=narrative.text;agentNarration.textContent=narrative.text;}
+  completedDraft=narrative.text;qs('#downloadAgentDraft').disabled=false;
+  recordChat('Agent Lee · '+threadDisplay(thread)+' · engineering journey',narrative.text);
+  threadWorkplane.remember(thread.id,'assistant',narrative.text);
+  agentState.textContent=narrative.title+' · '+narrative.sources.length+' documented sources · no LLM';
+  renderThreadState();
+  if(conversationSession.state==='listening'&&globalThis.LeeWayPortfolioVoiceSession){
+   void globalThis.LeeWayPortfolioVoiceSession.speak(narrative.text).then(result=>{
+    if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=narrative.title+' · Voice Fabric response returned; acoustic playback not independently verified.';
+    else if(result?.state!=='SUPERSEDED')agentState.textContent=narrative.title+' · Voice Fabric '+String(result?.state||'unavailable');
+   }).catch(error=>{agentState.textContent=narrative.title+' · Voice One unavailable: '+String(error.message||error);});
+  }
+  return narrative.text;
+ }
  const fabric=globalThis.LeeWayEcosystemFabric;
  if(fabric?.state?.status==="AUTHORITY_CONNECTED"&&fabric?.state?.runtime?.status==="ok"&&fabric?.state?.agent?.status==="ACTIVE_HEALTHY"){
   const submitted=threadWorkplane.submit(thread.id,text,(work,t)=>askRuntimeFabric(text,work,t),{resource:'runtime-fabric',priority:thread.kind==='side'?90:70});
