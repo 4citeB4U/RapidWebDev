@@ -639,6 +639,7 @@ async function playWelcome(turn){
  try{await welcomePlayer.play(turn.signal);if(voiceController.current(turn.epoch)){voiceController.remember("assistant",WELCOME_TEXT);agentState.textContent=browserListener.active?"I'm listening. Ask me a question.":voiceConnecting?"Allow microphone access to speak with me. The recorded guide is ready.":"Guide complete. Explore projects now, or enable optional full AI for conversation.";}}
  catch(error){if(error.name!=="AbortError"&&voiceController.current(turn.epoch))agentState.textContent=error.message;}
 }
+qs('#agentEngineeringStory').onclick=()=>{void startEngineeringJourney();};
 qs('#agentWelcome').onclick=()=>{silenceSpeechOnly();const turn={epoch:voiceController.epoch,signal:voiceController.controller.signal};void playWelcome(turn);};
 const conversationSession=new LeeWayConversationSession({
  // Capture and recognition are independent of the optional reasoning/voice models.
@@ -656,10 +657,31 @@ async function toggleMic(){
  openAgentBubble(false);
  const starting=!conversationSession.requested;
  const opening=conversationSession.toggle();
- // Play from the same user gesture; neither permission nor model loading gates the welcome.
+ // Preserve the existing prepared welcome when the visitor explicitly taps the portrait.
  if(starting)void playWelcome({epoch:voiceController.epoch,signal:voiceController.controller.signal});
  await opening;
 }
+async function startEngineeringJourney(){
+ openAgentBubble(false);
+ globalThis.LeeWayEngineeringJourney?.reset();
+ if(!conversationSession.requested){
+  // A direct click requests microphone permission. Recognition and Voice Fabric are independent.
+  const opening=conversationSession.toggle();
+  void globalThis.LeeWayPortfolioVoiceSession?.prime().catch(error=>{
+   if(conversationSession.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);
+  });
+  await opening;
+ }
+ // This skips the separate prerecorded welcome so it cannot speak over the live story.
+ silenceSpeechOnly();
+ await handleAgentCommand('tell me the story');
+ if(conversationSession.state!=='listening')agentState.textContent='Story available as text. Allow microphone access to continue hands-free.';
+}
+window.addEventListener('leeway-start-engineering-conversation',()=>{void startEngineeringJourney();});
+document.addEventListener('visibilitychange',()=>{
+ // Microphone privacy: backgrounding the page mutes capture rather than silently keeping it alive.
+ if(document.hidden&&conversationSession.requested)endVoice();
+});
 async function startTour(){
  silenceSpeechOnly();const epoch=++tourEpoch;
  const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").slice(0,8);
