@@ -78,6 +78,9 @@ test('tour covers genuine engineering spine and real selected speaker, never a t
  const end=brain.indexOf('function fit()',start);
  const tourSource=brain.slice(start,end);
  assert.match(tourSource,/conversationSession\.toggle\(\)/);
+ const html=fs.readFileSync(__dirname+'/../../index.html','utf8');
+ assert.ok(html.includes('id="agentGuidedTour"'),'mobile-accessible voice tour control');
+ assert.ok(brain.includes("qs('#agentGuidedTour').onclick=()=>{void startTour();}"));
  assert.match(tourSource,/LeeWayCorePortfolio\?\.tour\(\)/);
  assert.match(tourSource,/await speakFromFabric\(chapter\.text,chapter\.title\)/);
  assert.doesNotMatch(tourSource,/setTimeout\(/);
