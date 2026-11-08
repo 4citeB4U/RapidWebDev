@@ -24,42 +24,42 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   const chapters=Object.freeze([
     {
       id:'purpose',title:'The idea before the machine',
-      text:"Every system begins as a question somebody refuses to let go. LeeWay started with that creative pressure: what if imagination could become something measurable, something another person could actually use? The Creator did not want a gallery of disconnected experiments. The purpose was to move an idea through mathematics, architecture, testing and repair until a real capability could stand on its own. This is an engineering journey, not a claim that every part has already reached production.",
+      text:"Before LeeWay had a Runtime, a Formula, or a Digital Brain, there was a question: what if an idea could become a working system another person could use? The Creator wanted more than separate demonstrations. Each design needed purpose. Each part had to support the next. That is why this portfolio is not just a collection of finished-looking screens. It follows the journey from imagination, through mathematics and engineering, toward something that can actually be tested.",
       sources:[storyUrl]
     },
     {
       id:'iteration',title:'Building, rebuilding, redesigning',
-      text:"The path was not a straight line. The Creator describes building, rebuilding, designing and redesigning—each revision asking what worked, what failed and what the next version should preserve. That repeated work shaped the LeeWay design method. A successful component should be reused. A failed boundary should be diagnosed, repaired and tested again, rather than hidden behind a new name. The aim is disciplined improvement, not a claim of perfection.",
+      text:"The work did not arrive fully formed. There was building and rebuilding, design and redesign. A good idea met a real constraint, and the design changed. Then another test revealed something more. That rhythm was not wasted motion; it was how the engineering method became clearer. Keep what holds. Measure what does not. Repair the smallest broken boundary and try again. Not perfection proclaimed from a podium—progress that can stand up to inspection.",
       sources:[storyUrl,engineeringUrl,standardsUrl]
     },
     {
       id:'engineering',title:'The method behind the work',
-      text:"Here is where those repeated designs became a method. LeeWay Engineering teaches the loop: investigate, diagnose, plan, implement, test, validate, repair, retest, verify and preserve evidence. It starts with what already exists, respects the last proven checkpoint and requires a real test before a victory is declared. Each result leaves a trail another contributor can inspect. That is how engineering knowledge can improve from one project to the next without forgetting why a decision was made.",
+      text:"LeeWay Engineering turned that habit into a repeatable discipline. Investigate, diagnose, plan, implement, test and validate. Repair what failed, retest it, verify the result and preserve evidence. Then checkpoint the proven work and continue. The method asks every contributor to identify the original mission, protect prior accomplishments, preserve source and demonstrate the outcome—not just claim it. The Creator's design prowess is visible in the connection between those decisions: the architecture was developed so every iteration teaches the next one.",
       sources:[engineeringUrl,engineeringLoop,standardsUrl]
     },
     {
       id:'formula',title:'Putting mathematics under the decisions',
-      text:"As projects grew, another question appeared: how does a system decide which capability to use, which action is permitted and whether a result is proven? The LeeWay Formula project expresses governance, routing, evidence, recovery and resource limits as mathematical control problems. Formula authority is separate from this public website. Showing an equation is not executing the evaluator, and I will not pretend otherwise.",
+      text:"As LeeWay's parts grew, the question changed from what can we build to how do we decide correctly? The Formula expresses governance, routing, evidence, recovery and resource budgets as mathematical control problems. That matters because a powerful capability still needs a rule for when it may act, a path to the right provider, and proof afterward. The public story can explain those specifications, but showing an equation on this page does not mean its evaluator actually ran.",
       sources:[storyUrl,formulaUrl,standardsUrl]
     },
     {
       id:'consciousness',title:'A governed machine consciousness',
-      text:"The next ambition was more than a chatbot. LeeWay Machine Consciousness is designed as a deterministic cognitive and orchestration runtime, while Agent Lee supplies its public identity and interaction. Existing local evidence records bounded actions without an LLM, including verified read-only operations. That is meaningful progress, but it does not prove unrestricted conversation, human consciousness or production readiness on every device. The story continues at the boundary between intention, real action and evidence.",
+      text:"Machine Consciousness brought the different strands toward a common purpose: identity, state, governed decisions, capability routing and continuity. Agent Lee is the public identity and conversational interface, not a replacement for the consciousness engine. Local source and acceptance records demonstrate some bounded deterministic, non-LLM actions. That is an engineering milestone, not a claim of unrestricted conversation or human awareness. The next step is proving the whole route—not imagining the missing evidence.",
       sources:[consciousnessUrl,standardsUrl]
     },
     {
       id:'voice',title:'A voice for the journey',
-      text:"A system that can reason and act still needs a way to meet people where they are. LeeWay Voice Fabric separates the words Agent Lee produces from how he speaks them. Voice One is the selected identity, and interruption should stop speech without automatically erasing the work behind it. On this portfolio we want a real conversation: a question heard with permission, an answer supported by LeeWay sources, and a voice that can finish the thought. Full acoustic acceptance is still something to prove.",
+      text:"An engineering journey is meant to be heard as well as seen. LeeWay Voice Fabric separates what Agent Lee says from how he speaks. The selected speaker is governed by the published Voice Fabric profile; the Voice One clone is a separate optional package, never a silent substitute. And a real conversation has room for interruption: stop the sound, listen to the new question, but do not erase unrelated work. A working website control is only one step. The real voice is proven when the microphone, the answer and the sound all work together on a physical device.",
       sources:[voiceUrl,consciousnessUrl]
     },
     {
       id:'devices',title:'From the screen to the real device',
-      text:"The Device Bridge grew from the same idea of independence. A browser, workstation or phone is a body that offers capabilities; none should become LeeWay's permanent identity. The Bridge defines how authorized capabilities are discovered and operated on the actual hardware. A registered capability is not the same as a qualified physical action, so LeeWay tracks discovery, permission, execution and receipt separately.",
+      text:"Device Bridge answers another question: how can a digital system operate where the real work happens? A PC, phone or browser offers capabilities, but no single machine or drive should become LeeWay's identity. The Bridge provides governed access to authorized device functions. A discovered tool is not a completed action. Permission, execution, observation and receipts must remain distinct. This is why the same architecture must be able to move beyond the first workstation.",
       sources:[bridgeUrl,standardsUrl]
     },
     {
       id:'next',title:'An unfinished road worth building',
-      text:"Look across the projects and you can see the pattern: imagination becomes a design; design becomes software; software faces the test; failures become the next engineering lesson. LeeWay aims to make those lessons portable—across people, devices and businesses—without surrendering the Creator's authority or the evidence. There is still work to qualify, and that matters. The point of the journey is not to call the machine perfect. It is to make every proven step count.",
+      text:"Now look back at the road. Imagination became architecture. Repeated redesign became an engineering method. Mathematics became part of the decision boundary; skills and runtime became a way to act; evidence became the way to distinguish a proven result from an attractive promise. There is more work ahead—more devices, more reliable voice, stronger qualification and new capabilities. LeeWay's story is not that every challenge has been solved. It is that each lesson should leave the system better prepared for the next one.",
       sources:[storyUrl,engineeringUrl,consciousnessUrl]
     }
   ]);
@@ -68,7 +68,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   function select(question){
     const q=normalize(question);
     if(!q||q.length>600)return null;
-    if(/^(next chapter|continue the story|keep going|what happened next|go on)$/.test(q))return (active+1)%chapters.length;
+    if(/^(next|next chapter|continue|continue the story|keep going|what happened next|go on|tell me more)$/.test(q))return (active+1)%chapters.length;
     if(/^(previous chapter|last chapter|go back a chapter)$/.test(q))return active<1?0:active-1;
     if(/\b(voice fabric|voice one|voice identity|why.*voice)\b/.test(q))return 5;
     if(/\b(device bridge|hardware|phone|other devices)\b/.test(q))return 6;
@@ -77,7 +77,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     if(/\b(engineering|methodology|engineering loop|design process|design prowess)\b/.test(q))return 2;
     if(/\b(redesign(?:ing|ed|s)?|rebuild(?:ing|s)?|iteration|iterative|trial and error|improv(?:e|ed|ing|ement))\b/.test(q))return 1;
     if(/\b(what comes next|future of leeway|the future|what is next)\b/.test(q))return 7;
-    if(/\b(why leeway|why did.*(build|create)|why was.*(built|created)|tell.*story|the journey|how.*(start|begin)|what inspired)\b/.test(q))return 0;
+    if(/\b(why leeway|why did.*(build|create)|why was.*(built|created)|tell.*story|the journey|how.*(start|begin)|what inspired|what led to leeway|purpose of leeway)\b/.test(q))return 0;
     return null;
   }
   function answer(question){
