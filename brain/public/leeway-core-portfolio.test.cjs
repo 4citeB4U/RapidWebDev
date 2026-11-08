@@ -39,7 +39,9 @@ test('core reconciliation preserves wider portfolio while withholding private UR
  const result=c.enrich([
   {repo_name:'LeeWay-Standards',id:'repo::LeeWay-Standards',kind:'project',label:'Standards',repo_url:'https://github.com/4citeB4U/LeeWay-Standards'},
   {repo_name:'Leeway-Runtime-Fabric',id:'repo::Leeway-Runtime-Fabric',kind:'project',repo_url:'https://github.com/4citeB4U/Leeway-Runtime-Fabric'},
-  {repo_name:'OtherPublicProject',id:'repo::OtherPublicProject',kind:'project',evidence_state:'LIVE',repo_url:'https://github.com/4citeB4U/OtherPublicProject'}
+  {repo_name:'OtherPublicProject',id:'repo::OtherPublicProject',kind:'project',evidence_state:'LIVE',repo_url:'https://github.com/4citeB4U/OtherPublicProject'},
+  {id:'estate::original-design',kind:'project',repo_name:null,label:'Original design exhibit'},
+  {id:'estate::historic-concept',kind:'project',repo_name:null,label:'Historic concept exhibit'}
  ]);
  const keys=result.map(x=>x.id);
  assert.equal(keys.length,new Set(keys).size);
@@ -49,6 +51,10 @@ test('core reconciliation preserves wider portfolio while withholding private UR
  const unknown=result.find(x=>x.id==='repo::OtherPublicProject');
  assert.equal(unknown.evidence_state,'PUBLIC WEBSITE LINK · RUNTIME UNVERIFIED');
  assert.ok(result.some(x=>x.core_repo_name==='Machine-Consciousness'));
+ assert.ok(result.some(x=>x.id==='estate::original-design'));
+ assert.ok(result.some(x=>x.id==='estate::historic-concept'));
+ assert.equal(result.find(x=>x.core_repo_name==='LeeWay-Voice-Fabric').live_url,'https://4citeb4u.github.io/LeeWay-Voice-Fabric/');
+ assert.equal(result.find(x=>x.core_repo_name==='RapidWebDev').live_url,'https://rapidwebdevelop.com/');
 });
 test('evidence links are exact repository relations, not shared-word fallback or fake execution',async()=>{
  const c=create();await c.load();
