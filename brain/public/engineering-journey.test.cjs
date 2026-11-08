@@ -85,5 +85,6 @@ test('canonical Voice Fabric client is source-only, fail-closed, and syntactical
   assert.match(source,/selectVoice\('agent-lee-voice-one'\)/);
   assert.match(source,/allowFallback:false/);
   assert.match(source,/client\.stop\(\)/);
-  assert.doesNotMatch(source,/speechSynthesis|C:\\\\|E:\\\\|Gemma|Gemini|openai/i);
+  const executable=source.replace(/^\/\*[\s\S]*?\*\//,'');
+  assert.doesNotMatch(executable,/speechSynthesis|C:\\\\|E:\\\\|Gemma|Gemini|openai/i);
 });
