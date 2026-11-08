@@ -740,14 +740,48 @@ if(typeof document!=='undefined')document.addEventListener('visibilitychange',()
  if(document.hidden&&conversationSession.requested)endVoice();
 });
 async function startTour(){
+ // The tour is a real conversation entry, not a timed slideshow or model-dependent recording.
  silenceSpeechOnly();const epoch=++tourEpoch;
- const seq=projects.filter(p=>p.evidence_state!=="UPSTREAM REFERENCE").slice(0,8);
- for(const p of seq){
-  if(epoch!==tourEpoch)return;
-  selectItem(p.id,false);openWorkspace(p,"overview");
-  const spoken=narrationFor(p);agentText.textContent=spoken;agentNarration.textContent=spoken;await speak(spoken);
-  await new Promise(r=>setTimeout(r,Math.min(16000,Math.max(6500,spoken.split(/\s+/).length*180))));
+ openAgentBubble(false);
+ if(!conversationSession.requested){
+  // The button click is the browser gesture that requests microphone permission.
+  const opening=conversationSession.toggle();
+  void globalThis.LeeWayPortfolioVoiceSession?.prime().catch(error=>{
+   if(epoch===tourEpoch)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);
+  });
+  await opening;
  }
+ if(epoch!==tourEpoch)return;
+ if(conversationSession.state!=='listening'){
+  agentState.textContent='Guided tour needs microphone permission for a hands-free conversation. Typed project exploration remains available.';
+  return;
+ }
+ const stages=globalThis.LeeWayCorePortfolio?.tour()||[];
+ const intro=globalThis.LeeWayEngineeringJourney?.answer('tell me the story');
+ const steps=[];
+ if(intro)steps.push({title:'Why LeeWay began',text:intro.text,sources:intro.sources});
+ for(const stage of stages){
+  const project=projects.find(x=>x.core_repo_name===stage.repoName||x.repo_name===stage.repoName);
+  if(!project)continue;
+  const text='Our next chapter is '+stage.title+'. '+stage.narrative+' '+narrationFor(project);
+  steps.push({title:stage.repoName,text,project,sources:project.repo_url?[project.repo_url]:[]});
+ }
+ if(!steps.length){agentState.textContent='The source-grounded LeeWay tour inventory is unavailable. No invented tour was played.';return;}
+ for(let i=0;i<steps.length;i++){
+  if(epoch!==tourEpoch||conversationSession.state!=='listening')return;
+  const chapter=steps[i];
+  if(chapter.project){selectItem(chapter.project.id,false);openWorkspace(chapter.project,'overview');}
+  agentText.textContent=chapter.text;agentNarration.textContent=chapter.text;
+  showPublicAnswerSources(chapter.sources||[]);
+  agentState.textContent='Guided journey · chapter '+(i+1)+' of '+steps.length+' · '+chapter.title;
+  const result=await speakFromFabric(chapter.text,chapter.title);
+  if(epoch!==tourEpoch)return;
+  if(result?.state!=='VOICE_FABRIC_RESPONSE'){
+   agentState.textContent='Tour stopped: Voice Fabric did not confirm the spoken chapter. No silent slide advancement.';
+   return;
+  }
+ }
+ if(epoch===tourEpoch)agentState.textContent='Guided journey complete. I am still listening for your questions.';
 }
 function fit(){const height=qs("#stage").clientHeight;scale=innerWidth<900?.58:Math.min(.78,Math.max(.38,(height-130)/490));panX=0;panY=0;setWorldTransform()}
 function bindAppearance(){
