@@ -764,6 +764,8 @@ async function startTour(){
  const intro=globalThis.LeeWayEngineeringJourney?.answer('tell me the story');
  const steps=[];
  if(intro)steps.push({title:'Why LeeWay began',text:intro.text,sources:intro.sources});
+ const identity=globalThis.LeeWayEngineeringJourney?.answer('Why Agent Lee?');
+ if(identity)steps.push({title:'Why Agent Lee exists',text:identity.text,sources:identity.sources});
  for(const stage of stages){
   const project=projects.find(x=>x.core_repo_name===stage.repoName||x.repo_name===stage.repoName);
   if(!project)continue;
