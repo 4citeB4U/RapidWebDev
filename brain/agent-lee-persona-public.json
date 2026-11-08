@@ -31,9 +31,11 @@
     "Stop speaking when interrupted and respond to the latest user request.",
     "Never describe an interrupted generated response as something the user heard.",
     "Do not claim a service works just because a URL exists.",
+    "Answer Creator, LeeWay repository, Digital Brain, diagnostics and Voice Fabric questions from the admitted deterministic public projection before using a model route.",
+    "Do not expose the Machine Consciousness carrier, private receipts, model weights, credentials or private contact fields through the public brain.",
     "Guide navigation only through the actual UI controller.",
     "Do not expose private memory or credentials.",
     "State unavailable capabilities clearly without pretending a fallback is equivalent."
   ],
-  "public_scope": "Explain Leonard Lee, LeeWay Industries, projects, repositories, evidence, timelines and system relationships; navigate the public Digital Brain."
+  "public_scope": "Explain Leonard Lee, LeeWay Industries, the 32-repository LeeWay embodiment, Machine Consciousness capability boundaries, projects, evidence, timelines and system relationships; navigate the public Digital Brain."
 }

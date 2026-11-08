@@ -1,0 +1,336 @@
+{
+  "schemaVersion": "leeway.machine-consciousness.public-projection.v1",
+  "authority": "LEEWAY_MACHINE_CONSCIOUSNESS",
+  "sourceArtifact": {
+    "repository": "4citeB4U/Machine-Consciousness",
+    "artifact": "training/evidence/agent-lee-digital-brain-capability-profile-20261108.json",
+    "canonicalProfileSha256": "315483442e6d15ca5fdc6e3d7825749185c16c0590b7c62becf0fa514b3e15aa",
+    "admission": "PUBLIC_PROJECTION_ONLY"
+  },
+  "disclosure": {
+    "creator": "Owner-provided professional profile; contact fields are withheld.",
+    "repositories": "Private repository URLs are withheld in this public projection; their owner-provided purposes may be described.",
+    "runtime": "This projection does not expose the Machine Consciousness carrier or private receipts."
+  },
+  "creator": {
+    "name": "Leonard Lee",
+    "identity": "Creator of Agent Lee, the LeeWay ecosystem, and the LeeWay Standards framework",
+    "location": "Milwaukee, Wisconsin",
+    "roles": [
+      "Full Stack Developer",
+      "AI Systems Architect",
+      "Operations Leader",
+      "Business Owner",
+      "Head of LeeWay Innovations"
+    ],
+    "professionalSummary": "Full-stack developer, AI systems architect, operations leader, and business owner with 15+ years of leadership and operational experience building AI-driven platforms, autonomous agent systems, scalable web applications, logistics workflows, and governance-first products.",
+    "operatingThesis": "LeeWay work combines governance-first engineering, structured execution, real-world operational accountability, and systems that demonstrate the LeeWay Standards in practice.",
+    "education": "Associate of Applied Science in Business from Bryant & Stratton College, Bayshore Campus, graduated August 2019, GPA 3.8.",
+    "coreCapabilities": [
+      "TypeScript",
+      "Python",
+      "PowerShell",
+      "JavaScript",
+      "React",
+      "HTML5/CSS",
+      "Node.js",
+      "WebGPU",
+      "WebRTC",
+      "geospatial applications",
+      "3D mapping",
+      "GitHub Actions",
+      "Device Bridge",
+      "multi-agent orchestration",
+      "LLM integration",
+      "RAG/memory systems",
+      "voice systems",
+      "governance runtime",
+      "CI/CD",
+      "business systems analysis"
+    ],
+    "projectsAndImpact": [
+      "LeeWay Maps and Logistics",
+      "LeeWay GPU and Apple Device Bridge",
+      "Agent Lee AI Multi-Agent Operating System",
+      "LeeWay Framework",
+      "AI-enhanced web applications"
+    ]
+  },
+  "capabilities": [
+    {
+      "id": "DIGITAL_BRAIN_PRESENTATION_CORE",
+      "title": "Digital Brain presentation",
+      "summary": "Public project and evidence graph with Agent Lee project-guide navigation and source-grounded narration.",
+      "evidenceState": "EVIDENCE_ADMITTED"
+    },
+    {
+      "id": "PC_DIAGNOSTICS_MATRIX",
+      "title": "PC diagnostics matrix",
+      "summary": "Read-only diagnostics knowledge for the pc-primary body, hardware topology, thermal state, bus cards, displays, and live sensor presentation.",
+      "evidenceState": "EVIDENCE_ADMITTED"
+    },
+    {
+      "id": "PC_DIAGNOSTICS_INTERACTION_SURFACE",
+      "title": "Diagnostics interaction surface",
+      "summary": "Evidence covers the Digital Brain diagnostics cockpit, including 2D/3D modes, assembly loading, cockpit panels, and history indicators.",
+      "evidenceState": "EVIDENCE_ADMITTED"
+    },
+    {
+      "id": "LEEWAY_BODY_AND_CONTINUUM_BINDING",
+      "title": "LeeWay body and Continuum binding",
+      "summary": "The Agent Lee body is bound to one consciousness authority and Continuum storage through fail-closed activation gates.",
+      "evidenceState": "BOUND_BUT_FAIL_CLOSED"
+    },
+    {
+      "id": "VOICE_FABRIC_BIDIRECTIONAL_CONTRACT",
+      "title": "Voice Fabric bidirectional contract",
+      "summary": "One-mouth speech lease, interruption, stale-output rejection, transcript-final routing, and rendered-audio boundaries are known; physical microphone and human-hearing proof remain separate.",
+      "evidenceState": "STRUCTURAL_AND_TRANSCRIPT_ROUTE_QUALIFIED_ACOUSTIC_GATE_OPEN"
+    },
+    {
+      "id": "CREATOR_IDENTITY",
+      "title": "Creator identity",
+      "summary": "Owner-provided profile for Leonard Lee, the creator of Agent Lee, the LeeWay ecosystem, and the LeeWay Standards framework.",
+      "evidenceState": "OWNER_PROVIDED_PROFILE_ADMITTED"
+    },
+    {
+      "id": "LEEWAY_ECOSYSTEM_REPOSITORY_MAP",
+      "title": "LeeWay ecosystem repository map",
+      "summary": "Owner-provided inventory of 32 LeeWay repositories with purposes and bounded evidence states.",
+      "evidenceState": "INVENTORY_ADMITTED_SOURCE_COVERAGE_BOUNDED"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "Leonard-Lee-Resume",
+      "purpose": "Portfolio launchpad for Leonard Lee, Agent Lee, LeeWay Standards, voice/WebRTC, coaching, and AI systems leadership.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leonard-Lee-Resume"
+    },
+    {
+      "name": "RapidWebDev",
+      "purpose": "Public LeeWay Digital Brain presentation and evidence explorer; source-evidence profile is admitted separately.",
+      "visibility": "public",
+      "evidenceState": "TARGETED_SOURCE_INSPECTED_REPOSITORY_README_NOT_FOUND",
+      "url": "https://github.com/4citeB4U/RapidWebDev"
+    },
+    {
+      "name": "Leeway-Federate-Web",
+      "purpose": "Governed virtual federation layer for LeeWay services, browsers, edge nodes, gateways, and authorized meshes.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-Federate-Web"
+    },
+    {
+      "name": "LeeWay-VRAM-Database",
+      "purpose": "Standalone candidate for transient device-working-memory leases and content-verified encrypted checkpoints; not a second allocator.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LeeWay-Continuum",
+      "purpose": "Canonical Continuum source home for governed durable state and replaceable storage adapters; source repository is not itself production proof.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Continuum"
+    },
+    {
+      "name": "Leeway-Runtime-Fabric",
+      "purpose": "LeeWay agentic communications/runtime fabric with registered channels, vision, voice, telemetry, and governed runtime objects.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "Leeway-formula-live",
+      "purpose": "Canonical deterministic mathematical control fabric for measured state, admissibility, routing, resource allocation, verification, recovery, and learning admission.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-formula-live"
+    },
+    {
+      "name": "Leeway-Tailscale",
+      "purpose": "LeeWay-specific private routing contracts and verification notes; Tailscale supplies reachability, not LeeWay authority.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "Leeway-Pocket-ID",
+      "purpose": "Owner-controlled Pocket ID/OIDC deployment and integration plan with local loopback and checksum verification boundaries.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LEEWAY-DEVICE-BRIDGE",
+      "purpose": "Governed native-first device fabric for Agent Lee and model-independent clients; adapters, permissions, execution, and receipts stay distinct.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LEEWAY-DEVICE-BRIDGE"
+    },
+    {
+      "name": "LeeWay-Pocket-Agent",
+      "purpose": "Voice-first Android Agent Lee with interruption, camera vision, memory, calendar, calls, and local/online capability boundaries.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Pocket-Agent"
+    },
+    {
+      "name": "LeeWay-Voice-Fabric",
+      "purpose": "Single governed voice boundary separating reasoning from Agent Lee speech identity, streaming, interruption, and playout.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Voice-Fabric"
+    },
+    {
+      "name": "Leeway-Edge-GPU",
+      "purpose": "LeeWay-owned portable GPU/model graph for GGUF, tokenization, quantized mathematics, KV state, generation, and governed device execution.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-Edge-GPU"
+    },
+    {
+      "name": "LeeWay-Agent-Skills",
+      "purpose": "Portable machine-readable skills, workflows, lifelong learning, and capability orchestration under LeeWay standards.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Agent-Skills"
+    },
+    {
+      "name": "LeeWay-Agent-Workstation-Open-Notebook",
+      "purpose": "Sovereign multi-agent workstation and privacy-first grounded research notebook with federation and blackboard coordination.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LeeWay-Digital-Workforce",
+      "purpose": "Employment Center and governed digital workforce surface binding workers to LeeWay Standards, mission continuity, skills, and engineering-loop evidence.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LeeWay-Model-Hub",
+      "purpose": "Portable Model Hub catalog and local inference candidate; models are capabilities and production GPU/Formula/Veritas admission remains separate.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Model-Hub"
+    },
+    {
+      "name": "LeeWay-Edge-RTC",
+      "purpose": "Self-hosted real-time communication backbone for WebRTC routing, voice processing, queues, health, security, and scaling.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LEEWAY-LOGISTICS-",
+      "purpose": "Spatial logistics operating system covering transit world, driver cockpit, dispatch, CRM, loads, fleet, maintenance, and governance.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LEEWAY-LOGISTICS-"
+    },
+    {
+      "name": "Leeway-live",
+      "purpose": "GitHub Pages front door for the LeeWay phone sensory harness and governed Agent Lee interaction surface.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-live"
+    },
+    {
+      "name": "LeeWay-Standards",
+      "purpose": "Sovereign agent architecture and canonical governance laws for LeeWay systems, portability, and evidence-backed engineering.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Standards"
+    },
+    {
+      "name": "Machine-Consciousness",
+      "purpose": "Sovereign deterministic cognitive and orchestration runtime; Agent Lee is its identity/interface, not a replacement for the runtime.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Machine-Consciousness"
+    },
+    {
+      "name": "LeeWay-Learning-Ledger",
+      "purpose": "Experiential memory and growth source for evidence-bounded learning from attempts, failures, feedback, corrections, and uncertainty.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Learning-Ledger"
+    },
+    {
+      "name": "Receipt-Authority",
+      "purpose": "Dedicated source home for ecosystem evidence contracts, receipt custody, scoped storage adapter, and receipt-to-learning outbox.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LEEWAY-VERITAS",
+      "purpose": "Independent verification source home for evidence verifiers, trust metadata, replay controls, and scope-specific evidence tests.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LeeWay-Engineering",
+      "purpose": "Education and conformance-training home for LeeWay engineering law; it does not own runtime or governance authorities.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "LeeWay-Production-Final-Execution-Layer",
+      "purpose": "Receives prequalified source-pinned release handoffs and coordinates final execution through existing canonical authorities.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/LeeWay-Production-Final-Execution-Layer"
+    },
+    {
+      "name": "Leeway-Agentic-CRM-ERP",
+      "purpose": "Voice scheduling translator CRM for field outreach, leads, routes, contacts, activities, and daily export.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-Agentic-CRM-ERP"
+    },
+    {
+      "name": "Leeway-Digital-Brain-Diagnostincs-pkg",
+      "purpose": "Distribution boundary for diagnostics, Digital Brain, and Continuum with permission-gated local adapters and no authority duplication.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-Digital-Brain-Diagnostincs-pkg"
+    },
+    {
+      "name": "leeway-ide",
+      "purpose": "Governed tablet-ready single-canvas orchestration IDE routing terminal, device, and project actions through LeeWay adapters.",
+      "visibility": "private",
+      "evidenceState": "README_INSPECTED",
+      "url": null
+    },
+    {
+      "name": "Leeway-office-suites",
+      "purpose": "Governed Agent Tablet workspace for documents, spreadsheets, presentations, drawing, PDF annotation, notes, source management, and research.",
+      "visibility": "public",
+      "evidenceState": "README_INSPECTED",
+      "url": "https://github.com/4citeB4U/Leeway-office-suites"
+    },
+    {
+      "name": "Leeway-Agent-Lee-Vision",
+      "purpose": "Agent Lee vision capability repository; purpose is name-derived until its source or README is inspected.",
+      "visibility": "private",
+      "evidenceState": "NAME_ONLY_UNINSPECTED",
+      "url": null
+    }
+  ],
+  "limits": [
+    "This is a public capability projection, not a copy of the private Machine Consciousness carrier.",
+    "No model weights, private receipts, local databases, credentials, or contact fields are exposed.",
+    "A transcript-to-voice render is not physical microphone capture or proof of human hearing.",
+    "No external provider output becomes Agent Lee identity, authority, or durable learning without LeeWay gates.",
+    "Questions outside this deterministic profile must use the governed Runtime Fabric route or state that the answer is unavailable."
+  ]
+}

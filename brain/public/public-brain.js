@@ -579,6 +579,26 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  showPublicAnswerSources([]);
  const navigation=navigateAgentRequest(text);
  if(navigation){agentText.textContent=navigation;recordChat('Agent Lee · '+threadDisplay(thread),navigation);threadWorkplane.remember(thread.id,"assistant",navigation);void threadSpeech(thread,navigation);return;}
+ const machineAnswer=await globalThis.LeeWayMachineConsciousnessPublic?.answer(text).catch(()=>null);
+ if(machineAnswer){
+  // Public Machine Consciousness projection: deterministic source knowledge, no carrier exposure.
+  thread.lastOutput=machineAnswer.text;
+  if(selectedThreadId===thread.id){agentText.textContent=machineAnswer.text;agentNarration.textContent=machineAnswer.text;}
+  completedDraft=machineAnswer.text;qs('#downloadAgentDraft').disabled=false;
+  const evidencePanel=qs('#agentEvidence'),evidenceList=qs('#agentEvidenceList');
+  if(evidencePanel&&evidenceList){evidenceList.innerHTML=machineAnswer.sources.map(source=>`<li><a target="_blank" rel="noopener" href="${esc(source)}">${esc(source)}</a></li>`).join('');evidencePanel.hidden=false;}
+  recordChat('Agent Lee · '+threadDisplay(thread)+' · Machine Consciousness',machineAnswer.text);
+  threadWorkplane.remember(thread.id,'assistant',machineAnswer.text);
+  agentState.textContent=machineAnswer.title+' · deterministic public projection · no LLM';
+  renderThreadState();
+  if(conversationSession.state==='listening'&&globalThis.LeeWayPortfolioVoiceSession){
+   void globalThis.LeeWayPortfolioVoiceSession.speak(machineAnswer.text).then(result=>{
+    if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=machineAnswer.title+' · Voice Fabric response returned; acoustic playback not independently verified.';
+    else if(result?.state!=='SUPERSEDED')agentState.textContent=machineAnswer.title+' · Voice Fabric '+String(result?.state||'unavailable');
+   }).catch(error=>{agentState.textContent=machineAnswer.title+' · Voice One unavailable: '+String(error.message||error);});
+  }
+  return machineAnswer.text;
+ }
  const narrative=globalThis.LeeWayEngineeringJourney?.answer(text);
  if(narrative){
   // Curated public narrative: no Formula evaluation, native action, or LLM execution is claimed.
