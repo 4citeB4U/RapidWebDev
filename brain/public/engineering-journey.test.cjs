@@ -82,7 +82,10 @@ test('canonical Voice Fabric client is source-only, fail-closed, and syntactical
   const source=fs.readFileSync(__dirname+'/voice-fabric-session.js','utf8');
   assert.doesNotThrow(()=>new vm.Script(source));
   assert.match(source,/LeeWay-Voice-Fabric\/src\/voice-sdk\.js/);
-  assert.match(source,/selectVoice\('agent-lee-voice-one'\)/);
+  assert.match(source,/profiles\/agent-lee-active-voice\.v1\.json/);
+  assert.match(source,/selectVoice\(voicePackageId\)/);
+  assert.match(source,/voice\.prepare\(\)/);
+  assert.match(source,/preparation\?\.selectedVoiceId!==voicePackageId/);
   assert.match(source,/allowFallback:false/);
   assert.match(source,/client\.stop\(\)/);
   const executable=source.replace(/^\/\*[\s\S]*?\*\//,'');
