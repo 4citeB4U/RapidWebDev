@@ -21,7 +21,8 @@ const {chromium}=require('playwright');
  const errors=[];
  page.on('pageerror',error=>errors.push(String(error.message||error)));
  try{
-  await page.goto('http://127.0.0.1:8870/',{waitUntil:'domcontentloaded',timeout:60000});
+  const targetUrl=process.env.LEEWAY_TEST_URL||'http://127.0.0.1:8870/';
+  await page.goto(targetUrl,{waitUntil:'domcontentloaded',timeout:60000});
   await page.waitForFunction(()=>typeof globalThis.LeeWayMachineConsciousnessPublic==='object'&&typeof globalThis.__leewayAgentScreenContext==='function',{timeout:30000});
   await page.evaluate(()=>{
    globalThis.__voiceEvents=[];
@@ -73,7 +74,8 @@ const {chromium}=require('playwright');
   assert.equal(explained.context.selectedRecord.label,projectLabel.trim());
   assert.deepEqual(errors,[]);
   console.log(JSON.stringify({
-   class:'LOCAL_CHROMIUM_UI_EVIDENCE',
+   class:targetUrl.startsWith('http://127.0.0.1')?'LOCAL_CHROMIUM_UI_EVIDENCE':'DEPLOYED_CHROMIUM_UI_EVIDENCE',
+   targetUrl,
    machineConsciousness:'DETERMINISTIC_PUBLIC_PROJECTION_EXECUTED',
    microphone:'MOCKED',
    voicePlayback:'MOCKED',
