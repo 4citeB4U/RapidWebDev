@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "brain/public/public-brain.js"
+      - "brain/public/machine-consciousness-public.js"
       - "brain/public/thread-workplane.js"
       - "brain/public/speech-lease-patch.js"
       - "brain/public/conversation-view.js"
@@ -26,8 +27,8 @@ jobs:
           for i in $(seq 1 30); do
             body="$(curl -fsSL --max-time 20 "$URL" || true)"
             if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot2' \
-              && printf '%s' "$body" | grep -q 'machine-consciousness-public.js?v=20261108-v2' \
-              && printf '%s' "$body" | grep -q 'public-brain.js?v=20261108-machine-consciousness5' \
+              && printf '%s' "$body" | grep -q 'machine-consciousness-public.js?v=20261108-v3' \
+              && printf '%s' "$body" | grep -q 'public-brain.js?v=20261108-machine-consciousness6' \
               && printf '%s' "$body" | grep -q 'id="agentThreadSelect"' \
               && printf '%s' "$body" | grep -q 'id="agentNewSide"' \
               && ! printf '%s' "$body" | grep -q 'speech-lease-patch.js'; then
