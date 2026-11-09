@@ -29,7 +29,7 @@ jobs:
             body="$(curl -fsSL --max-time 20 "$URL" || true)"
             if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot2' \
               && printf '%s' "$body" | grep -q 'machine-consciousness-public.js?v=20261108-v3' \
-              && printf '%s' "$body" | grep -q 'public-brain.js?v=20261108-machine-consciousness6' \
+              && printf '%s' "$body" | grep -q 'public-brain.js?v=20261109-conversation1' \
               && printf '%s' "$body" | grep -q 'id="agentThreadSelect"' \
               && printf '%s' "$body" | grep -q 'id="agentNewSide"' \
               && ! printf '%s' "$body" | grep -q 'speech-lease-patch.js'; then
