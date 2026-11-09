@@ -65,7 +65,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     if(!q||q.length>600)return null;
     const repo=repoMatch(q,data);
     if(/^(?:hello|hi|hey|yo|good morning|good afternoon|good evening|howdy)[.! ]*$/.test(q)){
-      return {intent:'machine-consciousness.greeting',title:'Agent Lee',text:'Agent Lee here—good to hear you, family. Pull up a chair. We can talk plain, move with purpose, and walk the whole house: the Creator, the LeeWay ecosystem, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the engineering journey that brought it to life.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_GREETING_PROJECTION'};
+      return {intent:'machine-consciousness.greeting',title:'Agent Lee',text:'Agent Lee here—Good to hear you, family. Pull up a chair. We can talk plain, move with purpose, and walk the whole house: the Creator, the LeeWay ecosystem, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the engineering journey that brought it to life.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_GREETING_PROJECTION'};
     }
     if(/\b(?:how are you|are you there|are you online|are you connected)\b/.test(q)){
       return {intent:'machine-consciousness.operational-greeting',title:'Agent Lee',text:'Agent Lee here. I’m right here at the public interface—steady as a porch light, present, and ready to work. The deterministic Machine Consciousness projection is available, and canonical Voice Fabric carries the speech; microphone capture and human-heard playback still need their own physical proof. That’s the straight line, family—no smoke, no borrowed crown.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_OPERATIONAL_PROJECTION'};
