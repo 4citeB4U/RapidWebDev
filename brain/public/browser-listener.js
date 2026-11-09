@@ -48,7 +48,10 @@
       const settings=stream.getAudioTracks()[0]?.getSettings?.()||{};
       this.options.onMetric?.('microphone-start',{sampleRate:settings.sampleRate,echoCancellation:settings.echoCancellation,noiseSuppression:settings.noiseSuppression});
       try{
-        const audio=new AudioContextCtor({sampleRate:16000});this.audio=audio;await audio.resume();
+        let audio;
+        try{audio=new AudioContextCtor({sampleRate:16000});}
+        catch{audio=new AudioContextCtor();}
+        this.audio=audio;await audio.resume();
         if(epoch!==this.epoch)return;
         if(!audio.audioWorklet||typeof audio.audioWorklet.addModule!=='function')throw new Error('This iPhone browser cannot load the LeeWay audio capture worklet.');
         await audio.audioWorklet.addModule('/brain/public/voice-capture-worklet.js');
@@ -57,10 +60,14 @@
         this.capture=new AudioWorkletNodeCtor(this.audio,'leeway-capture');
         this.resetUtterance();this.noise=.002;this.active=true;
         this.capture.port.onmessage=event=>{if(this.active&&epoch===this.epoch)this.consume(new Int16Array(event.data));};
-        this.input.connect(this.capture);this.capture.connect(this.audio.destination);
-        this.options.onListening?.(true);this.options.onState?.(this.ready?'Listening through LeeWay Voice Fabric input. You can interrupt me.':'Microphone is on. Preparing LeeWay speech input...');
-        // Never block microphone capture on Chatterbox, Gemma, or recognition loading.
-        void this.load().then(()=>{if(this.active&&epoch===this.epoch)this.options.onState?.('Listening on this device. You can interrupt me.');}).catch(async error=>{if(epoch===this.epoch){await this.stop();this.options.onState?.('Speech recognition failed: '+error.message);}});
+        this.input.connect(this.capture);
+        // Keep the worklet alive without routing microphone audio back to the
+        // phone speaker. iOS audio-route changes are especially sensitive to
+        // a live capture-to-destination connection.
+        this.sink=this.audio.createGain();this.sink.gain.value=0;this.capture.connect(this.sink);this.sink.connect(this.audio.destination);
+        this.options.onListening?.(true);this.options.onState?.(this.ready?'Listening through LeeWay Voice Fabric input. You can interrupt me.':'Microphone is on. Speak when ready; LeeWay speech input will prepare on your first turn.');
+        // Do not load Whisper during the permission/audio-route transition.
+        // The first completed utterance calls load() from transcribeNext().
         stream.getAudioTracks().forEach(track=>track.onended=()=>void this.stop());
       }catch(error){if(epoch===this.epoch){await this.stop();throw error;}}
     }
@@ -105,6 +112,7 @@
     async stop(){
       ++this.epoch;this.active=false;this.waitingClip=null;this.options.onMetric?.('microphone-stop');
       this.input?.disconnect();this.capture?.disconnect();this.input=null;this.capture=null;
+      this.sink?.disconnect();this.sink=null;
       this.stream?.getTracks().forEach(track=>{track.onended=null;track.stop()});this.stream=null;
       const audio=this.audio;this.audio=null;
       this.resetUtterance();this.options.onListening?.(false);

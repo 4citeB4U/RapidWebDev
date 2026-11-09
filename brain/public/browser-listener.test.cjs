@@ -26,18 +26,18 @@ test('new speech suppresses old transcription but delivers its own turn',async()
   assert.deepEqual(delivered,['New']);
 });
 
-test('first click opens microphone before recognition finishes loading',async()=>{
+test('first click opens microphone without loading the heavy recognizer during permission',async()=>{
  let stopped=0,modelLoads=0;const track={stop(){stopped++},getSettings:()=>({})};
- class AudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}}
+ class AudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}createGain(){return {gain:{value:1},connect(){},disconnect(){}}}}
  class AudioWorkletNode{constructor(){this.port={}}connect(){}disconnect(){}}
  const scope={performance,window:{},DOMException,Float32Array,Int16Array,AudioContext,AudioWorkletNode,setTimeout,clearTimeout,navigator:{mediaDevices:{getUserMedia:async()=>({getTracks:()=>[track],getAudioTracks:()=>[track]})}}};
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
  const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{modelLoads++;return new Promise(()=>{})};
- await listener.start();assert.equal(listener.active,true);assert.equal(listener.ready,false);assert.equal(modelLoads,1);await listener.stop();assert.equal(listener.active,false);assert.equal(stopped,1);
+ await listener.start();assert.equal(listener.active,true);assert.equal(listener.ready,false);assert.equal(modelLoads,0);await listener.stop();assert.equal(listener.active,false);assert.equal(stopped,1);
 });
 test('iPhone WebKit AudioContext is accepted when the unprefixed constructor is absent',async()=>{
  let stopped=0;const track={stop(){stopped++},getSettings:()=>({sampleRate:48000})};
- class WebkitAudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}}
+ class WebkitAudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}createGain(){return {gain:{value:1},connect(){},disconnect(){}}}}
  class AudioWorkletNode{constructor(){this.port={}}connect(){}disconnect(){}}
  const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,webkitAudioContext:WebkitAudioContext,AudioWorkletNode,navigator:{mediaDevices:{getUserMedia:async()=>({getTracks:()=>[track],getAudioTracks:()=>[track]})}}};
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
@@ -46,7 +46,7 @@ test('iPhone WebKit AudioContext is accepted when the unprefixed constructor is 
 });
 test('mute while browser permission is pending releases the eventual microphone',async()=>{
  let grant,stopped=0;const track={stop(){stopped++}};
- class AudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}}
+ class AudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}createGain(){return {gain:{value:1},connect(){},disconnect(){}}}}
  class AudioWorkletNode{constructor(){this.port={}}connect(){}disconnect(){}}
  const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,AudioContext,AudioWorkletNode,navigator:{mediaDevices:{getUserMedia:()=>new Promise(r=>grant=r)}}};
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{throw new Error('should not load')};

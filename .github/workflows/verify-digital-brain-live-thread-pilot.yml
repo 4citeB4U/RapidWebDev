@@ -33,7 +33,7 @@ jobs:
             body="$(curl -fsSL --max-time 20 "$URL" || true)"
             if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot2' \
               && printf '%s' "$body" | grep -q 'machine-consciousness-public.js?v=20261109-conversation2' \
-              && printf '%s' "$body" | grep -q 'browser-listener.js?v=20261109-iphone1' \
+              && printf '%s' "$body" | grep -q 'browser-listener.js?v=20261109-iphone2' \
               && printf '%s' "$body" | grep -q 'voice-fabric-session.js?v=20261109-stream3' \
               && printf '%s' "$body" | grep -q 'voice-controller.js?v=20261109-leeway1' \
               && printf '%s' "$body" | grep -q 'public-brain.js?v=20261109-conversation1' \

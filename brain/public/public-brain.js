@@ -245,7 +245,6 @@ window.__leewayPublicBrainOverview=()=>{
 function openAgentBubble(focus=false){
  agentBubble.classList.remove("hidden");
  void refreshVoiceChoices();
- void globalThis.LeeWayPortfolioVoiceSession?.prime?.().catch(error=>{if(conversationSession?.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);});
  if(focus){qs('#typeMessage').open=true;setTimeout(()=>agentInput?.focus({preventScroll:true}),60);}
 }
 function closeAgentBubble(){
@@ -658,13 +657,11 @@ const conversationSession=new LeeWayConversationSession({
 async function toggleMic(){
  openAgentBubble(false);
  const starting=!conversationSession.requested;
-  const warmup=starting?globalThis.LeeWayPortfolioVoiceSession?.prime?.():null;
-  warmup?.catch(error=>{if(conversationSession.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);});
  const opening=conversationSession.toggle();
  await opening;
  if(starting&&conversationSession.requested){
    const greeting=agentLeeVoice('The conversation is open. Speak naturally; I am listening through the LeeWay Voice Fabric.');
-   agentText.textContent=greeting;agentNarration.textContent=greeting;agentState.textContent='Listening. Voice Fabric is warming in the background; speak when ready.';
+   agentText.textContent=greeting;agentNarration.textContent=greeting;agentState.textContent='Listening. Voice Fabric prepares when Agent Lee has an answer; speak when ready.';
  }
 }
 async function startEngineeringJourney(){
@@ -673,9 +670,6 @@ async function startEngineeringJourney(){
  if(!conversationSession.requested){
   // A direct click requests microphone permission. Recognition and Voice Fabric are independent.
   const opening=conversationSession.toggle();
-  void globalThis.LeeWayPortfolioVoiceSession?.prime().catch(error=>{
-   if(conversationSession.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);
-  });
   await opening;
  }
  // This skips the separate prerecorded welcome so it cannot speak over the live story.
@@ -704,9 +698,6 @@ async function startTour(){
  if(!conversationSession.requested){
   // The button click is the browser gesture that requests microphone permission.
   const opening=conversationSession.toggle();
-  void globalThis.LeeWayPortfolioVoiceSession?.prime().catch(error=>{
-   if(epoch===tourEpoch)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);
-  });
   await opening;
  }
  if(epoch!==tourEpoch)return;
