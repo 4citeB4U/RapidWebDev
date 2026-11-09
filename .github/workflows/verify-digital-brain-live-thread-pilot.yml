@@ -10,6 +10,7 @@ on:
       - "brain/public/speech-lease-patch.js"
       - "brain/public/conversation-view.js"
       - "brain/public/public-brain.css"
+      - ".github/workflows/verify-digital-brain-live-thread-pilot.yml"
   workflow_dispatch:
 
 jobs:
