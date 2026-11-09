@@ -16,6 +16,7 @@ const LeeWayVoiceMetrics=globalThis.LeeWayVoiceMetrics||Object.freeze({
  snapshot(){return[]},
  clear(){}
 });
+globalThis.LeeWayVoiceMetrics=LeeWayVoiceMetrics;
 const qs=s=>document.querySelector(s);
 const world=qs("#world"),nodesEl=qs("#nodes"),edges=qs("#edges"),track=qs("#carouselTrack"),search=qs("#searchBox");
 const hud=qs("#hud"),workspace=qs("#workspace"),workspaceBody=qs("#workspaceBody"),workspaceTitle=qs("#workspaceTitle"),workspaceKicker=qs("#workspaceKicker");
