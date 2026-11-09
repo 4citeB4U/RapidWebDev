@@ -90,6 +90,13 @@ test('ordinary casual prompts receive varied Agent Lee conversation instead of t
   for(const result of [up,talk,joke])assert.doesNotMatch(result.text,/^Agent Lee here\b/i);
 });
 
+test('public fallback uses an honest human understanding boundary',()=>{
+  const source=fs.readFileSync(path.join(__dirname,'public-brain.js'),'utf8');
+  assert.match(source,/I don[’']t fully understand that one yet/);
+  assert.doesNotMatch(source,/That question sits outside the admitted public map right now/);
+  assert.doesNotMatch(source,/question is not mapped/i);
+});
+
 test('showroom and current-screen questions use the live context envelope',async()=>{
   const api=load();
   const showroom=await api.answer('Welcome me and show me around',{

@@ -62,6 +62,8 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   }
   function prime(){
     if(ready)return ready;
+    const startedAt=performance.now();
+    root.LeeWayVoiceMetrics?.record?.('voice-fabric-prepare-start');
     ready=(async()=>{
        const voice=await getClient();
        const pkg=await selectedVoicePackage(),voicePackageId=pkg.id;
@@ -72,6 +74,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
         throw new Error('Voice Fabric changed the Agent Lee speaker; owner qualification required.');
       }
       lastVoicePackage=voicePackageId;
+      root.LeeWayVoiceMetrics?.record?.('voice-fabric-prepare-ready',{durationMs:performance.now()-startedAt,voicePackageId});
       return {voice,voicePackageId,preparation};
     })().catch(error=>{ready=null;lastVoicePackage=null;throw error;});
     return ready;
@@ -82,7 +85,9 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     for(const sentence of sentences){
       const value=sentence.trim();if(!value)continue;
       buffer=buffer?buffer+' '+value:value;words+=value.split(/\s+/).length;
-      if(words>=12){chunks.push(buffer);buffer='';words=0;}
+      // Keep the first mouthful short so Voice Fabric can begin playout while
+      // the remaining clauses are still being admitted into its stream.
+      if(words>=8){chunks.push(buffer);buffer='';words=0;}
     }
     if(buffer)chunks.push(buffer);
     return chunks.length?chunks:[String(text).trim()];
@@ -90,6 +95,8 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   async function speak(text){
     if(!String(text||'').trim())return {state:'EMPTY'};
     const turn=++epoch;
+    const startedAt=performance.now();
+    root.LeeWayVoiceMetrics?.record?.('voice-fabric-response-start',{characters:String(text).length});
     try{
       const session=await prime();
       if(turn!==epoch)return {state:'SUPERSEDED'};
@@ -101,12 +108,16 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
       // The same stream is cancellable by Voice Fabric stop(), which is the
       // interruption boundary used by the local microphone VAD.
       const streamId=await session.voice.streamStart();
+      root.LeeWayVoiceMetrics?.record?.('voice-fabric-stream-start',{durationMs:performance.now()-startedAt});
       if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
+      let chunkNumber=0;
       for(const chunk of speechChunks(text)){
         await session.voice.streamChunk(streamId,chunk);
+        root.LeeWayVoiceMetrics?.record?.('voice-fabric-stream-chunk',{chunkNumber:++chunkNumber,characters:chunk.length,durationMs:performance.now()-startedAt});
         if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
       }
       const result=await session.voice.streamEnd(streamId);
+      root.LeeWayVoiceMetrics?.record?.('voice-fabric-stream-end',{durationMs:performance.now()-startedAt,chunkCount:chunkNumber});
       if(turn!==epoch)return {state:'SUPERSEDED'};
       if(result?.selectedVoiceId!==session.voicePackageId||result?.completed!==true){
         throw new Error('Voice Fabric did not confirm completion with its selected speaker.');

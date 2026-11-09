@@ -347,7 +347,7 @@ function projectPresentationPrompt(ctx){
  const status=ctx.live_url?"A website link is configured at "+ctx.live_url:ctx.repo_url?"Public GitHub source is available at "+ctx.repo_url:"No public live runtime is currently verified.";
  return [
   "Give a polished spoken presentation of this selected Digital Brain record.",
-  "Use clear, conversational English. Avoid poetry, metaphors, hype, forced slang and repetitive introductions. Start with a direct answer in two to four sentences; provide more detail when asked.",
+  "Use clear, conversational English with calm Secretary-of-State composure, a Southern-cadenced warmth, and light OG hip-hop influence when it helps the human story. Do not caricature the voice, force slang, or repeat introductions. Start with a direct answer in two to four sentences; provide more detail when asked.",
   "Cover only evidence-supported points: what it is, why it exists, the problem it addresses, documented architecture/capabilities, live status, available evidence/source, and how it fits the broader LeeWay systems lineage.",
   "HARD EVIDENCE RULE: every factual claim must be directly supported by the JSON context or README excerpt below.",
   "Never upgrade a source label into a stronger claim. Do not say full-stack, production-ready, complete, proven, revenue-generating, autonomous, or deployed unless those exact ideas are supported in the supplied evidence.",
@@ -639,7 +639,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
    void speakFromFabric(voicedNarrative,narrative.title);
    return voicedNarrative;
  }
- const message=agentLeeVoice("That question sits outside the admitted public map right now. I can walk you through the Creator, LeeWay repositories, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the documented engineering journey. I won’t freestyle past the evidence just to sound smooth—that ain’t LeeWay. This public conversation uses no LLM, and I’ll tell you plainly when the record does not carry the answer.");
+ const message=agentLeeVoice("I don’t fully understand that one yet, family. That part isn’t in my admitted public record, and I won’t make up an answer just to keep the sound moving. Say it another way, or point me toward the Creator, a LeeWay project, the Digital Brain, diagnostics, Continuum, Voice Fabric, or the engineering journey, and I’ll walk it with you plain.");
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 qs('#agentEngineeringStory').onclick=()=>{void startEngineeringJourney();};
