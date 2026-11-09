@@ -40,3 +40,12 @@ test('mute while browser permission is pending releases the eventual microphone'
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{throw new Error('should not load')};
  const starting=listener.start();await listener.stop();grant({getTracks:()=>[track]});await starting;assert.equal(stopped,1);assert.equal(listener.active,false);
 });
+test('playback echo is quarantined while genuine new speech remains eligible',()=>{
+ const listener=setup();
+ listener.setPlaybackText('Hey now, what is happening? The LeeWay Digital Brain is ready for your next question.');
+ assert.equal(listener.isPlaybackActive(),true);
+ assert.equal(listener.isLikelyPlaybackEcho('what is happening the leeway digital brain is ready for your next question'),true);
+ assert.equal(listener.isLikelyPlaybackEcho('stop talking I have a different question'),false);
+ listener.clearPlaybackText();assert.equal(listener.isPlaybackActive(),false);
+ assert.equal(listener.isLikelyPlaybackEcho('what is happening the leeway digital brain is ready for your next question'),true);
+});

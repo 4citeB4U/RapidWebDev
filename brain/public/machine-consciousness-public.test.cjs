@@ -98,5 +98,5 @@ test('public brain loads the projection before its conversation handler',()=>{
   const source=fs.readFileSync(path.join(__dirname,'public-brain.js'),'utf8');
   assert.match(source,/LeeWayMachineConsciousnessPublic\?\.answer/);
   assert.match(source,/Machine Consciousness/);
-  assert.match(source,/LeeWayPortfolioVoiceSession\.speak\(machineAnswer\.text\)/);
+  assert.match(source,/speakFromFabric\(machineAnswer\.text,machineAnswer\.title\)/);
 });

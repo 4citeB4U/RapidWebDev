@@ -204,6 +204,7 @@ window.__leewayPublicBrainOverview=()=>{
 };
 function openAgentBubble(focus=false){
  agentBubble.classList.remove("hidden");
+ void globalThis.LeeWayPortfolioVoiceSession?.prime?.().catch(error=>{if(conversationSession?.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);});
  if(focus){qs('#typeMessage').open=true;setTimeout(()=>agentInput?.focus({preventScroll:true}),60);}
 }
 function closeAgentBubble(){
@@ -417,18 +418,20 @@ let fabricSpeechEpoch=0;
 function interruptFabricSpeech(reason='microphone-onset'){
  fabricSpeechEpoch++;
  LeeWayVoiceMetrics.record('fabric-interrupt',{reason,epoch:fabricSpeechEpoch});
+ browserListener?.clearPlaybackText?.();
  void globalThis.LeeWayPortfolioVoiceSession?.stop();
 }
 function speakFromFabric(text,title='Agent Lee'){
  if(!text||conversationSession?.state!=='listening'||!globalThis.LeeWayPortfolioVoiceSession)return Promise.resolve();
  const epoch=++fabricSpeechEpoch;
+ browserListener?.setPlaybackText?.(text);
  return globalThis.LeeWayPortfolioVoiceSession.speak(text).then(result=>{
   if(epoch!==fabricSpeechEpoch)return {state:'SUPERSEDED'};
   if(result?.state==='SUPERSEDED')return result;
   if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=title+' · Voice Fabric completed its playback request; human hearing not independently tested.';
   else agentState.textContent=title+' · Voice Fabric '+String(result?.state||'unavailable');
   return result;
- }).catch(error=>{if(conversationSession.state==='listening')agentState.textContent=title+' · Voice Fabric unavailable: '+String(error.message||error);});
+ }).catch(error=>{if(conversationSession.state==='listening')agentState.textContent=title+' · Voice Fabric unavailable: '+String(error.message||error);}).finally(()=>{if(epoch===fabricSpeechEpoch)browserListener?.clearPlaybackText?.();});
 }
 function threadSpeech(thread,text){
  if(!text||conversationSession?.state!=='listening')return Promise.resolve();
@@ -468,9 +471,17 @@ const voiceController=new LeeWayVoiceController({
 });
 const browserListener=new LeeWayBrowserListener({
  onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"Local speech recognition ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
- onSpeech:()=>{interruptFabricSpeech();LeeWayVoiceMetrics.record("speech-onset");const active=threadWorkplane.getThread(selectedThreadId);pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;},
+ onSpeech:()=>{
+  const active=threadWorkplane.getThread(selectedThreadId);pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;
+  if(browserListener.isPlaybackActive?.()){LeeWayVoiceMetrics.record('speech-onset-during-playback');return;}
+  interruptFabricSpeech();LeeWayVoiceMetrics.record('speech-onset');
+ },
  onListening:active=>{voiceController.listening=active;listening=active;micBtn.classList.toggle("listening",active);if(!active&&conversationSession.requested&&conversationSession.state==="listening")conversationSession.mute();},
- onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");const route=pendingVoiceThreadId;pendingVoiceThreadId=null;void handleAgentCommand(text,route)},
+ onTranscript:text=>{
+  if(browserListener.isLikelyPlaybackEcho?.(text)){LeeWayVoiceMetrics.record('playback-echo-discarded',{characters:String(text).length});return;}
+  if(browserListener.isPlaybackActive?.())interruptFabricSpeech('user-barge-in');
+  agentTranscript.textContent=text;agentTranscript.classList.remove('hidden');const route=pendingVoiceThreadId;pendingVoiceThreadId=null;void handleAgentCommand(text,route)
+ },
  onMetric:(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail),
  onProgress:p=>showModelProgress("recognition",p)
 });
@@ -536,14 +547,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
   threadWorkplane.remember(thread.id,'assistant',machineAnswer.text);
   agentState.textContent=machineAnswer.title+' · deterministic public projection · no LLM';
   renderThreadState();
-  if(conversationSession.state==='listening'&&globalThis.LeeWayPortfolioVoiceSession){
-   const speechEpoch=++fabricSpeechEpoch;
-   void globalThis.LeeWayPortfolioVoiceSession.speak(machineAnswer.text).then(result=>{
-    if(speechEpoch!==fabricSpeechEpoch)return;
-    if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=machineAnswer.title+' · Voice Fabric response returned; acoustic playback not independently verified.';
-    else if(result?.state!=='SUPERSEDED')agentState.textContent=machineAnswer.title+' · Voice Fabric '+String(result?.state||'unavailable');
-   }).catch(error=>{agentState.textContent=machineAnswer.title+' · Voice One unavailable: '+String(error.message||error);});
-  }
+  if(conversationSession.state==='listening'&&globalThis.LeeWayPortfolioVoiceSession)void speakFromFabric(machineAnswer.text,machineAnswer.title);
   return machineAnswer.text;
  }
  const narrative=globalThis.LeeWayEngineeringJourney?.answer(text);

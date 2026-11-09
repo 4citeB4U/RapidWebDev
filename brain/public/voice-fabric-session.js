@@ -49,6 +49,17 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     })().catch(error=>{ready=null;lastVoicePackage=null;throw error;});
     return ready;
   }
+  function speechChunks(text){
+    const sentences=String(text).trim().match(/[^.!?]+[.!?]+(?:\s+|$)|.+$/g)||[];
+    const chunks=[];let buffer='';let words=0;
+    for(const sentence of sentences){
+      const value=sentence.trim();if(!value)continue;
+      buffer=buffer?buffer+' '+value:value;words+=value.split(/\s+/).length;
+      if(words>=12){chunks.push(buffer);buffer='';words=0;}
+    }
+    if(buffer)chunks.push(buffer);
+    return chunks.length?chunks:[String(text).trim()];
+  }
   async function speak(text){
     if(!String(text||'').trim())return {state:'EMPTY'};
     const turn=++epoch;
@@ -64,8 +75,10 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
       // interruption boundary used by the local microphone VAD.
       const streamId=await session.voice.streamStart();
       if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
-      await session.voice.streamChunk(streamId,String(text));
-      if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
+      for(const chunk of speechChunks(text)){
+        await session.voice.streamChunk(streamId,chunk);
+        if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
+      }
       const result=await session.voice.streamEnd(streamId);
       if(turn!==epoch)return {state:'SUPERSEDED'};
       if(result?.selectedVoiceId!==session.voicePackageId||result?.completed!==true){

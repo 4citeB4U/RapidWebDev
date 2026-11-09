@@ -1,7 +1,21 @@
 /* Browser-only microphone capture, immediate speech interruption, local Whisper. */
 (() => {
   class LeeWayBrowserListener {
-    constructor(options={}){this.options=options;this.epoch=0;this.sequence=0;this.pending=new Map();this.active=false;this.ready=false;}
+    constructor(options={}){this.options=options;this.epoch=0;this.sequence=0;this.pending=new Map();this.active=false;this.ready=false;this.playbackText='';this.playbackActive=false;this.playbackGraceUntil=0;}
+    setPlaybackText(text){this.playbackText=String(text||'').trim();this.playbackActive=Boolean(this.playbackText);this.playbackGraceUntil=0;}
+    clearPlaybackText(){if(this.playbackText)this.playbackGraceUntil=performance.now()+3500;this.playbackActive=false;}
+    isPlaybackActive(){return this.playbackActive;}
+    isLikelyPlaybackEcho(text){
+      if(!this.playbackText)return false;
+      if(!this.playbackActive&&performance.now()>this.playbackGraceUntil)return false;
+      const words=value=>String(value||'').toLowerCase().replace(/[^a-z0-9' ]/g,' ').split(/\s+/).filter(word=>word.length>1);
+      const heard=words(text),spoken=words(this.playbackText);if(heard.length<3||spoken.length<3)return false;
+      const counts=new Map(spoken.map(word=>[word,(spoken.filter(item=>item===word).length)]));
+      let overlap=0;for(const word of heard){const count=counts.get(word)||0;if(count>0){overlap++;counts.set(word,count-1);}}
+      const heardCoverage=overlap/heard.length,spokenCoverage=overlap/spoken.length;
+      const compact=heard.join(' '),source=spoken.join(' ');
+      return (heard.length>=5&&heardCoverage>=.62&&spokenCoverage>=.10)||(heard.length>=4&&compact.length>=18&&source.includes(compact));
+    }
     async load(){
       if(this.ready)return;
       if(this.loading)return this.loading;
