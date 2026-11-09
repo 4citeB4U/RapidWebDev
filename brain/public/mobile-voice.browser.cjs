@@ -41,9 +41,16 @@ const {chromium,devices}=require('playwright');
     const before=await page.evaluate(()=>({href:location.href,visibility:document.visibilityState,ready:document.readyState,mode:document.querySelector('#micBtn')?.dataset.mode,entries:performance.getEntriesByType('navigation').length}));
     await page.locator('#micBtn').click();
     await page.waitForTimeout(waitMs);
+   await page.locator('#typeMessage').evaluate(node=>{node.open=true;});
+   await page.locator('#agentInput').fill('Hello Agent Lee');
+   await page.locator('#agentSend').click();
+   await page.waitForFunction(()=>/Good to hear you|engineering journey/i.test(document.querySelector('#agentText')?.textContent||''),{timeout:15000});
+   const message=await page.evaluate(()=>({text:document.querySelector('#agentText')?.textContent||'',navigationCount:performance.getEntriesByType('navigation').length,userText:document.querySelector('#agentTranscript')?.textContent||'',sendType:document.querySelector('#agentSend')?.type||''}));
+   assert.equal(message.navigationCount,1,name+' message submission reloaded the page');
+   assert.match(message.text,/Good to hear you|engineering journey/i,name+' addressed greeting did not resolve');
     const after=await page.evaluate(()=>({href:location.href,visibility:document.visibilityState,ready:document.readyState,mode:document.querySelector('#micBtn')?.dataset.mode,state:document.querySelector('#agentState')?.textContent||'',bubble:!document.querySelector('#agentBubble')?.classList.contains('hidden'),voiceSelected:document.querySelector('#agentVoiceSelect')?.value||'',voiceOptions:document.querySelectorAll('#agentVoiceSelect option').length,voiceStatus:document.querySelector('#agentVoiceStatus')?.textContent||'',entries:performance.getEntriesByType('navigation').length,context:globalThis.__leewayAgentScreenContext?.()}));
     assert.notEqual(after.voiceSelected,'android-installed-english',name+' selected a device voice');
-    results.push({device:name,before,after,events});
+    results.push({device:name,before,message,after,events});
     assert.equal(events.crashes.length,0,name+' mobile page crashed');
    }catch(error){
     results.push({device:name,error:String(error.message||error),events});

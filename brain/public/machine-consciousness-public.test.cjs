@@ -76,6 +76,15 @@ test('small talk and system introductions stay local and retain Agent Lee voice'
   assert.notEqual(greeting.text.slice(0,28),operational.text.slice(0,28));
 });
 
+test('addressed greetings are admitted instead of falling through to the unknown-intent response',async()=>{
+  const api=load();
+  for(const phrase of ['Hello Agent Lee','Hey Agent Lee','Agent Lee']){
+    const greeting=await api.answer(phrase);
+    assert.equal(greeting.intent,'machine-consciousness.greeting',phrase);
+    assert.match(greeting.text,/Good to hear you|engineering journey/i,phrase);
+  }
+});
+
 test('ordinary casual prompts receive varied Agent Lee conversation instead of the evidence fallback',async()=>{
   const api=load();
   const up=await api.answer("What's up?");
@@ -127,4 +136,5 @@ test('public brain loads the projection before its conversation handler',()=>{
   assert.match(source,/__leewayAgentScreenContext/);
   assert.match(source,/Machine Consciousness/);
   assert.match(source,/speakFromFabric\(machineAnswer\.text,machineAnswer\.title\)/);
+  assert.match(index,/id="agentSend" type="button"/);
 });

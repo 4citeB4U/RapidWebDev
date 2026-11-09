@@ -35,8 +35,20 @@ test('first click opens microphone before recognition finishes loading',async()=
  const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{modelLoads++;return new Promise(()=>{})};
  await listener.start();assert.equal(listener.active,true);assert.equal(listener.ready,false);assert.equal(modelLoads,1);await listener.stop();assert.equal(listener.active,false);assert.equal(stopped,1);
 });
+test('iPhone WebKit AudioContext is accepted when the unprefixed constructor is absent',async()=>{
+ let stopped=0;const track={stop(){stopped++},getSettings:()=>({sampleRate:48000})};
+ class WebkitAudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}}
+ class AudioWorkletNode{constructor(){this.port={}}connect(){}disconnect(){}}
+ const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,webkitAudioContext:WebkitAudioContext,AudioWorkletNode,navigator:{mediaDevices:{getUserMedia:async()=>({getTracks:()=>[track],getAudioTracks:()=>[track]})}}};
+ vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
+ const listener=new scope.window.LeeWayBrowserListener();listener.load=async()=>{listener.ready=true};
+ await listener.start();assert.equal(listener.active,true);await listener.stop();assert.equal(stopped,1);
+});
 test('mute while browser permission is pending releases the eventual microphone',async()=>{
- let grant,stopped=0;const track={stop(){stopped++}};const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,navigator:{mediaDevices:{getUserMedia:()=>new Promise(r=>grant=r)}}};
+ let grant,stopped=0;const track={stop(){stopped++}};
+ class AudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}}
+ class AudioWorkletNode{constructor(){this.port={}}connect(){}disconnect(){}}
+ const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,AudioContext,AudioWorkletNode,navigator:{mediaDevices:{getUserMedia:()=>new Promise(r=>grant=r)}}};
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{throw new Error('should not load')};
  const starting=listener.start();await listener.stop();grant({getTracks:()=>[track]});await starting;assert.equal(stopped,1);assert.equal(listener.active,false);
 });

@@ -36,18 +36,25 @@
       const epoch=++this.epoch;
       // Request microphone permission from the original click, independently of model downloads.
       if(epoch!==this.epoch)return;
-      const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
+      const mediaDevices=globalThis.navigator?.mediaDevices;
+      if(!mediaDevices?.getUserMedia)throw new Error('This browser does not expose LeeWay microphone input. Open the site over HTTPS and allow microphone access.');
+      const AudioContextCtor=globalThis.AudioContext||globalThis.webkitAudioContext;
+      if(typeof AudioContextCtor!=='function')throw new Error('This iPhone browser does not expose Web Audio input support. Update Safari or use the LeeWay device browser.');
+      const AudioWorkletNodeCtor=globalThis.AudioWorkletNode;
+      if(typeof AudioWorkletNodeCtor!=='function')throw new Error('This iPhone browser does not expose AudioWorklet input support. Update Safari or use the LeeWay device browser.');
+      const stream=await mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
       if(epoch!==this.epoch){stream.getTracks().forEach(t=>t.stop());return;}
       this.stream=stream;
       const settings=stream.getAudioTracks()[0]?.getSettings?.()||{};
       this.options.onMetric?.('microphone-start',{sampleRate:settings.sampleRate,echoCancellation:settings.echoCancellation,noiseSuppression:settings.noiseSuppression});
       try{
-        const audio=new AudioContext({sampleRate:16000});this.audio=audio;await audio.resume();
+        const audio=new AudioContextCtor({sampleRate:16000});this.audio=audio;await audio.resume();
         if(epoch!==this.epoch)return;
+        if(!audio.audioWorklet||typeof audio.audioWorklet.addModule!=='function')throw new Error('This iPhone browser cannot load the LeeWay audio capture worklet.');
         await audio.audioWorklet.addModule('/brain/public/voice-capture-worklet.js');
         if(epoch!==this.epoch)return;
         this.input=this.audio.createMediaStreamSource(stream);
-        this.capture=new AudioWorkletNode(this.audio,'leeway-capture');
+        this.capture=new AudioWorkletNodeCtor(this.audio,'leeway-capture');
         this.resetUtterance();this.noise=.002;this.active=true;
         this.capture.port.onmessage=event=>{if(this.active&&epoch===this.epoch)this.consume(new Int16Array(event.data));};
         this.input.connect(this.capture);this.capture.connect(this.audio.destination);

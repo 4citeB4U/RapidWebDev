@@ -101,7 +101,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     const repo=repoMatch(q,data);
     if(/\b(?:what am i looking at|what is this|what(?:'s| is) on (?:the )?screen|where am i|what page am i on|explain (?:this|the screen)|read (?:the )?screen|what section am i in)\b/.test(q))return screenContextAnswer(context);
     if(/\b(?:welcome me|welcome|showroom|give me a tour|introduce yourself|present yourself|what do you have to show|show me around)\b/.test(q))return showroomAnswer(context);
-    if(/^(?:hello|hi|hey|yo|good morning|good afternoon|good evening|howdy)[.! ]*$/.test(q)){
+    if(/^(?:(?:hello|hi|hey|yo|good morning|good afternoon|good evening|howdy)(?: agent lee)?|agent lee)[.! ]*$/.test(q)){
       return {intent:'machine-consciousness.greeting',title:'Agent Lee',text:'Good to hear you, family. Pull up a chair. We can talk plain, move with purpose, and walk the whole house: the Creator, the LeeWay ecosystem, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the engineering journey that brought it to life.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_GREETING_PROJECTION'};
     }
     if(/\b(?:how are you|are you there|are you online|are you connected)\b/.test(q)){
