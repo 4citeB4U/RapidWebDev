@@ -747,7 +747,8 @@ function materializeProjects(source,overrides){
  return rows;
 }
 function applyProjectSource(source,overrides){
- const spoken=voiceController.epoch>0?{text:agentText.textContent,narration:agentNarration.textContent}:null;
+ const activeThread=threadWorkplane?.getThread?.(selectedThreadId);
+ const spoken=activeThread?.lastOutput?{text:activeThread.lastOutput,narration:activeThread.lastOutput}:voiceController.epoch>0?{text:agentText.textContent,narration:agentNarration.textContent}:null;
  projects=globalThis.LeeWayCorePortfolio?.enrich(materializeProjects(source,overrides))||materializeProjects(source,overrides);
  items=[...projects,...evidence];
  qs("#projectCount").textContent=`PROJECTS ${projects.length}`;
