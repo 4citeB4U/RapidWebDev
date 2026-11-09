@@ -32,11 +32,11 @@ jobs:
           for i in $(seq 1 30); do
             body="$(curl -fsSL --max-time 20 "$URL" || true)"
             if printf '%s' "$body" | grep -q 'thread-workplane.js?v=20260928-threadpilot2' \
-              && printf '%s' "$body" | grep -q 'machine-consciousness-public.js?v=20261108-v3' \
+              && printf '%s' "$body" | grep -q 'machine-consciousness-public.js?v=20261109-conversation1' \
               && printf '%s' "$body" | grep -q 'browser-listener.js?v=20261109-leeway1' \
-              && printf '%s' "$body" | grep -q 'voice-fabric-session.js?v=20261109-select1' \
+              && printf '%s' "$body" | grep -q 'voice-fabric-session.js?v=20261109-stream3' \
               && printf '%s' "$body" | grep -q 'voice-controller.js?v=20261109-leeway1' \
-              && printf '%s' "$body" | grep -q 'public-brain.js?v=20261109-presenter2' \
+              && printf '%s' "$body" | grep -q 'public-brain.js?v=20261109-conversation1' \
               && printf '%s' "$body" | grep -q 'id="agentThreadSelect"' \
               && printf '%s' "$body" | grep -q 'id="agentNewSide"' \
               && printf '%s' "$body" | grep -q 'id="agentVoiceSelect"' \
