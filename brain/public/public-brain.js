@@ -465,6 +465,7 @@ function cancelAgentGeneration(){
 }
 function silenceSpeechOnly(){void globalThis.LeeWayPortfolioVoiceSession?.stop();browserListener.cancelUtterance();}
 function endVoice(){conversationSession.mute()}
+function stopSpeech(){void globalThis.LeeWayPortfolioVoiceSession?.stop();browserListener.cancelUtterance();agentState.textContent=conversationSession.requested?'Stopped speaking. Still listening.':'Speech stopped. Microphone is off.';}
 function scoreProject(q,p){const hay=(p.label+" "+(p.repo_name||"")+" "+(p.summary||"")+" "+(p.group||"")).toLowerCase();if(hay.includes(q))return 100+q.length;return q.split(/\s+/).reduce((n,w)=>n+(w.length>2&&hay.includes(w)?5:0),0)}
 function bestProject(q){return projects.map(p=>[scoreProject(q,p),p]).sort((a,b)=>b[0]-a[0])[0]}
 function navigateAgentRequest(text){
