@@ -65,6 +65,7 @@ test('small talk and system introductions stay local and retain Agent Lee voice'
   const greeting=await api.answer('hello');
   assert.equal(greeting.intent,'machine-consciousness.greeting');
   assert.match(greeting.text,/Good to hear you|engineering journey/i);
+  assert.doesNotMatch(greeting.text,/^Agent Lee here\b/i);
   assert.equal(greeting.llm.used,false);
   const system=await api.answer('Tell me something about the system');
   assert.equal(system.intent,'machine-consciousness.system-introduction');
@@ -72,6 +73,21 @@ test('small talk and system introductions stay local and retain Agent Lee voice'
   const operational=await api.answer('Are you there?');
   assert.equal(operational.intent,'machine-consciousness.operational-greeting');
   assert.match(operational.text,/straight line|public interface/i);
+  assert.notEqual(greeting.text.slice(0,28),operational.text.slice(0,28));
+});
+
+test('ordinary casual prompts receive varied Agent Lee conversation instead of the evidence fallback',async()=>{
+  const api=load();
+  const up=await api.answer("What's up?");
+  const talk=await api.answer('Can we talk?');
+  const joke=await api.answer('Tell me a joke');
+  assert.equal(up.intent,'machine-consciousness.casual');
+  assert.equal(talk.intent,'machine-consciousness.casual');
+  assert.equal(joke.intent,'machine-consciousness.casual');
+  assert.match(up.text,/right here|conversation/i);
+  assert.match(talk.text,/talk|thread/i);
+  assert.match(joke.text,/bug|bar/i);
+  for(const result of [up,talk,joke])assert.doesNotMatch(result.text,/^Agent Lee here\b/i);
 });
 
 test('public brain loads the projection before its conversation handler',()=>{

@@ -262,9 +262,19 @@ function rawNarrationFor(x){
  const status=x.live_url?"A website link is configured; its backend execution has not been verified.":x.repo_url?"Public source is listed; current runtime operation has not been verified.":"No public repository or live execution is linked.";
   return `Agent Lee here. Let me put ${x.label} in plain sight: ${x.summary||x.desc||"a project in the Creator's software portfolio."} ${status} Ask me why it was developed or open its exact evidence. Every build has a reason, every reason has a trail.`;
 }
+let expressiveTurn=0;
+const expressiveOpeners=[
+ 'Yo, family—how we doing today?',
+ 'Hey now—what’s happening?',
+ 'Good to see you. What we building?',
+ 'Aight, let’s walk it through.',
+ 'Come on in—what’s on your mind?',
+ 'What’s good? I’m with you.'
+];
 function agentLeeVoice(text){
- const value=String(text||"").trim();
- return /^Agent Lee\b/i.test(value)?value:`Agent Lee here. ${value}`;
+ const value=String(text||"").replace(/^Agent Lee here(?:[.!—])?\s*/i,'').trim();
+ const turn=++expressiveTurn;
+ return turn===1||turn%2===0?expressiveOpeners[(turn-1)%expressiveOpeners.length]+' '+value:value;
 }
 function narrationFor(x){return agentLeeVoice(rawNarrationFor(x));}
 async function projectEvidenceContext(x){
@@ -403,9 +413,17 @@ function selectThread(threadId){
  renderThreadState();return thread;
 }
 function createSideThread(){const side=threadWorkplane.createSideThread();selectThread(side.id);return side;}
+let fabricSpeechEpoch=0;
+function interruptFabricSpeech(reason='microphone-onset'){
+ fabricSpeechEpoch++;
+ LeeWayVoiceMetrics.record('fabric-interrupt',{reason,epoch:fabricSpeechEpoch});
+ void globalThis.LeeWayPortfolioVoiceSession?.stop();
+}
 function speakFromFabric(text,title='Agent Lee'){
  if(!text||conversationSession?.state!=='listening'||!globalThis.LeeWayPortfolioVoiceSession)return Promise.resolve();
+ const epoch=++fabricSpeechEpoch;
  return globalThis.LeeWayPortfolioVoiceSession.speak(text).then(result=>{
+  if(epoch!==fabricSpeechEpoch)return {state:'SUPERSEDED'};
   if(result?.state==='SUPERSEDED')return result;
   if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=title+' · Voice Fabric completed its playback request; human hearing not independently tested.';
   else agentState.textContent=title+' · Voice Fabric '+String(result?.state||'unavailable');
@@ -450,7 +468,7 @@ const voiceController=new LeeWayVoiceController({
 });
 const browserListener=new LeeWayBrowserListener({
  onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"Local speech recognition ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
- onSpeech:()=>{void globalThis.LeeWayPortfolioVoiceSession?.stop();LeeWayVoiceMetrics.record("speech-onset");const active=threadWorkplane.getThread(selectedThreadId);pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;},
+ onSpeech:()=>{interruptFabricSpeech();LeeWayVoiceMetrics.record("speech-onset");const active=threadWorkplane.getThread(selectedThreadId);pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;},
  onListening:active=>{voiceController.listening=active;listening=active;micBtn.classList.toggle("listening",active);if(!active&&conversationSession.requested&&conversationSession.state==="listening")conversationSession.mute();},
  onTranscript:text=>{agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");const route=pendingVoiceThreadId;pendingVoiceThreadId=null;void handleAgentCommand(text,route)},
  onMetric:(stage,detail)=>LeeWayVoiceMetrics.record(stage,detail),
@@ -494,7 +512,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  let text=raw.trim();if(!text)return;
  agentTranscript.textContent=text;agentTranscript.classList.remove("hidden");
  if(globalThis.LeeWayPauseIntent?.(text)){void globalThis.LeeWayPortfolioVoiceSession?.stop();return;}
- if(globalThis.LeeWayResumeIntent?.(text)){agentState.textContent='Agent Lee here. I am listening for your next turn.';return;}
+ if(globalThis.LeeWayResumeIntent?.(text)){agentState.textContent='I am listening for your next turn.';return;}
  if(LeeWayStopIntent(text)){void globalThis.LeeWayPortfolioVoiceSession?.stop();return;}
  let thread;
  if(/^(?:main|main chat|main task)[:,]?\s+/i.test(text)){text=text.replace(/^(?:main|main chat|main task)[:,]?\s+/i,'');thread=threadWorkplane.mainThread;}
@@ -519,7 +537,9 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
   agentState.textContent=machineAnswer.title+' · deterministic public projection · no LLM';
   renderThreadState();
   if(conversationSession.state==='listening'&&globalThis.LeeWayPortfolioVoiceSession){
+   const speechEpoch=++fabricSpeechEpoch;
    void globalThis.LeeWayPortfolioVoiceSession.speak(machineAnswer.text).then(result=>{
+    if(speechEpoch!==fabricSpeechEpoch)return;
     if(result?.state==='VOICE_FABRIC_RESPONSE')agentState.textContent=machineAnswer.title+' · Voice Fabric response returned; acoustic playback not independently verified.';
     else if(result?.state!=='SUPERSEDED')agentState.textContent=machineAnswer.title+' · Voice Fabric '+String(result?.state||'unavailable');
    }).catch(error=>{agentState.textContent=machineAnswer.title+' · Voice One unavailable: '+String(error.message||error);});
@@ -541,7 +561,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
    void speakFromFabric(voicedNarrative,narrative.title);
    return voicedNarrative;
  }
-  const message="Agent Lee here. That question sits outside the admitted public map right now. I can walk you through the Creator, LeeWay repositories, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the documented engineering journey. I won’t freestyle past the evidence just to sound smooth—that ain’t LeeWay. This public conversation uses no LLM, and I’ll tell you plainly when the record does not carry the answer.";
+ const message=agentLeeVoice("That question sits outside the admitted public map right now. I can walk you through the Creator, LeeWay repositories, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the documented engineering journey. I won’t freestyle past the evidence just to sound smooth—that ain’t LeeWay. This public conversation uses no LLM, and I’ll tell you plainly when the record does not carry the answer.");
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 qs('#agentEngineeringStory').onclick=()=>{void startEngineeringJourney();};
@@ -565,7 +585,7 @@ async function toggleMic(){
  const opening=conversationSession.toggle();
  await opening;
  if(starting&&conversationSession.requested){
-   const greeting='Agent Lee here. The conversation is open. Speak naturally; I am listening through the LeeWay Voice Fabric.';
+   const greeting=agentLeeVoice('The conversation is open. Speak naturally; I am listening through the LeeWay Voice Fabric.');
    agentText.textContent=greeting;agentNarration.textContent=greeting;agentState.textContent='Listening. Voice Fabric is warming in the background; speak when ready.';
  }
 }

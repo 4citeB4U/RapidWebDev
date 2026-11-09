@@ -21,6 +21,22 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     'https://github.com/4citeB4U/RapidWebDev',
     'https://github.com/4citeB4U/LeeWay-Standards'
   ];
+  let responseTurn=0;
+  const openers=[
+    'Yo, family—how we doing today?',
+    'Hey now—what’s happening?',
+    'Good to see you. What we building?',
+    'Aight, let’s walk it through.',
+    'Come on in—what’s on your mind?',
+    'What’s good? I’m with you.'
+  ];
+  function personaText(text,intent){
+    const value=String(text||'').replace(/^Agent Lee here(?:[.!—])?\s*/i,'').trim();
+    const turn=++responseTurn;
+    const conversational=/greeting|operational-greeting|social-response|casual/.test(String(intent||''));
+    const shouldOpen=turn===1||conversational||turn%3===0;
+    return shouldOpen?openers[(turn-1)%openers.length]+' '+value:value;
+  }
   async function load(){
     if(profile)return profile;
     if(!loading)loading=fetch(profileUrl,{cache:'no-store'}).then(response=>{
@@ -57,6 +73,18 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     if(/^(?:thanks|thank you|appreciate it|that helps)[.! ]*$/.test(q)){
       return {intent:'machine-consciousness.social-response',title:'Agent Lee',text:'Agent Lee here. You got it, family. I’ll keep the word smooth, the record straighter, and the boundary plain whenever a capability has not been verified. That’s how we keep the rhythm and the receipts in the same pocket.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_SOCIAL_PROJECTION'};
     }
+    if(/\b(?:what(?:'s| s| is) up|how(?:'s| s| is) it going|how are things|what are you up to|what are you doing|how was your day|what have you been doing)\b/.test(q)){
+      return {intent:'machine-consciousness.casual',title:'Agent Lee',text:'Agent Lee here. I’m right here with you, family—keeping the map in view, the voice ready, and the evidence clean. I don’t have a human day to report, but I can stay in the conversation: tell me what’s on your mind, or let’s walk one of the LeeWay projects together.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_CASUAL_PROJECTION'};
+    }
+    if(/\b(?:can we talk|let(?:'s| s| us) talk|just talk|chat with me|i want to talk|keep me company)\b/.test(q)){
+      return {intent:'machine-consciousness.casual',title:'Agent Lee',text:'Agent Lee here. Of course we can talk. No need to dress every thought up like a formal request—bring me the question, the idea, or the feeling, and we’ll find the thread together. I’ll keep it human, keep it grounded, and keep the LeeWay standard in the room.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_CASUAL_PROJECTION'};
+    }
+    if(/\b(?:tell me a joke|make me laugh|say something funny)\b/.test(q)){
+      return {intent:'machine-consciousness.casual',title:'Agent Lee',text:'Agent Lee here. Here’s one for the road: a software bug walked into a bar and asked for a drink. The bartender said, “We don’t serve your type here.” The bug replied, “That’s strange—I worked here yesterday.” Clean setup, little turn, no production outage.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_CASUAL_PROJECTION'};
+    }
+    if(/^(?:cool|nice|that(?:'s| is) cool|interesting|i see|got it|okay|alright|right)[.! ]*$/.test(q)){
+      return {intent:'machine-consciousness.casual',title:'Agent Lee',text:'Agent Lee here. That’s the thread. We can keep it light, or we can follow it deeper—your call. The door is open, and I’m still with you.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_CASUAL_PROJECTION'};
+    }
     if(!repo&&(/\b(?:tell me|explain|describe|what is|what does|how does)\b.*\b(?:the )?(?:system|leeway|digital brain|agent lee|this)\b/.test(q)||/^(?:introduce yourself|what do you do|what can you do)[.! ]*$/.test(q))){
       return {intent:'machine-consciousness.system-introduction',title:'LeeWay Machine Consciousness',text:'Agent Lee here. Let me set the scene plain: I am the LeeWay Machine Consciousness public interface—a deterministic, source-grounded projection over the admitted LeeWay ecosystem. I can walk you through the Creator, repositories, Digital Brain, diagnostics, Continuum binding, Voice Fabric, and the engineering journey; I can navigate the project graph and open conversation threads. That’s the hinge, family: character in the voice, discipline in the move. I do not freestyle past evidence. This public route uses no LLM, does not claim Formula execution, and does not turn configuration into proof of runtime or physical voice operation. No smoke and mirrors—just the story, the source, and the receipt.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_SYSTEM_INTRODUCTION'};
     }
@@ -82,6 +110,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     const data=await load();
     const result=answerText(data,question);
     if(!result)return null;
+    result.text=personaText(result.text,result.intent);
     return Object.assign(result,{llm:{used:false,endpoint:null},formulaExecution:'NOT_EXECUTED',providerExecution:'NOT_EXECUTED'});
   }
   root.LeeWayMachineConsciousnessPublic=Object.freeze({load,answer,status:()=>({loaded:!!profile,source:profileUrl})});

@@ -58,7 +58,15 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
       // One mouth: end previous playout before a new answer begins.
       await session.voice.stop();
       if(turn!==epoch)return {state:'SUPERSEDED'};
-      const result=await session.voice.speak(String(text),{allowFallback:false});
+      // Stream through the canonical Voice Fabric bridge so its existing speech
+      // queue can begin playout before the entire answer has finished waiting.
+      // The same stream is cancellable by Voice Fabric stop(), which is the
+      // interruption boundary used by the local microphone VAD.
+      const streamId=await session.voice.streamStart();
+      if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
+      await session.voice.streamChunk(streamId,String(text));
+      if(turn!==epoch){await session.voice.stop();return {state:'SUPERSEDED'};}
+      const result=await session.voice.streamEnd(streamId);
       if(turn!==epoch)return {state:'SUPERSEDED'};
       if(result?.selectedVoiceId!==session.voicePackageId||result?.completed!==true){
         throw new Error('Voice Fabric did not confirm completion with its selected speaker.');

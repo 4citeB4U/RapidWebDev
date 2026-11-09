@@ -7,6 +7,8 @@ on:
       - ".github/workflows/verify-digital-brain-live-browser.yml"
       - "index.html"
       - "brain/public/public-brain.js"
+      - "brain/public/machine-consciousness-public.js"
+      - "brain/public/voice-fabric-session.js"
       - "brain/public/thread-workplane.js"
       - "brain/public/speech-lease-patch.js"
   workflow_dispatch:
