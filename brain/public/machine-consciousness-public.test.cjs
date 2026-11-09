@@ -90,6 +90,25 @@ test('ordinary casual prompts receive varied Agent Lee conversation instead of t
   for(const result of [up,talk,joke])assert.doesNotMatch(result.text,/^Agent Lee here\b/i);
 });
 
+test('showroom and current-screen questions use the live context envelope',async()=>{
+  const api=load();
+  const showroom=await api.answer('Welcome me and show me around',{
+    location:'PROJECT UNIVERSE',
+    visibleControls:[{label:'CORE LEEWAY'},{label:'Guided tour'}]
+  });
+  assert.equal(showroom.intent,'machine-consciousness.showroom');
+  assert.match(showroom.text,/Welcome in|walk you through/i);
+  assert.equal(showroom.llm.used,false);
+  const screen=await api.answer('What am I looking at?',{
+    location:'LeeWay Formula workspace',
+    selectedRecord:{label:'LeeWay Formula',summary:'Mathematical state, routing and evidence architecture.',evidenceState:'PUBLIC SOURCE',repoUrl:'https://github.com/4citeB4U/Leeway-formula-live'},
+    workspace:{tab:'evidence'}
+  });
+  assert.equal(screen.intent,'machine-consciousness.current-screen');
+  assert.match(screen.text,/LeeWay Formula/);
+  assert.match(screen.text,/evidence workspace|PUBLIC SOURCE/i);
+});
+
 test('public brain loads the projection before its conversation handler',()=>{
   const index=fs.readFileSync(path.join(__dirname,'../../index.html'),'utf8');
   const projection=index.indexOf('/brain/public/machine-consciousness-public.js');
@@ -97,6 +116,8 @@ test('public brain loads the projection before its conversation handler',()=>{
   assert.ok(projection>0&&brain>projection);
   const source=fs.readFileSync(path.join(__dirname,'public-brain.js'),'utf8');
   assert.match(source,/LeeWayMachineConsciousnessPublic\?\.answer/);
+  assert.match(source,/answer\(text,currentAgentScreenContext\(\)\)/);
+  assert.match(source,/__leewayAgentScreenContext/);
   assert.match(source,/Machine Consciousness/);
   assert.match(source,/speakFromFabric\(machineAnswer\.text,machineAnswer\.title\)/);
 });

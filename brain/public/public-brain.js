@@ -174,6 +174,45 @@ function backOneLevel(){
   showBrainOnly();
   return "brain-overview";
 }
+function currentAgentScreenContext(){
+  const visible=el=>{
+    if(!el||el.disabled)return false;
+    const style=globalThis.getComputedStyle?getComputedStyle(el):null;
+    return style?.display!=='none'&&style?.visibility!=='hidden'&&(el.offsetWidth||el.offsetHeight||el.getClientRects?.().length);
+  };
+  const visibleControls=[...document.querySelectorAll('button,a,[role="button"]')]
+    .filter(visible)
+    .map(el=>({label:String(el.getAttribute('aria-label')||el.textContent||el.title||'').replace(/\s+/g,' ').trim().slice(0,120),id:el.id||null,action:el.dataset.workAction||null}))
+    .filter(x=>x.label)
+    .slice(0,24);
+  const category=activeCategory?categoryDefs.find(c=>c.id===activeCategory):null;
+  const records=items.filter(x=>(!activeCategory||categoryFor(x)===activeCategory)&&(!search.value.trim()||(x.label+' '+(x.summary||'')+' '+groupFor(x)).toLowerCase().includes(search.value.trim().toLowerCase())));
+  const selectedRecord=activeItem&&['project','evidence'].includes(activeItem.kind)?{
+    id:activeItem.id,
+    label:activeItem.label,
+    summary:activeItem.summary||activeItem.desc||'',
+    group:groupFor(activeItem),
+    evidenceState:activeItem.evidence_state||activeItem.evidenceState||activeItem.type||'PUBLIC',
+    repoName:activeItem.repo_name||null,
+    repoUrl:activeItem.repo_url||null,
+    liveUrl:activeItem.live_url||activeItem.url||null
+  }:null;
+  const workspaceOpen=!workspace.classList.contains('hidden');
+  return {
+    surface:'rapidwebdevelop.com',
+    page:'LeeWay Digital Brain',
+    brainEntered,
+    location:workspaceOpen&&activeItem?`${activeItem.label} workspace`:category?.label|| (brainEntered?'PROJECT UNIVERSE':'DIGITAL BRAIN'),
+    categoryId:activeCategory,
+    categoryLabel:category?.label||null,
+    visibleRecordCount:records.length,
+    search:String(search.value||''),
+    selectedRecord,
+    workspace:workspaceOpen?{tab:activeTab,title:String(workspaceTitle?.textContent||''),kicker:String(workspaceKicker?.textContent||'')}:null,
+    visibleControls
+  };
+}
+window.__leewayAgentScreenContext=currentAgentScreenContext;
 window.__leewayPublicBackOneLevel=backOneLevel;
 window.__leewayPublicState=()=>({
   brainEntered,
@@ -181,7 +220,8 @@ window.__leewayPublicState=()=>({
   scale,
   search:String(search?.value||""),
   introActive:Boolean(window.__leewayBrainIntroActive),
-  bodyClass:document.body.className
+  bodyClass:document.body.className,
+  screenContext:currentAgentScreenContext()
 });
 function showBrainOnly(){
  closeWorkspace();hud.classList.add("hidden");activeCategory=null;search.value="";brainEntered=false;
@@ -510,9 +550,21 @@ function navigateAgentRequest(text){
  if(/pocket agent/.test(q))return "Pocket Agent Lee is planned as a subscriber gift and early-access release. The source project exists, but this site does not claim the public consumer install and distribution path is complete yet.";
 
  if(/^(?:go |back |return )?(?:home|back|reset|close|whole brain|to the brain)[.!?]*$/.test(q)){showBrainOnly();return "Back at the Digital Brain.";}
+ if(/^(?:show|open|take me to|go to) (?:the )?(?:digital brain|project universe|main brain|brain overview)[.!?]*$/.test(q)){showBrainOnly();return "We’re back at the Digital Brain overview. The whole house is in view—ask me for a lane, a project, or the story behind what you’re seeing.";}
  if(activeItem&&/^(?:show|open|browse)(?: me)?(?: the| project)? (?:files?|source|code)[.!?]*$/.test(q)){openWorkspace(activeItem,"files");return "Opening the project files.";}
  if(activeItem&&/^(?:show|open)(?: me)?(?: the| project)? (?:live view|website|demo)[.!?]*$/.test(q)){openWorkspace(activeItem,"live");return activeItem.live_url?"Opening the listed project link.":"No live view is listed for this project.";}
  if(activeItem&&/^(?:show|open)(?: me)?(?: the| project)? (?:evidence|proof|presentation)[.!?]*$/.test(q)){openWorkspace(activeItem,"evidence");return "Opening the linked evidence.";}
+ if(/^(?:show|open|take me to|go to) /.test(q)){
+   const subject=q.replace(/^(?:show|open|take me to|go to) +(?:the )?/,'').trim();
+   const categoryHit=categoryDefs.find(c=>{
+    const label=c.label.toLowerCase(),compact=label.replace(/[^a-z0-9]+/g,' ');
+    return subject===label||subject===compact||subject.includes(compact)||compact.includes(subject);
+   });
+   if(categoryHit){
+    closeWorkspace();activeCategory=categoryHit.id;search.value='';rebuildUniverse();selectItem(categoryHit.id,false);
+    return `Opening ${categoryHit.label}. This lane has ${items.filter(x=>categoryFor(x)===categoryHit.id).length} records; pick one and I’ll walk you through the purpose and the proof.`;
+   }
+ }
  if(/^(show|open|take me to|find|go to) /.test(q)){
    const subject=q.replace(/^(show|open|take me to|find|go to) +/,"").trim(),hit=bestProject(subject);
    if(hit&&hit[0]>=10){selectItem(hit[1].id,false);openWorkspace(hit[1],"overview");return narrationFor(hit[1]);}
@@ -535,7 +587,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
  showPublicAnswerSources([]);
  const navigation=navigateAgentRequest(text);
   if(navigation){const voicedNavigation=agentLeeVoice(navigation);agentText.textContent=voicedNavigation;agentNarration.textContent=voicedNavigation;recordChat('Agent Lee · '+threadDisplay(thread),voicedNavigation);threadWorkplane.remember(thread.id,"assistant",voicedNavigation);void threadSpeech(thread,voicedNavigation);return voicedNavigation;}
- const machineAnswer=await globalThis.LeeWayMachineConsciousnessPublic?.answer(text).catch(()=>null);
+ const machineAnswer=await globalThis.LeeWayMachineConsciousnessPublic?.answer(text,currentAgentScreenContext()).catch(()=>null);
  if(machineAnswer){
   // Public Machine Consciousness projection: deterministic source knowledge, no carrier exposure.
   thread.lastOutput=machineAnswer.text;

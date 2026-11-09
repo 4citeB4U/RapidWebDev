@@ -1,0 +1,13 @@
+{
+  "name": "rapidwebdev-agent-lee",
+  "private": true,
+  "version": "0.0.0",
+  "description": "LeeWay Digital Brain public Machine Consciousness presentation and browser verification",
+  "scripts": {
+    "test:public": "node --test brain/public/*.test.cjs",
+    "test:presenter:browser": "node brain/public/presenter.browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.65.0"
+  }
+}

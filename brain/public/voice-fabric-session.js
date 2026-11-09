@@ -39,7 +39,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
       const voice=await getClient();
       const voicePackageId=await activeVoicePackage();
       await voice.selectVoice(voicePackageId);
-      const preparation=await voice.prepare();
+      const preparation=await voice.prepare({allowFallback:false});
       // Current published profile is authoritative. No unannounced speaker swap.
       if(preparation?.selectedVoiceId!==voicePackageId){
         throw new Error('Voice Fabric changed the Agent Lee speaker; owner qualification required.');

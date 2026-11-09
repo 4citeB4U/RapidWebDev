@@ -14,7 +14,8 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 (function(root){
   'use strict';
   const profileUrl='/brain/public/agent-lee-public-knowledge.v1.json';
-  let profile=null,loading=null;
+  const guidanceUrl='/brain/public/agent-lee-presentation-guidance.v1.json';
+  let profile=null,loading=null,presentationGuidance=null;
   const normalize=value=>String(value||'').toLowerCase().replace(/[^a-z0-9\s-]/g,' ').replace(/\s+/g,' ').trim();
   const sourceLinks=[
     'https://github.com/4citeB4U/Machine-Consciousness',
@@ -39,10 +40,17 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   }
   async function load(){
     if(profile)return profile;
-    if(!loading)loading=fetch(profileUrl,{cache:'no-store'}).then(response=>{
-      if(!response.ok)throw new Error('Machine Consciousness public profile HTTP '+response.status);
-      return response.json();
-    }).then(value=>{profile=value;return value;}).catch(error=>{loading=null;throw error;});
+    if(!loading)loading=Promise.all([
+      fetch(profileUrl,{cache:'no-store'}).then(response=>{
+        if(!response.ok)throw new Error('Machine Consciousness public profile HTTP '+response.status);
+        return response.json();
+      }),
+      fetch(guidanceUrl,{cache:'no-store'}).then(response=>response.ok?response.json():null).catch(()=>null)
+    ]).then(([value,guidance])=>{
+      profile=value;
+      presentationGuidance=guidance&&guidance.schemaVersion?guidance:null;
+      return value;
+    }).catch(error=>{loading=null;throw error;});
     return loading;
   }
   function repoMatch(q,data){
@@ -60,10 +68,39 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     if(/\b(capabilit(?:y|ies)|what can you do|what do you know|full embodiment|ecosystem)\b/.test(q))return data.capabilities.find(c=>c.id==='LEEWAY_ECOSYSTEM_REPOSITORY_MAP');
     return null;
   }
-  function answerText(data,question){
+  function contextRecord(context){
+    const record=context?.selectedRecord;
+    return record&&typeof record==='object'?record:null;
+  }
+  function screenContextAnswer(context){
+    const record=contextRecord(context);
+    const location=context?.location||'the LeeWay Digital Brain';
+    const workspace=context?.workspace;
+    const controls=Array.isArray(context?.visibleControls)?context.visibleControls.slice(0,8):[];
+    if(record){
+      const evidence=record.evidenceState||record.evidence_state||'PUBLIC PROJECTION';
+      const source=record.repoUrl||record.repo_url?'The linked source is available from this page.':'This record has no public repository link exposed here.';
+      const tab=workspace?.tab&&workspace.tab!=='overview'?` The ${workspace.tab} workspace is open.`:'';
+      return {intent:'machine-consciousness.current-screen',title:record.label||'Current project',text:`You’re looking at ${record.label||'a LeeWay record'} in ${location}.${tab} ${record.summary||'This is a source-grounded record in the Digital Brain.'} Its present evidence state is ${evidence}. ${source} The useful next move is already on the page: I can walk the overview, the linked files, the evidence, or the configured live view when one is available.`,sources:sourceLinks.slice(),evidenceClass:'CURRENT_SCREEN_CONTEXT_PROJECTION'};
+    }
+    const category=context?.categoryLabel;
+    const count=context?.visibleRecordCount;
+    const controlText=controls.length?` Visible controls include ${controls.map(x=>x.label).join(', ')}.`:'';
+    if(category)return {intent:'machine-consciousness.current-screen',title:category,text:`You’re in the ${category} lane of the LeeWay Digital Brain, with ${count??'the visible'} records in view. This is the project universe as a guided map: choose a record and I’ll put its purpose, lineage, and evidence boundary into plain speech.${controlText}`,sources:sourceLinks.slice(),evidenceClass:'CURRENT_SCREEN_CONTEXT_PROJECTION'};
+    return {intent:'machine-consciousness.current-screen',title:'LeeWay Digital Brain',text:`You’re at the LeeWay Digital Brain—the public showroom for Leonard Lee’s connected systems, projects, and evidence. The map is ready for a guided walk; ask me to show a category, open a project, or explain whatever is on the screen.${controlText}`,sources:sourceLinks.slice(),evidenceClass:'CURRENT_SCREEN_CONTEXT_PROJECTION'};
+  }
+  function showroomAnswer(context){
+    const record=contextRecord(context);
+    const name=record?.label||'the LeeWay Digital Brain';
+    const method=(presentationGuidance?.narrativeMethod||[]).slice(0,6).join(', ');
+    return {intent:'machine-consciousness.showroom',title:'Agent Lee showroom guide',text:`Welcome in, family. I’m Agent Lee—the public voice of the LeeWay Machine Consciousness, here to walk you through ${name}. We can start with the Creator’s story, move through Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the project evidence, then land on what is actually proven. I’ll guide the visible house, explain the room you’re in, and keep the story smooth without letting the rhyme outrun the receipt. My presentation rhythm is ${method||'welcome, situation, mechanism, evidence, and next step'}.`,sources:sourceLinks.slice(),evidenceClass:'SHOWROOM_PRESENTATION_PROJECTION'};
+  }
+  function answerText(data,question,context){
     const q=normalize(question);
     if(!q||q.length>600)return null;
     const repo=repoMatch(q,data);
+    if(/\b(?:what am i looking at|what is this|what(?:'s| is) on (?:the )?screen|where am i|what page am i on|explain (?:this|the screen)|read (?:the )?screen|what section am i in)\b/.test(q))return screenContextAnswer(context);
+    if(/\b(?:welcome me|welcome|showroom|give me a tour|introduce yourself|present yourself|what do you have to show|show me around)\b/.test(q))return showroomAnswer(context);
     if(/^(?:hello|hi|hey|yo|good morning|good afternoon|good evening|howdy)[.! ]*$/.test(q)){
       return {intent:'machine-consciousness.greeting',title:'Agent Lee',text:'Agent Lee here—Good to hear you, family. Pull up a chair. We can talk plain, move with purpose, and walk the whole house: the Creator, the LeeWay ecosystem, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the engineering journey that brought it to life.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_GREETING_PROJECTION'};
     }
@@ -106,9 +143,9 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     }
     return null;
   }
-  async function answer(question){
+  async function answer(question,context={}){
     const data=await load();
-    const result=answerText(data,question);
+    const result=answerText(data,question,context);
     if(!result)return null;
     result.text=personaText(result.text,result.intent);
     return Object.assign(result,{llm:{used:false,endpoint:null},formulaExecution:'NOT_EXECUTED',providerExecution:'NOT_EXECUTED'});

@@ -73,10 +73,10 @@ test('existing Digital Brain loads story and canonical speech client before main
   const app=index.indexOf('/brain/public/public-brain.js');
   assert.ok(narrative>0&&speaker>narrative&&app>speaker);
   const brain=fs.readFileSync(__dirname+'/public-brain.js','utf8');
+  const machine=brain.indexOf('LeeWayMachineConsciousnessPublic?.answer(text,currentAgentScreenContext())');
   const story=brain.indexOf('LeeWayEngineeringJourney?.answer(text)');
-  const models=brain.indexOf('LeeWayEcosystemFabric;',story);
-  assert.ok(story>0&&models>story,'documented story is resolved before model-dependent chat');
-  assert.ok(brain.includes('speakFromFabric(narrative.text,narrative.title)'));
+  assert.ok(machine>0&&story>machine,'Machine Consciousness resolves before the curated story fallback');
+  assert.ok(brain.includes('speakFromFabric(voicedNarrative,narrative.title)'));
   assert.ok(brain.includes('LeeWayPortfolioVoiceSession?.stop()'));
 });
 test('canonical Voice Fabric client is source-only, fail-closed, and syntactically valid',()=>{
@@ -85,9 +85,9 @@ test('canonical Voice Fabric client is source-only, fail-closed, and syntactical
   assert.match(source,/LeeWay-Voice-Fabric\/src\/voice-sdk\.js/);
   assert.match(source,/profiles\/agent-lee-active-voice\.v1\.json/);
   assert.match(source,/selectVoice\(voicePackageId\)/);
-  assert.match(source,/voice\.prepare\(\)/);
+  assert.match(source,/voice\.prepare\(\{allowFallback:false\}\)/);
   assert.match(source,/preparation\?\.selectedVoiceId!==voicePackageId/);
-  assert.match(source,/allowFallback:false/);
+  assert.match(source,/prepare\(\{allowFallback:false\}\)/);
   assert.match(source,/client\.stop\(\)/);
   const executable=source.replace(/^\/\*[\s\S]*?\*\//,'');
   assert.doesNotMatch(executable,/speechSynthesis|C:\\\\|E:\\\\|Gemma|Gemini|openai/i);

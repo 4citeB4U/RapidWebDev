@@ -9,17 +9,12 @@ const intro=read('brain/public/intro-story.js');
 const runtime=JSON.parse(read('brain/agent-lee-runtime-config.json'));
 const voice=JSON.parse(read('brain/agent-lee-voice.json'));
 
-assert(index.includes('class="story-intro brain-intro"'));
-assert(index.includes('id="introStoryGlass"'));
-assert(index.includes('id="introStoryScroll"'));
-assert(index.includes('id="introStoryBegin"'));
+assert(!index.includes('class="story-intro brain-intro"'));
+assert(!index.includes('id="introStoryGlass"'));
+assert(!index.includes('id="introStoryScroll"'));
+assert(!index.includes('id="introStoryBegin"'));
 assert(index.includes('/brain/public/ecosystem-fabric.js?v=20260929-fabric2'));
-assert(index.includes('/brain/public/intro-story.js?v=20260929-story1'));
-assert(css.includes('.intro-story-glass'));
-assert(css.includes('@keyframes introStoryRoll'));
-assert(css.includes('body.story-intro #agentLee'));
-assert(intro.includes("agent-lee-welcome.mp3"));
-assert(intro.includes("document.body.classList.remove('story-intro')"));
+assert(!index.includes('/brain/public/intro-story.js'));
 
 for(const repo of ['LeeWay-Voice-Fabric','Leeway-Runtime-Fabric','LeeWay-Agent-Skills','Leeway-formula-live']){
   assert(fabric.includes(repo),repo+' missing from fabric projection');
