@@ -11,6 +11,11 @@ WHEN = 2026-11-08 scoped addition; original source/history preserved.
 HOW = Route documented questions through the deterministic Machine Consciousness projection and canonical Voice Fabric; stop spoken work on existing interruption controls.
 LICENSE = Existing repository terms unchanged; no new license asserted.
 */
+const LeeWayVoiceMetrics=globalThis.LeeWayVoiceMetrics||Object.freeze({
+ record(){},
+ snapshot(){return[]},
+ clear(){}
+});
 const qs=s=>document.querySelector(s);
 const world=qs("#world"),nodesEl=qs("#nodes"),edges=qs("#edges"),track=qs("#carouselTrack"),search=qs("#searchBox");
 const hud=qs("#hud"),workspace=qs("#workspace"),workspaceBody=qs("#workspaceBody"),workspaceTitle=qs("#workspaceTitle"),workspaceKicker=qs("#workspaceKicker");
