@@ -64,12 +64,11 @@ jobs:
             const initial=await page.locator('#agentThreadStatus').textContent();
             const loaded=await page.evaluate(()=>({
               workplane:typeof globalThis.LeeWayThreadWorkplane==='function',
-              arbiter:typeof globalThis.LeeWaySpeechLeaseArbiter==='function',
-              pause:typeof globalThis.LeeWayBrowserVoice?.prototype?.pausePlayback==='function',
-              resume:typeof globalThis.LeeWayBrowserVoice?.prototype?.resumePlayback==='function',
-              inserted:typeof globalThis.LeeWayBrowserVoice?.prototype?.speakInsertedStream==='function'
+              machineConsciousness:typeof globalThis.LeeWayMachineConsciousnessPublic?.answer==='function',
+              voiceFabric:typeof globalThis.LeeWayPortfolioVoiceSession?.speak==='function',
+              browserVoiceRemoved:typeof globalThis.LeeWayBrowserVoice==='undefined'
             }));
-            if(!Object.values(loaded).every(Boolean))throw new Error('Thread/voice pilot globals are incomplete: '+JSON.stringify(loaded));
+            if(!Object.values(loaded).every(Boolean))throw new Error('Machine Consciousness/Voice Fabric pilot globals are incomplete: '+JSON.stringify(loaded));
             if(!String(initial).includes('/8 hands active'))throw new Error('Eight-hand status is not visible: '+initial);
             const introGate=page.locator('#leewayIntroGate');
             if(await introGate.isVisible().catch(()=>false)){
