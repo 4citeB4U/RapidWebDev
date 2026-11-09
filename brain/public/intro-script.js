@@ -8,7 +8,7 @@
   "For optional local AI, Gemma 4 E2B is the current browser reasoning model through LiteRT-LM. Whisper Tiny English provides local speech recognition through Transformers.js, and Chatterbox ONNX uses the selected Voice One reference for Agent Lee's generated speech. These choices are not here because a model name is fashionable. They were chosen to test how much useful AI can run locally, remain portable, and keep the architecture visible.",
   "LeeWay Standards govern the larger idea behind all of this: models are capabilities, not authorities. Generation is not proof. Running is not the same as being healthy. Finished is not claimed until the evidence supports it. Human intent, verification, and responsibility stay above the machine.",
   "That is the movement behind LeeWay: use artificial intelligence to expand human capability without surrendering human judgment, ownership, or accountability. Build boldly, question the output, preserve the failures, verify the result, and let evidence decide what can honestly be called complete.",
-  "While I speak, the Digital Brain is preparing behind this screen. If you allow microphone access, it is used for browser-local speech recognition and interruption. The camera is not requested.",
+  "While I speak, the Digital Brain is preparing behind this screen. If you allow microphone access, the site uses the device's speech input and interruption path; desktop can use local recognition, while mobile uses the browser's native speech adapter. The camera is not requested.",
   "If this work sparks something you want to build, Leonard also provides hands-on guidance and development support. You can contact him directly at leonardlee6@outlook.com or through the public GitHub profile at 4citeB4U and the relevant project repositories.",
   "LeeWay is also being organized into a five-day Agent Lee learning event for YouTube: the creator story and Digital Brain, the LeeWay Standards, the Formula and evidence discipline, local models and Pocket Agent Lee, and finally how to build governed systems of your own. Pocket Agent Lee is planned as a subscriber gift and early-access release once the public install and distribution path is fully verified. Until then, it is presented as coming, not complete.",
   "When this introduction ends, enter the brain, explore the work, question the evidence, and reach out if you want help understanding or building something similar."
@@ -30,7 +30,7 @@
    ["Chatterbox ONNX + Voice One","optional local Agent Lee speech"]
   ]),
   evidence:Object.freeze(["VERIFIED / RECEIPTED WORK","ACTIVE BUILDS","PROTOTYPES / RESEARCH / EXPERIMENTS"]),
-  permission:"Microphone is optional and requested from your browser for local speech recognition and interruption. Camera access is not requested. Large AI model downloads remain optional.",
+  permission:"Microphone is optional and requested from your browser for speech recognition and interruption. Desktop may use local recognition; mobile uses the browser's native speech adapter. Camera access is not requested. Large AI model downloads remain optional.",
   contact:Object.freeze({
    email:"leonardlee6@outlook.com",
    githubLabel:"@4citeB4U",

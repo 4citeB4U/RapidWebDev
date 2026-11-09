@@ -531,7 +531,7 @@ function showModelProgress(kind,p){
  bar.hidden=false;
  if(p.message){bar.removeAttribute("value");label.textContent=p.message;return;}
  if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;label.textContent=`Speech recognition: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"local worker"}`;}
- else{bar.removeAttribute("value");label.textContent="Preparing local speech recognition...";}
+ else{bar.removeAttribute("value");label.textContent="Preparing speech input...";}
 }
 window.addEventListener('leeway-fabric-ready',()=>updatePreparationStatus());
 function cancelAgentGeneration(){
@@ -630,7 +630,7 @@ const conversationSession=new LeeWayConversationSession({
   voiceConnecting=state==='preparing';const active=conversationSession.requested;
   micBtn.setAttribute('aria-pressed',String(active));micBtn.setAttribute('aria-label',active?'Mute Agent Lee microphone and speech':'Start live conversation with Agent Lee');
   micBtn.dataset.mode=state;qs('#agentStartVoice').textContent=active?'Mute conversation':'Start live conversation';qs('#agentStartVoice').setAttribute('aria-pressed',String(active));
-  agentState.textContent=state==='listening'?(browserListener.ready?'Listening. Speak naturally; tap Agent Lee to mute.':'Microphone is on. Preparing local speech recognition...'):state==='preparing'?'Opening microphone. Allow access if your browser asks.':state==='setup'?'Microphone could not start. Check browser permission.':'Muted. Microphone and speech are off.';
+  agentState.textContent=state==='listening'?(browserListener.ready?'Listening. Speak naturally; tap Agent Lee to mute.':'Microphone is on. Preparing speech input...'):state==='preparing'?'Opening microphone. Allow access if your browser asks.':state==='setup'?'Microphone could not start. Check browser permission.':'Muted. Microphone and speech are off.';
  },onError:error=>{agentState.textContent=error.message||'Microphone unavailable. You can type instead.';}
 });
 async function toggleMic(){
@@ -662,9 +662,18 @@ async function startEngineeringJourney(){
  if(conversationSession.state!=='listening')agentState.textContent='Story available as text. Allow microphone access to continue hands-free.';
 }
 if(typeof window!=='undefined')window.addEventListener('leeway-start-engineering-conversation',()=>{void startEngineeringJourney();});
+let mobileVisibilityTimer=0;
+function clearMobileVisibilityTimer(){if(mobileVisibilityTimer){clearTimeout(mobileVisibilityTimer);mobileVisibilityTimer=0;}}
 if(typeof document!=='undefined')document.addEventListener('visibilitychange',()=>{
- // Microphone privacy: backgrounding the page mutes capture rather than silently keeping it alive.
- if(document.hidden&&conversationSession.requested)endVoice();
+ clearMobileVisibilityTimer();
+ if(!document.hidden||!conversationSession.requested)return;
+ // Mobile browsers briefly hide the document while showing microphone permission
+ // or changing the audio route. Do not tear down a connection during that transient.
+ if(conversationSession.connecting)return;
+ mobileVisibilityTimer=setTimeout(()=>{
+  mobileVisibilityTimer=0;
+  if(document.hidden&&conversationSession.requested)endVoice();
+ },5000);
 });
 async function startTour(){
  // The tour is a real conversation entry, not a timed slideshow or model-dependent recording.
@@ -735,7 +744,7 @@ qs("#hudClose").onclick=()=>hud.classList.add("hidden");
 qs("#agentStop")?.addEventListener("click",stopSpeech);
 qs("#agentEndVoice")?.addEventListener("click",endVoice);
 qs("#agentStartVoice")?.addEventListener("click",()=>void toggleMic());
-window.addEventListener("pagehide",endVoice);
+window.addEventListener("pagehide",event=>{clearMobileVisibilityTimer();if(!event.persisted)endVoice();});
 qs("#tourBtn").onclick=startTour;
 qs('#agentGuidedTour').onclick=()=>{void startTour();};
 qs("#resetBtn").onclick=showBrainOnly;

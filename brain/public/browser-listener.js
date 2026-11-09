@@ -1,7 +1,7 @@
 /* Browser-only microphone capture, playback-aware barge-in, local Whisper. */
 (() => {
   class LeeWayBrowserListener {
-    constructor(options={}){this.options=options;this.epoch=0;this.sequence=0;this.pending=new Map();this.active=false;this.ready=false;this.playbackText='';this.playbackActive=false;this.playbackGraceUntil=0;}
+    constructor(options={}){this.options=options;this.epoch=0;this.sequence=0;this.pending=new Map();this.active=false;this.ready=false;this.nativeMode=false;this.nativeRecognition=null;this.playbackText='';this.playbackActive=false;this.playbackGraceUntil=0;}
     setPlaybackText(text){this.playbackText=String(text||'').trim();this.playbackActive=Boolean(this.playbackText);this.playbackGraceUntil=0;}
     clearPlaybackText(){if(this.playbackText)this.playbackGraceUntil=performance.now()+3500;this.playbackActive=false;}
     isPlaybackActive(){return this.playbackActive;}
@@ -15,6 +15,46 @@
       const heardCoverage=overlap/heard.length,spokenCoverage=overlap/spoken.length;
       const compact=heard.join(' '),source=spoken.join(' ');
       return (heard.length>=5&&heardCoverage>=.62&&spokenCoverage>=.10)||(heard.length>=4&&compact.length>=18&&source.includes(compact));
+    }
+    nativeSpeechConstructor(){
+      const host=typeof window==='object'?window:globalThis;
+      return host.SpeechRecognition||host.webkitSpeechRecognition||null;
+    }
+    shouldUseNativeMobileSpeech(){
+      const host=typeof window==='object'?window:globalThis;
+      const nav=host.navigator||globalThis.navigator;
+      const ua=String(nav?.userAgent||'');
+      return /Android|iPhone|iPad|iPod|Mobile/i.test(ua)&&typeof this.nativeSpeechConstructor()==='function';
+    }
+    startNativeMobileSpeech(Recognition){
+      const epoch=++this.epoch,recognition=new Recognition();
+      this.nativeMode=true;this.nativeRecognition=recognition;this.active=true;this.ready=true;
+      this.options.onMetric?.('mobile-native-speech-start',{userAgent:String((typeof navigator==='object'&&navigator.userAgent)||'')});
+      recognition.lang='en-US';recognition.continuous=true;recognition.interimResults=false;recognition.maxAlternatives=1;
+      recognition.onstart=()=>{if(epoch!==this.epoch)return;this.options.onListening?.(true);this.options.onState?.('Listening on this device. You can interrupt me.');};
+      recognition.onspeechstart=()=>{if(epoch===this.epoch&&this.active)this.options.onSpeech?.();};
+      recognition.onresult=event=>{
+        if(epoch!==this.epoch||!this.active)return;
+        for(let i=event.resultIndex||0;i<event.results.length;i++){
+          const result=event.results[i];
+          if(result?.isFinal){const text=String(result[0]?.transcript||'').trim();if(text)this.options.onTranscript?.(text);}
+        }
+      };
+      recognition.onerror=event=>{
+        if(epoch!==this.epoch||event.error==='aborted')return;
+        if(['not-allowed','service-not-allowed'].includes(event.error)){
+          this.active=false;this.options.onListening?.(false);this.options.onState?.('Microphone unavailable. Allow microphone and speech recognition for this site.');
+        }else this.options.onState?.('Mobile speech input is reconnecting…');
+      };
+      recognition.onend=()=>{
+        if(epoch!==this.epoch||!this.active)return;
+        this.nativeRestartTimer=setTimeout(()=>{
+          if(epoch!==this.epoch||!this.active)return;
+          try{recognition.start();}catch{this.active=false;this.options.onListening?.(false);this.options.onState?.('Mobile speech input stopped. Tap the microphone to reconnect.');}
+        },250);
+      };
+      try{recognition.start();}
+      catch(error){this.nativeRecognition=null;this.nativeMode=false;this.active=false;throw error;}
     }
     async load(){
       if(this.ready)return;
@@ -34,6 +74,10 @@
     async start(){
       if(this.active)return;
       const epoch=++this.epoch;
+      if(this.shouldUseNativeMobileSpeech()){
+        this.startNativeMobileSpeech(this.nativeSpeechConstructor());
+        return;
+      }
       // Request microphone permission from the original click, independently of model downloads.
       if(epoch!==this.epoch)return;
       const stream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true,channelCount:1},video:false});
@@ -51,7 +95,7 @@
         this.resetUtterance();this.noise=.002;this.active=true;
         this.capture.port.onmessage=event=>{if(this.active&&epoch===this.epoch)this.consume(new Int16Array(event.data));};
         this.input.connect(this.capture);this.capture.connect(this.audio.destination);
-        this.options.onListening?.(true);this.options.onState?.(this.ready?'Listening on this device. You can interrupt me.':'Microphone is on. Preparing local speech recognition...');
+        this.nativeMode=false;this.options.onListening?.(true);this.options.onState?.(this.ready?'Listening on this device. You can interrupt me.':'Microphone is on. Preparing local speech recognition...');
         // Never block microphone capture on Chatterbox, Gemma, or recognition loading.
         void this.load().then(()=>{if(this.active&&epoch===this.epoch)this.options.onState?.('Listening on this device. You can interrupt me.');}).catch(async error=>{if(epoch===this.epoch){await this.stop();this.options.onState?.('Speech recognition failed: '+error.message);}});
         stream.getAudioTracks().forEach(track=>track.onended=()=>void this.stop());
@@ -97,6 +141,9 @@
     cancelUtterance(){this.utterance=(this.utterance||0)+1;this.waitingClip=null;this.resetUtterance();}
     async stop(){
       ++this.epoch;this.active=false;this.waitingClip=null;this.options.onMetric?.('microphone-stop');
+      clearTimeout(this.nativeRestartTimer);this.nativeRestartTimer=null;
+      const native=this.nativeRecognition;this.nativeRecognition=null;this.nativeMode=false;
+      if(native){native.onstart=null;native.onspeechstart=null;native.onresult=null;native.onerror=null;native.onend=null;try{native.stop();}catch{}}
       this.input?.disconnect();this.capture?.disconnect();this.input=null;this.capture=null;
       this.stream?.getTracks().forEach(track=>{track.onended=null;track.stop()});this.stream=null;
       const audio=this.audio;this.audio=null;

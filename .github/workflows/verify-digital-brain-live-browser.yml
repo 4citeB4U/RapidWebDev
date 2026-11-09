@@ -9,6 +9,7 @@ on:
       - "brain/public/public-brain.js"
       - "brain/public/machine-consciousness-public.js"
       - "brain/public/voice-fabric-session.js"
+      - "brain/public/browser-listener.js"
       - "brain/public/thread-workplane.js"
       - "brain/public/speech-lease-patch.js"
   workflow_dispatch:

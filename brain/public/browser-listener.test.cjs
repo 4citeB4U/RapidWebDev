@@ -1,6 +1,6 @@
 const test=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
 function setup(options={}){
-  const scope={performance,window:{},DOMException,Float32Array,Int16Array};vm.createContext(scope);
+  const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout};vm.createContext(scope);
   vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
   const listener=new scope.window.LeeWayBrowserListener(options);listener.resetUtterance();listener.noise=.002;listener.load=async()=>{listener.ready=true};return listener;
 }
@@ -30,15 +30,26 @@ test('first click opens microphone before recognition finishes loading',async()=
  let stopped=0,modelLoads=0;const track={stop(){stopped++},getSettings:()=>({})};
  class AudioContext{constructor(){this.audioWorklet={addModule:async()=>{}};this.destination={}}async resume(){}async close(){}createMediaStreamSource(){return {connect(){},disconnect(){}}}}
  class AudioWorkletNode{constructor(){this.port={}}connect(){}disconnect(){}}
- const scope={performance,window:{},DOMException,Float32Array,Int16Array,AudioContext,AudioWorkletNode,navigator:{mediaDevices:{getUserMedia:async()=>({getTracks:()=>[track],getAudioTracks:()=>[track]})}}};
+ const scope={performance,window:{},DOMException,Float32Array,Int16Array,AudioContext,AudioWorkletNode,setTimeout,clearTimeout,navigator:{mediaDevices:{getUserMedia:async()=>({getTracks:()=>[track],getAudioTracks:()=>[track]})}}};
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
  const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{modelLoads++;return new Promise(()=>{})};
  await listener.start();assert.equal(listener.active,true);assert.equal(listener.ready,false);assert.equal(modelLoads,1);await listener.stop();assert.equal(listener.active,false);assert.equal(stopped,1);
 });
 test('mute while browser permission is pending releases the eventual microphone',async()=>{
- let grant,stopped=0;const track={stop(){stopped++}};const scope={performance,window:{},DOMException,Float32Array,Int16Array,navigator:{mediaDevices:{getUserMedia:()=>new Promise(r=>grant=r)}}};
+ let grant,stopped=0;const track={stop(){stopped++}};const scope={performance,window:{},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,navigator:{mediaDevices:{getUserMedia:()=>new Promise(r=>grant=r)}}};
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{throw new Error('should not load')};
  const starting=listener.start();await listener.stop();grant({getTracks:()=>[track]});await starting;assert.equal(stopped,1);assert.equal(listener.active,false);
+});
+test('mobile speech uses the native recognition adapter without starting the heavy local audio worker',async()=>{
+ let started=0,stopped=0,delivered=[];
+ class Recognition{start(){started++;this.onstart?.()}stop(){stopped++;this.onend?.()}}
+ const scope={performance,window:{SpeechRecognition:Recognition,navigator:{userAgent:'Mozilla/5.0 (Linux; Android 14; Mobile)'}},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,navigator:{userAgent:'Mozilla/5.0 (Linux; Android 14; Mobile)'}};
+ vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
+ const listener=new scope.window.LeeWayBrowserListener({onTranscript:text=>delivered.push(text)});
+ await listener.start();assert.equal(listener.nativeMode,true);assert.equal(listener.active,true);assert.equal(started,1);
+ listener.nativeRecognition.onresult({resultIndex:0,results:[{isFinal:true,0:{transcript:'hello from the phone'}}]});
+ assert.deepEqual(delivered,['hello from the phone']);
+ await listener.stop();assert.equal(listener.active,false);assert.equal(listener.nativeMode,false);assert.equal(stopped,1);
 });
 test('playback echo is quarantined while genuine new speech remains eligible',()=>{
  const listener=setup();
