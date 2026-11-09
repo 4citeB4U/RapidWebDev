@@ -3,9 +3,7 @@ const assert=require('node:assert/strict');
 const fs=require('node:fs');
 const vm=require('node:vm');
 function harness(extra={}){
-  const context={AbortController,URL,performance,setTimeout,clearTimeout,console,
-    speechSynthesis:{cancel(){},getVoices(){return[]},speak(){throw new Error('Stale speech played');}},
-    SpeechSynthesisUtterance:class{constructor(text){this.text=text}},...extra};
+  const context={AbortController,performance,console,...extra};
   vm.createContext(context);vm.runInContext(fs.readFileSync(__dirname+'/voice-controller.js','utf8'),context);
   return {context,controller:new context.LeeWayVoiceController()};
 }
@@ -14,25 +12,14 @@ test('interrupt invalidates prior turn and aborts downstream request',()=>{
   assert.equal(first.signal.aborted,true);assert.equal(controller.current(first.epoch),false);
   const next=controller.begin();assert.equal(controller.current(next.epoch),true);
 });
-test('missing natural voice never silently substitutes robotic browser speech',async()=>{
+test('Stop releases the LeeWay turn and is safe to repeat',()=>{
+  const {controller}=harness();const first=controller.begin();controller.stop();controller.stop();
+  assert.equal(first.signal.aborted,true);assert.equal(controller.speaking,false);
+});
+test('controller never starts native browser speech',()=>{
   const {controller}=harness();let state='';controller.options.onState=message=>state=message;
-  await controller.speak('Read this.',{browser_fallback:{enabled:false}});
-  assert.equal(state,'Natural voice is not connected. Read the response below.');
-});
-test('late TTS response cannot play after Stop, even if fetch ignores abort',async()=>{
-  let resolve;const {controller}=harness({fetch:()=>new Promise(r=>resolve=r)});
-  const turn=controller.begin();const speaking=controller.speak('old reply',{tts_fallback:{secure_backend_endpoint:'https://voice.example/tts'}},turn.epoch);
-  controller.stop();resolve({ok:true,blob:async()=>({type:'audio/wav'})});await speaking;
-  assert.equal(controller.audio,null);assert.equal(controller.speaking,false);
-});
-test('Stop releases playout and is safe to repeat',()=>{
-  let paused=0;const {controller}=harness();controller.audio={pause(){paused++},removeAttribute(){},load(){}};
-  controller.stop();controller.stop();assert.equal(paused,1);assert.equal(controller.audio,null);
-});
-test('browser recognition stays on during Stop and rejects permission restart loop',()=>{
-  class Recognition{start(){}abort(){}}
-  const {controller}=harness({SpeechRecognition:Recognition});controller.startListening();controller.stop();
-  assert.equal(controller.listening,true);controller.recognition.onerror({error:'not-allowed'});assert.equal(controller.listening,false);
+  assert.equal(controller.startListening(),false);
+  assert.match(state,/LeeWay Voice Fabric owns speech input/);
 });
 test('live interruption flushes queued audio before subsequent output',()=>{
   const context={performance,console};vm.createContext(context);vm.runInContext(fs.readFileSync(__dirname+'/voice-live.js','utf8'),context);

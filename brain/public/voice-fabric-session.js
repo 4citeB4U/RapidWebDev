@@ -15,7 +15,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
   'use strict';
   const sdkUrl='https://4citeb4u.github.io/LeeWay-Voice-Fabric/src/voice-sdk.js';
   const profileUrl='https://raw.githubusercontent.com/4citeB4U/LeeWay-Voice-Fabric/main/profiles/agent-lee-active-voice.v1.json';
-  let client=null,loading=null,ready=null,epoch=0,lastVoicePackage=null;
+  let client=null,loading=null,ready=null,epoch=0,lastVoicePackage=null,voiceCatalog=null,selectedVoicePackageId=null;
   async function getClient(){
     if(client)return client;
     if(!loading)loading=import(sdkUrl).then(mod=>{
@@ -24,7 +24,7 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     }).catch(error=>{loading=null;throw error;});
     return loading;
   }
-  async function activeVoicePackage(){
+  async function canonicalVoicePackage(){
     const response=await fetch(profileUrl,{cache:'no-store'});
     if(!response.ok)throw new Error('Canonical Agent Lee voice profile unavailable.');
     const profile=await response.json();
@@ -33,15 +33,42 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     }
     return profile.voicePackageId;
   }
+  async function listVoices(){
+    const voice=await getClient();
+    const result=await voice.listVoices();
+    voiceCatalog=(result?.voices||[]).filter(pkg=>pkg?.provider!=='android-tts');
+    if(!selectedVoicePackageId)selectedVoicePackageId=await canonicalVoicePackage();
+    return voiceCatalog.slice();
+  }
+  async function selectedVoicePackage(){
+    const voices=voiceCatalog||await listVoices();
+    const id=selectedVoicePackageId||await canonicalVoicePackage();
+    const pkg=voices.find(value=>value?.id===id);
+    if(!pkg)throw new Error('Selected LeeWay Voice Fabric package is not in the verified catalog.');
+    return pkg;
+  }
+  async function selectVoice(voicePackageId){
+    const id=String(voicePackageId||'').trim();
+    const voices=voiceCatalog||await listVoices();
+    const pkg=voices.find(value=>value?.id===id);
+    if(!pkg)throw new Error('Choose a voice from the LeeWay Voice Fabric catalog.');
+    ++epoch;
+    if(client)await client.stop().catch(()=>{});
+    ready=null;lastVoicePackage=null;
+    const result=await (await getClient()).selectVoice(pkg.id);
+    if(result?.selectedVoiceId!==pkg.id)throw new Error('Voice Fabric did not confirm the selected speaker.');
+    selectedVoicePackageId=pkg.id;
+    return pkg;
+  }
   function prime(){
     if(ready)return ready;
     ready=(async()=>{
-      const voice=await getClient();
-      const voicePackageId=await activeVoicePackage();
+       const voice=await getClient();
+       const pkg=await selectedVoicePackage(),voicePackageId=pkg.id;
       await voice.selectVoice(voicePackageId);
-      const preparation=await voice.prepare({allowFallback:false});
+       const preparation=await voice.prepare({provider:pkg.provider,allowFallback:false});
       // Current published profile is authoritative. No unannounced speaker swap.
-      if(preparation?.selectedVoiceId!==voicePackageId){
+       if(preparation?.selectedVoiceId!==voicePackageId||['device-speech','android-tts'].includes(preparation?.provider)){
         throw new Error('Voice Fabric changed the Agent Lee speaker; owner qualification required.');
       }
       lastVoicePackage=voicePackageId;
@@ -96,6 +123,6 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     try{await client.stop();return {state:'STOP_REQUESTED'};}
     catch(error){return {state:'STOP_FAILED',error:String(error?.message||error)};}
   }
-  function status(){return {ready:!!ready,voicePackageId:lastVoicePackage,authority:'LEEWAY_VOICE_FABRIC',acousticVerified:false};}
-  root.LeeWayPortfolioVoiceSession=Object.freeze({prime,speak,stop,status,source:sdkUrl});
+  function status(){return {ready:!!ready,voicePackageId:lastVoicePackage||selectedVoicePackageId,authority:'LEEWAY_VOICE_FABRIC',voiceSelectionAuthority:'LEEWAY_VOICE_FABRIC_CATALOG',acousticVerified:false};}
+  root.LeeWayPortfolioVoiceSession=Object.freeze({prime,speak,stop,status,listVoices,selectVoice,source:sdkUrl});
 })(globalThis);

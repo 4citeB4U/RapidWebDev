@@ -56,8 +56,8 @@
   }
   function snapshot(){return JSON.parse(JSON.stringify({status:state.status,loadedAt:state.loadedAt,sources:state.sources,runtime:state.runtime,agent:state.agent,repos:Object.fromEntries(Object.entries(SOURCES).map(([k,v])=>[k,v.repo]))}));}
   function render(){
-    const summary=document.querySelector('#fabricStatusSummary'),grid=document.querySelector('#fabricStatusGrid'),startup=document.querySelector('#agentStartupStatus');
-    if(!summary&&!grid&&!startup)return;
+    const summary=document.querySelector('#fabricStatusSummary'),grid=document.querySelector('#fabricStatusGrid');
+    if(!summary&&!grid)return;
     const cards=[
       ['Voice Fabric',state.sources.voiceContract?.ok?'PASS':'DEGRADED','Voice identity + speech contract'],
       ['Runtime Fabric',state.runtime?.status==='ok'?'PASS':'DEGRADED',state.runtime?.status||'runtime unavailable'],
@@ -67,7 +67,6 @@
     if(grid)grid.innerHTML=cards.map(([name,st,note])=>'<div class="fabric-status-card" data-state="'+st+'"><b>'+name+'</b><span>'+st+' · '+note+'</span></div>').join('');
     const all=cards.every(c=>c[1]==='PASS');
     if(summary)summary.textContent=all?'LeeWay fabrics connected. Runtime execution and source authority are reported separately.':'LeeWay fabric connection is degraded. See individual status cards.';
-    if(startup)startup.textContent=all?'Agent Lee · LeeWay fabrics ready':'Agent Lee · fabric degraded';
   }
   function context(){
     const s=snapshot();

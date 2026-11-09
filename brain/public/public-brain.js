@@ -244,6 +244,7 @@ window.__leewayPublicBrainOverview=()=>{
 };
 function openAgentBubble(focus=false){
  agentBubble.classList.remove("hidden");
+ void refreshVoiceChoices();
  void globalThis.LeeWayPortfolioVoiceSession?.prime?.().catch(error=>{if(conversationSession?.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);});
  if(focus){qs('#typeMessage').open=true;setTimeout(()=>agentInput?.focus({preventScroll:true}),60);}
 }
@@ -494,13 +495,6 @@ function showPublicAnswerSources(sources=[]){
  holder.hidden=list.children.length===0;
  if(holder.hidden)holder.open=false;
 }
-function updatePreparationStatus(){
- const fabric=globalThis.LeeWayEcosystemFabric?.state;
- const fabricReady=fabric?.status==='AUTHORITY_CONNECTED'&&fabric?.runtime?.status==='ok'&&fabric?.agent?.status==='ACTIVE_HEALTHY';
- if(fabricReady){qs('#agentStartupStatus').textContent='Agent Lee · LeeWay fabrics ready';return;}
- qs('#agentStartupStatus').textContent='Agent Lee · Machine Consciousness route ready';
-}
-qs('#agentStartupStatus').onclick=()=>openAgentBubble(false);
 qs('#clearChatHistory').addEventListener('click',()=>{voiceController.history=[];for(const thread of threadWorkplane.threads.values())thread.history=[];});
 let completedDraft='';
 const knowledgeReady=LeeWayKnowledge.load().then(()=>{qs('#leewaySourceStatus').textContent='Pinned Agent Skills and Formula sources loaded. Runtime/Formula execution is reported separately from source authority.';}).catch(error=>{qs('#leewaySourceStatus').textContent=error.message;});
@@ -509,8 +503,36 @@ const voiceController=new LeeWayVoiceController({
  onState:message=>agentState.textContent=message,
  onCancel:()=>{tourEpoch++}
 });
+async function refreshVoiceChoices(){
+ const select=qs('#agentVoiceSelect'),status=qs('#agentVoiceStatus');
+ if(!select)return;
+ try{
+  const voices=await globalThis.LeeWayPortfolioVoiceSession.listVoices();
+  const selected=globalThis.LeeWayPortfolioVoiceSession.status().voicePackageId;
+  select.replaceChildren(...voices.map(pkg=>{const option=document.createElement('option');option.value=pkg.id;option.textContent=pkg.name;return option;}));
+  if(selected&&voices.some(pkg=>pkg.id===selected))select.value=selected;
+  select.disabled=voices.length===0;
+  if(status)status.textContent=voices.length?'Voice Fabric owns the speaker identity. Choose a verified package; device speech is not used.':'No verified LeeWay voice packages are available.';
+ }catch(error){
+  select.disabled=true;
+  if(status)status.textContent='LeeWay Voice Fabric catalog unavailable: '+String(error.message||error);
+ }
+}
+qs('#agentVoiceSelect')?.addEventListener('change',async event=>{
+ const select=event.currentTarget,status=qs('#agentVoiceStatus'),id=select.value;
+ select.disabled=true;
+ if(status)status.textContent='Selecting the LeeWay Voice Fabric speaker…';
+ interruptFabricSpeech('voice-selection');
+ try{
+  const pkg=await globalThis.LeeWayPortfolioVoiceSession.selectVoice(id);
+  await globalThis.LeeWayPortfolioVoiceSession.prime();
+  if(status)status.textContent=pkg.name+' · selected by LeeWay Voice Fabric.';
+ }catch(error){
+  if(status)status.textContent='Voice selection failed closed: '+String(error.message||error);
+ }finally{select.disabled=false;}
+});
 const browserListener=new LeeWayBrowserListener({
- onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"Local speech recognition ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
+ onState:message=>{agentState.textContent=message;qs("#recognitionLoadStatus").textContent=browserListener.ready?"LeeWay speech input ready.":message;qs("#recognitionProgress").hidden=browserListener.ready;},
  onSpeech:()=>{
   const active=threadWorkplane.getThread(selectedThreadId);pendingVoiceThreadId=active?.kind==='main'?'AUTO_SIDE':active?.id||selectedThreadId;
   if(browserListener.isPlaybackActive?.()){LeeWayVoiceMetrics.record('speech-onset-during-playback');return;}
@@ -530,10 +552,10 @@ function showModelProgress(kind,p){
  if(!bar||!label)return;
  bar.hidden=false;
  if(p.message){bar.removeAttribute("value");label.textContent=p.message;return;}
- if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;label.textContent=`Speech recognition: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"local worker"}`;}
- else{bar.removeAttribute("value");label.textContent="Preparing speech input...";}
+ if(p.total&&p.loaded!=null){bar.max=p.total;bar.value=p.loaded;label.textContent=`LeeWay speech input: ${Math.round(p.loaded/p.total*100)}% of ${p.file?.split("/").pop()||"voice runtime"}`;}
+ else{bar.removeAttribute("value");label.textContent="Preparing LeeWay speech input...";}
 }
-window.addEventListener('leeway-fabric-ready',()=>updatePreparationStatus());
+ void refreshVoiceChoices();
 function cancelAgentGeneration(){
  browserListener.cancelUtterance();
  voiceController.stop();
@@ -871,5 +893,4 @@ async function boot(){
  }).catch(()=>{});
 }
 boot().catch(e=>{agentText.textContent="Digital Brain project discovery failed: "+e.message;console.error(e)});
-// Guide first. Full AI downloads begin only through the explicit setup controls.
-updatePreparationStatus();
+// Guide first. Voice preparation begins through the canonical LeeWay Voice Fabric session.

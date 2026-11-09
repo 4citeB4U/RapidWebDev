@@ -40,16 +40,9 @@ test('mute while browser permission is pending releases the eventual microphone'
  vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);const listener=new scope.window.LeeWayBrowserListener();listener.load=()=>{throw new Error('should not load')};
  const starting=listener.start();await listener.stop();grant({getTracks:()=>[track]});await starting;assert.equal(stopped,1);assert.equal(listener.active,false);
 });
-test('mobile speech uses the native recognition adapter without starting the heavy local audio worker',async()=>{
- let started=0,stopped=0,delivered=[];
- class Recognition{start(){started++;this.onstart?.()}stop(){stopped++;this.onend?.()}}
- const scope={performance,window:{SpeechRecognition:Recognition,navigator:{userAgent:'Mozilla/5.0 (Linux; Android 14; Mobile)'}},DOMException,Float32Array,Int16Array,setTimeout,clearTimeout,navigator:{userAgent:'Mozilla/5.0 (Linux; Android 14; Mobile)'}};
- vm.createContext(scope);vm.runInContext(fs.readFileSync(__dirname+'/browser-listener.js','utf8'),scope);
- const listener=new scope.window.LeeWayBrowserListener({onTranscript:text=>delivered.push(text)});
- await listener.start();assert.equal(listener.nativeMode,true);assert.equal(listener.active,true);assert.equal(started,1);
- listener.nativeRecognition.onresult({resultIndex:0,results:[{isFinal:true,0:{transcript:'hello from the phone'}}]});
- assert.deepEqual(delivered,['hello from the phone']);
- await listener.stop();assert.equal(listener.active,false);assert.equal(listener.nativeMode,false);assert.equal(stopped,1);
+test('speech input never selects native browser speech',()=>{
+ const source=fs.readFileSync(__dirname+'/browser-listener.js','utf8');
+ assert.doesNotMatch(source,/SpeechRecognition|webkitSpeechRecognition|nativeMode|nativeRecognition/);
 });
 test('playback echo is quarantined while genuine new speech remains eligible',()=>{
  const listener=setup();

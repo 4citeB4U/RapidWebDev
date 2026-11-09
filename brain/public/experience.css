@@ -77,12 +77,12 @@ html,body{overflow:clip}body{position:fixed;inset:0}
 .agentTranscript{font-size:13px;color:#c9e8f5;max-height:100px}
 .agentInputRow{grid-template-columns:minmax(0,1fr) 44px}.agentInputRow textarea{font-size:16px;min-height:44px}.agentInputRow button{min-height:44px}
 .voice-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;pointer-events:auto}.voice-controls button{font-size:13px;min-height:42px}
+.voice-selection{display:grid;gap:6px;margin:12px 0 0;padding:10px;border:1px solid #365b76;border-radius:10px;background:#081c2e}.voice-selection label{font-size:12px;font-weight:650;color:#dff4ff}.voice-selection select{min-height:40px;width:100%;padding:8px;border:1px solid #365b76;border-radius:8px;background:#061321;color:#dff4ff;font-size:14px}
 #reasonBtn.agentReason{display:inline-flex!important;align-items:center;width:auto;height:auto;min-height:40px;padding:8px 12px;border-radius:8px;font-size:12px;font-weight:650;color:#c8f3ff;border-color:#365b76}
 .browser-ai-setup{margin:12px 0;padding:12px;border:1px solid #365b76;border-radius:10px;background:#081c2e;font-size:12px;line-height:1.5}
 .browser-ai-setup summary{cursor:pointer;font-size:14px;font-weight:650;color:#bcecff}
 .browser-ai-setup p{color:#bdcede;margin:8px 0}
 .browser-ai-setup a{color:#7de7ff;text-decoration:underline;text-underline-offset:3px}
-.agent-startup{position:fixed;right:16px;bottom:16px;z-index:65;max-width:180px;min-height:42px;padding:9px 12px;background:#081c2e;color:#c8f3ff;border:1px solid #47718d;border-radius:10px;font:13px/1.4 system-ui;cursor:pointer}
 .browser-ai-setup button{font-size:12px;min-height:40px;margin:6px 3px 4px 0}
 .browser-ai-setup progress{width:100%;height:8px;accent-color:#5ce0ff}
 .browser-ai-setup progress[hidden]{display:none}
@@ -211,7 +211,6 @@ body:not(.story-intro) #brainUniverseLayer{transition:filter .9s ease}
 .fabric-status-card[data-state="PASS"]{border-color:#33795b}
 .fabric-status-card[data-state="DEGRADED"]{border-color:#8a6b32}
 .fabric-note{font-size:12px;color:#a9bfd0}
-body:not(.brain-intro) .agent-startup{bottom:16px}
 @media(max-width:600px){
  .intro-story-plate{width:94vw;height:78dvh;padding:20px 16px;border-radius:22px}
  .intro-story-scroll{padding-left:10px;padding-right:10px}

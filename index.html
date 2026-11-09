@@ -27,11 +27,10 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 </script>
 <script type="importmap">{"imports":{"three":"/brain/public/vendor/three.module.js","three/addons/":"/brain/public/vendor/"}}</script>
 <link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-browser4">
-<link rel="stylesheet" href="/brain/public/experience.css?v=20260928-logo1">
+<link rel="stylesheet" href="/brain/public/experience.css?v=20261109-voice-select1">
 </head>
 <body class="brain-intro">
 <div id="app">
-  <button id="agentStartupStatus" class="agent-startup" aria-live="polite">LeeWay fabrics connecting…</button>
   <header id="topbar">
     <div class="brand"><img class="leeway-logo" src="/brain/public/brand/leeway-official-logo.png" width="48" height="48" alt="LeeWay official logo"><span>LEEWAY</span> DIGITAL BRAIN <small>Rapid Web Develop</small></div>
     <div class="top-stats">
@@ -167,13 +166,18 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
         <button id="agentStop">Stop speaking</button>
         <button id="agentEndVoice">Mute</button>
       </div>
+      <div class="voice-selection" aria-label="LeeWay Voice Fabric speaker selection">
+        <label for="agentVoiceSelect">LeeWay Voice Fabric speaker</label>
+        <select id="agentVoiceSelect" disabled><option>Loading verified LeeWay voices…</option></select>
+        <small id="agentVoiceStatus" class="voice-status">Voice Fabric owns the speaker identity. Device speech is not used.</small>
+      </div>
       <div class="agent-thread-controls" aria-label="Agent Lee conversation threads">
         <label for="agentThreadSelect">Speaking / typing thread</label>
         <select id="agentThreadSelect"><option value="">Main task</option></select>
         <button id="agentNewSide" type="button">New side chat</button>
         <small id="agentThreadStatus">Main task · ready</small>
       </div>
-      <div id="recognitionLoadStatus" role="status">Speech recognition prepares when you turn on the microphone.</div>
+      <div id="recognitionLoadStatus" role="status">LeeWay speech input prepares when you turn on the microphone.</div>
       <progress id="recognitionProgress" aria-label="Speech recognition download" hidden></progress>
       <details id="typeMessage" class="chat-drawer"><summary>Type a message</summary><div class="agentInputRow">
         <textarea aria-label="Message Agent Lee" id="agentInput" rows="1" placeholder="Ask Agent Lee…"></textarea>
@@ -220,18 +224,18 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 </div>
 
 <script type="module" src="/brain/public/brain-3d.js?v=20260928-browser4"></script>
-<script src="/brain/public/voice-controller.js?v=20260928-browser4"></script>
+<script src="/brain/public/voice-controller.js?v=20261109-leeway1"></script>
 <script src="/brain/public/thread-workplane.js?v=20260928-threadpilot2"></script>
 <script src="/brain/public/leeway-knowledge.js?v=20260928-1"></script>
 <script src="/brain/public/conversation-session.js?v=20260928-mic1"></script>
 <script src="/brain/public/conversation-view.js?v=20260928-mic1"></script>
-<script src="/brain/public/browser-listener.js?v=20261109-mobile1"></script>
+<script src="/brain/public/browser-listener.js?v=20261109-leeway1"></script>
 <script src="/brain/public/ecosystem-fabric.js?v=20260929-fabric2"></script>
 <script src="/brain/public/leeway-core-portfolio.js?v=20261108-audit1"></script>
 <script src="/brain/public/engineering-journey.js?v=20261108-v1"></script>
 <script src="/brain/public/machine-consciousness-public.js?v=20261108-v3"></script>
-<script src="/brain/public/voice-fabric-session.js?v=20261109-stream2"></script>
- <script src="/brain/public/public-brain.js?v=20261109-presenter1"></script>
+<script src="/brain/public/voice-fabric-session.js?v=20261109-select1"></script>
+ <script src="/brain/public/public-brain.js?v=20261109-presenter2"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
 </body>
 </html>

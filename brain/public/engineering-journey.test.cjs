@@ -85,9 +85,9 @@ test('canonical Voice Fabric client is source-only, fail-closed, and syntactical
   assert.match(source,/LeeWay-Voice-Fabric\/src\/voice-sdk\.js/);
   assert.match(source,/profiles\/agent-lee-active-voice\.v1\.json/);
   assert.match(source,/selectVoice\(voicePackageId\)/);
-  assert.match(source,/voice\.prepare\(\{allowFallback:false\}\)/);
+  assert.match(source,/voice\.prepare\(\{provider:pkg\.provider,allowFallback:false\}\)/);
   assert.match(source,/preparation\?\.selectedVoiceId!==voicePackageId/);
-  assert.match(source,/prepare\(\{allowFallback:false\}\)/);
+  assert.match(source,/prepare\(\{provider:pkg\.provider,allowFallback:false\}\)/);
   assert.match(source,/client\.stop\(\)/);
   const executable=source.replace(/^\/\*[\s\S]*?\*\//,'');
   assert.doesNotMatch(executable,/speechSynthesis|C:\\\\|E:\\\\|Gemma|Gemini|openai/i);

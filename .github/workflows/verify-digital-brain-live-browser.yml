@@ -10,6 +10,9 @@ on:
       - "brain/public/machine-consciousness-public.js"
       - "brain/public/voice-fabric-session.js"
       - "brain/public/browser-listener.js"
+      - "brain/public/voice-controller.js"
+      - "brain/public/ecosystem-fabric.js"
+      - "brain/public/experience.css"
       - "brain/public/thread-workplane.js"
       - "brain/public/speech-lease-patch.js"
   workflow_dispatch:
@@ -90,7 +93,7 @@ jobs:
               else await page.locator('#introStoryTalk').dispatchEvent('click');
               await page.waitForFunction(()=>!document.querySelector('#introStoryGlass'));
             }
-            await page.click('#agentStartupStatus');
+            if(await page.locator('#agentStartupStatus').count())throw new Error('The removed LeeWay fabric status chip is still present.');
             await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
             await page.click('#micBtn');
             await page.waitForTimeout(250);

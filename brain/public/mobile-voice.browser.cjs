@@ -36,17 +36,20 @@ const {chromium,devices}=require('playwright');
     const auditUrl=new URL('?mobile-audit=20261109-'+name,targetUrl).href;
     await page.goto(auditUrl,{waitUntil:'domcontentloaded',timeout:60000});
     await page.waitForFunction(()=>typeof globalThis.__leewayAgentScreenContext==='function'&&document.querySelector('#micBtn'),{timeout:30000});
+    await page.waitForSelector('#agentVoiceSelect',{state:'attached',timeout:30000});
+    assert.equal(await page.locator('#agentStartupStatus').count(),0,name+' removed fabric status chip still present');
     const before=await page.evaluate(()=>({href:location.href,visibility:document.visibilityState,ready:document.readyState,mode:document.querySelector('#micBtn')?.dataset.mode,entries:performance.getEntriesByType('navigation').length}));
     await page.locator('#micBtn').click();
     await page.waitForTimeout(waitMs);
-    const after=await page.evaluate(()=>({href:location.href,visibility:document.visibilityState,ready:document.readyState,mode:document.querySelector('#micBtn')?.dataset.mode,state:document.querySelector('#agentState')?.textContent||'',bubble:!document.querySelector('#agentBubble')?.classList.contains('hidden'),entries:performance.getEntriesByType('navigation').length,context:globalThis.__leewayAgentScreenContext?.()}));
+    const after=await page.evaluate(()=>({href:location.href,visibility:document.visibilityState,ready:document.readyState,mode:document.querySelector('#micBtn')?.dataset.mode,state:document.querySelector('#agentState')?.textContent||'',bubble:!document.querySelector('#agentBubble')?.classList.contains('hidden'),voiceSelected:document.querySelector('#agentVoiceSelect')?.value||'',voiceOptions:document.querySelectorAll('#agentVoiceSelect option').length,voiceStatus:document.querySelector('#agentVoiceStatus')?.textContent||'',entries:performance.getEntriesByType('navigation').length,context:globalThis.__leewayAgentScreenContext?.()}));
+    assert.notEqual(after.voiceSelected,'android-installed-english',name+' selected a device voice');
     results.push({device:name,before,after,events});
     assert.equal(events.crashes.length,0,name+' mobile page crashed');
    }catch(error){
     results.push({device:name,error:String(error.message||error),events});
    }finally{await context.close();}
   }
-  const compact=results.map(result=>({device:result.device,before:result.before,after:result.after,error:result.error||null,navigationCount:result.events?.navigation?.length||0,pageErrorCount:result.events?.pageErrors?.length||0,failedRequestCount:result.events?.failedRequests?.length||0,heavyAudioRequestCount:result.events?.heavyAudioRequests?.length||0,crashCount:result.events?.crashes?.length||0,consoleWarnings:result.events?.console||[]}));
+  const compact=results.map(result=>({device:result.device,before:result.before,after:result.after,error:result.error||null,navigationCount:result.events?.navigation?.length||0,pageErrors:result.events?.pageErrors||[],failedRequests:result.events?.failedRequests||[],heavyAudioRequests:result.events?.heavyAudioRequests||[],crashes:result.events?.crashes||[],consoleWarnings:result.events?.console||[]}));
   console.log(JSON.stringify({class:'MOBILE_BROWSER_EMULATION_EVIDENCE',targetUrl,waitMs,physicalHandset:'NOT_TESTED',results:compact},null,2));
  }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
