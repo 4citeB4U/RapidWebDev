@@ -1,4 +1,4 @@
-/* Browser-only microphone capture, immediate speech interruption, local Whisper. */
+/* Browser-only microphone capture, playback-aware barge-in, local Whisper. */
 (() => {
   class LeeWayBrowserListener {
     constructor(options={}){this.options=options;this.epoch=0;this.sequence=0;this.pending=new Map();this.active=false;this.ready=false;this.playbackText='';this.playbackActive=false;this.playbackGraceUntil=0;}
