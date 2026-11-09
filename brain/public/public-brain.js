@@ -252,15 +252,15 @@ function renderNodes(filter=""){
  }
 }
 function rawNarrationFor(x){
-  if(x.id==="center")return "Agent Lee here. Come on in—the LeeWay Digital Brain is the Creator’s engineering journey made visible, from the first pressure that called the system into being through Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the evidence that separates source code from what actually ran.";
-  if(x.id?.startsWith("cat::"))return `Agent Lee here. ${x.label} carries ${items.filter(y=>categoryFor(y)===x.id).length} records. This lane follows LeeWay’s documented roles, not repository-name guesswork. Pick a project and I’ll tell you what it is, why it matters, and what the evidence can truly prove.`;
-  if(x.kind==="evidence")return `Agent Lee here. ${x.label}. ${x.summary||"This artifact belongs to the public historical research archive; it is not automatically evidence for every project."}`;
+  if(x.id==="center")return "Agent Lee here. Come on in, family—the LeeWay Digital Brain is the Creator’s engineering journey made visible, from the first pressure that called the system into being through Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the evidence that separates source code from what actually ran. This is the story with the lights on.";
+  if(x.id?.startsWith("cat::"))return `Agent Lee here. ${x.label} carries ${items.filter(y=>categoryFor(y)===x.id).length} records. This lane follows LeeWay’s documented roles, not repository-name guesswork. Pick a project and I’ll tell you what it is, why it matters, and what the evidence can truly prove. We keep the cadence human and the ledger honest.`;
+  if(x.kind==="evidence")return `Agent Lee here. ${x.label}. ${x.summary||"This artifact belongs to the public historical research archive; it is not automatically evidence for every project."} Every claim got to know its source before it gets a spotlight.`;
  if(x.core_role){
   const source=x.repo_url?"The named GitHub repository source is available.":"No public source link is exposed for this record.";
-   return `Agent Lee here. ${x.label} carries the role of ${x.core_role}. ${x.summary} ${source} Portfolio evidence state: ${x.evidence_state}. A repository or configured link is a trailhead, not proof that production execution completed.`;
+   return `Agent Lee here. ${x.label} carries the role of ${x.core_role}. ${x.summary} ${source} Portfolio evidence state: ${x.evidence_state}. A repository or configured link is a trailhead, not proof that production execution completed. We can tell it with rhythm, but we do not let the rhyme outrun the receipt.`;
  }
  const status=x.live_url?"A website link is configured; its backend execution has not been verified.":x.repo_url?"Public source is listed; current runtime operation has not been verified.":"No public repository or live execution is linked.";
-  return `Agent Lee here. Let me put ${x.label} in plain sight: ${x.summary||x.desc||"a project in the Creator's software portfolio."} ${status} Ask me why it was developed or open its exact evidence.`;
+  return `Agent Lee here. Let me put ${x.label} in plain sight: ${x.summary||x.desc||"a project in the Creator's software portfolio."} ${status} Ask me why it was developed or open its exact evidence. Every build has a reason, every reason has a trail.`;
 }
 function agentLeeVoice(text){
  const value=String(text||"").trim();
