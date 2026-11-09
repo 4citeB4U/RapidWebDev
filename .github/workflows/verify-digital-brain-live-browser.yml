@@ -97,7 +97,12 @@ jobs:
             await page.locator('#typeMessage').evaluate(node=>{node.open=true});
             await page.fill('#agentInput','What is Machine Consciousness?');
             await page.click('#agentSend');
-            await page.waitForFunction(()=>/^Agent Lee\b/i.test(document.querySelector('#agentText')?.textContent||''),null,{timeout:15000});
+            await page.waitForFunction(()=>{
+              const text=document.querySelector('#agentText')?.textContent?.trim()||'';
+              return text.length>40&&!/^Agent Lee here\b/i.test(text);
+            },null,{timeout:15000});
+            const reply=await page.locator('#agentText').textContent();
+            if(!/LeeWay|Machine Consciousness|Digital Brain/i.test(String(reply)))throw new Error('Live answer did not carry the admitted LeeWay subject: '+reply);
             await page.click('#agentNewSide');
             await page.waitForFunction(n=>document.querySelectorAll('#agentThreadSelect option').length===n+1,before);
             const after=await page.locator('#agentThreadSelect option').count();
