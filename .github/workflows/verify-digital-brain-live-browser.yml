@@ -56,6 +56,10 @@ jobs:
             page.on('pageerror',e=>pageErrors.push(String(e.message||e)));
             await page.goto(url,{waitUntil:'domcontentloaded',timeout:60000});
             await page.waitForSelector('#agentThreadSelect',{state:'attached',timeout:30000});
+            if(await page.locator('#leewayIntroGate').count())throw new Error('The obsolete Digital Brain intro gate is still present.');
+            if(await page.locator('#introStoryGlass').count())throw new Error('The obsolete opening story overlay is still present.');
+            const pageText=await page.locator('body').innerText();
+            if(/Talk with Agent Lee|Full AI optional|optional AI models|Gemma 4 runs in the visitor/i.test(pageText))throw new Error('Obsolete optional-model or opening UI text is still visible.');
             const before=await page.locator('#agentThreadSelect option').count();
             const initial=await page.locator('#agentThreadStatus').textContent();
             const loaded=await page.evaluate(()=>({
@@ -86,6 +90,13 @@ jobs:
             }
             await page.click('#agentStartupStatus');
             await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
+            await page.click('#micBtn');
+            await page.waitForTimeout(250);
+            if(await page.locator('#leewayIntroGate').count()||await page.locator('#introStoryGlass').count())throw new Error('An opening overlay returned after the Agent Lee click.');
+            await page.locator('#typeMessage').evaluate(node=>{node.open=true});
+            await page.fill('#agentInput','What is Machine Consciousness?');
+            await page.click('#agentSend');
+            await page.waitForFunction(()=>/^Agent Lee\b/i.test(document.querySelector('#agentText')?.textContent||''),null,{timeout:15000});
             await page.click('#agentNewSide');
             await page.waitForFunction(n=>document.querySelectorAll('#agentThreadSelect option').length===n+1,before);
             const after=await page.locator('#agentThreadSelect option').count();
@@ -93,7 +104,7 @@ jobs:
             const status=await page.locator('#agentThreadStatus').textContent();
             if(!/Side chat \[LW-THREAD-\d+\]/.test(String(selected)))throw new Error('Side thread ID not exposed: '+selected);
             if(pageErrors.length)throw new Error('Uncaught live page errors: '+JSON.stringify(pageErrors));
-            const result={url,beforeOptions:before,afterOptions:after,selected,status,loaded,pageErrors,acousticVoice:'NOT_TESTED',gemmaModelLoad:'NOT_TESTED'};
+            const result={url,beforeOptions:before,afterOptions:after,selected,status,loaded,pageErrors,acousticVoice:'NOT_TESTED',optionalModelRoutes:'REMOVED'};
             fs.writeFileSync('live-browser.json',JSON.stringify(result,null,2));
             await page.screenshot({path:'live-browser.png',fullPage:true});
             await browser.close();

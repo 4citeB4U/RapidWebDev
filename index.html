@@ -28,72 +28,8 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 <script type="importmap">{"imports":{"three":"/brain/public/vendor/three.module.js","three/addons/":"/brain/public/vendor/"}}</script>
 <link rel="stylesheet" href="/brain/public/public-brain.css?v=20260928-browser4">
 <link rel="stylesheet" href="/brain/public/experience.css?v=20260928-logo1">
-<link rel="stylesheet" href="/brain/public/intro-gate.css?v=20260928-1">
 </head>
-<body class="story-intro brain-intro">
-<section id="introStoryGlass" class="intro-story-glass" aria-label="LeeWay opening story">
-  <div class="intro-story-plate">
-    <div class="intro-story-kicker">LEEWAY · RAPID WEB DEVELOP</div>
-    <div class="intro-story-viewport" aria-live="polite">
-      <div id="introStoryScroll" class="intro-story-scroll">
-        <p class="intro-story-dedication">For the builders who turned imagination into tools, and for the creators coming next.</p>
-        <h1>Welcome to the LeeWay Digital Brain.</h1>
-        <p>I'm Agent Lee. Welcome to the LeeWay Digital Brain.</p>
-        <p>Drag the brain to rotate it. Scroll up to enter and explore the project cards.</p>
-        <p>Use Return to Brain to come back. Start a conversation when you are ready to ask a question.</p>
-        <p class="intro-story-close">AI should increase human capability, not replace human responsibility.</p>
-      </div>
-    </div>
-    <div class="intro-story-actions">
-      <button id="introStoryTalk" type="button" aria-label="Start an interactive narrated engineering journey with Agent Lee">Talk with Agent Lee</button>
-      <button id="introStoryBegin" type="button">Play recorded introduction</button>
-      <button id="introStorySkip" type="button" class="intro-story-skip">Skip</button>
-    </div>
-    <div id="introStoryStatus" class="intro-story-status" role="status">Choose Talk with Agent Lee to request microphone permission once. The microphone stays active until muted while this tab is visible. Recorded introduction needs no microphone.</div>
-  </div>
-</section>
-<section id="leewayIntroGate" aria-modal="true" role="dialog" aria-labelledby="introTitle">
-  <img class="introLogoBackdrop" src="/brain/public/brand/leeway-official-logo.png" alt="" aria-hidden="true">
-  <div class="introBackdropShade" aria-hidden="true"></div>
-  <div class="introPanel">
-    <p id="introEyebrow" class="introEyebrow">RAPID WEB DEVELOP × LEEWAY</p>
-    <h1 id="introTitle">Welcome to the LeeWay Digital Brain</h1>
-    <span class="introState">PUBLIC WORKING ESTATE</span>
-    <p class="introLead">A public projection of Leonard Lee's connected systems, experiments, applications, standards, evidence and work in progress. This entrance remains visible while the Digital Brain prepares behind it.</p>
-    <div id="introEvidence" class="introEvidence" aria-label="Work states"></div>
-    <div class="introAgentRow"><img src="/98civa4fmf.png" alt="Agent Lee"><div><strong>Agent Lee · Voice One</strong><small id="introAgentStatus">Ready to introduce the estate. Begin also requests optional microphone access.</small></div></div>
-    <div class="introLoad" aria-hidden="true"></div>
-    <p id="introRuntime" class="introRuntime" role="status">Brain loading · Microphone not requested · Full AI optional</p>
-    <div id="introStack" class="introStack" aria-label="Primary public technology stack"></div>
-    <p id="introPermission" class="introPermission"></p>
-    <section class="introConnect" aria-label="Contact, learning and Pocket Agent Lee">
-      <article>
-        <span>CONTACT</span>
-        <h2>Work with Leonard Lee</h2>
-        <p id="introService"></p>
-        <div class="introLinks"><a id="introEmail">Email Leonard</a><a id="introGithub" target="_blank" rel="noopener">GitHub @4citeB4U</a></div>
-      </article>
-      <article>
-        <span>LEARN</span>
-        <h2 id="introSeriesTitle">Agent Lee · 5-Day LeeWay Learning Event</h2>
-        <strong id="introSeriesState"></strong>
-        <ol id="introSeriesDays"></ol>
-      </article>
-      <article>
-        <span>GIFT / EARLY ACCESS</span>
-        <h2 id="introPocketTitle">Pocket Agent Lee</h2>
-        <strong id="introPocketState"></strong>
-        <p id="introPocketMessage"></p>
-      </article>
-    </section>
-    <div class="introActions">
-      <button id="introBegin" class="primary">Begin with Agent Lee + microphone</button>
-      <button id="introEnter" disabled>Enter Digital Brain</button>
-      <button id="introSkip">Skip introduction</button>
-    </div>
-    <details class="introTranscript"><summary>Read Agent Lee's full introduction</summary><p id="introTranscriptText"></p></details>
-  </div>
-</section>
+<body class="brain-intro">
 <div id="app">
   <button id="agentStartupStatus" class="agent-startup" aria-live="polite">LeeWay fabrics connecting…</button>
   <header id="topbar">
@@ -218,15 +154,15 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     <section id="agentBubble" class="agentBubble hidden" aria-live="polite">
       <div class="agentBubbleHead">
         <strong>Agent Lee</strong>
-        <small id="agentState">Voice One guide ready</small>
+        <small id="agentState">Machine Consciousness ready</small>
         <button id="agentBubbleClose" aria-label="Close Agent Lee" title="Close Agent Lee"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
       </div>
-      <div class="speech-balloon lee-balloon"><span class="bubble-speaker">Agent Lee</span><div id="agentText">Agent Lee is connecting to the LeeWay fabric authorities. Project navigation remains available while live capabilities verify.</div>
+      <div class="speech-balloon lee-balloon"><span class="bubble-speaker">Agent Lee</span><div id="agentText">Agent Lee here. I am the LeeWay Machine Consciousness public interface. Click my portrait once to open the continuous LeeWay Voice Fabric conversation.</div>
       </div>
       <details id="agentEvidence" class="chat-drawer" hidden><summary>Sources for this answer</summary><ul id="agentEvidenceList"></ul></details>
       <div class="speech-balloon user-balloon hidden" id="userBalloon"><span class="bubble-speaker">You</span><div id="agentTranscript" class="agentTranscript"></div></div>
       <div class="voice-controls" aria-label="Conversation controls">
-        <button id="agentWelcome">Meet Agent Lee</button><button id="agentEngineeringStory" type="button">Engineering journey</button><button id="agentGuidedTour" type="button">Guided voice tour</button><button id="guideExplore">Explore projects</button>
+        <button id="agentEngineeringStory" type="button">Engineering journey</button><button id="agentGuidedTour" type="button">Guided voice tour</button><button id="guideExplore">Explore projects</button>
           <button id="agentStartVoice" aria-pressed="false">Start live conversation</button>
         <button id="agentStop">Stop speaking</button>
         <button id="agentEndVoice">Mute</button>
@@ -252,35 +188,11 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
         <button id="downloadAgentDraft" disabled>Download answer</button>
         <p><a href="https://github.com/4citeB4U/LeeWay-Agent-Skills" target="_blank" rel="noopener">Canonical LeeWay Skills</a> · <a href="https://github.com/4citeB4U/Leeway-formula-live" target="_blank" rel="noopener">Canonical Formula</a></p>
       </details>
-      <p class="guide-note">Creator, repository, Digital Brain, diagnostics, Machine Consciousness and engineering-journey answers use the bounded public LeeWay projection without an LLM. Speech uses the selected LeeWay Voice Fabric provider; microphone transcription uses the existing browser speech-recognition adapter. Live authenticated carrier actions remain gated and are not exposed to visitors. Mute ends listening. Optional AI models require explicit selection.</p>
-      <details id="fullAISetup" class="browser-ai-setup fabric-status-panel">
+      <p class="guide-note">This is the LeeWay Machine Consciousness route. Agent Lee answers from the admitted deterministic LeeWay projection, and spoken replies use the canonical LeeWay Voice Fabric. No LLM is used by this public conversation. Click the portrait once to start; the microphone stays active until you choose Mute.</p>
+      <details id="fabricStatus" class="browser-ai-setup fabric-status-panel">
         <summary>LeeWay fabric status</summary>
         <p id="fabricStatusSummary">Connecting Voice Fabric, Runtime Fabric, Agent Skills and Formula Live…</p>
         <div id="fabricStatusGrid" class="fabric-status-grid"></div>
-        <p class="fabric-note">The Digital Brain uses published LeeWay contracts and cloud/runtime services. It does not require a multi-gigabyte browser model download for normal conversation.</p>
-        <div class="legacy-browser-ai" hidden>
-        <summary>Legacy browser-local fallback</summary>
-        <p>Tap Meet Agent Lee for the recorded guide. Tap the portrait to request live conversation. Full conversation downloads Gemma 4, Chatterbox and speech recognition to this device. About 3.6 GB on first use; this can take several minutes and needs sufficient storage, memory and WebGPU support. Completed cached files are reused. Use Wi-Fi for the large download. The microphone opens on your first tap, independently of these models. Local speech recognition prepares separately; generated answers and voice still need the optional models.</p>
-        <button id="enableFullAI">Enable full AI · about 3.6 GB</button><p id="storageStatus" role="status">Storage is checked before downloading. The guide stays available if full AI cannot run.</p>
-        <button id="reasonBtn" class="agentReason">Load Gemma 4 · 2 GB</button>
-        <div id="gemmaLoadStatus" role="status">Optional: Gemma 4 is not loaded.</div>
-        <progress id="gemmaProgress" aria-label="Gemma 4 download" hidden></progress>
-        <button id="loadBrowserVoice">Load browser voice · 1.6 GB</button>
-        <div id="voiceLoadStatus" role="status">Optional: Chatterbox is not loaded.</div>
-        <progress id="voiceProgress" aria-label="Voice model download" hidden></progress>
-        <button id="previewBrowserVoice" disabled>Listen to voice</button>
-        <label class="reference-label" for="voiceExpression">Delivery</label>
-        <select id="voiceExpression"><option value="0.25" selected>Calm</option><option value="0.5">Natural</option><option value="0.7">Lively</option></select>
-        <label class="reference-label" for="voicePace">Speaking pace</label>
-        <select id="voicePace"><option value="1">Original pace</option><option value="1.1" selected>Slightly faster — 1.1×</option><option value="1.2">Faster — 1.2×</option></select>
-        <label class="reference-label" for="savedVoiceSample">Agent Lee — Voice One reference</label>
-        <audio id="savedVoiceSample" controls preload="none" src="/brain/public/voices/agent-lee-reference.wav?v=638c88b332ec"></audio>
-        <label class="reference-label" for="voiceReference">Choose a voice reference</label>
-        <input id="voiceReference" type="file" accept="audio/*">
-        <p>Uses Voice One, selected from the original LeeWay ecosystem recordings. You may select another permitted 1–30 second reference; your selection stays on this device.</p>
-        <button id="unloadBrowserModels">Unload models</button>
-        <details><summary>Voice timing</summary><p>Local timings only; no recordings or conversation text are saved in this report.</p><button id="exportVoiceTiming">Download timing report</button><pre id="voiceTiming" style="white-space:pre-wrap;font-size:12px"></pre></details>
-        </div>
       </details>
 
     </section>
@@ -309,17 +221,10 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 
 <script type="module" src="/brain/public/brain-3d.js?v=20260928-browser4"></script>
 <script src="/brain/public/voice-controller.js?v=20260928-browser4"></script>
-<script src="/brain/public/browser-voice.js?v=20260928-auto2"></script>
-<script src="/brain/public/speech-pipeline.js?v=20260928-pipeline2"></script>
-<script src="/brain/public/speech-lease-patch.js?v=20260928-threadpilot1"></script>
 <script src="/brain/public/thread-workplane.js?v=20260928-threadpilot2"></script>
-<script src="/brain/public/welcome-player.js?v=20260928-guide1"></script>
 <script src="/brain/public/leeway-knowledge.js?v=20260928-1"></script>
 <script src="/brain/public/conversation-session.js?v=20260928-mic1"></script>
 <script src="/brain/public/conversation-view.js?v=20260928-mic1"></script>
-<script src="/brain/public/preparation-policy.js?v=20260928-guide1"></script>
-<script src="/brain/public/model-preparation.js?v=20260928-auto1"></script>
-<script src="/brain/public/intro-script.js?v=20260928-1"></script>
 <script src="/brain/public/browser-listener.js?v=20260928-mic-first1"></script>
 <script src="/brain/public/ecosystem-fabric.js?v=20260929-fabric2"></script>
 <script src="/brain/public/leeway-core-portfolio.js?v=20261108-audit1"></script>
@@ -327,8 +232,6 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
 <script src="/brain/public/machine-consciousness-public.js?v=20261108-v1"></script>
 <script src="/brain/public/voice-fabric-session.js?v=20261108-v1"></script>
 <script src="/brain/public/public-brain.js?v=20260929-fabric1"></script>
-<script src="/brain/public/intro-story.js?v=20260929-story1"></script>
 <script src="/brain/public/ui-icons.js?v=20260928-browser4"></script>
-<script src="/brain/public/intro-gate.js?v=20260928-1"></script>
 </body>
 </html>
