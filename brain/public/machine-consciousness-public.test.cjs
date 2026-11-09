@@ -60,6 +60,20 @@ test('unrelated requests fail closed and capability answers preserve evidence bo
   assert.match(voice.text,/physical microphone|human-heard/i);
 });
 
+test('small talk and system introductions stay local and retain Agent Lee voice',async()=>{
+  const api=load();
+  const greeting=await api.answer('hello');
+  assert.equal(greeting.intent,'machine-consciousness.greeting');
+  assert.match(greeting.text,/Good to hear you|engineering journey/i);
+  assert.equal(greeting.llm.used,false);
+  const system=await api.answer('Tell me something about the system');
+  assert.equal(system.intent,'machine-consciousness.system-introduction');
+  assert.match(system.text,/Let me lay it out plain|no LLM/i);
+  const operational=await api.answer('Are you there?');
+  assert.equal(operational.intent,'machine-consciousness.operational-greeting');
+  assert.match(operational.text,/straight line|public interface/i);
+});
+
 test('public brain loads the projection before its conversation handler',()=>{
   const index=fs.readFileSync(path.join(__dirname,'../../index.html'),'utf8');
   const projection=index.indexOf('/brain/public/machine-consciousness-public.js');

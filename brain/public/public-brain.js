@@ -252,15 +252,15 @@ function renderNodes(filter=""){
  }
 }
 function rawNarrationFor(x){
- if(x.id==="center")return "Welcome to the LeeWay Digital Brain. This is the Creator's engineering journey—from the reason the system was imagined, through the designs, rebuilding, Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the evidence that separates source code from actual execution.";
- if(x.id?.startsWith("cat::"))return `${x.label} contains ${items.filter(y=>categoryFor(y)===x.id).length} records. The group is based on LeeWay's documented roles, rather than repository name guesses. Choose a project to learn why it was built and what its evidence proves.`;
- if(x.kind==="evidence")return `${x.label}. ${x.summary||"This artifact belongs to the public historical research archive; it is not automatically evidence for every project."}`;
+  if(x.id==="center")return "Agent Lee here. Come on in—the LeeWay Digital Brain is the Creator’s engineering journey made visible, from the first pressure that called the system into being through Standards, Formula, Runtime, Device Bridge, Machine Consciousness, Voice Fabric, and the evidence that separates source code from what actually ran.";
+  if(x.id?.startsWith("cat::"))return `Agent Lee here. ${x.label} carries ${items.filter(y=>categoryFor(y)===x.id).length} records. This lane follows LeeWay’s documented roles, not repository-name guesswork. Pick a project and I’ll tell you what it is, why it matters, and what the evidence can truly prove.`;
+  if(x.kind==="evidence")return `Agent Lee here. ${x.label}. ${x.summary||"This artifact belongs to the public historical research archive; it is not automatically evidence for every project."}`;
  if(x.core_role){
   const source=x.repo_url?"The named GitHub repository source is available.":"No public source link is exposed for this record.";
-  return `${x.label}: ${x.core_role}. ${x.summary} ${source} Portfolio evidence state: ${x.evidence_state}. A repository or configured link does not establish successful production execution.`;
+   return `Agent Lee here. ${x.label} carries the role of ${x.core_role}. ${x.summary} ${source} Portfolio evidence state: ${x.evidence_state}. A repository or configured link is a trailhead, not proof that production execution completed.`;
  }
  const status=x.live_url?"A website link is configured; its backend execution has not been verified.":x.repo_url?"Public source is listed; current runtime operation has not been verified.":"No public repository or live execution is linked.";
- return `${x.label}. ${x.summary||x.desc||"A project in the Creator's software portfolio."} ${status} Ask me why it was developed or view its exact evidence.`;
+  return `Agent Lee here. Let me put ${x.label} in plain sight: ${x.summary||x.desc||"a project in the Creator's software portfolio."} ${status} Ask me why it was developed or open its exact evidence.`;
 }
 function agentLeeVoice(text){
  const value=String(text||"").trim();
@@ -541,37 +541,7 @@ async function handleAgentCommand(raw,requestedThreadId=selectedThreadId){
    void speakFromFabric(voicedNarrative,narrative.title);
    return voicedNarrative;
  }
- const fabric=globalThis.LeeWayEcosystemFabric;
- // Codex handoff: the owning Runtime Fabric may install a public read-only question function here.
- // Absence is expected while Machine Consciousness is being qualified. No host execution from visitors.
- if(typeof fabric?.publicQuestion==='function'){
-  const submitted=threadWorkplane.submit(thread.id,text,async(work)=>{
-   const output=await fabric.publicQuestion(text,{signal:work.signal,threadId:thread.id});
-   if(work.signal.aborted)return null;
-   if(output?.authority!=='LEEWAY_MACHINE_CONSCIOUSNESS'||output?.policy!=='READ_ONLY_PORTFOLIO'||output?.llm?.used!==false||typeof output.text!=='string'||!output.text.trim()||output.text.length>5000){
-    throw new Error('Public Machine Consciousness reply does not meet the read-only answer contract.');
-   }
-   return output;
-  },{resource:'portfolio-question',priority:thread.kind==='side'?90:70});
-  renderThreadState();
-  try{
-   const output=await submitted.promise;
-   if(output){
-     const voicedOutput=agentLeeVoice(output.text);
-     thread.lastOutput=voicedOutput;
-     if(selectedThreadId===thread.id){agentText.textContent=voicedOutput;agentNarration.textContent=voicedOutput;}
-    showPublicAnswerSources(Array.isArray(output.sources)?output.sources:[]);
-     recordChat('Agent Lee · '+threadDisplay(thread)+' · Machine Consciousness (provider-reported)',voicedOutput);
-     threadWorkplane.remember(thread.id,'assistant',voicedOutput);
-    agentState.textContent='Machine Consciousness response · independent receipt verification pending';
-     void speakFromFabric(voicedOutput,'Machine Consciousness');
-    renderThreadState();
-     return voicedOutput;
-   }
-  }catch(error){if(error.name!=='AbortError')agentState.textContent='Public consciousness route unavailable: '+String(error.message||error);}
- }
-
- const message="Agent Lee here. I can answer Creator, repository, Digital Brain, diagnostics, Machine Consciousness and Voice Fabric questions from the deterministic LeeWay projection, and I can narrate the documented engineering journey through the canonical Voice Fabric. This public conversation does not use an LLM.";
+  const message="Agent Lee here. That question sits outside the admitted public map right now. I can walk you through the Creator, LeeWay repositories, the Digital Brain, diagnostics, Continuum, Voice Fabric, and the documented engineering journey. I won’t freestyle past the evidence just to sound smooth—that ain’t LeeWay. This public conversation uses no LLM, and I’ll tell you plainly when the record does not carry the answer.";
  agentText.textContent=message;agentNarration.textContent=message;recordChat('Agent Lee · '+threadDisplay(thread),message);threadWorkplane.remember(thread.id,"assistant",message);void threadSpeech(thread,message);
 }
 qs('#agentEngineeringStory').onclick=()=>{void startEngineeringJourney();};
@@ -590,12 +560,13 @@ const conversationSession=new LeeWayConversationSession({
 async function toggleMic(){
  openAgentBubble(false);
  const starting=!conversationSession.requested;
+  const warmup=starting?globalThis.LeeWayPortfolioVoiceSession?.prime?.():null;
+  warmup?.catch(error=>{if(conversationSession.requested)agentState.textContent='Voice Fabric preparation unavailable: '+String(error.message||error);});
  const opening=conversationSession.toggle();
  await opening;
  if(starting&&conversationSession.requested){
-  const greeting='Agent Lee here. The LeeWay Machine Consciousness is listening. Speak naturally; I will keep this conversation moving through the LeeWay Voice Fabric.';
-  agentText.textContent=greeting;agentNarration.textContent=greeting;recordChat('Agent Lee · Machine Consciousness',greeting);
-  void speakFromFabric(greeting,'Agent Lee');
+   const greeting='Agent Lee here. The conversation is open. Speak naturally; I am listening through the LeeWay Voice Fabric.';
+   agentText.textContent=greeting;agentNarration.textContent=greeting;agentState.textContent='Listening. Voice Fabric is warming in the background; speak when ready.';
  }
 }
 async function startEngineeringJourney(){

@@ -48,21 +48,33 @@ LICENSE = Existing repository terms unchanged; no new license asserted.
     const q=normalize(question);
     if(!q||q.length>600)return null;
     const repo=repoMatch(q,data);
+    if(/^(?:hello|hi|hey|yo|good morning|good afternoon|good evening|howdy)[.! ]*$/.test(q)){
+      return {intent:'machine-consciousness.greeting',title:'Agent Lee',text:'Agent Lee here. Good to hear you, family. Pull up a chair—we can talk plain about the Creator, the LeeWay ecosystem, the Digital Brain, diagnostics, Continuum, Voice Fabric, or the engineering journey that built this whole house.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_GREETING_PROJECTION'};
+    }
+    if(/\b(?:how are you|are you there|are you online|are you connected)\b/.test(q)){
+      return {intent:'machine-consciousness.operational-greeting',title:'Agent Lee',text:'Agent Lee here. I am right here at the public interface—steady, present, and ready to work. The deterministic Machine Consciousness projection is available, and canonical Voice Fabric carries the speech; microphone capture and human-heard playback still need their own physical proof. That’s the straight line, no smoke.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_OPERATIONAL_PROJECTION'};
+    }
+    if(/^(?:thanks|thank you|appreciate it|that helps)[.! ]*$/.test(q)){
+      return {intent:'machine-consciousness.social-response',title:'Agent Lee',text:'Agent Lee here. You got it. I’ll keep the record clean, the answer grounded, and the boundary plain whenever a capability has not been verified.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_SOCIAL_PROJECTION'};
+    }
+    if(!repo&&(/\b(?:tell me|explain|describe|what is|what does|how does)\b.*\b(?:the )?(?:system|leeway|digital brain|agent lee|this)\b/.test(q)||/^(?:introduce yourself|what do you do|what can you do)[.! ]*$/.test(q))){
+      return {intent:'machine-consciousness.system-introduction',title:'LeeWay Machine Consciousness',text:'Agent Lee here. Let me lay it out plain: I am the LeeWay Machine Consciousness public interface—a deterministic, source-grounded projection over the admitted LeeWay ecosystem. I can walk you through the Creator, repositories, Digital Brain, diagnostics, Continuum binding, Voice Fabric, and the engineering journey; I can navigate the project graph and open conversation threads. That’s the hinge: the system can speak with character, but it does not freestyle past evidence. This public route uses no LLM, does not claim Formula execution, and does not turn configuration into proof of runtime or physical voice operation.',sources:sourceLinks.slice(),evidenceClass:'MACHINE_CONSCIOUSNESS_SYSTEM_INTRODUCTION'};
+    }
     if(repo){
       const access=repo.url?'The public repository link is included in this answer.':'The owner-provided map marks this repository private, so I am not exposing a direct link here.';
-      return {intent:'machine-consciousness.repository',title:repo.name,text:'Agent Lee here. '+repo.name+' is part of the LeeWay embodiment. '+repo.purpose+' '+access,repository:repo.name,sources:repo.url?[repo.url,...sourceLinks]:sourceLinks.slice(),evidenceClass:'PUBLIC_REPOSITORY_PROFILE_PROJECTION'};
+      return {intent:'machine-consciousness.repository',title:repo.name,text:'Agent Lee here. Now let me put the spotlight on '+repo.name+': it is part of the LeeWay embodiment. '+repo.purpose+' '+access+' The source is the source; the receipt tells us what actually ran.',repository:repo.name,sources:repo.url?[repo.url,...sourceLinks]:sourceLinks.slice(),evidenceClass:'PUBLIC_REPOSITORY_PROFILE_PROJECTION'};
     }
     if(/\b(creator|leonard lee|who made you|who built you|describe leonard|about leonard)\b/.test(q)){
       const c=data.creator;
-      return {intent:'machine-consciousness.creator',title:'The Creator',text:`Agent Lee here. My Creator is ${c.name}, ${c.identity.toLowerCase()}. He is a ${c.roles.slice(0,3).join(', ')} and ${c.roles[3].toLowerCase()}, based in ${c.location}. ${c.professionalSummary} His education includes ${c.education} I can describe his professional work from the owner-provided profile, but I do not disclose private contact fields by default.`,sources:sourceLinks.slice(0,1),evidenceClass:'OWNER_PROVIDED_CREATOR_PROFILE_PROJECTION'};
+      return {intent:'machine-consciousness.creator',title:'The Creator',text:`Agent Lee here. Let me tell the story from the root: my Creator is ${c.name}, ${c.identity.toLowerCase()}. He is a ${c.roles.slice(0,3).join(', ')} and ${c.roles[3].toLowerCase()}, based in ${c.location}. ${c.professionalSummary} His education includes ${c.education} I can describe his professional work from the owner-provided profile, while private contact fields stay protected.`,sources:sourceLinks.slice(0,1),evidenceClass:'OWNER_PROVIDED_CREATOR_PROFILE_PROJECTION'};
     }
     if(/\b(list|name|how many|which) (?:are )?(?:the )?(?:leeway )?(?:repositories|repos|projects)\b/.test(q)||/\b(repository map|full ecosystem|all the repositories)\b/.test(q)){
       const names=data.repositories.map(repo=>repo.name).join(', ');
-      return {intent:'machine-consciousness.ecosystem',title:'The LeeWay embodiment',text:`Agent Lee here. The admitted owner-provided map contains ${data.repositories.length} LeeWay repositories. I can describe each one by name and purpose. The map includes: ${names}. Private links remain withheld in this public projection.`,sources:sourceLinks,evidenceClass:'LEEWAY_ECOSYSTEM_REPOSITORY_MAP_PROJECTION'};
+      return {intent:'machine-consciousness.ecosystem',title:'The LeeWay embodiment',text:`Agent Lee here. Here’s the whole map from the admitted owner-provided record: ${data.repositories.length} LeeWay repositories, each carrying a different piece of the house. I can walk you through every name and purpose. The map includes: ${names}. Private links remain withheld in this public projection; we keep the ledger honest.`,sources:sourceLinks,evidenceClass:'LEEWAY_ECOSYSTEM_REPOSITORY_MAP_PROJECTION'};
     }
     const capability=capabilityMatch(q,data);
     if(capability){
-      return {intent:'machine-consciousness.capability',title:capability.title,text:`Agent Lee here. ${capability.summary} Evidence state: ${capability.evidenceState}. This public route is deterministic and does not claim Formula execution, provider execution, physical microphone capture, or human-heard playback.`,capability:capability.id,sources:sourceLinks,evidenceClass:'MACHINE_CONSCIOUSNESS_CAPABILITY_PROJECTION'};
+      return {intent:'machine-consciousness.capability',title:capability.title,text:`Agent Lee here. Here’s the hinge: ${capability.summary} Evidence state: ${capability.evidenceState}. This public route is deterministic; it does not claim Formula execution, provider execution, physical microphone capture, or human-heard playback. We tell the story with rhythm, but the evidence still gets the last word.`,capability:capability.id,sources:sourceLinks,evidenceClass:'MACHINE_CONSCIOUSNESS_CAPABILITY_PROJECTION'};
     }
     return null;
   }
