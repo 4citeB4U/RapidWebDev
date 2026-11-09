@@ -94,8 +94,10 @@ jobs:
               await page.waitForFunction(()=>!document.querySelector('#introStoryGlass'));
             }
             if(await page.locator('#agentStartupStatus').count())throw new Error('The removed LeeWay fabric status chip is still present.');
-            await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
+            // The portrait is the real public Agent Lee entry. It opens the
+            // conversation surface and requests the governed microphone path.
             await page.click('#micBtn');
+            await page.waitForSelector('#agentBubble:not(.hidden)',{timeout:10000});
             await page.waitForTimeout(250);
             if(await page.locator('#leewayIntroGate').count()||await page.locator('#introStoryGlass').count())throw new Error('An opening overlay returned after the Agent Lee click.');
             await page.locator('#typeMessage').evaluate(node=>{node.open=true});
